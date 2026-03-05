@@ -134,6 +134,20 @@ terminal-tile-hotkey uninstall
 TILE_DEBUG=1 分屏
 ```
 
+性能模式（iTerm2 优先场景，速度更快）：
+
+```bash
+TILE_MODE=iterm_fast 分屏
+```
+
+可设置 alias 作为默认：
+
+```bash
+echo "alias 分屏='TILE_MODE=iterm_fast ~/.local/bin/terminal-tile-all'" >> ~/.zshrc
+echo "alias tile='TILE_MODE=iterm_fast ~/.local/bin/terminal-tile-all'" >> ~/.zshrc
+source ~/.zshrc
+```
+
 可选参数：
 
 - `TILE_GAP`（默认 `10`）
@@ -141,6 +155,7 @@ TILE_DEBUG=1 分屏
 - `TILE_MARGIN_RIGHT`（默认 `8`）
 - `TILE_MARGIN_BOTTOM`（默认 `8`）
 - `TILE_MARGIN_LEFT`（默认 `8`）
+- `TILE_MODE`（`iterm_fast` 为 iTerm2 快速模式）
 
 ## 社媒与公众号 | Socials & WeChat
 

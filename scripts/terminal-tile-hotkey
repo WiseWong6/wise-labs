@@ -270,12 +270,17 @@ case "$front_bundle_id" in
     ;;
 esac
 
+tile_mode=""
+if [[ "$front_bundle_id" == "com.googlecode.iterm2" ]]; then
+  tile_mode="iterm_fast"
+fi
+
 if command -v terminal-tile-all >/dev/null 2>&1; then
-  TILE_SKIP_HOTKEY_BOOTSTRAP=1 exec "$(command -v terminal-tile-all)"
+  TILE_SKIP_HOTKEY_BOOTSTRAP=1 TILE_MODE="$tile_mode" exec "$(command -v terminal-tile-all)"
 fi
 
 if [[ -x "$HOME/.local/bin/terminal-tile-all" ]]; then
-  TILE_SKIP_HOTKEY_BOOTSTRAP=1 exec "$HOME/.local/bin/terminal-tile-all"
+  TILE_SKIP_HOTKEY_BOOTSTRAP=1 TILE_MODE="$tile_mode" exec "$HOME/.local/bin/terminal-tile-all"
 fi
 
 echo "terminal-tile-all 未找到，请先安装到 ~/.local/bin/terminal-tile-all。" >&2

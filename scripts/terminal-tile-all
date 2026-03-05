@@ -50,7 +50,136 @@ M_RIGHT=${TILE_MARGIN_RIGHT:-8}
 M_BOTTOM=${TILE_MARGIN_BOTTOM:-8}
 M_LEFT=${TILE_MARGIN_LEFT:-8}
 DEBUG_MODE=${TILE_DEBUG:-0}
+TILE_MODE=${TILE_MODE:-}
 
+if [[ "$TILE_MODE" == "iterm_fast" ]]; then
+result=$(osascript <<APPLESCRIPT
+use framework "AppKit"
+
+on colCountFor(n)
+  if n is 1 then return 1
+  if n is 2 then return 2
+  if n is 3 then return 3
+  if n is 4 then return 2
+  if n is 5 then return 3
+  if n is 6 then return 3
+  if n is 7 then return 4
+  if n is 8 then return 4
+  if n is 9 then return 3
+  if n is 10 then return 4
+
+  set c to 1
+  repeat while ((c * c) < n)
+    set c to c + 1
+  end repeat
+  return c
+end colCountFor
+
+on firstScreenVisibleRectTopLeft()
+  set screenList to current application's NSScreen's screens()
+  if (count of screenList) = 0 then return {}
+
+  set maxY to -999999
+  repeat with s in screenList
+    set f to s's frame() as list
+    set o to item 1 of f
+    set z to item 2 of f
+    set yTopCandidate to (item 2 of o) + (item 2 of z)
+    if yTopCandidate > maxY then set maxY to yTopCandidate
+  end repeat
+
+  set s to item 1 of screenList
+  set vf to s's visibleFrame() as list
+  set vo to item 1 of vf
+  set vz to item 2 of vf
+  set leftPos to (item 1 of vo) as integer
+  set widthPos to (item 1 of vz) as integer
+  set heightPos to (item 2 of vz) as integer
+  set topPos to (maxY - ((item 2 of vo) + (item 2 of vz))) as integer
+  set rightPos to leftPos + widthPos
+  set bottomPos to topPos + heightPos
+  return {leftPos, topPos, rightPos, bottomPos}
+end firstScreenVisibleRectTopLeft
+
+set gap to ${GAP}
+set mTop to ${M_TOP}
+set mRight to ${M_RIGHT}
+set mBottom to ${M_BOTTOM}
+set mLeft to ${M_LEFT}
+set debugMode to "${DEBUG_MODE}"
+
+set winRecords to {}
+set iTermCount to 0
+
+try
+  tell application "iTerm2"
+    if it is running then
+      set idList to id of every window
+      set bdList to bounds of every window
+      repeat with i from 1 to (count of idList)
+        set wb to item i of bdList
+        set end of winRecords to {"iTerm2", item i of idList, item 1 of wb, item 2 of wb, item 3 of wb, item 4 of wb}
+      end repeat
+      set iTermCount to count of idList
+    end if
+  end tell
+end try
+
+set totalWins to count of winRecords
+if totalWins = 0 then return "NO_WINDOWS"
+if totalWins = 1 then return "ONLY_ONE_WINDOW"
+
+set r to my firstScreenVisibleRectTopLeft()
+if (count of r) = 0 then return "NO_SCREENS"
+set availLeft to (item 1 of r) + mLeft
+set availTop to (item 2 of r) + mTop
+set availRight to (item 3 of r) - mRight
+set availBottom to (item 4 of r) - mBottom
+set availW to availRight - availLeft
+set availH to availBottom - availTop
+if availW < 200 then set availW to 200
+if availH < 200 then set availH to 200
+
+set colCount to my colCountFor(totalWins)
+set rowCount to (totalWins div colCount)
+if (totalWins mod colCount) > 0 then set rowCount to rowCount + 1
+set cellW to ((availW - (gap * (colCount - 1))) div colCount)
+set cellH to ((availH - (gap * (rowCount - 1))) div rowCount)
+set ops to {}
+
+repeat with j from 1 to totalWins
+  set idx to j - 1
+  set rr to idx div colCount
+  set cc to idx mod colCount
+  set x1 to availLeft + (cc * (cellW + gap))
+  set y1 to availTop + (rr * (cellH + gap))
+  set x2 to x1 + cellW
+  set y2 to y1 + cellH
+  set rec to item j of winRecords
+  set curX1 to item 3 of rec
+  set curY1 to item 4 of rec
+  set curX2 to item 5 of rec
+  set curY2 to item 6 of rec
+  if not (curX1 is x1 and curY1 is y1 and curX2 is x2 and curY2 is y2) then
+    set end of ops to {item 2 of rec, x1, y1, x2, y2}
+  end if
+end repeat
+
+if (count of ops) > 0 then
+  tell application "iTerm2"
+    repeat with op in ops
+      try
+        set bounds of window id (item 1 of op) to {item 2 of op, item 3 of op, item 4 of op, item 5 of op}
+      end try
+    end repeat
+  end tell
+end if
+
+if debugMode is "1" then return "OK,iterm=" & iTermCount & ",terminal=0,ghostty=0,mode=iterm_fast"
+return "OK,iterm=" & iTermCount & ",terminal=0,ghostty=0,mode=iterm_fast"
+APPLESCRIPT
+)
+else
 # Avoid expensive System Events calls when Ghostty is not running.
 CHECK_GHOSTTY=0
 if pgrep -x Ghostty >/dev/null 2>&1 || pgrep -x ghostty >/dev/null 2>&1; then
@@ -298,6 +427,9 @@ repeat with sidx from 1 to screenCount
 
     set cellW to ((availW - (gap * (colCount - 1))) div colCount)
     set cellH to ((availH - (gap * (rowCount - 1))) div rowCount)
+    set iTermOps to {}
+    set terminalOps to {}
+    set ghosttyOps to {}
 
     repeat with j from 1 to n
       set idx to j - 1
@@ -312,32 +444,60 @@ repeat with sidx from 1 to screenCount
       set rec to item recIndex of winRecords
       set appName to item 1 of rec
       set winKey to item 2 of rec
+      set curX1 to item 3 of rec
+      set curY1 to item 4 of rec
+      set curX2 to item 5 of rec
+      set curY2 to item 6 of rec
+      set needsMove to true
+      if curX1 is x1 and curY1 is y1 and curX2 is x2 and curY2 is y2 then
+        set needsMove to false
+      end if
 
-      if appName is "iTerm2" then
-        tell application "iTerm2"
-          try
-            set w to first window whose id is winKey
-            set bounds of w to {x1, y1, x2, y2}
-          end try
-        end tell
-      else if appName is "Terminal" then
-        tell application "Terminal"
-          try
-            set w to first window whose id is winKey
-            set bounds of w to {x1, y1, x2, y2}
-          end try
-        end tell
-      else if appName is "Ghostty" then
-        try
-          tell application "System Events"
-            tell process ghosttyProcessName
-              set position of window winKey to {x1, y1}
-              set size of window winKey to {x2 - x1, y2 - y1}
-            end tell
-          end tell
-        end try
+      if needsMove and appName is "iTerm2" then
+        set end of iTermOps to {winKey, x1, y1, x2, y2}
+      else if needsMove and appName is "Terminal" then
+        set end of terminalOps to {winKey, x1, y1, x2, y2}
+      else if needsMove and appName is "Ghostty" then
+        set end of ghosttyOps to {winKey, x1, y1, x2, y2}
       end if
     end repeat
+
+    if (count of iTermOps) > 0 then
+      tell application "iTerm2"
+        repeat with op in iTermOps
+          try
+            set bounds of window id (item 1 of op) to {item 2 of op, item 3 of op, item 4 of op, item 5 of op}
+          end try
+        end repeat
+      end tell
+    end if
+
+    if (count of terminalOps) > 0 then
+      tell application "Terminal"
+        repeat with op in terminalOps
+          try
+            set bounds of window id (item 1 of op) to {item 2 of op, item 3 of op, item 4 of op, item 5 of op}
+          end try
+        end repeat
+      end tell
+    end if
+
+    if (count of ghosttyOps) > 0 then
+      try
+        tell application "System Events"
+          tell process ghosttyProcessName
+            repeat with op in ghosttyOps
+              set gx1 to item 2 of op
+              set gy1 to item 3 of op
+              set gx2 to item 4 of op
+              set gy2 to item 5 of op
+              set position of window (item 1 of op) to {gx1, gy1}
+              set size of window (item 1 of op) to {gx2 - gx1, gy2 - gy1}
+            end repeat
+          end tell
+        end tell
+      end try
+    end if
   end if
 end repeat
 
@@ -352,6 +512,7 @@ else
 end if
 APPLESCRIPT
 )
+fi
 
 if [[ "$result" == *"ONLY_ONE_WINDOW"* ]]; then
   echo "当前只检测到 1 个终端窗口，无法平铺。"
