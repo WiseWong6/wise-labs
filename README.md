@@ -93,7 +93,7 @@ TILE_DEBUG=1 分屏
 - 全网账号：`@歪斯Wise`
 - 平台：小红书 / Twitter(X) / 公众号
 - 公众号：**歪斯**
-- 小红书：<https://www.xiaohongshu.com/user/profile/61f3ea4f000000001000db73>
+- 小红书：[小红书](https://www.xiaohongshu.com/user/profile/61f3ea4f000000001000db73)
 - x：[x](https://x.com/killthewhys)
 
 扫码关注公众号（歪斯）：
