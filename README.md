@@ -9,13 +9,23 @@ A macOS terminal window tiler for people who open too many terminal windows.
 - 我在写代码时，习惯是“直接再开一个新终端窗口”，而不是在当前窗口里继续 split pane。
 - 有些场景里，Claude Code 在 Ghostty 的体验更顺手，所以会和 iTerm2 / Terminal 混着用。
 - 结果就是桌面上会堆出一批独立终端窗口，手动逐个拖拽和排版很蠢、很耗时间。
+- 我希望桌面长期保持整齐有序：左边或右边固定给终端，另一侧留给浏览器/微信，不要每次都重新摆。
+- 我经常一边做多终端并行测试，一边查资料、同步写文章，窗口不稳定会直接打断节奏。
 - 这个工具要解决的不是“单终端内分 pane”，而是“把当前终端窗口一键整理好”。
 
 **English**
 - In day-to-day coding, I usually open another terminal window instead of splitting the current one.
 - Claude Code also feels better in Ghostty for some workflows, so I end up mixing iTerm2 / Terminal / Ghostty.
 - This creates many independent terminal windows, and manual arranging becomes repetitive and wasteful.
+- I want the desktop to stay tidy: keep terminal windows in a fixed left/right zone and leave the rest for browser/chat apps.
+- I often run multi-terminal testing while researching and drafting articles, so unstable window layouts break focus.
 - This tool focuses on one-click window tiling, not in-app pane splitting.
+
+## 典型工作流场景 | Typical Workflows
+
+- `二分屏协作`：左侧 `1/2` 放终端并上下堆叠，右侧固定浏览器或微信。
+- `三分区协作`：左侧 `1/3` 放终端，中间浏览器，右侧聊天窗口（浏览器/聊天区由你手动摆放，脚本只管理终端区）。
+- `内容与开发并行`：同时开多个终端跑服务/测试，保留可视区域给文档、资料与写作窗口。
 
 ## 痛点验证（调研结论）| Pain-Point Validation
 
@@ -117,6 +127,8 @@ TILE_MODE=iterm_fast ~/.local/bin/terminal-tile-all
 ```
 
 高级分区模式（仅管理终端区，手动命令触发）：
+
+适合你的“终端 + 浏览器/微信”桌面协作流：脚本只整理终端区，其他应用区保持你手动安排的结构（例如二分屏或三分区）。
 
 ```bash
 # 最短写法
