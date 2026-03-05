@@ -6,22 +6,23 @@ A macOS terminal window tiler for people who open too many terminal windows.
 ## 为什么会有这个工具 | Why This Exists
 
 **中文**
-- 常见“分屏插件”大多解决的是**单个终端内部**（pane/tab）布局，不解决“我习惯开很多独立窗口”的问题。
-- 真实使用中常见混合：iTerm2 + Terminal + Ghostty 同时开。
-- 需求不是“在某个终端里分 pane”，而是“把当前所有终端窗口快速排整齐”。
-- 目标是：一条命令，立即整理窗口，减少手动拖拽和排版成本。
+- 我在写代码时，习惯是“直接再开一个新终端窗口”，而不是在当前窗口里继续 split pane。
+- 有些场景里，Claude Code 在 Ghostty 的体验更顺手，所以会和 iTerm2 / Terminal 混着用。
+- 结果就是桌面上会堆出一批独立终端窗口，手动逐个拖拽和排版很蠢、很耗时间。
+- 这个工具要解决的不是“单终端内分 pane”，而是“把当前终端窗口一键整理好”。
 
 **English**
-- Most popular “split” tools optimize layouts **inside one terminal app** (panes/tabs), not many independent windows.
-- Real workflows are often mixed: iTerm2 + Terminal + Ghostty together.
-- The requirement is not “split panes in one app”, but “quickly tile all terminal windows on screen(s)”.
-- Goal: one command, instant layout, less manual dragging.
+- In day-to-day coding, I usually open another terminal window instead of splitting the current one.
+- Claude Code also feels better in Ghostty for some workflows, so I end up mixing iTerm2 / Terminal / Ghostty.
+- This creates many independent terminal windows, and manual arranging becomes repetitive and wasteful.
+- This tool focuses on one-click window tiling, not in-app pane splitting.
 
 ## 痛点验证（调研结论）| Pain-Point Validation
 
 **结论（简版）**
-- 你的痛点成立：主流终端分屏能力确实主要是“应用内分屏”。
-- 跨终端类型、跨应用统一平铺，通常需要额外脚本或窗口管理器，不是默认能力。
+- 这个痛点成立：主流“分屏”方案主要覆盖应用内 pane/tab，不覆盖跨终端窗口统一编排。
+- 我们用 GPT-5.3 做过一轮调研，在当时范围内没有找到可直接满足该场景的现成方案。
+- 所以最后选择自己做一个命令行小工具。
 
 **依据（公开文档）**
 1. tmux 的 `split-window` 是 session/window 内 pane 操作。  
@@ -49,6 +50,20 @@ A macOS terminal window tiler for people who open too many terminal windows.
   - 9 -> 3x3
   - 10 -> 4x3
 - 支持 iTerm2 / Terminal / Ghostty（Ghostty 依赖辅助功能权限）
+
+## 测试与兼容性 | Tested Compatibility
+
+**已验证（mac）**
+- macOS: `26.2` (`25C56`)
+- iTerm2: `3.6.8`
+- Terminal: `2.15`
+- Ghostty: `1.2.3`
+
+**当前结论**
+- macOS 场景可用（重点验证了终端窗口分屏流程）。
+- 单显示器、单桌面（单 Space）场景最稳定。
+- Windows 尚未验证。
+- 其他终端（除 iTerm2 / Terminal / Ghostty）暂未验证。
 
 ## 安装 | Install
 
