@@ -1,0 +1,174 @@
+#!/bin/zsh
+
+# Auto-tile iTerm2 windows per display.
+# Windows are grouped by display and tiled independently in each display area.
+# Layout mode is fixed to balanced (e.g. 6 windows -> 3x2).
+# Optional env vars: TILE_GAP, TILE_MARGIN_TOP, TILE_MARGIN_RIGHT, TILE_MARGIN_BOTTOM, TILE_MARGIN_LEFT
+
+GAP=${TILE_GAP:-10}
+M_TOP=${TILE_MARGIN_TOP:-6}
+M_RIGHT=${TILE_MARGIN_RIGHT:-8}
+M_BOTTOM=${TILE_MARGIN_BOTTOM:-8}
+M_LEFT=${TILE_MARGIN_LEFT:-8}
+
+result=$(osascript <<APPLESCRIPT
+use framework "AppKit"
+
+on getVisibleRectsTopLeft()
+  set screenList to current application's NSScreen's screens()
+
+  set maxY to -999999
+  repeat with s in screenList
+    set f to s's frame() as list
+    set o to item 1 of f
+    set z to item 2 of f
+    set yTopCandidate to (item 2 of o) + (item 2 of z)
+    if yTopCandidate > maxY then set maxY to yTopCandidate
+  end repeat
+
+  set rects to {}
+  repeat with s in screenList
+    set vf to s's visibleFrame() as list
+    set vo to item 1 of vf
+    set vz to item 2 of vf
+
+    set leftPos to (item 1 of vo) as integer
+    set widthPos to (item 1 of vz) as integer
+    set heightPos to (item 2 of vz) as integer
+    set topPos to (maxY - ((item 2 of vo) + (item 2 of vz))) as integer
+    set rightPos to leftPos + widthPos
+    set bottomPos to topPos + heightPos
+
+    set end of rects to {leftPos, topPos, rightPos, bottomPos}
+  end repeat
+  return rects
+end getVisibleRectsTopLeft
+
+on nearestScreenIndex(px, py, rects)
+  set countRects to count of rects
+
+  repeat with i from 1 to countRects
+    set r to item i of rects
+    set l to item 1 of r
+    set t to item 2 of r
+    set rr to item 3 of r
+    set b to item 4 of r
+    if px is greater than or equal to l and px is less than rr and py is greater than or equal to t and py is less than b then return i
+  end repeat
+
+  set bestIdx to 1
+  set bestDist to 999999999
+  repeat with i from 1 to countRects
+    set r to item i of rects
+    set cx to ((item 1 of r) + (item 3 of r)) / 2
+    set cy to ((item 2 of r) + (item 4 of r)) / 2
+    set dx to (px - cx)
+    set dy to (py - cy)
+    set d2 to (dx * dx) + (dy * dy)
+    if d2 < bestDist then
+      set bestDist to d2
+      set bestIdx to i
+    end if
+  end repeat
+  return bestIdx
+end nearestScreenIndex
+
+on colCountFor(n)
+  if n is 1 then return 1
+  if n is 2 then return 2
+  if n is 3 then return 3
+  if n is 4 then return 2
+  if n is 5 then return 3
+  if n is 6 then return 3
+  if n is 7 then return 4
+  if n is 8 then return 4
+  if n is 9 then return 3
+  if n is 10 then return 4
+
+  set c to 1
+  repeat while ((c * c) < n)
+    set c to c + 1
+  end repeat
+  return c
+end colCountFor
+
+set gap to ${GAP}
+set mTop to ${M_TOP}
+set mRight to ${M_RIGHT}
+set mBottom to ${M_BOTTOM}
+set mLeft to ${M_LEFT}
+
+set screenRects to my getVisibleRectsTopLeft()
+set screenCount to count of screenRects
+if screenCount = 0 then return
+
+set groups to {}
+repeat with i from 1 to screenCount
+  set end of groups to {}
+end repeat
+
+tell application "iTerm2"
+  set nWin to count of windows
+  if nWin = 0 then return
+  if nWin = 1 then return "ONLY_ONE_WINDOW"
+  set winIdList to id of every window
+  set winBoundsList to bounds of every window
+end tell
+
+repeat with i from 1 to (count of winIdList)
+  set wb to item i of winBoundsList
+  set winId to item i of winIdList
+  set cx to ((item 1 of wb) + (item 3 of wb)) / 2
+  set cy to ((item 2 of wb) + (item 4 of wb)) / 2
+  set sidx to my nearestScreenIndex(cx, cy, screenRects)
+  set item sidx of groups to ((item sidx of groups) & winId)
+end repeat
+
+repeat with sidx from 1 to screenCount
+  set ids to item sidx of groups
+  set n to count of ids
+  if n > 0 then
+    set r to item sidx of screenRects
+    set availLeft to (item 1 of r) + mLeft
+    set availTop to (item 2 of r) + mTop
+    set availRight to (item 3 of r) - mRight
+    set availBottom to (item 4 of r) - mBottom
+
+    set availW to availRight - availLeft
+    set availH to availBottom - availTop
+    if availW < 200 then set availW to 200
+    if availH < 200 then set availH to 200
+
+    -- Fixed layout policy agreed with user for 2..10 windows.
+    set colCount to my colCountFor(n)
+    set rowCount to (n div colCount)
+    if (n mod colCount) > 0 then set rowCount to rowCount + 1
+
+    set cellW to ((availW - (gap * (colCount - 1))) div colCount)
+    set cellH to ((availH - (gap * (rowCount - 1))) div rowCount)
+
+    repeat with j from 1 to n
+      set idx to j - 1
+      set rr to idx div colCount
+      set cc to idx mod colCount
+      set x1 to availLeft + (cc * (cellW + gap))
+      set y1 to availTop + (rr * (cellH + gap))
+      set x2 to x1 + cellW
+      set y2 to y1 + cellH
+
+      set winId to item j of ids
+      tell application "iTerm2"
+        try
+          set w to first window whose id is winId
+          set bounds of w to {x1, y1, x2, y2}
+        end try
+      end tell
+    end repeat
+  end if
+end repeat
+APPLESCRIPT
+)
+
+if [[ "$result" == "ONLY_ONE_WINDOW" ]]; then
+  echo "当前只有 1 个 iTerm2 窗口，无法平铺。请先新开至少 1 个窗口。"
+fi

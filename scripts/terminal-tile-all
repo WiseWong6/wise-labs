@@ -1,0 +1,300 @@
+#!/bin/zsh
+
+# Tile terminal windows across iTerm2, Terminal, and Ghostty.
+# Per-screen independent layout with fixed policy for 2..10 windows.
+# Optional env vars: TILE_GAP, TILE_MARGIN_TOP, TILE_MARGIN_RIGHT, TILE_MARGIN_BOTTOM, TILE_MARGIN_LEFT
+
+GAP=${TILE_GAP:-10}
+M_TOP=${TILE_MARGIN_TOP:-6}
+M_RIGHT=${TILE_MARGIN_RIGHT:-8}
+M_BOTTOM=${TILE_MARGIN_BOTTOM:-8}
+M_LEFT=${TILE_MARGIN_LEFT:-8}
+DEBUG_MODE=${TILE_DEBUG:-0}
+
+result=$(osascript <<APPLESCRIPT
+use framework "AppKit"
+
+on getVisibleRectsTopLeft()
+  set screenList to current application's NSScreen's screens()
+
+  set maxY to -999999
+  repeat with s in screenList
+    set f to s's frame() as list
+    set o to item 1 of f
+    set z to item 2 of f
+    set yTopCandidate to (item 2 of o) + (item 2 of z)
+    if yTopCandidate > maxY then set maxY to yTopCandidate
+  end repeat
+
+  set rects to {}
+  repeat with s in screenList
+    set vf to s's visibleFrame() as list
+    set vo to item 1 of vf
+    set vz to item 2 of vf
+
+    set leftPos to (item 1 of vo) as integer
+    set widthPos to (item 1 of vz) as integer
+    set heightPos to (item 2 of vz) as integer
+    set topPos to (maxY - ((item 2 of vo) + (item 2 of vz))) as integer
+    set rightPos to leftPos + widthPos
+    set bottomPos to topPos + heightPos
+
+    set end of rects to {leftPos, topPos, rightPos, bottomPos}
+  end repeat
+  return rects
+end getVisibleRectsTopLeft
+
+on nearestScreenIndex(px, py, rects)
+  set countRects to count of rects
+
+  repeat with i from 1 to countRects
+    set r to item i of rects
+    set l to item 1 of r
+    set t to item 2 of r
+    set rr to item 3 of r
+    set b to item 4 of r
+    if px is greater than or equal to l and px is less than rr and py is greater than or equal to t and py is less than b then return i
+  end repeat
+
+  set bestIdx to 1
+  set bestDist to 999999999
+  repeat with i from 1 to countRects
+    set r to item i of rects
+    set cx to ((item 1 of r) + (item 3 of r)) / 2
+    set cy to ((item 2 of r) + (item 4 of r)) / 2
+    set dx to (px - cx)
+    set dy to (py - cy)
+    set d2 to (dx * dx) + (dy * dy)
+    if d2 < bestDist then
+      set bestDist to d2
+      set bestIdx to i
+    end if
+  end repeat
+  return bestIdx
+end nearestScreenIndex
+
+on colCountFor(n)
+  if n is 1 then return 1
+  if n is 2 then return 2
+  if n is 3 then return 3
+  if n is 4 then return 2
+  if n is 5 then return 3
+  if n is 6 then return 3
+  if n is 7 then return 4
+  if n is 8 then return 4
+  if n is 9 then return 3
+  if n is 10 then return 4
+
+  set c to 1
+  repeat while ((c * c) < n)
+    set c to c + 1
+  end repeat
+  return c
+end colCountFor
+
+set gap to ${GAP}
+set mTop to ${M_TOP}
+set mRight to ${M_RIGHT}
+set mBottom to ${M_BOTTOM}
+set mLeft to ${M_LEFT}
+set debugMode to "${DEBUG_MODE}"
+
+set ghosttyRunning to false
+set ghosttyNeedsAX to false
+set ghosttyProcessName to ""
+set winRecords to {}
+set iTermCount to 0
+set terminalCount to 0
+set ghosttyCount to 0
+
+-- iTerm2 windows (native AppleScript)
+try
+  tell application "iTerm2"
+    if it is running then
+      set idList to id of every window
+      set bdList to bounds of every window
+      repeat with i from 1 to (count of idList)
+        set wb to item i of bdList
+        set end of winRecords to {"iTerm2", item i of idList, item 1 of wb, item 2 of wb, item 3 of wb, item 4 of wb}
+      end repeat
+      set iTermCount to count of idList
+    end if
+  end tell
+end try
+
+-- Terminal windows (native AppleScript)
+try
+  tell application "Terminal"
+    if it is running then
+      set idList to id of every window
+      set bdList to bounds of every window
+      repeat with i from 1 to (count of idList)
+        set wb to item i of bdList
+        set end of winRecords to {"Terminal", item i of idList, item 1 of wb, item 2 of wb, item 3 of wb, item 4 of wb}
+      end repeat
+      set terminalCount to count of idList
+    end if
+  end tell
+end try
+
+-- Ghostty windows (System Events / Accessibility)
+try
+  tell application "System Events"
+    if exists process "Ghostty" then
+      set ghosttyRunning to true
+      set ghosttyProcessName to "Ghostty"
+    else if exists process "ghostty" then
+      set ghosttyRunning to true
+      set ghosttyProcessName to "ghostty"
+    end if
+  end tell
+on error
+  set ghosttyRunning to false
+  set ghosttyNeedsAX to true
+end try
+
+if ghosttyRunning then
+  try
+    tell application "System Events"
+      tell process ghosttyProcessName
+        set gw to windows
+        set ghosttyCount to count of gw
+        repeat with i from 1 to (count of gw)
+          set w to item i of gw
+          set p to position of w
+          set s to size of w
+          set leftPos to item 1 of p
+          set topPos to item 2 of p
+          set rightPos to leftPos + (item 1 of s)
+          set bottomPos to topPos + (item 2 of s)
+          set end of winRecords to {"Ghostty", i, leftPos, topPos, rightPos, bottomPos}
+        end repeat
+      end tell
+    end tell
+  on error
+    set ghosttyNeedsAX to true
+  end try
+end if
+
+set totalWins to count of winRecords
+if totalWins = 0 then return "NO_WINDOWS"
+if totalWins = 1 then
+  if ghosttyNeedsAX then
+    return "ONLY_ONE_WINDOW,GHOSTTY_NEEDS_AX"
+  else
+    return "ONLY_ONE_WINDOW"
+  end if
+end if
+
+set screenRects to my getVisibleRectsTopLeft()
+set screenCount to count of screenRects
+if screenCount = 0 then return "NO_SCREENS"
+
+set groups to {}
+repeat with i from 1 to screenCount
+  set end of groups to {}
+end repeat
+
+repeat with i from 1 to totalWins
+  set rec to item i of winRecords
+  set cx to ((item 3 of rec) + (item 5 of rec)) / 2
+  set cy to ((item 4 of rec) + (item 6 of rec)) / 2
+  set sidx to my nearestScreenIndex(cx, cy, screenRects)
+  set item sidx of groups to ((item sidx of groups) & i)
+end repeat
+
+repeat with sidx from 1 to screenCount
+  set ids to item sidx of groups
+  set n to count of ids
+  if n > 0 then
+    set r to item sidx of screenRects
+    set availLeft to (item 1 of r) + mLeft
+    set availTop to (item 2 of r) + mTop
+    set availRight to (item 3 of r) - mRight
+    set availBottom to (item 4 of r) - mBottom
+
+    set availW to availRight - availLeft
+    set availH to availBottom - availTop
+    if availW < 200 then set availW to 200
+    if availH < 200 then set availH to 200
+
+    set colCount to my colCountFor(n)
+    set rowCount to (n div colCount)
+    if (n mod colCount) > 0 then set rowCount to rowCount + 1
+
+    set cellW to ((availW - (gap * (colCount - 1))) div colCount)
+    set cellH to ((availH - (gap * (rowCount - 1))) div rowCount)
+
+    repeat with j from 1 to n
+      set idx to j - 1
+      set rr to idx div colCount
+      set cc to idx mod colCount
+      set x1 to availLeft + (cc * (cellW + gap))
+      set y1 to availTop + (rr * (cellH + gap))
+      set x2 to x1 + cellW
+      set y2 to y1 + cellH
+
+      set recIndex to item j of ids
+      set rec to item recIndex of winRecords
+      set appName to item 1 of rec
+      set winKey to item 2 of rec
+
+      if appName is "iTerm2" then
+        tell application "iTerm2"
+          try
+            set w to first window whose id is winKey
+            set bounds of w to {x1, y1, x2, y2}
+          end try
+        end tell
+      else if appName is "Terminal" then
+        tell application "Terminal"
+          try
+            set w to first window whose id is winKey
+            set bounds of w to {x1, y1, x2, y2}
+          end try
+        end tell
+      else if appName is "Ghostty" then
+        try
+          tell application "System Events"
+            tell process ghosttyProcessName
+              set position of window winKey to {x1, y1}
+              set size of window winKey to {x2 - x1, y2 - y1}
+            end tell
+          end tell
+        end try
+      end if
+    end repeat
+  end if
+end repeat
+
+if debugMode is "1" then
+  return "OK,iterm=" & iTermCount & ",terminal=" & terminalCount & ",ghostty=" & ghosttyCount & ",ghosttyProcess=" & ghosttyProcessName & ",ghosttyRunning=" & ghosttyRunning & ",ghosttyNeedsAX=" & ghosttyNeedsAX
+end if
+
+if ghosttyNeedsAX then
+  return "OK,GHOSTTY_NEEDS_AX,iterm=" & iTermCount & ",terminal=" & terminalCount & ",ghostty=" & ghosttyCount & ",ghosttyRunning=" & ghosttyRunning
+else
+  return "OK,iterm=" & iTermCount & ",terminal=" & terminalCount & ",ghostty=" & ghosttyCount & ",ghosttyRunning=" & ghosttyRunning
+end if
+APPLESCRIPT
+)
+
+if [[ "$result" == *"ONLY_ONE_WINDOW"* ]]; then
+  echo "当前只检测到 1 个终端窗口，无法平铺。"
+fi
+
+if [[ "$result" == *"NO_WINDOWS"* ]]; then
+  echo "未检测到 iTerm2 / Terminal / Ghostty 窗口。"
+fi
+
+if [[ "$result" == *"GHOSTTY_NEEDS_AX"* ]]; then
+  echo "Ghostty 需要开启辅助功能权限后才能参与分屏：系统设置 -> 隐私与安全性 -> 辅助功能。"
+fi
+
+if [[ "$result" == *"ghosttyRunning=true"* && "$result" == *"ghostty=0"* ]]; then
+  echo "检测到 Ghostty 进程，但没有可用窗口（可能未打开 Ghostty 窗口，或当前版本未暴露窗口给辅助功能）。"
+fi
+
+if [[ "${DEBUG_MODE}" == "1" ]]; then
+  echo "$result"
+fi
