@@ -3,6 +3,10 @@
 > 把散落的终端窗口一键摆好，不打断你的节奏。
 >
 > One keystroke to tidy up your scattered terminal windows.
+>
+> 专门为 MacBook 上的多终端工作流适配。
+>
+> Purpose-built for MacBook terminal workflows on macOS.
 
 ---
 
@@ -50,7 +54,8 @@ Then you switch to the browser, check WeChat, come back—and the layout is a me
 **它不做**
 - 不是 pane 管理器（不替代 tmux/Zellij 的 split）
 - 不是窗口管理器（不管其他应用窗口）
-- 不支持远程/SSH 场景（本地 macOS only）
+- 不支持远程/SSH 场景（仅面向 MacBook / macOS 本地使用）
+- 不支持 Windows 或其他非 macOS 平台
 
 **It does**
 - Detect all iTerm2 / Terminal / Ghostty windows
@@ -61,7 +66,8 @@ Then you switch to the browser, check WeChat, come back—and the layout is a me
 **It doesn't**
 - Replace pane managers (not a tmux/Zellij alternative)
 - Manage non-terminal windows
-- Work over SSH (local macOS only)
+- Work over SSH (built for local MacBook/macOS use only)
+- Support Windows or other non-macOS platforms
 
 ---
 
@@ -83,6 +89,8 @@ Then you switch to the browser, check WeChat, come back—and the layout is a me
 ---
 
 ## 安装 | Install
+
+仅适用于 macOS / MacBook 工作流；如果你主要在 Windows 上使用终端，这个项目不是当前目标场景。
 
 ```bash
 git clone https://github.com/WiseWong6/terminal-window-tiler.git
@@ -197,9 +205,10 @@ TILE_MODE=iterm_fast terminal-tile-all --zone 左4
 - Ghostty: `1.2.3`
 
 **当前结论**
+- 当前版本专门面向 MacBook / macOS 场景
 - macOS 场景可用（重点验证了终端窗口分屏流程）
 - 单显示器、单桌面（单 Space）场景最稳定
-- Windows 尚未验证
+- Windows 不在当前支持范围内
 - 其他终端（除 iTerm2 / Terminal / Ghostty）暂未验证
 
 **Ghostty 权限说明**
