@@ -10,16 +10,17 @@
 >
 > 专门为多终端、多显示器、键盘优先的工作流设计。
 
+## 一键整理
 ![Full-screen tiling demo](./assets/demo-fullscreen.gif)
 
-> 当前 README 使用的是说明性动画，后续可替换为真实录屏。
+## 分区模式
+![Zone mode demo](./assets/demo-zone.gif)
 
-## 一眼看懂 | At a Glance
+## 它有什么用 | At a Glance
 
-- 一键整理 2~10 个终端窗口
-- 支持 iTerm2 / Terminal / Ghostty
-- 按显示器分组平铺
-- 支持分区模式，给浏览器/微信留出固定区域
+- 一键整理 2~10 个终端窗口，按显示器分组平铺
+- 额外支持分区模式，给浏览器/微信留出固定区域
+- 支持 iTerm2 / Terminal / Ghostty 混用
 - 推荐给偏爱独立窗口而不是 pane 的用户
 
 ## 快速开始 | Quick Start
@@ -41,7 +42,7 @@ chmod +x ~/.local/bin/zone
 
 ---
 
-## 这解决的是什么问题
+## 它解决了什么问题
 
 **如果你也这样工作**
 
@@ -103,7 +104,7 @@ chmod +x ~/.local/bin/zone
 
 ## 安装
 
-仅适用于 macOS / MacBook 工作流；如果你主要在 Windows 上使用终端，这个项目不是当前目标场景。
+仅适用于 macOS / MacBook 工作流；如果你主要在 Windows 上使用终端，这个项目还不具备这个能力，当然你可以去改造这份代码。
 
 ```bash
 git clone https://github.com/WiseWong6/wise-terminal-tiler.git
@@ -146,8 +147,6 @@ terminal-tile-hotkey uninstall
 适合「终端 + 浏览器/微信」桌面协作流：脚本只整理终端区，其他应用保持你手动安排的结构。
 
 ![Zone mode demo](./assets/demo-zone.gif)
-
-> 当前 README 使用的是说明性动画，后续可替换为真实录屏。
 
 ```bash
 # 最短写法
@@ -228,21 +227,21 @@ TILE_MODE=iterm_fast terminal-tile-all --zone 左4
 - Windows 不在当前支持范围内
 - 其他终端（除 iTerm2 / Terminal / Ghostty）暂未验证
 
-**Ghostty 权限说明**
+**权限说明**
 
-Ghostty 依赖辅助功能权限才能被脚本控制。若 Ghostty 窗口未被平铺：
+快捷键只基于当前的终端生效，iTerm/Ghostty都依赖辅助功能权限才能被脚本控制。
 - 系统设置 → 隐私与安全性 → 辅助功能 → 添加 Ghostty
 
 ---
 
-## 社媒与公众号
+## 社交媒体
 
 <div align="center">
-  <p><code>@歪斯Wise</code></p>
+  <p>全网同名：<code>@歪斯Wise</code></p>
   <p>
     <a href="https://www.xiaohongshu.com/user/profile/61f3ea4f000000001000db73">小红书</a> /
     <a href="https://x.com/killthewhys">Twitter(X)</a> /
-    公众号
+    扫码关注公众号
   </p>
   <img src="assets/wechat-wise-qr.jpg" alt="公众号歪斯二维码" width="220" />
 </div>
