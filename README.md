@@ -9,6 +9,8 @@
 > 用一个快捷键，把散乱的多个终端窗口整理成清晰可用的工作区。
 >
 > 专门为多终端、多显示器、键盘优先的工作流设计。
+>
+> 最重要的是让你在 claude code、codex、openclaw 里面都能直接整理窗口，虽说依赖于模型响应速度
 
 ## 一键整理
 ![Full-screen tiling demo](./assets/demo-fullscreen.gif)
@@ -40,10 +42,12 @@ mkdir -p ~/.local/bin
 
 **如果你也这样工作**
 
-写代码时，你的习惯是「再开一个新窗口」，而不是在当前终端里继续切分。Claude Code 在 Ghostty 里用着顺手，有些任务又离不开 iTerm2。结果就是桌面上堆出一批独立的终端窗口，像随手摊开的草稿纸。
+习惯于屏幕的左边或者右边是终端窗口，另一部分是你的浏览器、或者聊天窗口。
+或者写代码时，你的习惯是「再开一个新窗口」，而不是在当前终端里继续切分。Claude Code 在 Ghostty 里用着顺手，有些任务又离不开 iTerm2。结果就是桌面上堆出一批独立的终端窗口，像随手摊开的草稿纸。
 
 然后你切到浏览器查文档、回微信、切回来——窗口乱了。手动拖拽调整？可以，但每次都要打断思路。
 
+而且厌倦了，每次拔插显示屏的连接线，终端窗口就全乱了。
 ---
 
 ## 为什么现有方案还没完全解决
@@ -54,6 +58,8 @@ mkdir -p ~/.local/bin
 | **iTerm2 Split Panes** | 单窗口内 pane 切分 | 只能在现有窗口内继续切，不是跨窗口编排；[Arrangements](https://iterm2.com/documentation-arrangements.html) 是固定模板恢复，不是动态整理 |
 | **iTerm2 Tiling** | — | [官方 issue #9561](https://gitlab.com/gnachman/iterm2/-/issues/9561) 显示用户确实需要真正的窗口 tiling，但目前未内置 |
 | **手动拖拽 / 通用窗口管理** | 完全可控 | 最原始也最打断节奏，尤其在多终端并行、切显示器、切工作流时 | 一键完成，不离开键盘 |
+
+不支持在claude code、codex、openclaw 这些模式里输入指令整理窗口。
 
 **Sources**
 
