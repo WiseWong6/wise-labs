@@ -1,5 +1,7 @@
 # wise-terminal-tiler
 
+[中文](./README.md) | [English](./README.en.md)
+
 > 一个面向 macOS 的终端窗口平铺小工具。
 >
 > One shortcut to restore a scattered terminal workspace.
@@ -251,15 +253,15 @@ Ghostty 依赖辅助功能权限才能被脚本控制。若 Ghostty 窗口未被
 
 ---
 
-## Star History
-
-[![Star History Chart](https://api.star-history.com/svg?repos=WiseWong6/wise-terminal-tiler&type=Date)](https://www.star-history.com/#WiseWong6/wise-terminal-tiler&Date)
-
----
-
 ## 社媒与公众号 | Socials & WeChat
 
 - 全网账号：`@歪斯Wise`
 - 平台：[小红书](https://www.xiaohongshu.com/user/profile/61f3ea4f000000001000db73) / [Twitter(X)](https://x.com/killthewhys) / 公众号
 
 ![公众号歪斯二维码](assets/wechat-wise-qr.jpg)
+
+---
+
+## Star History
+
+[![Star History Chart](https://api.star-history.com/svg?repos=WiseWong6/wise-terminal-tiler&type=Date)](https://www.star-history.com/#WiseWong6/wise-terminal-tiler&Date)
