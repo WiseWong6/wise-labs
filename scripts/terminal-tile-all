@@ -398,6 +398,39 @@ on zoneConfigForLayout(layoutName)
   return {"", 0}
 end zoneConfigForLayout
 
+on zoneColumnCountsFor(n)
+  if n < 1 then return {}
+
+  set maxRowsPerColumn to 4
+  set colCount to (n div maxRowsPerColumn)
+  if (n mod maxRowsPerColumn) > 0 then set colCount to colCount + 1
+
+  set baseCount to (n div colCount)
+  set remainderCount to (n mod colCount)
+  set counts to {}
+
+  repeat with colIdx from 1 to colCount
+    if colIdx <= remainderCount then
+      set end of counts to (baseCount + 1)
+    else
+      set end of counts to baseCount
+    end if
+  end repeat
+
+  return counts
+end zoneColumnCountsFor
+
+on maxValueOfList(numList)
+  if (count of numList) = 0 then return 0
+
+  set bestValue to item 1 of numList
+  repeat with i from 2 to (count of numList)
+    set currentValue to item i of numList
+    if currentValue > bestValue then set bestValue to currentValue
+  end repeat
+  return bestValue
+end maxValueOfList
+
 set gap to ${GAP}
 set mTop to ${M_TOP}
 set mRight to ${M_RIGHT}
@@ -559,9 +592,10 @@ repeat with sidx from 1 to screenCount
     set zoneW to zoneRight - zoneLeft
     set zoneH to zoneBottom - zoneTop
 
-    if advancedMode and n <= 6 then
-      set colCount to 1
-      set rowCount to n
+    if advancedMode then
+      set zoneColumnCounts to my zoneColumnCountsFor(n)
+      set colCount to count of zoneColumnCounts
+      set maxZoneRows to my maxValueOfList(zoneColumnCounts)
     else
       set colCount to my colCountFor(n)
       set rowCount to (n div colCount)
@@ -569,43 +603,86 @@ repeat with sidx from 1 to screenCount
     end if
 
     set cellW to ((zoneW - (gap * (colCount - 1))) div colCount)
-    set cellH to ((zoneH - (gap * (rowCount - 1))) div rowCount)
     set iTermOps to {}
     set terminalOps to {}
     set ghosttyOps to {}
 
-    repeat with j from 1 to n
-      set idx to j - 1
-      set rr to idx div colCount
-      set cc to idx mod colCount
-      set x1 to zoneLeft + (cc * (cellW + gap))
-      set y1 to zoneTop + (rr * (cellH + gap))
-      set x2 to x1 + cellW
-      set y2 to y1 + cellH
-      if cc is (colCount - 1) then set x2 to zoneRight
-      if rr is (rowCount - 1) then set y2 to zoneBottom
+    if advancedMode then
+      set cellH to ((zoneH - (gap * (maxZoneRows - 1))) div maxZoneRows)
+      set recPos to 1
+      repeat with logicalCol from 1 to colCount
+        set colRows to item logicalCol of zoneColumnCounts
+        set visualCol to logicalCol - 1
+        if zoneSide is "right" then set visualCol to colCount - logicalCol
 
-      set recIndex to item j of ids
-      set rec to item recIndex of winRecords
-      set appName to item 1 of rec
-      set winKey to item 2 of rec
-      set curX1 to item 3 of rec
-      set curY1 to item 4 of rec
-      set curX2 to item 5 of rec
-      set curY2 to item 6 of rec
-      set needsMove to true
-      if curX1 is x1 and curY1 is y1 and curX2 is x2 and curY2 is y2 then
-        set needsMove to false
-      end if
+        set x1 to zoneLeft + (visualCol * (cellW + gap))
+        set x2 to x1 + cellW
+        if visualCol is (colCount - 1) then set x2 to zoneRight
 
-      if needsMove and appName is "iTerm2" then
-        set end of iTermOps to {winKey, x1, y1, x2, y2}
-      else if needsMove and appName is "Terminal" then
-        set end of terminalOps to {winKey, x1, y1, x2, y2}
-      else if needsMove and appName is "Ghostty" then
-        set end of ghosttyOps to {winKey, x1, y1, x2, y2}
-      end if
-    end repeat
+        repeat with rowIdx from 1 to colRows
+          set y1 to zoneTop + ((rowIdx - 1) * (cellH + gap))
+          set y2 to y1 + cellH
+          if rowIdx is maxZoneRows then set y2 to zoneBottom
+
+          set recIndex to item recPos of ids
+          set rec to item recIndex of winRecords
+          set appName to item 1 of rec
+          set winKey to item 2 of rec
+          set curX1 to item 3 of rec
+          set curY1 to item 4 of rec
+          set curX2 to item 5 of rec
+          set curY2 to item 6 of rec
+          set needsMove to true
+          if curX1 is x1 and curY1 is y1 and curX2 is x2 and curY2 is y2 then
+            set needsMove to false
+          end if
+
+          if needsMove and appName is "iTerm2" then
+            set end of iTermOps to {winKey, x1, y1, x2, y2}
+          else if needsMove and appName is "Terminal" then
+            set end of terminalOps to {winKey, x1, y1, x2, y2}
+          else if needsMove and appName is "Ghostty" then
+            set end of ghosttyOps to {winKey, x1, y1, x2, y2}
+          end if
+
+          set recPos to recPos + 1
+        end repeat
+      end repeat
+    else
+      set cellH to ((zoneH - (gap * (rowCount - 1))) div rowCount)
+      repeat with j from 1 to n
+        set idx to j - 1
+        set rr to idx div colCount
+        set cc to idx mod colCount
+        set x1 to zoneLeft + (cc * (cellW + gap))
+        set y1 to zoneTop + (rr * (cellH + gap))
+        set x2 to x1 + cellW
+        set y2 to y1 + cellH
+        if cc is (colCount - 1) then set x2 to zoneRight
+        if rr is (rowCount - 1) then set y2 to zoneBottom
+
+        set recIndex to item j of ids
+        set rec to item recIndex of winRecords
+        set appName to item 1 of rec
+        set winKey to item 2 of rec
+        set curX1 to item 3 of rec
+        set curY1 to item 4 of rec
+        set curX2 to item 5 of rec
+        set curY2 to item 6 of rec
+        set needsMove to true
+        if curX1 is x1 and curY1 is y1 and curX2 is x2 and curY2 is y2 then
+          set needsMove to false
+        end if
+
+        if needsMove and appName is "iTerm2" then
+          set end of iTermOps to {winKey, x1, y1, x2, y2}
+        else if needsMove and appName is "Terminal" then
+          set end of terminalOps to {winKey, x1, y1, x2, y2}
+        else if needsMove and appName is "Ghostty" then
+          set end of ghosttyOps to {winKey, x1, y1, x2, y2}
+        end if
+      end repeat
+    end if
 
     if (count of iTermOps) > 0 then
       tell application "iTerm2"

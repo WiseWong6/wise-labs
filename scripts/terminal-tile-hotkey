@@ -270,12 +270,12 @@ case "$front_bundle_id" in
     ;;
 esac
 
-if command -v terminal-tile-all >/dev/null 2>&1; then
-  TILE_SKIP_HOTKEY_BOOTSTRAP=1 exec "$(command -v terminal-tile-all)"
-fi
-
 if [[ -x "$HOME/.local/bin/terminal-tile-all" ]]; then
   TILE_SKIP_HOTKEY_BOOTSTRAP=1 exec "$HOME/.local/bin/terminal-tile-all"
+fi
+
+if command -v terminal-tile-all >/dev/null 2>&1; then
+  TILE_SKIP_HOTKEY_BOOTSTRAP=1 exec "$(command -v terminal-tile-all)"
 fi
 
 echo "terminal-tile-all 未找到，请先安装到 ~/.local/bin/terminal-tile-all。" >&2
@@ -721,9 +721,10 @@ cmd_status() {
   fi
 
   local tiler_cmd=""
-  tiler_cmd="$(command -v terminal-tile-all 2>/dev/null || true)"
-  if [[ -z "$tiler_cmd" && -x "${BIN_DIR}/terminal-tile-all" ]]; then
+  if [[ -x "${BIN_DIR}/terminal-tile-all" ]]; then
     tiler_cmd="${BIN_DIR}/terminal-tile-all"
+  else
+    tiler_cmd="$(command -v terminal-tile-all 2>/dev/null || true)"
   fi
 
   if [[ -n "$tiler_cmd" ]]; then
