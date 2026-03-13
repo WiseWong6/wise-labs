@@ -1,19 +1,18 @@
 #!/bin/zsh
 
-# Short command wrapper: `zone left4` -> `terminal-tile-all left4`
 set -u
 
 SCRIPT_DIR="${0:A:h}"
 if [[ -x "$SCRIPT_DIR/terminal-tile-all" ]]; then
-  exec "$SCRIPT_DIR/terminal-tile-all" "$@"
+  exec "$SCRIPT_DIR/terminal-tile-all" zl2
 fi
 
 if [[ -x "$HOME/.local/bin/terminal-tile-all" ]]; then
-  exec "$HOME/.local/bin/terminal-tile-all" "$@"
+  exec "$HOME/.local/bin/terminal-tile-all" zl2
 fi
 
 if command -v terminal-tile-all >/dev/null 2>&1; then
-  exec "$(command -v terminal-tile-all)" "$@"
+  exec "$(command -v terminal-tile-all)" zl2
 fi
 
 echo "terminal-tile-all 未找到，请先安装到 ~/.local/bin/terminal-tile-all。" >&2

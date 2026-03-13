@@ -32,10 +32,10 @@ cd wise-terminal-tiler
 mkdir -p ~/.local/bin
 cp scripts/terminal-tile-all ~/.local/bin/
 cp scripts/terminal-tile-hotkey ~/.local/bin/
-cp scripts/zone ~/.local/bin/
+cp scripts/zl* scripts/zr* ~/.local/bin/
 chmod +x ~/.local/bin/terminal-tile-all
 chmod +x ~/.local/bin/terminal-tile-hotkey
-chmod +x ~/.local/bin/zone
+chmod +x ~/.local/bin/zl* ~/.local/bin/zr*
 
 ~/.local/bin/terminal-tile-hotkey bootstrap
 ```
@@ -113,10 +113,10 @@ cd wise-terminal-tiler
 mkdir -p ~/.local/bin
 cp scripts/terminal-tile-all ~/.local/bin/
 cp scripts/terminal-tile-hotkey ~/.local/bin/
-cp scripts/zone ~/.local/bin/
+cp scripts/zl* scripts/zr* ~/.local/bin/
 chmod +x ~/.local/bin/terminal-tile-all
 chmod +x ~/.local/bin/terminal-tile-hotkey
-chmod +x ~/.local/bin/zone
+chmod +x ~/.local/bin/zl* ~/.local/bin/zr*
 
 # 初始化系统快捷键（首次安装建议执行一次）
 ~/.local/bin/terminal-tile-hotkey bootstrap
@@ -150,13 +150,14 @@ terminal-tile-hotkey uninstall
 
 ```bash
 # 最短写法
-zone 左4
-zone left4
+zl4
+zr2
 ```
 
 说明：
 - 快捷键行为不变，仍走默认全屏终端整理
-- `zone left4` / `zone 左4` 只移动终端窗口，不会移动浏览器、微信等非终端窗口
+- `zl2/zl3/zl4` 对应左侧分区；`zr2/zr3/zr4` 对应右侧分区
+- 这些命令只移动终端窗口，不会移动浏览器、微信等非终端窗口
 - 终端区内：每列最多 `4` 个窗口，超出的窗口会自动分配到相邻列
 - 分列规则尽量均衡：例如 `5 -> 3+2`、`7 -> 4+3`、`9 -> 3+3+3`
 - 短列会复用满列的行高，剩余位置保留为空白，不会把窗口拉伸变高
@@ -195,7 +196,7 @@ TILE_MODE=iterm_fast terminal-tile-all
 | 9 | 3×3 |
 | 10 | 4×3 |
 
-分区模式下（例如 `zone left4`），采用专用列布局：每列最多 `4` 个窗口，并按尽量均衡的方式分配到相邻列。
+分区模式下（例如 `zl4`），采用专用列布局：每列最多 `4` 个窗口，并按尽量均衡的方式分配到相邻列。
 
 ---
 

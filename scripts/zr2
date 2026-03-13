@@ -1,0 +1,19 @@
+#!/bin/zsh
+
+set -u
+
+SCRIPT_DIR="${0:A:h}"
+if [[ -x "$SCRIPT_DIR/terminal-tile-all" ]]; then
+  exec "$SCRIPT_DIR/terminal-tile-all" zr2
+fi
+
+if [[ -x "$HOME/.local/bin/terminal-tile-all" ]]; then
+  exec "$HOME/.local/bin/terminal-tile-all" zr2
+fi
+
+if command -v terminal-tile-all >/dev/null 2>&1; then
+  exec "$(command -v terminal-tile-all)" zr2
+fi
+
+echo "terminal-tile-all 未找到，请先安装到 ~/.local/bin/terminal-tile-all。" >&2
+exit 1
