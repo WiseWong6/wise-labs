@@ -150,6 +150,7 @@ zr2
 ```
 
 说明：
+- Shell 里不要加前导 `/`；也就是用 `tile`、`zl2`、`zr3`，不要写 `/tile`、`/zl2`
 - 默认模式下，`tile` / `zl2..zr4` 只会整理你当前所在的终端 app
 - 例如你在 Ghostty 里执行，就只整理 Ghostty；在 iTerm2 里执行，就只整理 iTerm2
 - 这条路径是默认值，因为明显更快，也更符合日常使用
@@ -237,6 +238,16 @@ EOF
 - OpenClaw：安装独立 skill：`tile`、`zl2` ... `zr4`，可直接触发 `/tile`、`/zl2` ... `/zr4`
 
 这些入口底层都只调用本机 `~/.local/bin/tile`，不复制平铺逻辑。
+
+### 指令心智模型
+
+- 核心指令词始终一致：`tile`、`zl2`、`zl3`、`zl4`、`zr2`、`zr3`、`zr4`
+- 不同环境只是在前缀上不同
+- Shell：`tile`、`zl2`
+- Claude Code：`/tile`、`/zl2`
+- OpenClaw：`/tile`、`/zl2`
+- Codex：`/prompts:tile`、`/prompts:zl2`
+- Shell 不能统一成 `/zl2`，因为前导 `/` 在 shell 里表示绝对路径，不是命令前缀
 
 ---
 

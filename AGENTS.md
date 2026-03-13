@@ -34,6 +34,11 @@ There is no build step for the main tool, but the Ghostty helper is compiled dur
   - `tile` is the primary command.
   - `zl2` .. `zr4` are compatibility wrappers.
   - Default scope is `current` unless `TILE_SCOPE=all` is explicitly configured.
+  - Keep the command-word model stable across environments:
+    - Shell uses `tile` / `zl2`
+    - Claude Code and OpenClaw use `/tile` / `/zl2`
+    - Codex uses `/prompts:tile` / `/prompts:zl2`
+  - Do not document shell commands with a leading `/`; `/zl2` is not valid shell syntax.
 
 ## Behavior Notes
 - `TILE_SCOPE=current` means "current terminal app", not "current window".
