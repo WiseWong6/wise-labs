@@ -138,8 +138,8 @@ Notes:
 - `ctrl+command+t` runs the default full-screen tiling flow
 - `ctrl+command+shift+t` opens the zone picker with labeled options and runs immediately
 - Picker labels are `zl2 - 左边分屏 2 分之 1`, `zl3 - 左边分屏 3 分之 1`, `zl4 - 左边分屏 4 分之 1`, `zr2 - 右边分屏 2 分之 1`, `zr3 - 右边分屏 3 分之 1`, and `zr4 - 右边分屏 4 分之 1`
-- Both hotkeys are macOS Services and only fire when the frontmost app is iTerm2, Terminal, or Ghostty
-- `status` and `zone-status` report Service binding state from `pbs.plist` separately from per-app `NSUserKeyEquivalents`, so you can tell whether the shortcut is fully registered or only partially synced
+- Both hotkeys are handled by a per-user LaunchAgent runtime, not Automator/Services
+- `status` and `zone-status` report daemon, helper, LaunchAgent, and combo state so you can verify the runtime directly
 
 ### Zone Mode
 

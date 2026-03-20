@@ -1,0 +1,186 @@
+#!/usr/bin/env swift
+
+import AppKit
+import Carbon
+import Foundation
+
+enum DaemonError: Error, CustomStringConvertible {
+  case invalidInput(String)
+  case configMissing(String)
+  case configInvalid(String)
+  case helperMissing(String)
+  case hotkeyRegistrationFailed(String)
+
+  var description: String {
+    switch self {
+    case .invalidInput(let message),
+         .configMissing(let message),
+         .configInvalid(let message),
+         .helperMissing(let message),
+         .hotkeyRegistrationFailed(let message):
+      return message
+    }
+  }
+}
+
+struct HotkeyConfig {
+  let combo: String
+  let keyCode: UInt32
+  let modifiers: UInt32
+}
+
+final class HotkeyDaemon {
+  private let helperPath: String
+  private let mainHotkey: HotkeyConfig?
+  private let zoneHotkey: HotkeyConfig?
+  private var hotKeyRefs: [EventHotKeyRef?] = []
+  private let application: NSApplication
+
+  init(helperPath: String, mainHotkey: HotkeyConfig?, zoneHotkey: HotkeyConfig?) {
+    self.helperPath = helperPath
+    self.mainHotkey = mainHotkey
+    self.zoneHotkey = zoneHotkey
+    self.application = NSApplication.shared
+  }
+
+  func run() throws {
+    guard FileManager.default.isExecutableFile(atPath: helperPath) else {
+      throw DaemonError.helperMissing("terminal-tile-hotkey-helper 未找到：\(helperPath)")
+    }
+
+    application.setActivationPolicy(.prohibited)
+
+    var eventSpec = EventTypeSpec(eventClass: OSType(kEventClassKeyboard), eventKind: UInt32(kEventHotKeyPressed))
+    let status = InstallEventHandler(GetApplicationEventTarget(), { _, eventRef, userData in
+      guard let userData, let eventRef else { return noErr }
+      let daemon = Unmanaged<HotkeyDaemon>.fromOpaque(userData).takeUnretainedValue()
+
+      var hotKeyID = EventHotKeyID()
+      let result = GetEventParameter(
+        eventRef,
+        EventParamName(kEventParamDirectObject),
+        EventParamType(typeEventHotKeyID),
+        nil,
+        MemoryLayout<EventHotKeyID>.size,
+        nil,
+        &hotKeyID
+      )
+      guard result == noErr else { return result }
+      daemon.handleHotkey(id: hotKeyID.id)
+      return noErr
+    }, 1, &eventSpec, Unmanaged.passUnretained(self).toOpaque(), nil)
+
+    guard status == noErr else {
+      throw DaemonError.hotkeyRegistrationFailed("安装全局热键监听失败：\(status)")
+    }
+
+    try registerHotkeys()
+    RunLoop.current.run()
+  }
+
+  private func registerHotkeys() throws {
+    try register(mainHotkey, id: 1)
+    try register(zoneHotkey, id: 2)
+  }
+
+  private func register(_ hotkey: HotkeyConfig?, id: UInt32) throws {
+    guard let hotkey else { return }
+    var ref: EventHotKeyRef?
+    let hotKeyID = EventHotKeyID(signature: fourCharCode("TTIL"), id: id)
+    let status = RegisterEventHotKey(
+      hotkey.keyCode,
+      hotkey.modifiers,
+      hotKeyID,
+      GetApplicationEventTarget(),
+      0,
+      &ref
+    )
+    guard status == noErr else {
+      throw DaemonError.hotkeyRegistrationFailed("注册快捷键失败：\(hotkey.combo) status=\(status)")
+    }
+    hotKeyRefs.append(ref)
+  }
+
+  private func handleHotkey(id: UInt32) {
+    let mode: String
+    switch id {
+    case 1: mode = "full"
+    case 2: mode = "zone"
+    default: return
+    }
+
+    let process = Process()
+    process.executableURL = URL(fileURLWithPath: helperPath)
+    process.arguments = ["run", mode]
+    process.environment = ProcessInfo.processInfo.environment
+    process.standardInput = nil
+    process.standardOutput = nil
+    process.standardError = nil
+    try? process.run()
+  }
+}
+
+func fourCharCode(_ value: String) -> OSType {
+  value.utf8.reduce(0) { ($0 << 8) + OSType($1) }
+}
+
+func loadConfig(from path: String) throws -> [String: Any] {
+  let url = URL(fileURLWithPath: path)
+  guard FileManager.default.fileExists(atPath: url.path) else {
+    throw DaemonError.configMissing("热键配置不存在：\(path)")
+  }
+
+  let data = try Data(contentsOf: url)
+  let plist = try PropertyListSerialization.propertyList(from: data, format: nil)
+  guard let dict = plist as? [String: Any] else {
+    throw DaemonError.configInvalid("热键配置格式无效：\(path)")
+  }
+  return dict
+}
+
+func readHotkeyConfig(prefix: String, from dict: [String: Any]) throws -> HotkeyConfig? {
+  let enabled = (dict["\(prefix)Enabled"] as? Bool) ?? false
+  guard enabled else { return nil }
+
+  guard
+    let combo = dict["\(prefix)Combo"] as? String,
+    let keyCode = dict["\(prefix)KeyCode"] as? NSNumber,
+    let modifiers = dict["\(prefix)Modifiers"] as? NSNumber
+  else {
+    throw DaemonError.configInvalid("缺少 \(prefix) 热键信息。")
+  }
+
+  return HotkeyConfig(
+    combo: combo,
+    keyCode: keyCode.uint32Value,
+    modifiers: modifiers.uint32Value
+  )
+}
+
+func main() throws {
+  let args = Array(CommandLine.arguments.dropFirst())
+  guard args.count == 2, args[0] == "--config" else {
+    throw DaemonError.invalidInput("Usage: terminal-tile-hotkey-daemon --config <plist-path>")
+  }
+
+  let configPath = args[1]
+  let config = try loadConfig(from: configPath)
+  guard let helperPath = config["HelperPath"] as? String else {
+    throw DaemonError.configInvalid("缺少 HelperPath。")
+  }
+
+  let daemon = try HotkeyDaemon(
+    helperPath: helperPath,
+    mainHotkey: readHotkeyConfig(prefix: "Main", from: config),
+    zoneHotkey: readHotkeyConfig(prefix: "Zone", from: config)
+  )
+  try daemon.run()
+}
+
+do {
+  try main()
+} catch {
+  let message = String(describing: error)
+  FileHandle.standardError.write(Data((message + "\n").utf8))
+  exit(1)
+}
