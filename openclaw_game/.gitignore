@@ -1,0 +1,28 @@
+# Logs
+logs/
+*.log
+
+# OS files
+.DS_Store
+Thumbs.db
+
+# IDE
+.idea/
+.vscode/
+*.swp
+*.swo
+
+# Temporary files
+*.tmp
+*.temp
+
+# Node.js
+node_modules/
+package-lock.json
+
+# Database
+openclawd.db
+
+# Tool metadata
+.claude/
+

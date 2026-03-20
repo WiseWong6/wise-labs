@@ -1,0 +1,363 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>OpenClaw Core - Agent Visualization</title>
+  <link rel="stylesheet" href="/styles.css">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link
+    href="https://fonts.googleapis.com/css2?family=Noto+Sans+SC:wght@400;500;700&family=Inter:wght@400;500;600;700&display=swap"
+    rel="stylesheet">
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+  <script src="https://cdn.jsdelivr.net/npm/marked/marked.min.js"></script>
+</head>
+
+<body>
+  <!-- Beach Background -->
+  <div class="beach-background">
+    <div class="beach-ocean"></div>
+    <div class="beach-foam"></div>
+    <div class="beach-sand"></div>
+  </div>
+  <div class="beach-overlay"></div>
+
+  <!-- Lobster -->
+  <div id="lobster-container">
+    <svg width="42" height="72" viewBox="0 0 14 24" xmlns="http://www.w3.org/2000/svg" shapeRendering="crispEdges">
+      <rect x="1" y="1" width="3" height="5" fill="#e63946" />
+      <rect x="10" y="1" width="3" height="5" fill="#e63946" />
+      <rect x="2" y="6" width="1" height="2" fill="#a82331" />
+      <rect x="11" y="6" width="1" height="2" fill="#a82331" />
+      <rect x="3" y="7" width="2" height="2" fill="#e63946" />
+      <rect x="9" y="7" width="2" height="2" fill="#e63946" />
+      <rect x="5" y="6" width="4" height="3" fill="#e63946" />
+      <rect x="5" y="6" width="1" height="1" fill="#000" />
+      <rect x="8" y="6" width="1" height="1" fill="#000" />
+      <rect x="5" y="9" width="4" height="10" fill="#e63946" />
+      <rect x="3" y="10" width="2" height="1" fill="#a82331" />
+      <rect x="9" y="10" width="2" height="1" fill="#a82331" />
+      <rect x="3" y="12" width="2" height="1" fill="#a82331" />
+      <rect x="9" y="12" width="2" height="1" fill="#a82331" />
+      <rect x="3" y="14" width="2" height="1" fill="#a82331" />
+      <rect x="9" y="14" width="2" height="1" fill="#a82331" />
+      <rect x="3" y="16" width="2" height="1" fill="#a82331" />
+      <rect x="9" y="16" width="2" height="1" fill="#a82331" />
+      <rect x="3" y="18" width="2" height="1" fill="#a82331" />
+      <rect x="9" y="18" width="2" height="1" fill="#a82331" />
+      <rect x="5" y="19" width="4" height="3" fill="#a82331" />
+      <rect x="4" y="22" width="6" height="1" fill="#e63946" />
+    </svg>
+  </div>
+
+  <div class="layout-wrapper">
+    <!-- Main Visualization Area -->
+    <div class="main-view">
+      <header class="header">
+        <div class="header-title-group">
+          <div class="header-icon">
+            <i class="fa-solid fa-bolt-lightning"></i>
+          </div>
+          <h1>OpenClaw Core</h1>
+        </div>
+        <div id="connection-status" class="status-badge disconnected">
+          <div class="status-dot"></div>
+          <span>Disconnected</span>
+        </div>
+      </header>
+
+      <div class="center-stage">
+        <div class="grid-background"></div>
+
+        <!-- Character Section -->
+        <div class="character-area">
+          <div class="office-floor">
+            <!-- Room Decor -->
+            <div class="room-rug"></div>
+            <div class="server-rack">
+              <div class="server-lights"></div>
+              <div class="server-lights"></div>
+              <div class="server-lights"></div>
+            </div>
+            <div class="potted-plant plant-left"></div>
+            <div class="potted-plant plant-right"></div>
+
+            <!-- Dynamic Connecting Lines -->
+            <svg id="office-svg-lines" class="office-svg-lines"></svg>
+
+            <div class="agents-cluster">
+              <!-- Main Agent -->
+              <div class="agent-station station-main" id="station-main">
+                <!-- Speech Bubble -->
+                <div id="bubble-main" class="agent-bubble hidden">
+                  <div class="bubble-inner">
+                    <div id="bubble-text-main" class="bubble-text">...</div>
+                    <div class="bubble-tail"></div>
+                  </div>
+                </div>
+
+                <!-- CSS Character -->
+                <div id="agent-main" class="sdv-character theme-main sdv-idle">
+                  <div class="sdv-head">
+                    <div class="sdv-hair"></div>
+                    <div class="sdv-eyes"></div>
+                    <div class="sdv-mouth"></div>
+                    <div class="sdv-accessory"></div>
+                  </div>
+                  <div class="sdv-body">
+                    <div class="sdv-shirt"></div>
+                  </div>
+                  <div class="sdv-arm sdv-arm-l"></div>
+                  <div class="sdv-arm sdv-arm-r"></div>
+                  <div class="sdv-leg sdv-leg-l"></div>
+                  <div class="sdv-leg sdv-leg-r"></div>
+                  <div class="desk desk-main">
+                    <div class="monitor-main"></div>
+                  </div>
+                </div>
+                
+                <div class="station-label">Main Coordinator 👑</div>
+
+                <!-- State Controls (Debug) -->
+                <div class="state-controls">
+                  <button class="state-toggle-btn" data-agent="main" data-state="idle" title="空闲">😴</button>
+                  <button class="state-toggle-btn" data-agent="main" data-state="receiving" title="接收">👂</button>
+                  <button class="state-toggle-btn" data-agent="main" data-state="thinking" title="思考">🧠</button>
+                  <button class="state-toggle-btn" data-agent="main" data-state="speaking" title="回复">💬</button>
+                  <button class="state-toggle-btn" data-agent="main" data-state="tool_calling" title="调用">🔧</button>
+                  <button class="state-toggle-btn" data-agent="main" data-state="processing" title="处理">🤔</button>
+                </div>
+              </div>
+
+              <!-- Coder Agent -->
+              <div class="agent-station station-coder" id="station-coder">
+                <div id="bubble-coder" class="agent-bubble hidden">
+                  <div class="bubble-inner">
+                    <div id="bubble-text-coder" class="bubble-text">...</div>
+                    <div class="bubble-tail"></div>
+                  </div>
+                </div>
+                <div id="agent-coder" class="sdv-character theme-coder sdv-idle">
+                  <div class="sdv-head"><div class="sdv-hair"></div><div class="sdv-eyes"></div><div class="sdv-mouth"></div><div class="sdv-accessory"></div></div>
+                  <div class="sdv-body"><div class="sdv-shirt"></div></div>
+                  <div class="sdv-arm sdv-arm-l"></div><div class="sdv-arm sdv-arm-r"></div>
+                  <div class="sdv-leg sdv-leg-l"></div><div class="sdv-leg sdv-leg-r"></div>
+                  <div class="desk desk-coder">
+                    <div class="monitor-dual"></div>
+                    <div class="monitor-dual"></div>
+                  </div>
+                </div>
+                <div class="station-label">Code Agent</div>
+                <div class="state-controls">
+                  <button class="state-toggle-btn" data-agent="coder" data-state="idle">😴</button>
+                  <button class="state-toggle-btn" data-agent="coder" data-state="thinking">🧠</button>
+                  <button class="state-toggle-btn" data-agent="coder" data-state="processing">💻</button>
+                  <button class="state-toggle-btn" data-agent="coder" data-state="offline" title="下班">🚪</button>
+                </div>
+              </div>
+
+              <!-- Search Agent -->
+              <div class="agent-station station-searcher" id="station-searcher">
+                <div id="bubble-searcher" class="agent-bubble hidden">
+                  <div class="bubble-inner">
+                    <div id="bubble-text-searcher" class="bubble-text">...</div>
+                    <div class="bubble-tail"></div>
+                  </div>
+                </div>
+                <div id="agent-searcher" class="sdv-character theme-searcher sdv-idle">
+                  <div class="sdv-head"><div class="sdv-hair"></div><div class="sdv-eyes"></div><div class="sdv-mouth"></div><div class="sdv-accessory"></div></div>
+                  <div class="sdv-body"><div class="sdv-shirt"></div></div>
+                  <div class="sdv-arm sdv-arm-l"></div><div class="sdv-arm sdv-arm-r"></div>
+                  <div class="sdv-leg sdv-leg-l"></div><div class="sdv-leg sdv-leg-r"></div>
+                  <div class="desk desk-searcher">
+                    <div class="books"></div>
+                  </div>
+                </div>
+                <div class="station-label">Search Agent</div>
+                <div class="state-controls">
+                  <button class="state-toggle-btn" data-agent="searcher" data-state="idle">😴</button>
+                  <button class="state-toggle-btn" data-agent="searcher" data-state="thinking">🧠</button>
+                  <button class="state-toggle-btn" data-agent="searcher" data-state="processing">🔍</button>
+                  <button class="state-toggle-btn" data-agent="searcher" data-state="offline" title="下班">🚪</button>
+                </div>
+              </div>
+
+              <!-- Writer Agent (Offline by default) -->
+              <div class="agent-station station-writer offline" id="station-writer">
+                <div id="bubble-writer" class="agent-bubble hidden">
+                  <div class="bubble-inner">
+                    <div id="bubble-text-writer" class="bubble-text">...</div>
+                    <div class="bubble-tail"></div>
+                  </div>
+                </div>
+                <div id="agent-writer" class="sdv-character theme-writer sdv-offline">
+                  <div class="sdv-head"><div class="sdv-hair"></div><div class="sdv-eyes"></div><div class="sdv-mouth"></div><div class="sdv-accessory"></div></div>
+                  <div class="sdv-body"><div class="sdv-shirt"></div></div>
+                  <div class="sdv-arm sdv-arm-l"></div><div class="sdv-arm sdv-arm-r"></div>
+                  <div class="sdv-leg sdv-leg-l"></div><div class="sdv-leg sdv-leg-r"></div>
+                  <div class="desk desk-writer">
+                    <div class="books"></div>
+                  </div>
+                </div>
+                <div class="station-label">Writer Agent</div>
+                <div class="state-controls">
+                  <button class="state-toggle-btn" data-agent="writer" data-state="idle">😴</button>
+                  <button class="state-toggle-btn" data-agent="writer" data-state="thinking">🧠</button>
+                  <button class="state-toggle-btn" data-agent="writer" data-state="processing">📝</button>
+                  <button class="state-toggle-btn" data-agent="writer" data-state="offline" title="下班">🚪</button>
+                </div>
+              </div>
+
+              <!-- Reviewer Agent (Offline by default) -->
+              <div class="agent-station station-reviewer offline" id="station-reviewer">
+                <div id="bubble-reviewer" class="agent-bubble hidden">
+                  <div class="bubble-inner">
+                    <div id="bubble-text-reviewer" class="bubble-text">...</div>
+                    <div class="bubble-tail"></div>
+                  </div>
+                </div>
+                <div id="agent-reviewer" class="sdv-character theme-reviewer sdv-offline">
+                  <div class="sdv-head"><div class="sdv-hair"></div><div class="sdv-eyes"></div><div class="sdv-mouth"></div><div class="sdv-accessory"></div></div>
+                  <div class="sdv-body"><div class="sdv-shirt"></div></div>
+                  <div class="sdv-arm sdv-arm-l"></div><div class="sdv-arm sdv-arm-r"></div>
+                  <div class="sdv-leg sdv-leg-l"></div><div class="sdv-leg sdv-leg-r"></div>
+                  <div class="desk desk-reviewer">
+                    <div class="monitor-main"></div>
+                  </div>
+                </div>
+                <div class="station-label">Reviewer Agent</div>
+                <div class="state-controls">
+                  <button class="state-toggle-btn" data-agent="reviewer" data-state="idle">😴</button>
+                  <button class="state-toggle-btn" data-agent="reviewer" data-state="thinking">🧠</button>
+                  <button class="state-toggle-btn" data-agent="reviewer" data-state="processing">🧐</button>
+                  <button class="state-toggle-btn" data-agent="reviewer" data-state="offline" title="下班">🚪</button>
+                </div>
+              </div>
+
+              <!-- Data Agent (Offline by default) -->
+              <div class="agent-station station-data offline" id="station-data">
+                <div id="bubble-data" class="agent-bubble hidden">
+                  <div class="bubble-inner">
+                    <div id="bubble-text-data" class="bubble-text">...</div>
+                    <div class="bubble-tail"></div>
+                  </div>
+                </div>
+                <div id="agent-data" class="sdv-character theme-data sdv-offline">
+                  <div class="sdv-head"><div class="sdv-hair"></div><div class="sdv-eyes"></div><div class="sdv-mouth"></div><div class="sdv-accessory"></div></div>
+                  <div class="sdv-body"><div class="sdv-shirt"></div></div>
+                  <div class="sdv-arm sdv-arm-l"></div><div class="sdv-arm sdv-arm-r"></div>
+                  <div class="sdv-leg sdv-leg-l"></div><div class="sdv-leg sdv-leg-r"></div>
+                  <div class="desk desk-data">
+                    <div class="monitor-dual"></div>
+                    <div class="monitor-dual"></div>
+                  </div>
+                </div>
+                <div class="station-label">Data Agent</div>
+                <div class="state-controls">
+                  <button class="state-toggle-btn" data-agent="data" data-state="idle">😴</button>
+                  <button class="state-toggle-btn" data-agent="data" data-state="thinking">🧠</button>
+                  <button class="state-toggle-btn" data-agent="data" data-state="processing">📊</button>
+                  <button class="state-toggle-btn" data-agent="data" data-state="offline" title="下班">🚪</button>
+                </div>
+              </div>
+            </div>
+          </div>
+          <div class="connecting-line-down"></div>
+        </div>
+
+        <!-- Signaling Area -->
+        <div class="signal-area">
+          <div class="signal-container">
+            <div id="line-tui" class="connection-line line-left"></div>
+            <div id="pulse-tui" class="signal-pulse pulse-tui"></div>
+
+            <div id="line-feishu" class="connection-line line-right"></div>
+            <div id="pulse-feishu" class="signal-pulse pulse-feishu"></div>
+
+            <svg class="signal-svg" viewBox="0 0 100 200" preserveAspectRatio="none">
+              <path id="path-tui" d="M 50 200 C 50 100, 15 100, 15 0" fill="none" stroke="rgba(99, 102, 241, 0.3)"
+                stroke-width="1" stroke-dasharray="4 4" />
+              <path id="path-feishu" d="M 50 200 C 50 100, 85 100, 85 0" fill="none"
+                stroke="rgba(245, 158, 11, 0.3)" stroke-width="1" stroke-dasharray="4 4" />
+            </svg>
+
+            <div id="node-tui" class="node node-tui">
+              <div class="node-dot"></div>
+              <span>TUI / Web</span>
+            </div>
+
+            <div id="node-agent" class="node node-agent">
+              <span style="color: #e2e8f0; font-weight: bold;">OpenClaw</span>
+            </div>
+
+            <div id="node-feishu" class="node node-feishu">
+              <div class="node-dot"></div>
+              <span>Feishu</span>
+            </div>
+          </div>
+        </div>
+
+        <!-- User Input Area -->
+        <div class="user-input-section">
+          <div id="user-bubble-container" class="user-bubble-container">
+            <div class="user-bubble">
+              <div class="user-bubble-top-border"></div>
+              <div class="user-bubble-header">
+                <div class="user-icon-bg"><i class="fa-solid fa-user"></i></div>
+                <div class="user-bubble-title">User Input</div>
+              </div>
+              <div id="user-bubble-content" class="user-bubble-content">
+                ...
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- Right Side Sidebar -->
+    <div class="chat-panel">
+      <div class="chat-header">
+        <div class="chat-header-row1">
+          <div class="chat-header-title">
+            <i class="fa-solid fa-server"></i>
+            CONVERSATIONS & EVENTS
+          </div>
+          <div class="filter-group">
+            <button id="filter-chat" class="filter-btn active">对话</button>
+            <button id="filter-all" class="filter-btn">全量</button>
+          </div>
+        </div>
+        <div class="channel-session-controls">
+          <select id="channel-selector" class="session-select">
+            <option value="">全部渠道</option>
+            <option value="tui">🖥️ TUI</option>
+            <option value="feishu-group">👥 飞书群聊</option>
+            <option value="feishu-direct" selected>💬 飞书私聊</option>
+            <option value="cron">⏰ Cron</option>
+            <option value="heartbeat">💓 Heartbeat</option>
+          </select>
+          <select id="session-selector" class="session-select session-select--wide">
+            <option value="">全部 (近7天)</option>
+          </select>
+        </div>
+      </div>
+
+      <div id="log-waterfall" class="chat-content">
+        <!-- Log entries -->
+      </div>
+
+      <div class="scroll-bottom-container">
+        <button id="scroll-bottom-btn" class="scroll-btn">
+          <i class="fa-solid fa-chevron-down"></i>
+        </button>
+      </div>
+    </div>
+  </div>
+
+  <script type="module" src="/app.js"></script>
+</body>
+
+</html>

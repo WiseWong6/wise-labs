@@ -1,0 +1,358 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>100个开源CSS角色展示 - MIT许可证</title>
+  <link href="https://fonts.googleapis.com/css2?family=Press+Start+2P&display=swap" rel="stylesheet">
+  <style>
+    * { margin: 0; padding: 0; box-sizing: border-box; }
+    
+    body {
+      font-family: 'Press Start 2P', monospace;
+      background: linear-gradient(135deg, #1a1a2e 0%, #16213e 50%, #0f3460 100%);
+      min-height: 100vh;
+      padding: 40px 20px;
+      color: #fff;
+    }
+    
+    .header {
+      text-align: center;
+      margin-bottom: 50px;
+      padding: 30px;
+      background: rgba(255,255,255,0.05);
+      border-radius: 20px;
+      border: 2px solid rgba(255,255,255,0.1);
+    }
+    
+    .header h1 {
+      font-size: 28px;
+      margin-bottom: 15px;
+      text-shadow: 0 0 20px rgba(0, 212, 255, 0.5);
+      background: linear-gradient(90deg, #00d4ff, #ffd700, #ff6b6b);
+      -webkit-background-clip: text;
+      -webkit-text-fill-color: transparent;
+      background-clip: text;
+    }
+    
+    .header p {
+      font-size: 12px;
+      color: #aaa;
+      line-height: 2;
+    }
+    
+    .license-badge {
+      display: inline-block;
+      background: #2ecc71;
+      color: #000;
+      padding: 8px 16px;
+      border-radius: 20px;
+      font-size: 11px;
+      margin-top: 15px;
+    }
+    
+    .stats {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+      gap: 20px;
+      margin-bottom: 40px;
+    }
+    
+    .stat-card {
+      background: rgba(0,0,0,0.3);
+      padding: 20px;
+      border-radius: 12px;
+      text-align: center;
+      border: 1px solid rgba(255,255,255,0.1);
+    }
+    
+    .stat-number {
+      font-size: 32px;
+      color: #00d4ff;
+      margin-bottom: 10px;
+    }
+    
+    .stat-label {
+      font-size: 10px;
+      color: #888;
+    }
+    
+    .category {
+      margin-bottom: 40px;
+      background: rgba(255,255,255,0.03);
+      border-radius: 16px;
+      padding: 25px;
+      border: 1px solid rgba(255,255,255,0.08);
+    }
+    
+    .category-title {
+      font-size: 16px;
+      color: #ffd700;
+      margin-bottom: 20px;
+      padding-bottom: 10px;
+      border-bottom: 2px solid #ffd700;
+      display: flex;
+      align-items: center;
+      gap: 10px;
+    }
+    
+    .character-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fill, minmax(220px, 1fr));
+      gap: 15px;
+    }
+    
+    .character-card {
+      background: rgba(0,0,0,0.4);
+      border-radius: 12px;
+      padding: 15px;
+      text-align: center;
+      border: 1px solid rgba(255,255,255,0.1);
+      transition: transform 0.3s, box-shadow 0.3s;
+    }
+    
+    .character-card:hover {
+      transform: translateY(-5px);
+      box-shadow: 0 10px 30px rgba(0,0,0,0.3);
+      border-color: rgba(0, 212, 255, 0.5);
+    }
+    
+    .char-number {
+      font-size: 10px;
+      color: #666;
+      margin-bottom: 8px;
+    }
+    
+    .char-name {
+      font-size: 11px;
+      color: #fff;
+      margin-bottom: 5px;
+    }
+    
+    .char-desc {
+      font-size: 9px;
+      color: #888;
+    }
+    
+    .actions-preview {
+      display: flex;
+      justify-content: center;
+      gap: 8px;
+      margin-top: 10px;
+      font-size: 14px;
+    }
+    
+    .footer {
+      text-align: center;
+      margin-top: 50px;
+      padding: 30px;
+      background: rgba(0,0,0,0.3);
+      border-radius: 16px;
+      font-size: 10px;
+      color: #666;
+      line-height: 2;
+    }
+    
+    .footer a {
+      color: #00d4ff;
+      text-decoration: none;
+    }
+    
+    .file-links {
+      display: flex;
+      flex-wrap: wrap;
+      justify-content: center;
+      gap: 15px;
+      margin-top: 30px;
+    }
+    
+    .file-link {
+      background: rgba(0, 212, 255, 0.1);
+      border: 1px solid rgba(0, 212, 255, 0.3);
+      color: #00d4ff;
+      padding: 12px 20px;
+      border-radius: 8px;
+      font-size: 10px;
+      text-decoration: none;
+      transition: all 0.3s;
+    }
+    
+    .file-link:hover {
+      background: rgba(0, 212, 255, 0.2);
+      transform: translateY(-2px);
+    }
+    
+    @media (max-width: 768px) {
+      .header h1 { font-size: 18px; }
+      .character-grid { grid-template-columns: repeat(auto-fill, minmax(150px, 1fr)); }
+    }
+  </style>
+</head>
+<body>
+  <div class="header">
+    <h1>🎮 100个开源CSS角色</h1>
+    <p>纯CSS像素艺术 | Box-Shadow技术 | 4种动作状态<br>32x40像素基础 | 3倍缩放展示</p>
+    <span class="license-badge">📜 MIT License - 可商用</span>
+  </div>
+
+  <div class="stats">
+    <div class="stat-card">
+      <div class="stat-number">100</div>
+      <div class="stat-label">独特角色</div>
+    </div>
+    <div class="stat-card">
+      <div class="stat-number">4</div>
+      <div class="stat-label">动作状态/角色</div>
+    </div>
+    <div class="stat-card">
+      <div class="stat-number">8</div>
+      <div class="stat-label">主题类别</div>
+    </div>
+    <div class="stat-card">
+      <div class="stat-number">0</div>
+      <div class="stat-label">图片资源依赖</div>
+    </div>
+  </div>
+
+  <!-- 奇幻职业类别 -->
+  <div class="category">
+    <div class="category-title">⚔️ 奇幻职业 (#1-#20)</div>
+    <div class="character-grid">
+      <div class="character-card"><div class="char-number">#01</div><div class="char-name">骑士 Knight</div><div class="char-desc">银色盔甲勇士</div><div class="actions-preview">🤔 😴 👂 💬</div></div>
+      <div class="character-card"><div class="char-number">#02</div><div class="char-name">法师 Mage</div><div class="char-desc">紫袍巫师</div><div class="actions-preview">🤔 😴 👂 💬</div></div>
+      <div class="character-card"><div class="char-number">#03</div><div class="char-name">弓箭手 Archer</div><div class="char-desc">绿林游侠</div><div class="actions-preview">🤔 😴 👂 💬</div></div>
+      <div class="character-card"><div class="char-number">#04</div><div class="char-name">盗贼 Rogue</div><div class="char-desc">暗影刺客</div><div class="actions-preview">🤔 😴 👂 💬</div></div>
+      <div class="character-card"><div class="char-number">#05</div><div class="char-name">战士 Warrior</div><div class="char-desc">狂暴斗士</div><div class="actions-preview">🤔 😴 👂 💬</div></div>
+      <div class="character-card"><div class="char-number">#06</div><div class="char-name">村民 Villager</div><div class="char-desc">朴实村民</div><div class="actions-preview">🤔 😴 👂 💬</div></div>
+      <div class="character-card"><div class="char-number">#07</div><div class="char-name">商人 Merchant</div><div class="char-desc">旅行商人</div><div class="actions-preview">🤔 😴 👂 💬</div></div>
+      <div class="character-card"><div class="char-number">#08</div><div class="char-name">国王 King</div><div class="char-desc">金冠君主</div><div class="actions-preview">🤔 😴 👂 💬</div></div>
+      <div class="character-card"><div class="char-number">#09</div><div class="char-name">公主 Princess</div><div class="char-desc">皇室公主</div><div class="actions-preview">🤔 😴 👂 💬</div></div>
+      <div class="character-card"><div class="char-number">#10</div><div class="char-name">史莱姆 Slime</div><div class="char-desc">绿色凝胶怪</div><div class="actions-preview">🤔 😴 👂 💬</div></div>
+      <div class="character-card"><div class="char-number">#11</div><div class="char-name">骷髅 Skeleton</div><div class="char-desc">不死骷髅兵</div><div class="actions-preview">🤔 😴 👂 💬</div></div>
+      <div class="character-card"><div class="char-number">#12</div><div class="char-name">兽人 Orc</div><div class="char-desc">绿色兽人</div><div class="actions-preview">🤔 😴 👂 💬</div></div>
+      <div class="character-card"><div class="char-number">#13</div><div class="char-name">精灵 Elf</div><div class="char-desc">森林精灵</div><div class="actions-preview">🤔 😴 👂 💬</div></div>
+      <div class="character-card"><div class="char-number">#14</div><div class="char-name">矮人 Dwarf</div><div class="char-desc">山地矮人</div><div class="actions-preview">🤔 😴 👂 💬</div></div>
+      <div class="character-card"><div class="char-number">#15</div><div class="char-name">巫师 Warlock</div><div class="char-desc">邪恶魔法师</div><div class="actions-preview">🤔 😴 👂 💬</div></div>
+      <div class="character-card"><div class="char-number">#16</div><div class="char-name">刺客 Assassin</div><div class="char-desc">黑暗杀手</div><div class="actions-preview">🤔 😴 👂 💬</div></div>
+      <div class="character-card"><div class="char-number">#17</div><div class="char-name">牧师 Priest</div><div class="char-desc">神圣牧师</div><div class="actions-preview">🤔 😴 👂 💬</div></div>
+      <div class="character-card"><div class="char-number">#18</div><div class="char-name">龙人 Dragonkin</div><div class="char-desc">半龙战士</div><div class="actions-preview">🤔 😴 👂 💬</div></div>
+      <div class="character-card"><div class="char-number">#19</div><div class="char-name">机器人 Robot</div><div class="char-desc">机械生命体</div><div class="actions-preview">🤔 😴 👂 💬</div></div>
+      <div class="character-card"><div class="char-number">#20</div><div class="char-name">幽灵 Ghost</div><div class="char-desc">漂浮幽灵</div><div class="actions-preview">🤔 😴 👂 💬</div></div>
+    </div>
+  </div>
+
+  <!-- 东方/特殊职业类别 -->
+  <div class="category">
+    <div class="category-title">🥷 东方与特殊职业 (#21-#40)</div>
+    <div class="character-grid">
+      <div class="character-card"><div class="char-number">#21</div><div class="char-name">忍者 Ninja</div><div class="char-desc">暗影忍者</div><div class="actions-preview">🤔 😴 👂 💬</div></div>
+      <div class="character-card"><div class="char-number">#22</div><div class="char-name">武士 Samurai</div><div class="char-desc">日本武士</div><div class="actions-preview">🤔 😴 👂 💬</div></div>
+      <div class="character-card"><div class="char-number">#23</div><div class="char-name">精灵 Elf</div><div class="char-desc">高等精灵</div><div class="actions-preview">🤔 😴 👂 💬</div></div>
+      <div class="character-card"><div class="char-number">#24</div><div class="char-name">矮人 Dwarf</div><div class="char-desc">锻造大师</div><div class="actions-preview">🤔 😴 👂 💬</div></div>
+      <div class="character-card"><div class="char-number">#25</div><div class="char-name">兽人 Orc</div><div class="char-desc">狂暴兽人</div><div class="actions-preview">🤔 😴 👂 💬</div></div>
+      <div class="character-card"><div class="char-number">#26</div><div class="char-name">龙人 Dragonkin</div><div class="char-desc">龙族后裔</div><div class="actions-preview">🤔 😴 👂 💬</div></div>
+      <div class="character-card"><div class="char-number">#27</div><div class="char-name">牧师 Priest</div><div class="char-desc">圣光牧师</div><div class="actions-preview">🤔 😴 👂 💬</div></div>
+      <div class="character-card"><div class="char-number">#28</div><div class="char-name">刺客 Assassin</div><div class="char-desc">暗影刺客</div><div class="actions-preview">🤔 😴 👂 💬</div></div>
+      <div class="character-card"><div class="char-number">#29</div><div class="char-name">吟游诗人 Bard</div><div class="char-desc">流浪歌手</div><div class="actions-preview">🤔 😴 👂 💬</div></div>
+      <div class="character-card"><div class="char-number">#30</div><div class="char-name">德鲁伊 Druid</div><div class="char-desc">自然守护者</div><div class="actions-preview">🤔 😴 👂 💬</div></div>
+      <div class="character-card"><div class="char-number">#31</div><div class="char-name">圣骑士 Paladin</div><div class="char-desc">圣光骑士</div><div class="actions-preview">🤔 😴 👂 💬</div></div>
+      <div class="character-card"><div class="char-number">#32</div><div class="char-name">术士 Warlock</div><div class="char-desc">契约法师</div><div class="actions-preview">🤔 😴 👂 💬</div></div>
+      <div class="character-card"><div class="char-number">#33</div><div class="char-name">游侠 Ranger</div><div class="char-desc">荒野猎人</div><div class="actions-preview">🤔 😴 👂 💬</div></div>
+      <div class="character-card"><div class="char-number">#34</div><div class="char-name">死灵法师 Necromancer</div><div class="char-desc">亡灵巫师</div><div class="actions-preview">🤔 😴 👂 💬</div></div>
+      <div class="character-card"><div class="char-number">#35</div><div class="char-name">武僧 Monk</div><div class="char-desc">功夫大师</div><div class="actions-preview">🤔 😴 👂 💬</div></div>
+      <div class="character-card"><div class="char-number">#36</div><div class="char-name">萨满 Shaman</div><div class="char-desc">元素萨满</div><div class="actions-preview">🤔 😴 👂 💬</div></div>
+      <div class="character-card"><div class="char-number">#37</div><div class="char-name">炼金术士 Alchemist</div><div class="char-desc">药剂大师</div><div class="actions-preview">🤔 😴 👂 💬</div></div>
+      <div class="character-card"><div class="char-number">#38</div><div class="char-name">狂战士 Berserker</div><div class="char-desc">狂暴战士</div><div class="actions-preview">🤔 😴 👂 💬</div></div>
+      <div class="character-card"><div class="char-number">#39</div><div class="char-name">元素法师 Elementalist</div><div class="char-desc">元素掌控者</div><div class="actions-preview">🤔 😴 👂 💬</div></div>
+      <div class="character-card"><div class="char-number">#40</div><div class="char-name">暗影刺客 Shadow</div><div class="char-desc">虚空刺客</div><div class="actions-preview">🤔 😴 👂 💬</div></div>
+    </div>
+  </div>
+
+  <!-- 动物角色类别 -->
+  <div class="category">
+    <div class="category-title">🐾 动物角色 (#41-#60)</div>
+    <div class="character-grid">
+      <div class="character-card"><div class="char-number">#41</div><div class="char-name">橘猫战士 Cat</div><div class="char-desc">勇猛橘猫</div><div class="actions-preview">🤔 😴 👂 💬</div></div>
+      <div class="character-card"><div class="char-number">#42</div><div class="char-name">柴犬骑士 Shiba</div><div class="char-desc">忠诚柴犬</div><div class="actions-preview">🤔 😴 👂 💬</div></div>
+      <div class="character-card"><div class="char-number">#43</div><div class="char-name">灰狼猎人 Wolf</div><div class="char-desc">荒野之狼</div><div class="actions-preview">🤔 😴 👂 💬</div></div>
+      <div class="character-card"><div class="char-number">#44</div><div class="char-name">白兔法师 Rabbit</div><div class="char-desc">魔法兔</div><div class="actions-preview">🤔 😴 👂 💬</div></div>
+      <div class="character-card"><div class="char-number">#45</div><div class="char-name">棕熊战士 Bear</div><div class="char-desc">森林棕熊</div><div class="actions-preview">🤔 😴 👂 💬</div></div>
+      <div class="character-card"><div class="char-number">#46</div><div class="char-name">红狐盗贼 Fox</div><div class="char-desc">狡猾狐狸</div><div class="actions-preview">🤔 😴 👂 💬</div></div>
+      <div class="character-card"><div class="char-number">#47</div><div class="char-name">雪鸮智者 Owl</div><div class="char-desc">智慧猫头鹰</div><div class="actions-preview">🤔 😴 👂 💬</div></div>
+      <div class="character-card"><div class="char-number">#48</div><div class="char-name">青蛙吟游诗人 Frog</div><div class="char-desc">歌唱青蛙</div><div class="actions-preview">🤔 😴 👂 💬</div></div>
+      <div class="character-card"><div class="char-number">#49</div><div class="char-name">熊猫武僧 Panda</div><div class="char-desc">功夫熊猫</div><div class="actions-preview">🤔 😴 👂 💬</div></div>
+      <div class="character-card"><div class="char-number">#50</div><div class="char-name">独角兽圣骑士 Unicorn</div><div class="char-desc">神圣独角兽</div><div class="actions-preview">🤔 😴 👂 💬</div></div>
+      <div class="character-card"><div class="char-number">#51</div><div class="char-name">黑猫刺客 Black Cat</div><div class="char-desc">神秘黑猫</div><div class="actions-preview">🤔 😴 👂 💬</div></div>
+      <div class="character-card"><div class="char-number">#52</div><div class="char-name">柯基牧师 Corgi</div><div class="char-desc">可爱柯基</div><div class="actions-preview">🤔 😴 👂 💬</div></div>
+      <div class="character-card"><div class="char-number">#53</div><div class="char-name">猫头鹰学者 Owl</div><div class="char-desc">博学猫头鹰</div><div class="actions-preview">🤔 😴 👂 💬</div></div>
+      <div class="character-card"><div class="char-number">#54-#60</div><div class="char-name">更多动物角色</div><div class="char-desc">查看详情页面</div><div class="actions-preview">🤔 😴 👂 💬</div></div>
+    </div>
+  </div>
+
+  <!-- 科幻角色类别 -->
+  <div class="category">
+    <div class="category-title">🚀 科幻角色 (#61-#80)</div>
+    <div class="character-grid">
+      <div class="character-card"><div class="char-number">#61</div><div class="char-name">机器人 Robot</div><div class="char-desc">AI机器人</div><div class="actions-preview">🤔 😴 👂 💬</div></div>
+      <div class="character-card"><div class="char-number">#62</div><div class="char-name">宇航员 Astronaut</div><div class="char-desc">太空探险家</div><div class="actions-preview">🤔 😴 👂 💬</div></div>
+      <div class="character-card"><div class="char-number">#63</div><div class="char-name">外星人 Alien</div><div class="char-desc">外星生命</div><div class="actions-preview">🤔 😴 👂 💬</div></div>
+      <div class="character-card"><div class="char-number">#64</div><div class="char-name">赛博格 Cyborg</div><div class="char-desc">半机械人</div><div class="actions-preview">🤔 😴 👂 💬</div></div>
+      <div class="character-card"><div class="char-number">#65</div><div class="char-name">机甲驾驶员 Pilot</div><div class="char-desc">机甲战士</div><div class="actions-preview">🤔 😴 👂 💬</div></div>
+      <div class="character-card"><div class="char-number">#66</div><div class="char-name">星际商人 Merchant</div><div class="char-desc">银河商人</div><div class="actions-preview">🤔 😴 👂 💬</div></div>
+      <div class="character-card"><div class="char-number">#67</div><div class="char-name">太空海盗 Pirate</div><div class="char-desc">宇宙海盗</div><div class="actions-preview">🤔 😴 👂 💬</div></div>
+      <div class="character-card"><div class="char-number">#68</div><div class="char-name">AI实体 AI Entity</div><div class="char-desc">人工智能</div><div class="actions-preview">🤔 😴 👂 💬</div></div>
+      <div class="character-card"><div class="char-number">#69</div><div class="char-name">克隆人 Clone</div><div class="char-desc">基因克隆</div><div class="actions-preview">🤔 😴 👂 💬</div></div>
+      <div class="character-card"><div class="char-number">#70</div><div class="char-name">变异人 Mutant</div><div class="char-desc">辐射变异体</div><div class="actions-preview">🤔 😴 👂 💬</div></div>
+      <div class="character-card"><div class="char-number">#71</div><div class="char-name">星际探险家 Explorer</div><div class="char-desc">深空探险者</div><div class="actions-preview">🤔 😴 👂 💬</div></div>
+      <div class="character-card"><div class="char-number">#72</div><div class="char-name">量子物理学家</div><div class="char-desc">疯狂科学家</div><div class="actions-preview">🤔 😴 👂 💬</div></div>
+      <div class="character-card"><div class="char-number">#73</div><div class="char-name">外星生物学家</div><div class="char-desc">Xeno专家</div><div class="actions-preview">🤔 😴 👂 💬</div></div>
+      <div class="character-card"><div class="char-number">#74</div><div class="char-name">星舰工程师</div><div class="char-desc">飞船技师</div><div class="actions-preview">🤔 😴 👂 💬</div></div>
+      <div class="character-card"><div class="char-number">#75</div><div class="char-name">虚空行者 Void</div><div class="char-desc">维度旅者</div><div class="actions-preview">🤔 😴 👂 💬</div></div>
+      <div class="character-card"><div class="char-number">#76-#80</div><div class="char-name">更多科幻角色</div><div class="char-desc">查看详情页面</div><div class="actions-preview">🤔 😴 👂 💬</div></div>
+    </div>
+  </div>
+
+  <!-- 趣味角色类别 -->
+  <div class="category">
+    <div class="category-title">🎭 趣味角色 (#81-#100)</div>
+    <div class="character-grid">
+      <div class="character-card"><div class="char-number">#81</div><div class="char-name">史莱姆 Slime</div><div class="char-desc">Q弹史莱姆</div><div class="actions-preview">🤔 😴 👂 💬</div></div>
+      <div class="character-card"><div class="char-number">#82</div><div class="char-name">骷髅 Skeleton</div><div class="char-desc">骨架战士</div><div class="actions-preview">🤔 😴 👂 💬</div></div>
+      <div class="character-card"><div class="char-number">#83</div><div class="char-name">幽灵 Ghost</div><div class="char-desc">白色幽灵</div><div class="actions-preview">🤔 😴 👂 💬</div></div>
+      <div class="character-card"><div class="char-number">#84</div><div class="char-name">僵尸 Zombie</div><div class="char-desc">不死僵尸</div><div class="actions-preview">🤔 😴 👂 💬</div></div>
+      <div class="character-card"><div class="char-number">#85</div><div class="char-name">南瓜头 Pumpkin</div><div class="char-desc">万圣节南瓜</div><div class="actions-preview">🤔 😴 👂 💬</div></div>
+      <div class="character-card"><div class="char-number">#86</div><div class="char-name">雪人 Snowman</div><div class="char-desc">冬日雪人</div><div class="actions-preview">🤔 😴 👂 💬</div></div>
+      <div class="character-card"><div class="char-number">#87</div><div class="char-name">姜饼人 Gingerbread</div><div class="char-desc">圣诞姜饼</div><div class="actions-preview">🤔 😴 👂 💬</div></div>
+      <div class="character-card"><div class="char-number">#88</div><div class="char-name">小丑 Clown</div><div class="char-desc">马戏团小丑</div><div class="actions-preview">🤔 😴 👂 💬</div></div>
+      <div class="character-card"><div class="char-number">#89</div><div class="char-name">巫师 Wizard</div><div class="char-desc">神秘巫师</div><div class="actions-preview">🤔 😴 👂 💬</div></div>
+      <div class="character-card"><div class="char-number">#90</div><div class="char-name">恶魔 Demon</div><div class="char-desc">地狱恶魔</div><div class="actions-preview">🤔 😴 👂 💬</div></div>
+      <div class="character-card"><div class="char-number">#91</div><div class="char-name">天使 Angel</div><div class="char-desc">天堂天使</div><div class="actions-preview">🤔 😴 👂 💬</div></div>
+      <div class="character-card"><div class="char-number">#92</div><div class="char-name">美人鱼 Mermaid</div><div class="char-desc">海洋公主</div><div class="actions-preview">🤔 😴 👂 💬</div></div>
+      <div class="character-card"><div class="char-number">#93</div><div class="char-name">树精 Treant</div><div class="char-desc">森林树人</div><div class="actions-preview">🤔 😴 👂 💬</div></div>
+      <div class="character-card"><div class="char-number">#94</div><div class="char-name">石巨人 Golem</div><div class="char-desc">岩石巨人</div><div class="actions-preview">🤔 😴 👂 💬</div></div>
+      <div class="character-card"><div class="char-number">#95</div><div class="char-name">蝙蝠 Bat</div><div class="char-desc">夜行蝙蝠</div><div class="actions-preview">🤔 😴 👂 💬</div></div>
+      <div class="character-card"><div class="char-number">#96-#100</div><div class="char-name">更多趣味角色</div><div class="char-desc">查看详情页面</div><div class="actions-preview">🤔 😴 👂 💬</div></div>
+    </div>
+  </div>
+
+  <div class="file-links">
+    <a href="css-characters.html" class="file-link">📄 查看角色 #1-#20</a>
+    <a href="characters-21-40.html" class="file-link">📄 查看角色 #21-#40</a>
+    <a href="characters-41-60.html" class="file-link">📄 查看角色 #41-#60</a>
+    <a href="characters-61-80.html" class="file-link">📄 查看角色 #61-#80</a>
+    <a href="characters-81-100.html" class="file-link">📄 查看角色 #81-#100</a>
+  </div>
+
+  <div class="footer">
+    <p><strong>📜 MIT License</strong> - 完全免费可商用</p>
+    <p>所有角色均使用纯 CSS Box-Shadow 技术绘制 | 无需图片资源</p>
+    <p>基础尺寸 32x40 像素 | 支持任意缩放 | 流畅 CSS 动画</p>
+    <p style="margin-top: 15px;">
+      开源参考: <a href="https://github.com/mozilla/BrowserQuest" target="_blank">BrowserQuest</a> | 
+      <a href="https://phaser.io/" target="_blank">Phaser.js</a> | 
+      <a href="https://opengameart.org/content/liberated-pixel-cup-lpc-base-assets-sprites-map-tiles" target="_blank">LPC</a>
+    </p>
+    <p style="margin-top: 10px; color: #444;">Created by Agent Team for OpenClaw Game</p>
+  </div>
+</body>
+</html>

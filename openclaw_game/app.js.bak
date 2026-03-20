@@ -1,0 +1,506 @@
+// V3: Single Agent Architecture with Chat Logs
+import { marked } from 'marked';
+
+const CONFIG = {
+  STREAM_URL: 'http://127.0.0.1:3101/api/rooms/room-42/stream?token=admin-demo-token',
+  IDLE_TIMEOUT_MS: 60000 // 1 minute before sleeping
+};
+
+// 配置 marked 选项
+marked.setOptions({
+  breaks: true, // 支持 GitHub 风格的换行
+  gfm: true // 支持 GitHub Flavored Markdown
+});
+
+// 安全渲染 Markdown（防止 XSS)
+function renderMarkdown(text) {
+  if (!text || typeof text !== 'string') return '';
+  // 转义 HTML 标签，  const escaped = text
+    .replace(/&/g, '&amp;')
+    .replace(/</g, '&lt;')
+    .replace(/>/g, '&gt;')
+    .replace(/"/g, '&quot;')
+    .replace(/'/g, '&#x27;');
+  return marked.parse(escaped);
+}
+
+const EMOJI_MAP = {
+  idle: '😴',
+  receiving: '👂',
+  processing: '🤔',
+  speaking: '💬',
+  error: '❌',
+  done: '😶'
+};
+
+const EVENT_TRANSLATIONS = {
+  'task.started': '任务已开始',
+  'task.completed': '任务已完成',
+  'task.failed': '任务失败',
+  'tool.called': '调用工具',
+  'tool.completed': '工具返回结果',
+  'tool.failed': '工具调用错误',
+  'dispatch.created': '建立新交互/派发任务',
+  'message.received': '收到新消息',
+};
+const agentsData = {
+  main: { id: 'agent-main', timer: null }
+};
+document.addEventListener('DOMContentLoaded', () => {
+  // 1. 先开始加载数据（最重要）
+  setupEventStream();
+  setInterval(pollSessionHistory, 2000);
+  pollSessionHistory(); // 立即调用一次获取最新数据
+
+  // 2. 然后设置筛选按钮的事件监听
+  document.getElementById('filter-all').addEventListener('click', () => setFilter('all'));
+  document.getElementById('filter-chat').addEventListener('click', () => setFilter('chat'));
+
+  // 3. 默认显示"对话"模式（显示核心对话）
+  // 用户可以点击"全量"按钮切换到系统事件视图
+  setFilter('chat');
+});
+const processedMsgIds = new Set();
+let currentFilterMode = 'chat'; // 保存当前筛选模式
+// 解析 content 数组
+function parseMessageContent(contentArray) {
+  const result = {
+    text: '',
+    thinking: '',
+    toolCalls: [],
+    toolResults: []
+  };
+    if (!Array.isArray(contentArray)) {
+        result.text = String(contentArray);
+        return result;
+    }
+    for (const item of contentArray) {
+        switch (item.type) {
+            case 'text':
+                result.text = item.text || '';
+                break;
+            case 'thinking':
+                result.thinking = item.thinking || '';
+                break;
+            case 'toolCall':
+                result.toolCalls.push({ name: item.name, arguments: item.arguments });
+                break;
+            case 'toolResult':
+                result.toolResults.push(item.content);
+                break;
+        }
+    }
+    return result;
+}
+// 日志筛选逻辑
+function setFilter(mode) {
+    currentFilterMode = mode; // 保存当前筛选模式
+    document.querySelectorAll('.filter-btn').forEach(btn => btn.classList.remove('active'));
+    document.getElementById(`filter-${mode}`).classList.add('active');
+
+    const coreTypes = ['user-input', 'model-thinking', 'model-output', 'tool-call', 'tool-result'];
+
+    document.querySelectorAll('.chat-bubble-container').forEach(entry => {
+        const logType = entry.dataset.logType;
+
+        if (mode === 'chat') {
+            // 对话模式：只显示核心对话类型
+            const show = coreTypes.includes(logType);
+            entry.style.display = show ? '' : 'none';
+        } else {
+            // 全量模式：只显示系统事件（非核心类型）
+            const show = !coreTypes.includes(logType);
+            entry.style.display = show ? '' : 'none';
+        }
+    });
+}
+// 初始化筛选按钮
+document.getElementById('filter-all').addEventListener('click', () => setFilter('all'));
+document.getElementById('filter-chat').addEventListener('click', () => setFilter('chat'));
+async function pollSessionHistory() {
+    try {
+        // 改用新的实时 API 端点
+        const url = `http://127.0.0.1:3101/api/sessions/latest?token=admin-demo-token`;
+        const res = await fetch(url);
+        if (!res.ok) return;
+        const data = await res.json();
+        const messages = data.messages || [];
+        // Sort ascending
+        messages.sort((a, b) => new Date(a.timestamp).getTime() - new Date(b.timestamp).getTime());
+        // 处理所有未处理过的消息（刷新后重新显示所有历史）
+        for (const msg of messages) {
+            if (!processedMsgIds.has(msg.id)) {
+                processedMsgIds.add(msg.id);
+                handleHistoryMessage(msg);
+            }
+        }
+    } catch (e) {
+        console.warn("Polling error:", e);
+    }
+}
+function handleHistoryMessage(payload) {
+    const innerMsgObj = payload.message || {};
+    const role = innerMsgObj.role || 'system';
+    const isUserInput = (role === 'user');
+
+    if (isUserInput) {
+        // 用户消息：保持原样
+        let userText = '';
+        if (Array.isArray(innerMsgObj.content)) {
+            userText = innerMsgObj.content.map(c => c.text || '').join('\n');
+        } else if (typeof innerMsgObj.content === 'string') {
+            userText = innerMsgObj.content;
+        }
+        userText = userText.replace(/Sender \(untrusted metadata\)[\s\S]*?\]\s*/g, '').trim();
+        userText = userText.replace(/\[(feishu|tui|web)\]/ig, '').trim();
+        // 用户输入只在屏幕下方显示，不在头顶气泡显示
+        displayGlobalUserInput("用户: " + userText);
+        payload.type = '用户输入';
+        addChatEntry(payload, true, userText, 'user-input');
+        // 不传递用户文本到气泡，只更新状态
+        updateAgentState('main', 'receiving', '');
+    } else if (role === 'assistant') {
+        // 助手消息：拆分 thinking 和 text
+        const parsed = parseMessageContent(innerMsgObj.content);
+
+        // 1. 思考部分（如果有）
+        if (parsed.thinking) {
+            const thinkingPayload = { ...payload, type: '思考中' };
+            addChatEntry(thinkingPayload, false, '💭 思考中：' + parsed.thinking, 'model-thinking');
+        }
+
+        // 2. 输出部分（如果有）
+        if (parsed.text) {
+            const outputPayload = { ...payload, type: '输出' };
+            addChatEntry(outputPayload, false, '📤 输出：' + parsed.text, 'model-output');
+        }
+
+        // 3. 工具调用（如果有）
+        if (parsed.toolCalls.length > 0) {
+            parsed.toolCalls.forEach((tool, idx) => {
+                const toolPayload = { ...payload, type: '工具调用' };
+                addChatEntry(toolPayload, false, `🔧 调用 ${tool.name}`, 'tool-call');
+            });
+        }
+
+        // 4. 工具结果（如果有）
+        if (parsed.toolResults.length > 0) {
+            parsed.toolResults.forEach((result, idx) => {
+                const resultPayload = { ...payload, type: '工具结果' };
+                addChatEntry(resultPayload, false, `📋 结果：${String(result).slice(0, 100)}...`, 'tool-result');
+            });
+        }
+
+        // 更新 Agent 状态
+        const displayText = parsed.text || parsed.thinking || '';
+        updateAgentState('main', 'speaking', displayText);
+    }
+}
+function setupEventStream() {
+    const statusBadge = document.getElementById('connection-status');
+    statusBadge.textContent = 'Connecting...';
+    const eventSource = new EventSource(CONFIG.STREAM_URL);
+    eventSource.onopen = () => {
+        console.log('🔗 SSE Connection Opened (已连接 Gateway)');
+        statusBadge.textContent = 'Connected';
+        statusBadge.className = 'status-badge connected';
+        addMessageToBubble('main', '已连接至 Gateway', 'receiving');
+    };
+    eventSource.onmessage = async (event) => {
+        try {
+            if (event.data === 'ping') return;
+            const data = JSON.parse(event.data);
+            // taskId 在顶层，值就是 sessionId
+            const taskId = data.taskId;
+            if (taskId) {
+                try {
+                    const res = await fetch(`http://127.0.0.1:3101/api/sessions/history?sessionKey=${taskId}`)
+                    const fullData = await res.json()
+                    // 合并完整消息列表
+                    data._fullMessages = fullData.messages
+                } catch (e) {
+                    console.warn('Failed to fetch full messages:', e)
+                }
+            }
+            handleOpenClawEvent(data)
+        } catch (e) {
+            console.error('解析 SSE 事件出错', e)
+        }
+    }
+    eventSource.onerror = (err) => {
+        console.error('SSE Connection Error:', err)
+        statusBadge.textContent = 'Disconnected (Retrying...)'
+        statusBadge.className = 'status-badge disconnected'
+    }
+}
+let globalBubbleTimer = null;
+function displayGlobalUserInput(text) {
+    const bubble = document.getElementById('global-user-bubble');
+    const textEl = document.getElementById('global-user-text')
+    if (!text || text.length < 1) return
+    textEl.textContent = text
+    bubble.classList.remove('hidden')
+    if (globalBubbleTimer) clearTimeout(globalBubbleTimer)
+    globalBubbleTimer = setTimeout(() => {
+        bubble.classList.add('hidden')
+    }, 10000)
+}
+ function extractChannelStrict(payload) {
+    const explicitChannel = payload.channel || (payload.data && payload.data.channel) || ''
+    if (explicitChannel.includes('tui') || explicitChannel.includes('web')) return 'tui'
+    if (explicitChannel.includes('feishu')) return 'feishu'
+    if (explicitChannel === 'main' || explicitChannel === 'openclaw') return 'main'
+    const agentId = payload.agentId || (payload.data && payload.data.agentId) || ''
+    if (agentId.includes('tui') || agentId.includes('web')) return 'tui'
+    if (agentId.includes('feishu')) return 'feishu'
+    if (agentId.includes('main')) return 'main'
+    if (payload.type === 'dispatch.created' || payload.source === 'user') return 'main'
+    return null
+}
+const channelTimers = {}
+function activateChannelUI(channelKey) {
+    if (!channelKey || channelKey === 'main') return
+    const el = document.getElementById(`channel-${channelKey}`)
+    if (!el) return
+    el.classList.add('active')
+    if (channelTimers[channelKey]) clearTimeout(channelTimers[channelKey])
+    channelTimers[channelKey] = setTimeout(() => {
+        el.classList.remove('active')
+    }, 2000)
+    }
+function addChatEntry(payload, isUser, contentOverride, logType = 'system-event') {
+    const logContainer = document.getElementById('log-waterfall')
+    if (!logContainer) return
+    const entry = document.createElement('div')
+    entry.className = `chat-bubble-container ${isUser ? 'chat-right' : 'chat-left'}`;
+    entry.dataset.logType = logType
+
+    // 应用当前筛选状态
+    const coreTypes = ['user-input', 'model-thinking', 'model-output', 'tool-call', 'tool-result'];
+    if (currentFilterMode === 'chat') {
+        const show = coreTypes.includes(logType);
+        entry.style.display = show ? '' : 'none';
+    } else {
+        // "全量"模式：只显示系统事件（非核心类型）
+        const show = !coreTypes.includes(logType);
+        entry.style.display = show ? '' : 'none';
+    }
+
+    const time = new Date().toLocaleTimeString()
+    const channel = extractChannelStrict(payload) || 'system'
+    const typeText = EVENT_TRANSLATIONS[payload.type] || payload.type || 'System'
+    // Create Header
+    const header = document.createElement('div')
+    header.className = 'chat-bubble-header'
+    header.innerHTML = `<span>[${time}] ${channel}</span> <span>${typeText}</span>`;
+    // Provide a clean fallback. If it's pure system event, show summary/type. If object, JSON string.
+    let content = contentOverride || payload.summary || payload.text || payload.message || ''
+    if (!content && typeof payload.data === 'object') {
+        content = JSON.stringify(payload.data, null, 2)
+    }
+    if (!content) content = JSON.stringify(payload)
+    // Derive FULL content for the expand button, overriding truncated summaries
+    let fullContent = contentOverride || payload.text || payload.message
+    if (!fullContent) {
+        // Favor the inner data block if it exists (usually holds the juicy non-truncated JSON)
+        if (payload.data && typeof payload.data === 'object') {
+            fullContent = JSON.stringify(payload.data, null, 2)
+        } else {
+            fullContent = JSON.stringify(payload, null, 2)
+        }
+    }
+    const bubble = document.createElement('div')
+    bubble.className = 'chat-bubble'
+    // The copy button is absolutely positioned in the top right
+    const btnCopy = document.createElement('button')
+    btnCopy.className = 'chat-btn-copy'
+    btnCopy.innerHTML = '<i class="fa-regular fa-copy"></i>'
+    btnCopy.title = 'Copy'
+    btnCopy.onclick = () => {
+        // If expanded, copy the full content, otherwise copy the summary
+        const textToCopy = textNode.classList.contains('expanded') ? fullContent : content
+        navigator.clipboard.writeText(textToCopy).then(() => {
+            btnCopy.innerHTML = '<i class="fa-solid fa-check"></i>'
+            setTimeout(() => { btnCopy.innerHTML = '<i class="fa-regular fa-copy"></i>'; }, 2000)
+        })
+    }
+    const textNode = document.createElement('div')
+    textNode.className = 'chat-bubble-text markdown-body'
+    textNode.innerHTML = renderMarkdown(content) // 使用 Markdown 渲染
+    // The controls container for the expand button (hidden by default)
+    const controls = document.createElement('div')
+    controls.className = 'chat-controls'
+    controls.style.display = 'none'
+    const btnExpand = document.createElement('button')
+    btnExpand.className = 'chat-btn'
+    btnExpand.textContent = '查看 JSON'
+    btnExpand.onclick = () => {
+        if (textNode.classList.contains('expanded')) {
+            textNode.classList.remove('expanded')
+            btnExpand.textContent = '查看 JSON'
+            textNode.innerHTML = renderMarkdown(content) // 恢复为 Markdown 格式
+        } else {
+            textNode.classList.add('expanded')
+            btnExpand.textContent = '返回'
+            textNode.innerHTML = `<pre>${JSON.stringify(payload, null, 2)}</pre>` // 显示完整原始 JSON
+        }
+    }
+    controls.appendChild(btnExpand)
+    bubble.appendChild(btnCopy)
+    bubble.appendChild(textNode)
+    bubble.appendChild(controls)
+    // 始终显示"查看 JSON"按钮（让用户可以查看原始数据）
+    controls.style.display = 'flex'
+    entry.appendChild(header)
+    entry.appendChild(bubble)
+    logContainer.appendChild(entry)
+    logContainer.scrollTop = logContainer.scrollHeight
+    while (logContainer.children.length > 50) {
+        logContainer.removeChild(logContainer.firstChild)
+    }
+}
+function handleOpenClawEvent(payload) {
+    const type = payload.type || ''
+    if (type === 'stream.meta' || type.startsWith('session.') || type.startsWith('heartbeat')) return
+    const chineseType = EVENT_TRANSLATIONS[type] || type
+    console.log(`[OpenClaw 事件] ${chineseType}`, payload)
+    const innerData = payload.data || {}
+    const possiblePrompt = payload.prompt || (payload.payload && payload.payload.prompt) || innerData.prompt
+    const innerMsgObj = payload.message || innerData.message || {}
+    const theRole = payload.role || payload.source || innerData.role || innerData.source || innerMsgObj.role
+
+    // 判断是否为用户输入
+    let isUserInput = false
+    let userText = ""
+    if (type === 'dispatch.created' && possiblePrompt) {
+        userText = possiblePrompt
+        isUserInput = true
+    } else if (theRole === 'user' || (type === 'message' && innerMsgObj.role === 'user') || (type === 'task.progress' && payload.summary && payload.summary.includes(`Sender (untrusted metadata)`))) {
+        // Flatten deep text extracts
+        let possibleMsg = payload.text || payload.content || innerData.content || innerData.text
+        if (!possibleMsg && innerMsgObj.content) {
+            if (Array.isArray(innerMsgObj.content)) {
+                possibleMsg = innerMsgObj.content.map(c => c.text || '').join(' ')
+            } else if (typeof innerMsgObj.content === 'string') {
+                possibleMsg = innerMsgObj.content
+            }
+        }
+        userText = possibleMsg || possiblePrompt || payload.summary || "用户输入..."
+        userText = userText.replace(/\[(feishu|tui|web)\]/ig, '').trim()
+        userText = userText.replace(/Sender \(untrusted metadata\)[\s\S]*?\]\s*/g, '').trim()
+        if (userText.length > 0 && userText !== '...') {
+            isUserInput = true
+        }
+    }
+
+    // Channel Visualization
+    const targetChannel = extractChannelStrict(payload)
+    if (targetChannel) activateChannelUI(targetChannel)
+
+    if (isUserInput) {
+        // 用户输入只在屏幕下方显示，不在头顶气泡显示
+        displayGlobalUserInput("用户: " + userText)
+        addChatEntry(payload, true, userText, 'user-input')
+        // 不传递用户文本到气泡，只更新状态
+        updateAgentState('main', 'receiving', '')
+    } else if (theRole === 'assistant' || type.includes('speak') || type.includes('feedback')) {
+        // 助手消息：解析 content 数组，拆分展示
+        const parsed = parseMessageContent(innerMsgObj.content)
+
+        // 1. 思考部分（如果有）
+        if (parsed.thinking) {
+            const thinkingPayload = { ...payload, type: '思考中' }
+            addChatEntry(thinkingPayload, false, '💭 思考中：' + parsed.thinking, 'model-thinking')
+        }
+
+        // 2. 输出部分（如果有）
+        if (parsed.text) {
+            const outputPayload = { ...payload, type: '输出' }
+            addChatEntry(outputPayload, false, '📤 输出：' + parsed.text, 'model-output')
+        }
+
+        // 3. 如果没有解析到内容，使用原始数据
+        if (!parsed.thinking && !parsed.text) {
+            const fallbackText = payload.summary || chineseType
+            addChatEntry(payload, false, fallbackText, 'model-output')
+        }
+
+        const displayText = parsed.text || parsed.thinking || payload.summary || ''
+        updateAgentState('main', 'speaking', displayText)
+    } else {
+        // 系统事件：保持原样
+        const summary = payload.summary || chineseType
+        addChatEntry(payload, false, summary, 'system-event')
+        updateAgentState('main', 'processing', summary)
+    }
+}
+function updateAgentState(agentKey, state, message) {
+    const agentInfo = agentsData[agentKey]
+    if (!agentInfo) return
+    const wrapper = document.getElementById(agentInfo.id)
+    if (!wrapper) return
+    let emoji = EMOJI_MAP.processing
+    if (state === 'receiving') emoji = EMOJI_MAP.receiving
+    if (state === 'speaking') emoji = EMOJI_MAP.speaking
+    if (state === 'done') emoji = EMOJI_MAP.done
+    if (state === 'error') emoji = EMOJI_MAP.error
+    wrapper.querySelector('.state-icon').textContent = emoji
+    const spriteEl = wrapper.querySelector('.sprite-character')
+    spriteEl.classList.remove('state-idle', 'state-working')
+    spriteEl.classList.add('state-working')
+    // Only add message to character bubble if it isn't completely empty
+    if (message && typeof message === 'string' && message.trim().length > 0) {
+        addMessageToBubble(agentKey, message)
+    } else if (message && typeof message !== 'string') {
+        addMessageToBubble(agentKey, "[系统输出]")
+    }
+    if (agentInfo.timer) clearTimeout(agentInfo.timer)
+    agentInfo.timer = setTimeout(() => {
+        goIdle(agentKey)
+    }, CONFIG.IDLE_TIMEOUT_MS)
+}
+function goIdle(agentKey) {
+    const agentInfo = agentsData[agentKey]
+    if (!agentInfo) return
+    agentInfo.msgQueue = []
+    agentInfo.isShowingMsg = false
+    const wrapper = document.getElementById(agentInfo.id)
+    if (!wrapper) return
+    wrapper.querySelector('.state-icon').textContent = EMOJI_MAP.idle // 😴
+    const spriteEl = wrapper.querySelector('.sprite-character')
+    spriteEl.classList.remove('state-working')
+    spriteEl.classList.add('state-idle')
+    const bubbleContaier = wrapper.querySelector('.bubble-container')
+    bubbleContaier.classList.add('hidden')
+    setTimeout(() => {
+        const bubbleContent = wrapper.querySelector('.bubble-content')
+        if (bubbleContent) bubbleContent.innerHTML = ''
+    }, 300)
+}
+function addMessageToBubble(agentKey, text) {
+    const agentInfo = agentsData[agentKey]
+    if (!agentInfo) return
+    const wrapper = document.getElementById(agentInfo.id)
+    if (!wrapper) return
+    const bubbleContaier = wrapper.querySelector('.bubble-container')
+    const bubbleContent = wrapper.querySelector('.bubble-content')
+    bubbleContaier.classList.remove('hidden')
+    let displayText = text
+    if (typeof text === 'object') displayText = JSON.stringify(text)
+    if (displayText && displayText.length > 300) displayText = displayText.substring(0, 300) + '...'
+    // 流式输出逻辑：直接清空并覆盖为最新文本,不做遍历动画
+    bubbleContent.innerHTML = ''
+    const msgEl = document.createElement('div')
+    msgEl.className = 'bubble-message'
+    msgEl.textContent = displayText
+    bubbleContent.appendChild(msgEl)
+    // 2s 后小人气泡消失
+    if (agentInfo.msgHideTimer) clearTimeout(agentInfo.msgHideTimer)
+    agentInfo.msgHideTimer = setTimeout(() => {
+        bubbleContaier.classList.add('hidden')
+        bubbleContent.innerHTML = ''
+    }, 2000)
+}
+window.debugTriggerEvent = (channelId, msg, type = 'task.started') => {
+    handleOpenClawEvent({ channel: channelId, type: type, summary: msg })
+}

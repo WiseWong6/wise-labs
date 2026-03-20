@@ -1,0 +1,6 @@
+
+> openclaw-game@1.0.0 start
+> node server/index.js
+
+[openclaw-listener] listening from /Users/wisewong/.openclaw -> room room-42, interval=1200ms
+🚀 OpenClaw Game running at http://127.0.0.1:3101

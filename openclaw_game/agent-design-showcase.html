@@ -1,0 +1,2748 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Agent 形象设计方案展示</title>
+  <link href="https://fonts.googleapis.com/css2?family=Press+Start+2P&display=swap" rel="stylesheet">
+  <style>
+    * {
+      margin: 0;
+      padding: 0;
+      box-sizing: border-box;
+    }
+
+    body {
+      background: #1a1a2e;
+      color: #eee;
+      font-family: 'Press Start 2P', monospace;
+      min-height: 100vh;
+      padding: 40px 20px;
+    }
+
+    h1 {
+      text-align: center;
+      font-size: 24px;
+      margin-bottom: 10px;
+      color: #00d4ff;
+      text-shadow: 0 0 20px rgba(0, 212, 255, 0.5);
+    }
+
+    .subtitle {
+      text-align: center;
+      font-size: 10px;
+      color: #888;
+      margin-bottom: 50px;
+    }
+
+    .schemes-container {
+      display: flex;
+      flex-direction: column;
+      gap: 60px;
+      max-width: 1200px;
+      margin: 0 auto;
+    }
+
+    .scheme {
+      background: rgba(255, 255, 255, 0.03);
+      border: 2px solid #333;
+      border-radius: 16px;
+      padding: 30px;
+      position: relative;
+    }
+
+    .scheme-title {
+      font-size: 14px;
+      color: #ffd700;
+      margin-bottom: 20px;
+      display: flex;
+      align-items: center;
+      gap: 10px;
+    }
+
+    .scheme-badge {
+      background: #00d4ff;
+      color: #000;
+      font-size: 8px;
+      padding: 4px 8px;
+      border-radius: 4px;
+    }
+
+    .actions-row {
+      display: flex;
+      justify-content: space-around;
+      flex-wrap: wrap;
+      gap: 40px;
+      padding: 20px;
+    }
+
+    .action-box {
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      gap: 20px;
+    }
+
+    .action-label {
+      font-size: 10px;
+      color: #aaa;
+      text-transform: uppercase;
+    }
+
+    /* ==================== 方案一：经典像素风（优化版） ==================== */
+    .scheme-classic .pixel-art {
+      width: 64px;
+      height: 80px;
+      position: relative;
+      image-rendering: pixelated;
+    }
+
+    /* 基础形象 - 使用box-shadow绘制像素 */
+    .classic-base {
+      width: 8px;
+      height: 8px;
+      position: absolute;
+      background: transparent;
+    }
+
+    /* 思考动作 - 托腮 */
+    .classic-thinking .classic-base {
+      animation: classic-bounce 2s ease-in-out infinite;
+    }
+
+    .classic-thinking .pixel-head {
+      width: 32px;
+      height: 24px;
+      background: #f4c2a1;
+      position: absolute;
+      top: 8px;
+      left: 16px;
+      box-shadow: 
+        /* 头发 */
+        0 -8px 0 #2c3e50, 8px -8px 0 #2c3e50, 16px -8px 0 #2c3e50, 24px -8px 0 #2c3e50,
+        -8px 0 0 #2c3e50, 32px 0 0 #2c3e50,
+        /* 眼睛 */
+        8px 8px 0 #333, 24px 8px 0 #333,
+        /* 思考气泡 */
+        48px -16px 0 rgba(255,255,255,0.3),
+        56px -24px 0 rgba(255,255,255,0.5),
+        64px -32px 0 rgba(255,255,255,0.8);
+      animation: classic-head-tilt 3s ease-in-out infinite;
+    }
+
+    .classic-thinking .pixel-body {
+      width: 24px;
+      height: 32px;
+      background: #3498db;
+      position: absolute;
+      top: 32px;
+      left: 20px;
+      box-shadow:
+        /* 手臂托腮 */
+        28px 4px 0 #f4c2a1, 28px -4px 0 #f4c2a1,
+        /* 另一只手 */
+        -12px 16px 0 #f4c2a1, -12px 24px 0 #f4c2a1;
+    }
+
+    .classic-thinking .pixel-legs {
+      width: 10px;
+      height: 16px;
+      background: #2c3e50;
+      position: absolute;
+      top: 64px;
+      left: 20px;
+      box-shadow: 14px 0 0 #2c3e50;
+    }
+
+    @keyframes classic-bounce {
+      0%, 100% { transform: translateY(0); }
+      50% { transform: translateY(-3px); }
+    }
+
+    @keyframes classic-head-tilt {
+      0%, 100% { transform: rotate(0deg); }
+      25% { transform: rotate(-5deg); }
+      75% { transform: rotate(5deg); }
+    }
+
+    /* 睡觉动作 */
+    .classic-sleeping .classic-base {
+      animation: none;
+    }
+
+    .classic-sleeping .pixel-head {
+      width: 32px;
+      height: 24px;
+      background: #f4c2a1;
+      position: absolute;
+      top: 16px;
+      left: 16px;
+      transform: rotate(-15deg);
+      box-shadow: 
+        0 -8px 0 #2c3e50, 8px -8px 0 #2c3e50, 16px -8px 0 #2c3e50, 24px -8px 0 #2c3e50,
+        /* 闭着的眼睛 */
+        8px 8px 0 #999, 24px 8px 0 #999,
+        /* Zzz */
+        40px -8px 0 rgba(255,255,255,0.4),
+        48px -16px 0 rgba(255,255,255,0.6),
+        56px -24px 0 rgba(255,255,255,0.8);
+    }
+
+    .classic-sleeping .pixel-body {
+      width: 24px;
+      height: 32px;
+      background: #3498db;
+      position: absolute;
+      top: 40px;
+      left: 20px;
+      box-shadow:
+        /* 放松的手臂 */
+        -8px 8px 0 #f4c2a1, 32px 8px 0 #f4c2a1;
+    }
+
+    .classic-sleeping .pixel-legs {
+      width: 10px;
+      height: 16px;
+      background: #2c3e50;
+      position: absolute;
+      top: 72px;
+      left: 20px;
+      box-shadow: 14px 0 0 #2c3e50;
+    }
+
+    .classic-sleeping .zzz {
+      position: absolute;
+      top: -20px;
+      right: -30px;
+      font-size: 12px;
+      color: #fff;
+      animation: zzz-float 2s ease-in-out infinite;
+    }
+
+    @keyframes zzz-float {
+      0% { opacity: 0; transform: translateY(0) scale(0.5); }
+      50% { opacity: 1; transform: translateY(-10px) scale(1); }
+      100% { opacity: 0; transform: translateY(-20px) scale(1.2); }
+    }
+
+    /* 倾听动作 */
+    .classic-listening .classic-base {
+      animation: classic-bounce 1s ease-in-out infinite;
+    }
+
+    .classic-listening .pixel-head {
+      width: 32px;
+      height: 24px;
+      background: #f4c2a1;
+      position: absolute;
+      top: 8px;
+      left: 16px;
+      box-shadow: 
+        0 -8px 0 #2c3e50, 8px -8px 0 #2c3e50, 16px -8px 0 #2c3e50, 24px -8px 0 #2c3e50,
+        /* 耳朵放大 */
+        -4px 8px 0 2px #f4c2a1,
+        /* 专注的眼睛 */
+        8px 8px 0 #333, 24px 8px 0 #333,
+        /* 声波 */
+        -16px 0 0 rgba(0,212,255,0.3),
+        -24px -4px 0 rgba(0,212,255,0.5),
+        -32px -8px 0 rgba(0,212,255,0.7);
+      animation: classic-head-rotate 1s ease-in-out infinite alternate;
+    }
+
+    .classic-listening .pixel-body {
+      width: 24px;
+      height: 32px;
+      background: #3498db;
+      position: absolute;
+      top: 32px;
+      left: 20px;
+      box-shadow:
+        -8px 16px 0 #f4c2a1, 32px 16px 0 #f4c2a1;
+    }
+
+    .classic-listening .pixel-legs {
+      width: 10px;
+      height: 16px;
+      background: #2c3e50;
+      position: absolute;
+      top: 64px;
+      left: 20px;
+      box-shadow: 14px 0 0 #2c3e50;
+    }
+
+    @keyframes classic-head-rotate {
+      0% { transform: rotate(-10deg); }
+      100% { transform: rotate(10deg); }
+    }
+
+    /* 说话动作 */
+    .classic-speaking .classic-base {
+      animation: classic-bounce 0.5s ease-in-out infinite;
+    }
+
+    .classic-speaking .pixel-head {
+      width: 32px;
+      height: 24px;
+      background: #f4c2a1;
+      position: absolute;
+      top: 8px;
+      left: 16px;
+      box-shadow: 
+        0 -8px 0 #2c3e50, 8px -8px 0 #2c3e50, 16px -8px 0 #2c3e50, 24px -8px 0 #2c3e50,
+        8px 8px 0 #333, 24px 8px 0 #333,
+        /* 嘴巴张开 */
+        12px 16px 0 #c0392b, 20px 16px 0 #c0392b,
+        12px 20px 0 #c0392b, 20px 20px 0 #c0392b;
+      animation: classic-mouth-move 0.3s ease-in-out infinite alternate;
+    }
+
+    .classic-speaking .pixel-body {
+      width: 24px;
+      height: 32px;
+      background: #3498db;
+      position: absolute;
+      top: 32px;
+      left: 20px;
+      box-shadow:
+        -12px 8px 0 #f4c2a1, 36px 8px 0 #f4c2a1,
+        /* 手势 */
+        36px 0 0 #f4c2a1;
+    }
+
+    .classic-speaking .pixel-legs {
+      width: 10px;
+      height: 16px;
+      background: #2c3e50;
+      position: absolute;
+      top: 64px;
+      left: 20px;
+      box-shadow: 14px 0 0 #2c3e50;
+    }
+
+    .classic-speaking .speech-bubble {
+      position: absolute;
+      top: -30px;
+      right: -40px;
+      background: #fff;
+      color: #000;
+      padding: 8px 12px;
+      border-radius: 8px;
+      font-size: 8px;
+      animation: bubble-pop 0.5s ease-in-out infinite alternate;
+    }
+
+    .classic-speaking .speech-bubble::after {
+      content: '';
+      position: absolute;
+      bottom: -6px;
+      left: 10px;
+      border-width: 6px 6px 0;
+      border-style: solid;
+      border-color: #fff transparent transparent;
+    }
+
+    @keyframes classic-mouth-move {
+      0% { transform: scaleY(1); }
+      100% { transform: scaleY(1.2); }
+    }
+
+    @keyframes bubble-pop {
+      0% { transform: scale(1); }
+      100% { transform: scale(1.1); }
+    }
+
+    /* ==================== 方案二：等距3D像素风 ==================== */
+    .scheme-iso .iso-character {
+      width: 60px;
+      height: 80px;
+      position: relative;
+      transform-style: preserve-3d;
+    }
+
+    .iso-body {
+      position: absolute;
+      width: 32px;
+      height: 40px;
+      background: linear-gradient(135deg, #3498db 0%, #2980b9 100%);
+      left: 14px;
+      top: 20px;
+      transform: rotateX(-20deg) rotateY(45deg);
+      box-shadow: 
+        inset -4px -4px 0 rgba(0,0,0,0.2),
+        inset 4px 4px 0 rgba(255,255,255,0.1);
+    }
+
+    .iso-head {
+      position: absolute;
+      width: 28px;
+      height: 24px;
+      background: #f4c2a1;
+      left: 16px;
+      top: 0;
+      transform: rotateX(-20deg) rotateY(45deg);
+      box-shadow: 
+        inset -3px -3px 0 rgba(0,0,0,0.1),
+        0 4px 0 #2c3e50;
+    }
+
+    .iso-eyes {
+      position: absolute;
+      width: 6px;
+      height: 6px;
+      background: #333;
+      left: 20px;
+      top: 8px;
+      box-shadow: 14px 0 0 #333;
+    }
+
+    /* 思考 - 问号旋转 */
+    .iso-thinking .iso-head {
+      animation: iso-head-nod 2s ease-in-out infinite;
+    }
+
+    .iso-thinking .question-mark {
+      position: absolute;
+      top: -20px;
+      left: 20px;
+      font-size: 20px;
+      color: #ffd700;
+      animation: question-bounce 1s ease-in-out infinite;
+      text-shadow: 0 0 10px rgba(255, 215, 0, 0.5);
+    }
+
+    @keyframes iso-head-nod {
+      0%, 100% { transform: rotateX(-20deg) rotateY(45deg) rotateZ(0deg); }
+      50% { transform: rotateX(-20deg) rotateY(45deg) rotateZ(-10deg); }
+    }
+
+    @keyframes question-bounce {
+      0%, 100% { transform: translateY(0) rotate(0deg); opacity: 1; }
+      50% { transform: translateY(-10px) rotate(10deg); opacity: 0.7; }
+    }
+
+    /* 睡觉 - 躺平 */
+    .iso-sleeping .iso-character {
+      transform: rotateZ(-90deg) translateY(20px);
+    }
+
+    .iso-sleeping .iso-head {
+      animation: iso-sleep-breath 3s ease-in-out infinite;
+    }
+
+    .iso-sleeping .zzz-iso {
+      position: absolute;
+      top: -30px;
+      left: 20px;
+      font-size: 14px;
+      color: #fff;
+      animation: zzz-iso-float 2s ease-in-out infinite;
+    }
+
+    @keyframes iso-sleep-breath {
+      0%, 100% { transform: rotateX(-20deg) rotateY(45deg) scale(1); }
+      50% { transform: rotateX(-20deg) rotateY(45deg) scale(1.05); }
+    }
+
+    @keyframes zzz-iso-float {
+      0% { opacity: 0; transform: translate(0, 0) scale(0.5); }
+      50% { opacity: 1; }
+      100% { opacity: 0; transform: translate(10px, -20px) scale(1.2); }
+    }
+
+    /* 倾听 - 耳朵变大 */
+    .iso-listening .iso-head {
+      box-shadow: 
+        inset -3px -3px 0 rgba(0,0,0,0.1),
+        0 4px 0 #2c3e50,
+        -8px 0 0 4px #f4c2a1;
+      animation: iso-listen-pulse 0.5s ease-in-out infinite alternate;
+    }
+
+    .iso-listening .sound-waves {
+      position: absolute;
+      left: -20px;
+      top: 10px;
+    }
+
+    .iso-listening .wave {
+      position: absolute;
+      width: 8px;
+      height: 8px;
+      border: 2px solid #00d4ff;
+      border-radius: 50%;
+      opacity: 0;
+    }
+
+    .iso-listening .wave:nth-child(1) { animation: wave-expand 1s ease-out infinite; }
+    .iso-listening .wave:nth-child(2) { animation: wave-expand 1s ease-out infinite 0.3s; }
+    .iso-listening .wave:nth-child(3) { animation: wave-expand 1s ease-out infinite 0.6s; }
+
+    @keyframes iso-listen-pulse {
+      0% { transform: rotateX(-20deg) rotateY(45deg) scale(1); }
+      100% { transform: rotateX(-20deg) rotateY(45deg) scale(1.1); }
+    }
+
+    @keyframes wave-expand {
+      0% { transform: scale(0.5); opacity: 1; }
+      100% { transform: scale(3); opacity: 0; }
+    }
+
+    /* 说话 - 嘴巴动画 */
+    .iso-speaking .iso-head::after {
+      content: '';
+      position: absolute;
+      width: 12px;
+      height: 8px;
+      background: #c0392b;
+      bottom: 4px;
+      left: 8px;
+      animation: iso-mouth-talk 0.2s ease-in-out infinite alternate;
+    }
+
+    .iso-speaking .speech-lines {
+      position: absolute;
+      top: -25px;
+      right: -20px;
+    }
+
+    .iso-speaking .line {
+      position: absolute;
+      width: 20px;
+      height: 3px;
+      background: #fff;
+      border-radius: 2px;
+      animation: line-pop 0.4s ease-in-out infinite alternate;
+    }
+
+    .iso-speaking .line:nth-child(1) { top: 0; left: 0; }
+    .iso-speaking .line:nth-child(2) { top: 8px; left: 10px; animation-delay: 0.1s; }
+    .iso-speaking .line:nth-child(3) { top: 16px; left: 5px; animation-delay: 0.2s; }
+
+    @keyframes iso-mouth-talk {
+      0% { height: 4px; }
+      100% { height: 10px; }
+    }
+
+    @keyframes line-pop {
+      0% { transform: scaleX(0.5); opacity: 0.5; }
+      100% { transform: scaleX(1); opacity: 1; }
+    }
+
+    /* ==================== 方案三：现代极简风 ==================== */
+    .scheme-modern .modern-character {
+      width: 80px;
+      height: 100px;
+      position: relative;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+    }
+
+    .modern-head {
+      width: 40px;
+      height: 36px;
+      background: linear-gradient(180deg, #667eea 0%, #764ba2 100%);
+      border-radius: 12px;
+      position: relative;
+      box-shadow: 0 4px 15px rgba(102, 126, 234, 0.4);
+    }
+
+    .modern-face {
+      position: absolute;
+      width: 100%;
+      height: 100%;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      gap: 8px;
+    }
+
+    .modern-eye {
+      width: 8px;
+      height: 8px;
+      background: #fff;
+      border-radius: 50%;
+      position: relative;
+    }
+
+    .modern-eye::after {
+      content: '';
+      position: absolute;
+      width: 4px;
+      height: 4px;
+      background: #333;
+      border-radius: 50%;
+      top: 2px;
+      left: 2px;
+    }
+
+    .modern-body {
+      width: 32px;
+      height: 40px;
+      background: linear-gradient(180deg, #667eea 0%, #764ba2 100%);
+      border-radius: 8px;
+      margin-top: 4px;
+      position: relative;
+    }
+
+    .modern-arms {
+      position: absolute;
+      width: 56px;
+      height: 8px;
+      background: #667eea;
+      top: 8px;
+      left: -12px;
+      border-radius: 4px;
+    }
+
+    .modern-legs {
+      width: 32px;
+      height: 20px;
+      display: flex;
+      justify-content: space-between;
+      margin-top: 2px;
+    }
+
+    .modern-leg {
+      width: 12px;
+      height: 100%;
+      background: #764ba2;
+      border-radius: 6px;
+    }
+
+    /* 思考 - 旋转思考环 */
+    .modern-thinking .modern-head {
+      animation: modern-float 3s ease-in-out infinite;
+    }
+
+    .modern-thinking .thinking-ring {
+      position: absolute;
+      width: 60px;
+      height: 60px;
+      border: 3px dashed rgba(255, 215, 0, 0.6);
+      border-radius: 50%;
+      top: -12px;
+      animation: ring-spin 4s linear infinite;
+    }
+
+    .modern-thinking .thinking-dots {
+      position: absolute;
+      top: -25px;
+      display: flex;
+      gap: 4px;
+    }
+
+    .modern-thinking .dot {
+      width: 6px;
+      height: 6px;
+      background: #ffd700;
+      border-radius: 50%;
+      animation: dot-bounce 0.6s ease-in-out infinite;
+    }
+
+    .modern-thinking .dot:nth-child(2) { animation-delay: 0.2s; }
+    .modern-thinking .dot:nth-child(3) { animation-delay: 0.4s; }
+
+    @keyframes modern-float {
+      0%, 100% { transform: translateY(0); }
+      50% { transform: translateY(-5px); }
+    }
+
+    @keyframes ring-spin {
+      0% { transform: rotate(0deg); }
+      100% { transform: rotate(360deg); }
+    }
+
+    @keyframes dot-bounce {
+      0%, 100% { transform: translateY(0); }
+      50% { transform: translateY(-8px); }
+    }
+
+    /* 睡觉 - 呼吸效果 */
+    .modern-sleeping .modern-character {
+      animation: modern-sway 4s ease-in-out infinite;
+    }
+
+    .modern-sleeping .modern-head,
+    .modern-sleeping .modern-body {
+      animation: modern-breathe 3s ease-in-out infinite;
+    }
+
+    .modern-sleeping .modern-eye {
+      height: 2px;
+      border-radius: 1px;
+      margin-top: 3px;
+    }
+
+    .modern-sleeping .modern-eye::after {
+      display: none;
+    }
+
+    .modern-sleeping .sleep-bubble {
+      position: absolute;
+      top: -10px;
+      right: -20px;
+      font-size: 16px;
+      animation: sleep-float 2s ease-in-out infinite;
+    }
+
+    @keyframes modern-sway {
+      0%, 100% { transform: rotate(-3deg); }
+      50% { transform: rotate(3deg); }
+    }
+
+    @keyframes modern-breathe {
+      0%, 100% { transform: scale(1); }
+      50% { transform: scale(1.03); }
+    }
+
+    @keyframes sleep-float {
+      0%, 100% { opacity: 0.3; transform: translateY(0); }
+      50% { opacity: 1; transform: translateY(-15px); }
+    }
+
+    /* 倾听 - 雷达效果 */
+    .modern-listening .modern-head {
+      animation: modern-pulse 1s ease-in-out infinite alternate;
+    }
+
+    .modern-listening .radar {
+      position: absolute;
+      width: 100px;
+      height: 100px;
+      border: 2px solid rgba(0, 212, 255, 0.3);
+      border-radius: 50%;
+      top: 0;
+      animation: radar-ping 1.5s ease-out infinite;
+    }
+
+    .modern-listening .radar:nth-child(2) {
+      animation-delay: 0.5s;
+    }
+
+    .modern-listening .modern-arms {
+      animation: arm-cup 1s ease-in-out infinite alternate;
+    }
+
+    @keyframes modern-pulse {
+      0% { box-shadow: 0 4px 15px rgba(102, 126, 234, 0.4); }
+      100% { box-shadow: 0 4px 25px rgba(0, 212, 255, 0.6), 0 0 30px rgba(0, 212, 255, 0.3); }
+    }
+
+    @keyframes radar-ping {
+      0% { transform: scale(0.5); opacity: 1; }
+      100% { transform: scale(1.2); opacity: 0; }
+    }
+
+    @keyframes arm-cup {
+      0% { transform: translateX(0); }
+      100% { transform: translateX(5px); }
+    }
+
+    /* 说话 - 声波 */
+    .modern-speaking .modern-head {
+      animation: modern-talk 0.3s ease-in-out infinite alternate;
+    }
+
+    .modern-speaking .modern-mouth {
+      position: absolute;
+      width: 16px;
+      height: 8px;
+      background: #fff;
+      border-radius: 0 0 8px 8px;
+      bottom: 6px;
+      left: 12px;
+      animation: mouth-open 0.2s ease-in-out infinite alternate;
+    }
+
+    .modern-speaking .voice-waves {
+      position: absolute;
+      right: -30px;
+      top: 10px;
+      display: flex;
+      flex-direction: column;
+      gap: 4px;
+    }
+
+    .modern-speaking .v-wave {
+      width: 20px;
+      height: 4px;
+      background: linear-gradient(90deg, #667eea, transparent);
+      border-radius: 2px;
+      animation: voice-wave 0.4s ease-in-out infinite alternate;
+    }
+
+    .modern-speaking .v-wave:nth-child(2) { animation-delay: 0.1s; width: 30px; }
+    .modern-speaking .v-wave:nth-child(3) { animation-delay: 0.2s; width: 25px; }
+
+    @keyframes modern-talk {
+      0% { transform: scale(1); }
+      100% { transform: scale(1.02); }
+    }
+
+    @keyframes mouth-open {
+      0% { height: 4px; }
+      100% { height: 10px; }
+    }
+
+    @keyframes voice-wave {
+      0% { transform: scaleX(0.3); opacity: 0.5; }
+      100% { transform: scaleX(1); opacity: 1; }
+    }
+
+    /* ==================== 方案四：赛博朋克风 ==================== */
+    .scheme-cyber .cyber-character {
+      width: 80px;
+      height: 100px;
+      position: relative;
+      filter: drop-shadow(0 0 10px rgba(0, 255, 255, 0.5));
+    }
+
+    .cyber-head {
+      width: 44px;
+      height: 40px;
+      background: linear-gradient(135deg, #0a0a0a 0%, #1a1a2e 100%);
+      border: 2px solid #00ffff;
+      border-radius: 8px;
+      position: absolute;
+      left: 18px;
+      box-shadow: 
+        inset 0 0 10px rgba(0, 255, 255, 0.2),
+        0 0 20px rgba(0, 255, 255, 0.4);
+    }
+
+    .cyber-face {
+      position: absolute;
+      width: 100%;
+      height: 100%;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      gap: 8px;
+    }
+
+    .cyber-eye {
+      width: 10px;
+      height: 4px;
+      background: #00ffff;
+      box-shadow: 0 0 10px #00ffff;
+      border-radius: 2px;
+    }
+
+    .cyber-body {
+      width: 36px;
+      height: 44px;
+      background: linear-gradient(135deg, #0a0a0a 0%, #1a1a2e 100%);
+      border: 2px solid #ff00ff;
+      border-radius: 8px;
+      position: absolute;
+      top: 44px;
+      left: 22px;
+      box-shadow: 0 0 20px rgba(255, 0, 255, 0.4);
+    }
+
+    .cyber-core {
+      position: absolute;
+      width: 16px;
+      height: 16px;
+      background: radial-gradient(circle, #00ffff 0%, transparent 70%);
+      top: 14px;
+      left: 10px;
+      border-radius: 50%;
+      animation: core-pulse 2s ease-in-out infinite;
+    }
+
+    .cyber-legs {
+      position: absolute;
+      top: 88px;
+      left: 26px;
+      width: 28px;
+      height: 16px;
+      display: flex;
+      justify-content: space-between;
+    }
+
+    .cyber-leg {
+      width: 10px;
+      height: 100%;
+      background: #0a0a0a;
+      border: 1px solid #00ffff;
+      border-radius: 4px;
+    }
+
+    @keyframes core-pulse {
+      0%, 100% { opacity: 0.5; transform: scale(1); }
+      50% { opacity: 1; transform: scale(1.2); }
+    }
+
+    /* 思考 - 数据流 */
+    .cyber-thinking .cyber-head {
+      animation: cyber-glitch 3s ease-in-out infinite;
+    }
+
+    .cyber-thinking .data-stream {
+      position: absolute;
+      top: -30px;
+      left: 10px;
+      display: flex;
+      flex-direction: column;
+      gap: 2px;
+    }
+
+    .cyber-thinking .data-bit {
+      font-size: 8px;
+      color: #00ff00;
+      font-family: monospace;
+      opacity: 0;
+      animation: data-fall 1s ease-in-out infinite;
+    }
+
+    .cyber-thinking .data-bit:nth-child(1) { animation-delay: 0s; }
+    .cyber-thinking .data-bit:nth-child(2) { animation-delay: 0.2s; }
+    .cyber-thinking .data-bit:nth-child(3) { animation-delay: 0.4s; }
+
+    @keyframes cyber-glitch {
+      0%, 90%, 100% { transform: translate(0); }
+      92% { transform: translate(-2px, 2px); }
+      94% { transform: translate(2px, -2px); }
+      96% { transform: translate(-2px, -2px); }
+    }
+
+    @keyframes data-fall {
+      0% { opacity: 0; transform: translateY(-10px); }
+      50% { opacity: 1; }
+      100% { opacity: 0; transform: translateY(10px); }
+    }
+
+    /* 睡觉 - 待机模式 */
+    .cyber-sleeping .cyber-head {
+      border-color: #666;
+      box-shadow: inset 0 0 10px rgba(0,0,0,0.5);
+    }
+
+    .cyber-sleeping .cyber-eye {
+      background: #333;
+      box-shadow: none;
+      width: 6px;
+      height: 2px;
+    }
+
+    .cyber-sleeping .cyber-body {
+      border-color: #666;
+      box-shadow: none;
+    }
+
+    .cyber-sleeping .cyber-core {
+      background: radial-gradient(circle, #333 0%, transparent 70%);
+      animation: sleep-pulse 4s ease-in-out infinite;
+    }
+
+    .cyber-sleeping .standby-text {
+      position: absolute;
+      top: -25px;
+      left: 5px;
+      font-size: 8px;
+      color: #666;
+      animation: standby-blink 2s ease-in-out infinite;
+    }
+
+    @keyframes sleep-pulse {
+      0%, 100% { opacity: 0.2; }
+      50% { opacity: 0.4; }
+    }
+
+    @keyframes standby-blink {
+      0%, 100% { opacity: 0.3; }
+      50% { opacity: 0.8; }
+    }
+
+    /* 倾听 - 扫描 */
+    .cyber-listening .cyber-head {
+      animation: cyber-scan 1s ease-in-out infinite;
+    }
+
+    .cyber-listening .scan-line {
+      position: absolute;
+      width: 100%;
+      height: 2px;
+      background: linear-gradient(90deg, transparent, #00ffff, transparent);
+      top: 0;
+      animation: scan-move 1s ease-in-out infinite;
+    }
+
+    .cyber-listening .cyber-eye {
+      animation: eye-bright 0.5s ease-in-out infinite alternate;
+    }
+
+    @keyframes cyber-scan {
+      0%, 100% { transform: rotateY(-15deg); }
+      50% { transform: rotateY(15deg); }
+    }
+
+    @keyframes scan-move {
+      0% { top: 0; opacity: 0; }
+      50% { opacity: 1; }
+      100% { top: 100%; opacity: 0; }
+    }
+
+    @keyframes eye-bright {
+      0% { box-shadow: 0 0 5px #00ffff; }
+      100% { box-shadow: 0 0 20px #00ffff, 0 0 30px #00ffff; }
+    }
+
+    /* 说话 - 传输 */
+    .cyber-speaking .cyber-head {
+      animation: cyber-talk 0.2s ease-in-out infinite alternate;
+    }
+
+    .cyber-speaking .transmit-waves {
+      position: absolute;
+      right: -40px;
+      top: 10px;
+    }
+
+    .cyber-speaking .t-wave {
+      position: absolute;
+      width: 30px;
+      height: 30px;
+      border: 2px solid #00ff00;
+      border-radius: 50%;
+      opacity: 0;
+    }
+
+    .cyber-speaking .t-wave:nth-child(1) { animation: transmit-expand 0.6s ease-out infinite; }
+    .cyber-speaking .t-wave:nth-child(2) { animation: transmit-expand 0.6s ease-out infinite 0.2s; }
+    .cyber-speaking .t-wave:nth-child(3) { animation: transmit-expand 0.6s ease-out infinite 0.4s; }
+
+    .cyber-speaking .cyber-mouth {
+      position: absolute;
+      width: 20px;
+      height: 6px;
+      background: #00ff00;
+      bottom: 6px;
+      left: 12px;
+      border-radius: 3px;
+      box-shadow: 0 0 10px #00ff00;
+      animation: cyber-mouth-move 0.2s ease-in-out infinite alternate;
+    }
+
+    @keyframes cyber-talk {
+      0% { transform: scale(1); }
+      100% { transform: scale(1.02); }
+    }
+
+    @keyframes transmit-expand {
+      0% { transform: scale(0.3); opacity: 1; }
+      100% { transform: scale(1.5); opacity: 0; }
+    }
+
+    @keyframes cyber-mouth-move {
+      0% { height: 4px; }
+      100% { height: 10px; }
+    }
+
+    /* 响应式 */
+    @media (max-width: 768px) {
+      .actions-row {
+        gap: 20px;
+      }
+      
+      .action-box {
+        transform: scale(0.8);
+      }
+    }
+
+    /* 底部说明 */
+    .footer-note {
+      text-align: center;
+      margin-top: 60px;
+      font-size: 10px;
+      color: #666;
+      line-height: 2;
+    }
+
+    .footer-note a {
+      color: #00d4ff;
+    }
+
+    /* ==================== 方案五：RPG游戏风格（BrowserQuest风格） ==================== */
+    .scheme-rpg .rpg-character {
+      width: 64px;
+      height: 80px;
+      position: relative;
+      image-rendering: pixelated;
+    }
+
+    .rpg-body {
+      position: absolute;
+      width: 32px;
+      height: 32px;
+      background: #8b4513;
+      left: 16px;
+      top: 32px;
+      border-radius: 4px;
+      box-shadow: 
+        inset -4px 0 0 rgba(0,0,0,0.2),
+        inset 4px 0 0 rgba(255,255,255,0.1);
+    }
+
+    .rpg-head {
+      position: absolute;
+      width: 28px;
+      height: 28px;
+      background: #f4c2a1;
+      left: 18px;
+      top: 6px;
+      border-radius: 6px;
+      box-shadow: 
+        inset -3px -3px 0 rgba(0,0,0,0.1),
+        0 2px 4px rgba(0,0,0,0.3);
+    }
+
+    .rpg-eyes {
+      position: absolute;
+      width: 6px;
+      height: 6px;
+      background: #333;
+      left: 6px;
+      top: 10px;
+      border-radius: 50%;
+      box-shadow: 10px 0 0 #333;
+    }
+
+    .rpg-legs {
+      position: absolute;
+      top: 64px;
+      left: 16px;
+      width: 32px;
+      height: 16px;
+    }
+
+    .rpg-leg {
+      position: absolute;
+      width: 10px;
+      height: 16px;
+      background: #2c3e50;
+      border-radius: 2px;
+    }
+
+    .rpg-leg:nth-child(1) { left: 4px; }
+    .rpg-leg:nth-child(2) { right: 4px; }
+
+    .rpg-arms {
+      position: absolute;
+      top: 36px;
+      width: 40px;
+      height: 8px;
+      left: 12px;
+    }
+
+    .rpg-arm {
+      position: absolute;
+      width: 8px;
+      height: 20px;
+      background: #f4c2a1;
+      border-radius: 4px;
+    }
+
+    .rpg-arm:nth-child(1) { left: 0; }
+    .rpg-arm:nth-child(2) { right: 0; }
+
+    /* 思考 - 挠头 */
+    .rpg-thinking .rpg-head {
+      animation: rpg-head-scratch 1s ease-in-out infinite;
+    }
+
+    .rpg-thinking .rpg-arm:nth-child(1) {
+      animation: rpg-arm-scratch 1s ease-in-out infinite;
+      transform-origin: top;
+    }
+
+    .rpg-thinking .thought-bubble {
+      position: absolute;
+      top: -20px;
+      right: -35px;
+      font-size: 20px;
+      animation: thought-pop 1.5s ease-in-out infinite;
+    }
+
+    @keyframes rpg-head-scratch {
+      0%, 100% { transform: rotate(0deg); }
+      25% { transform: rotate(-5deg); }
+      75% { transform: rotate(5deg); }
+    }
+
+    @keyframes rpg-arm-scratch {
+      0%, 100% { transform: rotate(0deg); }
+      50% { transform: rotate(-30deg); }
+    }
+
+    @keyframes thought-pop {
+      0%, 100% { opacity: 0; transform: scale(0.5); }
+      50% { opacity: 1; transform: scale(1); }
+    }
+
+    /* 睡觉 - 坐下 */
+    .rpg-sleeping .rpg-character {
+      animation: rpg-sleep-breath 3s ease-in-out infinite;
+    }
+
+    .rpg-sleeping .rpg-body {
+      transform: translateY(8px);
+      border-radius: 8px 8px 4px 4px;
+    }
+
+    .rpg-sleeping .rpg-head {
+      transform: translateY(8px) rotate(-10deg);
+    }
+
+    .rpg-sleeping .rpg-eyes {
+      height: 2px;
+      border-radius: 1px;
+      top: 12px;
+      box-shadow: 10px 0 0 0 #333;
+    }
+
+    .rpg-sleeping .rpg-leg:nth-child(1) {
+      transform: translateX(-4px) rotate(-20deg);
+    }
+
+    .rpg-sleeping .rpg-leg:nth-child(2) {
+      transform: translateX(4px) rotate(20deg);
+    }
+
+    .rpg-sleeping .sleep-zzz {
+      position: absolute;
+      top: -10px;
+      right: -25px;
+      font-size: 12px;
+      color: #fff;
+      animation: rpg-zzz 2s ease-in-out infinite;
+    }
+
+    @keyframes rpg-sleep-breath {
+      0%, 100% { transform: scaleY(1); }
+      50% { transform: scaleY(1.02); }
+    }
+
+    @keyframes rpg-zzz {
+      0% { opacity: 0; transform: translateY(0); }
+      50% { opacity: 1; }
+      100% { opacity: 0; transform: translateY(-15px); }
+    }
+
+    /* 倾听 - 侧身 */
+    .rpg-listening .rpg-character {
+      animation: rpg-listen-bounce 0.5s ease-in-out infinite alternate;
+    }
+
+    .rpg-listening .rpg-head {
+      animation: rpg-ear-twitch 0.3s ease-in-out infinite alternate;
+      transform-origin: bottom center;
+    }
+
+    .rpg-listening .rpg-arm:nth-child(1) {
+      transform: rotate(-45deg);
+    }
+
+    .rpg-listening .sound-indicator {
+      position: absolute;
+      left: -20px;
+      top: 20px;
+      display: flex;
+      flex-direction: column;
+      gap: 4px;
+    }
+
+    .rpg-listening .sound-bar {
+      width: 4px;
+      height: 20px;
+      background: #00d4ff;
+      border-radius: 2px;
+      animation: sound-bounce 0.4s ease-in-out infinite alternate;
+    }
+
+    .rpg-listening .sound-bar:nth-child(2) { animation-delay: 0.1s; height: 30px; }
+    .rpg-listening .sound-bar:nth-child(3) { animation-delay: 0.2s; height: 25px; }
+
+    @keyframes rpg-listen-bounce {
+      0% { transform: translateX(0); }
+      100% { transform: translateX(3px); }
+    }
+
+    @keyframes rpg-ear-twitch {
+      0% { transform: rotate(0deg); }
+      100% { transform: rotate(-5deg); }
+    }
+
+    @keyframes sound-bounce {
+      0% { transform: scaleY(0.3); }
+      100% { transform: scaleY(1); }
+    }
+
+    /* 说话 - 手势 */
+    .rpg-speaking .rpg-character {
+      animation: rpg-speak-bounce 0.3s ease-in-out infinite alternate;
+    }
+
+    .rpg-speaking .rpg-arm:nth-child(2) {
+      animation: rpg-speak-gesture 0.5s ease-in-out infinite alternate;
+      transform-origin: top;
+    }
+
+    .rpg-speaking .rpg-mouth {
+      position: absolute;
+      width: 12px;
+      height: 6px;
+      background: #c0392b;
+      border-radius: 0 0 6px 6px;
+      bottom: 6px;
+      left: 8px;
+      animation: rpg-mouth-talk 0.2s ease-in-out infinite alternate;
+    }
+
+    .rpg-speaking .chat-bubble {
+      position: absolute;
+      top: -35px;
+      right: -40px;
+      background: #fff;
+      color: #000;
+      padding: 6px 10px;
+      border-radius: 8px;
+      font-size: 8px;
+      box-shadow: 2px 2px 0 rgba(0,0,0,0.3);
+      animation: rpg-bubble-bounce 0.5s ease-in-out infinite alternate;
+    }
+
+    @keyframes rpg-speak-bounce {
+      0% { transform: translateY(0); }
+      100% { transform: translateY(-2px); }
+    }
+
+    @keyframes rpg-speak-gesture {
+      0% { transform: rotate(0deg); }
+      100% { transform: rotate(-40deg); }
+    }
+
+    @keyframes rpg-mouth-talk {
+      0% { height: 4px; }
+      100% { height: 8px; }
+    }
+
+    @keyframes rpg-bubble-bounce {
+      0% { transform: scale(1); }
+      100% { transform: scale(1.05); }
+    }
+
+    /* ==================== 方案六：Mono/终端风格（极客向） ==================== */
+    .scheme-mono .mono-character {
+      width: 80px;
+      height: 100px;
+      position: relative;
+      font-family: 'Courier New', monospace;
+    }
+
+    .mono-head {
+      width: 48px;
+      height: 40px;
+      background: #0f0;
+      position: absolute;
+      left: 16px;
+      top: 0;
+      border-radius: 4px;
+      box-shadow: 
+        inset -4px -4px 0 rgba(0,0,0,0.3),
+        0 0 20px rgba(0,255,0,0.3);
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      font-size: 20px;
+      color: #000;
+      font-weight: bold;
+    }
+
+    .mono-face {
+      display: flex;
+      gap: 8px;
+    }
+
+    .mono-eye {
+      width: 8px;
+      height: 12px;
+      background: #000;
+    }
+
+    .mono-body {
+      width: 40px;
+      height: 40px;
+      background: #0f0;
+      position: absolute;
+      left: 20px;
+      top: 44px;
+      border-radius: 4px;
+      box-shadow: inset -4px -4px 0 rgba(0,0,0,0.3);
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      font-size: 16px;
+      color: #000;
+    }
+
+    .mono-legs {
+      position: absolute;
+      top: 84px;
+      left: 20px;
+      width: 40px;
+      height: 16px;
+      display: flex;
+      justify-content: space-between;
+    }
+
+    .mono-leg {
+      width: 14px;
+      height: 100%;
+      background: #0f0;
+      border-radius: 2px;
+      box-shadow: inset -2px -2px 0 rgba(0,0,0,0.3);
+    }
+
+    /* 思考 - 代码滚动 */
+    .mono-thinking .mono-head {
+      animation: mono-glow 2s ease-in-out infinite alternate;
+    }
+
+    .mono-thinking .code-scroll {
+      position: absolute;
+      top: -25px;
+      left: 0;
+      font-size: 8px;
+      color: #0f0;
+      opacity: 0.7;
+      animation: code-fade 1.5s ease-in-out infinite;
+    }
+
+    .mono-thinking .mono-body::before {
+      content: '{...}';
+      animation: mono-thinking-anim 1s ease-in-out infinite alternate;
+    }
+
+    @keyframes mono-glow {
+      0% { box-shadow: inset -4px -4px 0 rgba(0,0,0,0.3), 0 0 20px rgba(0,255,0,0.3); }
+      100% { box-shadow: inset -4px -4px 0 rgba(0,0,0,0.3), 0 0 40px rgba(0,255,0,0.6); }
+    }
+
+    @keyframes code-fade {
+      0% { opacity: 0; transform: translateY(10px); }
+      50% { opacity: 0.7; }
+      100% { opacity: 0; transform: translateY(-10px); }
+    }
+
+    @keyframes mono-thinking-anim {
+      0% { content: '{..}'; }
+      100% { content: '{...}'; }
+    }
+
+    /* 睡觉 - 待机 */
+    .mono-sleeping .mono-character {
+      opacity: 0.5;
+    }
+
+    .mono-sleeping .mono-head {
+      background: #333;
+      color: #666;
+    }
+
+    .mono-sleeping .mono-body {
+      background: #333;
+    }
+
+    .mono-sleeping .mono-leg {
+      background: #333;
+    }
+
+    .mono-sleeping .mono-eye {
+      background: #666;
+      height: 2px;
+      margin-top: 5px;
+    }
+
+    .mono-sleeping .standby-code {
+      position: absolute;
+      top: -20px;
+      font-size: 8px;
+      color: #666;
+      animation: standby-fade 3s ease-in-out infinite;
+    }
+
+    @keyframes standby-fade {
+      0%, 100% { opacity: 0.3; }
+      50% { opacity: 0.8; }
+    }
+
+    /* 倾听 - 输入光标 */
+    .mono-listening .mono-head {
+      animation: mono-pulse 1s ease-in-out infinite;
+    }
+
+    .mono-listening .cursor-blink {
+      position: absolute;
+      width: 3px;
+      height: 20px;
+      background: #0f0;
+      left: -10px;
+      top: 10px;
+      animation: cursor-flash 0.5s ease-in-out infinite alternate;
+    }
+
+    .mono-listening .mono-body::before {
+      content: '|';
+      animation: mono-input 0.5s ease-in-out infinite;
+    }
+
+    @keyframes mono-pulse {
+      0%, 100% { transform: scale(1); }
+      50% { transform: scale(1.05); }
+    }
+
+    @keyframes cursor-flash {
+      0% { opacity: 0; }
+      100% { opacity: 1; }
+    }
+
+    @keyframes mono-input {
+      0%, 100% { content: '|'; }
+      50% { content: '/'; }
+    }
+
+    /* 说话 - 输出 */
+    .mono-speaking .mono-head {
+      animation: mono-output 0.3s ease-in-out infinite alternate;
+    }
+
+    .mono-speaking .output-stream {
+      position: absolute;
+      right: -50px;
+      top: 20px;
+      display: flex;
+      flex-direction: column;
+      gap: 2px;
+    }
+
+    .mono-speaking .output-char {
+      font-size: 10px;
+      color: #0f0;
+      opacity: 0;
+      animation: char-output 0.6s ease-out infinite;
+    }
+
+    .mono-speaking .output-char:nth-child(1) { animation-delay: 0s; }
+    .mono-speaking .output-char:nth-child(2) { animation-delay: 0.1s; }
+    .mono-speaking .output-char:nth-child(3) { animation-delay: 0.2s; }
+    .mono-speaking .output-char:nth-child(4) { animation-delay: 0.3s; }
+
+    .mono-speaking .mono-body::before {
+      content: '>';
+      animation: mono-speak 0.2s ease-in-out infinite alternate;
+    }
+
+    @keyframes mono-output {
+      0% { transform: translateX(0); }
+      100% { transform: translateX(2px); }
+    }
+
+    @keyframes char-output {
+      0% { opacity: 0; transform: translateX(-10px); }
+      50% { opacity: 1; }
+      100% { opacity: 0; transform: translateX(10px); }
+    }
+
+    @keyframes mono-speak {
+      0% { content: '>'; }
+      100% { content: '>>'; }
+    }
+
+    /* ==================== 方案七：Emoji风格（可爱向） ==================== */
+    .scheme-emoji .emoji-character {
+      width: 80px;
+      height: 100px;
+      position: relative;
+      font-size: 64px;
+      line-height: 1;
+      text-align: center;
+    }
+
+    .emoji-base {
+      animation: emoji-bounce 2s ease-in-out infinite;
+    }
+
+    @keyframes emoji-bounce {
+      0%, 100% { transform: translateY(0); }
+      50% { transform: translateY(-5px); }
+    }
+
+    /* 思考 */
+    .emoji-thinking .emoji-base {
+      content: '🤔';
+      animation: emoji-think 2s ease-in-out infinite;
+    }
+
+    .emoji-thinking .emoji-base::before {
+      content: '🤔';
+    }
+
+    .emoji-thinking .thought-dots {
+      position: absolute;
+      top: -15px;
+      right: -10px;
+      font-size: 20px;
+      animation: dots-pop 1s ease-in-out infinite;
+    }
+
+    @keyframes emoji-think {
+      0%, 100% { transform: rotate(0deg); }
+      25% { transform: rotate(-5deg); }
+      75% { transform: rotate(5deg); }
+    }
+
+    @keyframes dots-pop {
+      0%, 100% { opacity: 0.5; transform: scale(0.8); }
+      50% { opacity: 1; transform: scale(1.2); }
+    }
+
+    /* 睡觉 */
+    .emoji-sleeping .emoji-base {
+      animation: emoji-sleep 3s ease-in-out infinite;
+    }
+
+    .emoji-sleeping .emoji-base::before {
+      content: '😴';
+    }
+
+    .emoji-sleeping .sleep-stars {
+      position: absolute;
+      top: -10px;
+      right: -15px;
+      font-size: 16px;
+      animation: stars-twinkle 1.5s ease-in-out infinite;
+    }
+
+    @keyframes emoji-sleep {
+      0%, 100% { transform: scale(1); }
+      50% { transform: scale(1.05); }
+    }
+
+    @keyframes stars-twinkle {
+      0%, 100% { opacity: 0.3; }
+      50% { opacity: 1; }
+    }
+
+    /* 倾听 */
+    .emoji-listening .emoji-base {
+      animation: emoji-listen 1s ease-in-out infinite alternate;
+    }
+
+    .emoji-listening .emoji-base::before {
+      content: '👂';
+    }
+
+    .emoji-listening .sound-lines {
+      position: absolute;
+      left: -20px;
+      top: 20px;
+      font-size: 20px;
+      animation: lines-fade 0.5s ease-in-out infinite alternate;
+    }
+
+    @keyframes emoji-listen {
+      0% { transform: rotateY(0deg); }
+      100% { transform: rotateY(20deg); }
+    }
+
+    @keyframes lines-fade {
+      0% { opacity: 0.3; transform: translateX(-5px); }
+      100% { opacity: 1; transform: translateX(0); }
+    }
+
+    /* 说话 */
+    .emoji-speaking .emoji-base {
+      animation: emoji-speak 0.5s ease-in-out infinite alternate;
+    }
+
+    .emoji-speaking .emoji-base::before {
+      content: '🗣️';
+    }
+
+    .emoji-speaking .speech-particles {
+      position: absolute;
+      right: -20px;
+      top: 10px;
+      font-size: 16px;
+      animation: particles-float 0.6s ease-out infinite;
+    }
+
+    @keyframes emoji-speak {
+      0% { transform: scale(1); }
+      100% { transform: scale(1.1); }
+    }
+
+    @keyframes particles-float {
+      0% { opacity: 1; transform: translateX(0); }
+      100% { opacity: 0; transform: translateX(20px); }
+    }
+
+    /* ==================== 方案八：手绘涂鸦风格 ==================== */
+    .scheme-sketch .sketch-character {
+      width: 80px;
+      height: 100px;
+      position: relative;
+    }
+
+    .sketch-head {
+      width: 44px;
+      height: 40px;
+      border: 3px solid #333;
+      border-radius: 50%;
+      position: absolute;
+      left: 18px;
+      top: 0;
+      background: #fff;
+    }
+
+    .sketch-eyes {
+      position: absolute;
+      width: 100%;
+      height: 100%;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      gap: 8px;
+    }
+
+    .sketch-eye {
+      width: 8px;
+      height: 10px;
+      border: 2px solid #333;
+      border-radius: 50%;
+    }
+
+    .sketch-eye::after {
+      content: '';
+      position: absolute;
+      width: 4px;
+      height: 4px;
+      background: #333;
+      border-radius: 50%;
+      top: 18px;
+    }
+
+    .sketch-body {
+      width: 36px;
+      height: 40px;
+      border: 3px solid #333;
+      border-radius: 8px;
+      position: absolute;
+      left: 22px;
+      top: 42px;
+      background: #a8d5ff;
+    }
+
+    .sketch-legs {
+      position: absolute;
+      top: 82px;
+      left: 26px;
+      width: 28px;
+      height: 18px;
+      display: flex;
+      justify-content: space-between;
+    }
+
+    .sketch-leg {
+      width: 10px;
+      height: 100%;
+      border: 3px solid #333;
+      border-radius: 4px;
+      background: #333;
+    }
+
+    .sketch-arms {
+      position: absolute;
+      top: 46px;
+      left: 14px;
+      width: 52px;
+      height: 8px;
+    }
+
+    .sketch-arm {
+      position: absolute;
+      width: 8px;
+      height: 24px;
+      border: 3px solid #333;
+      border-radius: 8px;
+      background: #fff;
+    }
+
+    .sketch-arm:nth-child(1) { left: 0; top: 0; }
+    .sketch-arm:nth-child(2) { right: 0; top: 0; }
+
+    /* 思考 - 歪头 */
+    .sketch-thinking .sketch-character {
+      animation: sketch-wobble 3s ease-in-out infinite;
+    }
+
+    .sketch-thinking .sketch-head {
+      transform: rotate(-15deg);
+      animation: sketch-head-tilt 2s ease-in-out infinite alternate;
+    }
+
+    .sketch-thinking .sketch-arm:nth-child(1) {
+      transform: rotate(-30deg);
+      transform-origin: top;
+    }
+
+    .sketch-thinking .doodle-lines {
+      position: absolute;
+      top: -15px;
+      right: -20px;
+    }
+
+    .sketch-thinking .doodle {
+      width: 20px;
+      height: 20px;
+      border: 2px solid #ffd700;
+      border-radius: 50%;
+      animation: doodle-spin 3s linear infinite;
+    }
+
+    @keyframes sketch-wobble {
+      0%, 100% { transform: rotate(0deg); }
+      25% { transform: rotate(-2deg); }
+      75% { transform: rotate(2deg); }
+    }
+
+    @keyframes sketch-head-tilt {
+      0% { transform: rotate(-15deg); }
+      100% { transform: rotate(-10deg); }
+    }
+
+    @keyframes doodle-spin {
+      0% { transform: rotate(0deg) scale(1); }
+      50% { transform: rotate(180deg) scale(1.2); }
+      100% { transform: rotate(360deg) scale(1); }
+    }
+
+    /* 睡觉 - 歪倒 */
+    .sketch-sleeping .sketch-character {
+      animation: sketch-sway 4s ease-in-out infinite;
+    }
+
+    .sketch-sleeping .sketch-head {
+      transform: rotate(-20deg) translateY(5px);
+    }
+
+    .sketch-sleeping .sketch-eye {
+      height: 3px;
+      border: none;
+      border-bottom: 3px solid #333;
+      border-radius: 0;
+      margin-top: -5px;
+    }
+
+    .sketch-sleeping .sketch-eye::after {
+      display: none;
+    }
+
+    .sketch-sleeping .sketch-body {
+      transform: rotate(5deg);
+    }
+
+    .sketch-sleeping .sleep-cloud {
+      position: absolute;
+      top: -20px;
+      right: -25px;
+      font-size: 20px;
+      color: #999;
+      animation: cloud-drift 3s ease-in-out infinite;
+    }
+
+    @keyframes sketch-sway {
+      0%, 100% { transform: rotate(-3deg); }
+      50% { transform: rotate(3deg); }
+    }
+
+    @keyframes cloud-drift {
+      0%, 100% { transform: translateX(0); opacity: 0.5; }
+      50% { transform: translateX(10px); opacity: 1; }
+    }
+
+    /* 倾听 - 专注 */
+    .sketch-listening .sketch-character {
+      animation: sketch-lean 1s ease-in-out infinite alternate;
+    }
+
+    .sketch-listening .sketch-head {
+      transform: rotate(-10deg);
+      animation: sketch-ear-perk 0.5s ease-in-out infinite alternate;
+    }
+
+    .sketch-listening .sketch-eye {
+      animation: sketch-blink 2s ease-in-out infinite;
+    }
+
+    .sketch-listening .sound-arrows {
+      position: absolute;
+      left: -25px;
+      top: 15px;
+      font-size: 20px;
+      color: #00d4ff;
+      animation: arrows-point 0.6s ease-in-out infinite alternate;
+    }
+
+    @keyframes sketch-lean {
+      0% { transform: translateX(0); }
+      100% { transform: translateX(5px); }
+    }
+
+    @keyframes sketch-ear-perk {
+      0% { transform: rotate(-10deg); }
+      100% { transform: rotate(-15deg); }
+    }
+
+    @keyframes sketch-blink {
+      0%, 90%, 100% { transform: scaleY(1); }
+      95% { transform: scaleY(0.1); }
+    }
+
+    @keyframes arrows-point {
+      0% { transform: translateX(-5px); opacity: 0.5; }
+      100% { transform: translateX(0); opacity: 1; }
+    }
+
+    /* 说话 - 兴奋 */
+    .sketch-speaking .sketch-character {
+      animation: sketch-excited 0.5s ease-in-out infinite;
+    }
+
+    .sketch-speaking .sketch-head {
+      animation: sketch-nod 0.3s ease-in-out infinite alternate;
+    }
+
+    .sketch-speaking .sketch-mouth {
+      position: absolute;
+      width: 16px;
+      height: 10px;
+      border: 3px solid #333;
+      border-radius: 0 0 12px 12px;
+      background: #ff9999;
+      bottom: 8px;
+      left: 14px;
+      animation: sketch-mouth-open 0.2s ease-in-out infinite alternate;
+    }
+
+    .sketch-speaking .sketch-arm:nth-child(2) {
+      animation: sketch-wave 0.5s ease-in-out infinite alternate;
+      transform-origin: top;
+    }
+
+    .sketch-speaking .excitement-lines {
+      position: absolute;
+      right: -15px;
+      top: 10px;
+      font-size: 24px;
+      color: #ffd700;
+      animation: lines-burst 0.5s ease-in-out infinite;
+    }
+
+    @keyframes sketch-excited {
+      0%, 100% { transform: translateY(0); }
+      50% { transform: translateY(-3px); }
+    }
+
+    @keyframes sketch-nod {
+      0% { transform: rotate(0deg); }
+      100% { transform: rotate(5deg); }
+    }
+
+    @keyframes sketch-mouth-open {
+      0% { height: 6px; }
+      100% { height: 12px; }
+    }
+
+    @keyframes sketch-wave {
+      0% { transform: rotate(0deg); }
+      100% { transform: rotate(-45deg); }
+    }
+
+    @keyframes lines-burst {
+      0% { transform: scale(0.8); opacity: 0.5; }
+      100% { transform: scale(1.2); opacity: 1; }
+    }
+
+    /* ==================== 参考资料 ==================== */
+    .reference-section {
+      background: rgba(0, 212, 255, 0.05);
+      border: 2px solid #00d4ff;
+      border-radius: 16px;
+      padding: 30px;
+      margin-top: 40px;
+    }
+
+    .reference-title {
+      font-size: 14px;
+      color: #00d4ff;
+      margin-bottom: 20px;
+      display: flex;
+      align-items: center;
+      gap: 10px;
+    }
+
+    .reference-list {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+      gap: 20px;
+      font-size: 10px;
+      line-height: 1.8;
+    }
+
+    .reference-item {
+      background: rgba(0,0,0,0.3);
+      padding: 15px;
+      border-radius: 8px;
+      border-left: 3px solid #00d4ff;
+    }
+
+    .reference-item strong {
+      color: #ffd700;
+      display: block;
+      margin-bottom: 5px;
+    }
+
+    .reference-item a {
+      color: #00d4ff;
+      text-decoration: none;
+    }
+
+    .license-badge {
+      display: inline-block;
+      background: #2ecc71;
+      color: #000;
+      padding: 2px 6px;
+      border-radius: 4px;
+      font-size: 8px;
+      margin-left: 5px;
+    }
+  </style>
+</head>
+<body>
+  <h1>🎮 Agent 形象设计方案</h1>
+  <p class="subtitle">八种风格 × 四种动作状态 | 纯 CSS 实现 | 像素级优化 | 含开源参考</p>
+
+  <div class="schemes-container">
+    
+    <!-- 方案一：经典像素风 -->
+    <div class="scheme scheme-classic">
+      <div class="scheme-title">
+        方案一：经典像素风（优化版）
+        <span class="scheme-badge">推荐</span>
+      </div>
+      <div class="actions-row">
+        
+        <div class="action-box">
+          <div class="pixel-art classic-thinking">
+            <div class="classic-base">
+              <div class="pixel-head"></div>
+              <div class="pixel-body"></div>
+              <div class="pixel-legs"></div>
+            </div>
+          </div>
+          <span class="action-label">🤔 思考</span>
+        </div>
+
+        <div class="action-box">
+          <div class="pixel-art classic-sleeping">
+            <div class="classic-base">
+              <div class="pixel-head"></div>
+              <div class="pixel-body"></div>
+              <div class="pixel-legs"></div>
+              <div class="zzz">Zzz</div>
+            </div>
+          </div>
+          <span class="action-label">😴 睡觉</span>
+        </div>
+
+        <div class="action-box">
+          <div class="pixel-art classic-listening">
+            <div class="classic-base">
+              <div class="pixel-head"></div>
+              <div class="pixel-body"></div>
+              <div class="pixel-legs"></div>
+            </div>
+          </div>
+          <span class="action-label">👂 倾听</span>
+        </div>
+
+        <div class="action-box">
+          <div class="pixel-art classic-speaking">
+            <div class="classic-base">
+              <div class="pixel-head"></div>
+              <div class="pixel-body"></div>
+              <div class="pixel-legs"></div>
+              <div class="speech-bubble">Hello!</div>
+            </div>
+          </div>
+          <span class="action-label">💬 说话</span>
+        </div>
+
+      </div>
+    </div>
+
+    <!-- 方案二：等距3D像素 -->
+    <div class="scheme scheme-iso">
+      <div class="scheme-title">
+        方案二：等距 3D 像素风
+        <span class="scheme-badge">立体</span>
+      </div>
+      <div class="actions-row">
+        
+        <div class="action-box">
+          <div class="iso-character iso-thinking">
+            <div class="iso-body"></div>
+            <div class="iso-head">
+              <div class="iso-eyes"></div>
+            </div>
+            <div class="question-mark">?</div>
+          </div>
+          <span class="action-label">🤔 思考</span>
+        </div>
+
+        <div class="action-box">
+          <div class="iso-character iso-sleeping">
+            <div class="iso-body"></div>
+            <div class="iso-head">
+              <div class="iso-eyes"></div>
+            </div>
+            <div class="zzz-iso">Zzz</div>
+          </div>
+          <span class="action-label">😴 睡觉</span>
+        </div>
+
+        <div class="action-box">
+          <div class="iso-character iso-listening">
+            <div class="iso-body"></div>
+            <div class="iso-head">
+              <div class="iso-eyes"></div>
+            </div>
+            <div class="sound-waves">
+              <div class="wave"></div>
+              <div class="wave"></div>
+              <div class="wave"></div>
+            </div>
+          </div>
+          <span class="action-label">👂 倾听</span>
+        </div>
+
+        <div class="action-box">
+          <div class="iso-character iso-speaking">
+            <div class="iso-body"></div>
+            <div class="iso-head">
+              <div class="iso-eyes"></div>
+            </div>
+            <div class="speech-lines">
+              <div class="line"></div>
+              <div class="line"></div>
+              <div class="line"></div>
+            </div>
+          </div>
+          <span class="action-label">💬 说话</span>
+        </div>
+
+      </div>
+    </div>
+
+    <!-- 方案三：现代极简 -->
+    <div class="scheme scheme-modern">
+      <div class="scheme-title">
+        方案三：现代极简风
+        <span class="scheme-badge">简约</span>
+      </div>
+      <div class="actions-row">
+        
+        <div class="action-box">
+          <div class="modern-character modern-thinking">
+            <div class="thinking-ring"></div>
+            <div class="thinking-dots">
+              <div class="dot"></div>
+              <div class="dot"></div>
+              <div class="dot"></div>
+            </div>
+            <div class="modern-head">
+              <div class="modern-face">
+                <div class="modern-eye"></div>
+                <div class="modern-eye"></div>
+              </div>
+            </div>
+            <div class="modern-body">
+              <div class="modern-arms"></div>
+            </div>
+            <div class="modern-legs">
+              <div class="modern-leg"></div>
+              <div class="modern-leg"></div>
+            </div>
+          </div>
+          <span class="action-label">🤔 思考</span>
+        </div>
+
+        <div class="action-box">
+          <div class="modern-character modern-sleeping">
+            <div class="sleep-bubble">💤</div>
+            <div class="modern-head">
+              <div class="modern-face">
+                <div class="modern-eye"></div>
+                <div class="modern-eye"></div>
+              </div>
+            </div>
+            <div class="modern-body">
+              <div class="modern-arms"></div>
+            </div>
+            <div class="modern-legs">
+              <div class="modern-leg"></div>
+              <div class="modern-leg"></div>
+            </div>
+          </div>
+          <span class="action-label">😴 睡觉</span>
+        </div>
+
+        <div class="action-box">
+          <div class="modern-character modern-listening">
+            <div class="radar"></div>
+            <div class="radar"></div>
+            <div class="modern-head">
+              <div class="modern-face">
+                <div class="modern-eye"></div>
+                <div class="modern-eye"></div>
+              </div>
+            </div>
+            <div class="modern-body">
+              <div class="modern-arms"></div>
+            </div>
+            <div class="modern-legs">
+              <div class="modern-leg"></div>
+              <div class="modern-leg"></div>
+            </div>
+          </div>
+          <span class="action-label">👂 倾听</span>
+        </div>
+
+        <div class="action-box">
+          <div class="modern-character modern-speaking">
+            <div class="modern-head">
+              <div class="modern-face">
+                <div class="modern-eye"></div>
+                <div class="modern-eye"></div>
+              </div>
+              <div class="modern-mouth"></div>
+            </div>
+            <div class="modern-body">
+              <div class="modern-arms"></div>
+            </div>
+            <div class="modern-legs">
+              <div class="modern-leg"></div>
+              <div class="modern-leg"></div>
+            </div>
+            <div class="voice-waves">
+              <div class="v-wave"></div>
+              <div class="v-wave"></div>
+              <div class="v-wave"></div>
+            </div>
+          </div>
+          <span class="action-label">💬 说话</span>
+        </div>
+
+      </div>
+    </div>
+
+    <!-- 方案四：赛博朋克 -->
+    <div class="scheme scheme-cyber">
+      <div class="scheme-title">
+        方案四：赛博朋克风
+        <span class="scheme-badge">科技</span>
+      </div>
+      <div class="actions-row">
+        
+        <div class="action-box">
+          <div class="cyber-character cyber-thinking">
+            <div class="data-stream">
+              <div class="data-bit">01</div>
+              <div class="data-bit">10</div>
+              <div class="data-bit">11</div>
+            </div>
+            <div class="cyber-head">
+              <div class="cyber-face">
+                <div class="cyber-eye"></div>
+                <div class="cyber-eye"></div>
+              </div>
+            </div>
+            <div class="cyber-body">
+              <div class="cyber-core"></div>
+            </div>
+            <div class="cyber-legs">
+              <div class="cyber-leg"></div>
+              <div class="cyber-leg"></div>
+            </div>
+          </div>
+          <span class="action-label">🤔 思考</span>
+        </div>
+
+        <div class="action-box">
+          <div class="cyber-character cyber-sleeping">
+            <div class="standby-text">[待机]</div>
+            <div class="cyber-head">
+              <div class="cyber-face">
+                <div class="cyber-eye"></div>
+                <div class="cyber-eye"></div>
+              </div>
+            </div>
+            <div class="cyber-body">
+              <div class="cyber-core"></div>
+            </div>
+            <div class="cyber-legs">
+              <div class="cyber-leg"></div>
+              <div class="cyber-leg"></div>
+            </div>
+          </div>
+          <span class="action-label">😴 睡觉</span>
+        </div>
+
+        <div class="action-box">
+          <div class="cyber-character cyber-listening">
+            <div class="cyber-head">
+              <div class="scan-line"></div>
+              <div class="cyber-face">
+                <div class="cyber-eye"></div>
+                <div class="cyber-eye"></div>
+              </div>
+            </div>
+            <div class="cyber-body">
+              <div class="cyber-core"></div>
+            </div>
+            <div class="cyber-legs">
+              <div class="cyber-leg"></div>
+              <div class="cyber-leg"></div>
+            </div>
+          </div>
+          <span class="action-label">👂 倾听</span>
+        </div>
+
+        <div class="action-box">
+          <div class="cyber-character cyber-speaking">
+            <div class="cyber-head">
+              <div class="cyber-face">
+                <div class="cyber-eye"></div>
+                <div class="cyber-eye"></div>
+              </div>
+              <div class="cyber-mouth"></div>
+            </div>
+            <div class="cyber-body">
+              <div class="cyber-core"></div>
+            </div>
+            <div class="cyber-legs">
+              <div class="cyber-leg"></div>
+              <div class="cyber-leg"></div>
+            </div>
+            <div class="transmit-waves">
+              <div class="t-wave"></div>
+              <div class="t-wave"></div>
+              <div class="t-wave"></div>
+            </div>
+          </div>
+          <span class="action-label">💬 说话</span>
+        </div>
+
+      </div>
+    </div>
+
+    <!-- 方案五：RPG游戏风格 -->
+    <div class="scheme scheme-rpg">
+      <div class="scheme-title">
+        方案五：RPG游戏风格（BrowserQuest 风格）
+        <span class="scheme-badge">游戏</span>
+      </div>
+      <div class="actions-row">
+        
+        <div class="action-box">
+          <div class="rpg-character rpg-thinking">
+            <div class="rpg-head">
+              <div class="rpg-eyes"></div>
+            </div>
+            <div class="rpg-body"></div>
+            <div class="rpg-arms">
+              <div class="rpg-arm"></div>
+              <div class="rpg-arm"></div>
+            </div>
+            <div class="rpg-legs">
+              <div class="rpg-leg"></div>
+              <div class="rpg-leg"></div>
+            </div>
+            <div class="thought-bubble">💭</div>
+          </div>
+          <span class="action-label">🤔 思考</span>
+        </div>
+
+        <div class="action-box">
+          <div class="rpg-character rpg-sleeping">
+            <div class="rpg-head">
+              <div class="rpg-eyes"></div>
+            </div>
+            <div class="rpg-body"></div>
+            <div class="rpg-arms">
+              <div class="rpg-arm"></div>
+              <div class="rpg-arm"></div>
+            </div>
+            <div class="rpg-legs">
+              <div class="rpg-leg"></div>
+              <div class="rpg-leg"></div>
+            </div>
+            <div class="sleep-zzz">Zzz</div>
+          </div>
+          <span class="action-label">😴 睡觉</span>
+        </div>
+
+        <div class="action-box">
+          <div class="rpg-character rpg-listening">
+            <div class="rpg-head">
+              <div class="rpg-eyes"></div>
+            </div>
+            <div class="rpg-body"></div>
+            <div class="rpg-arms">
+              <div class="rpg-arm"></div>
+              <div class="rpg-arm"></div>
+            </div>
+            <div class="rpg-legs">
+              <div class="rpg-leg"></div>
+              <div class="rpg-leg"></div>
+            </div>
+            <div class="sound-indicator">
+              <div class="sound-bar"></div>
+              <div class="sound-bar"></div>
+              <div class="sound-bar"></div>
+            </div>
+          </div>
+          <span class="action-label">👂 倾听</span>
+        </div>
+
+        <div class="action-box">
+          <div class="rpg-character rpg-speaking">
+            <div class="rpg-head">
+              <div class="rpg-eyes"></div>
+              <div class="rpg-mouth"></div>
+            </div>
+            <div class="rpg-body"></div>
+            <div class="rpg-arms">
+              <div class="rpg-arm"></div>
+              <div class="rpg-arm"></div>
+            </div>
+            <div class="rpg-legs">
+              <div class="rpg-leg"></div>
+              <div class="rpg-leg"></div>
+            </div>
+            <div class="chat-bubble">Hi!</div>
+          </div>
+          <span class="action-label">💬 说话</span>
+        </div>
+
+      </div>
+    </div>
+
+    <!-- 方案六：Mono/终端风格 -->
+    <div class="scheme scheme-mono">
+      <div class="scheme-title">
+        方案六：Mono/终端风格（极客向）
+        <span class="scheme-badge">极客</span>
+      </div>
+      <div class="actions-row">
+        
+        <div class="action-box">
+          <div class="mono-character mono-thinking">
+            <div class="code-scroll">if (x) {...}</div>
+            <div class="mono-head">
+              <div class="mono-face">
+                <div class="mono-eye"></div>
+                <div class="mono-eye"></div>
+              </div>
+            </div>
+            <div class="mono-body"></div>
+            <div class="mono-legs">
+              <div class="mono-leg"></div>
+              <div class="mono-leg"></div>
+            </div>
+          </div>
+          <span class="action-label">🤔 思考</span>
+        </div>
+
+        <div class="action-box">
+          <div class="mono-character mono-sleeping">
+            <div class="standby-code">[sleep]</div>
+            <div class="mono-head">
+              <div class="mono-face">
+                <div class="mono-eye"></div>
+                <div class="mono-eye"></div>
+              </div>
+            </div>
+            <div class="mono-body"></div>
+            <div class="mono-legs">
+              <div class="mono-leg"></div>
+              <div class="mono-leg"></div>
+            </div>
+          </div>
+          <span class="action-label">😴 睡觉</span>
+        </div>
+
+        <div class="action-box">
+          <div class="mono-character mono-listening">
+            <div class="cursor-blink"></div>
+            <div class="mono-head">
+              <div class="mono-face">
+                <div class="mono-eye"></div>
+                <div class="mono-eye"></div>
+              </div>
+            </div>
+            <div class="mono-body"></div>
+            <div class="mono-legs">
+              <div class="mono-leg"></div>
+              <div class="mono-leg"></div>
+            </div>
+          </div>
+          <span class="action-label">👂 倾听</span>
+        </div>
+
+        <div class="action-box">
+          <div class="mono-character mono-speaking">
+            <div class="mono-head">
+              <div class="mono-face">
+                <div class="mono-eye"></div>
+                <div class="mono-eye"></div>
+              </div>
+            </div>
+            <div class="mono-body"></div>
+            <div class="mono-legs">
+              <div class="mono-leg"></div>
+              <div class="mono-leg"></div>
+            </div>
+            <div class="output-stream">
+              <div class="output-char">0</div>
+              <div class="output-char">1</div>
+              <div class="output-char">0</div>
+              <div class="output-char">1</div>
+            </div>
+          </div>
+          <span class="action-label">💬 说话</span>
+        </div>
+
+      </div>
+    </div>
+
+    <!-- 方案七：Emoji风格 -->
+    <div class="scheme scheme-emoji">
+      <div class="scheme-title">
+        方案七：Emoji 风格（可爱向）
+        <span class="scheme-badge">可爱</span>
+      </div>
+      <div class="actions-row">
+        
+        <div class="action-box">
+          <div class="emoji-character emoji-thinking">
+            <div class="emoji-base"></div>
+            <div class="thought-dots">...</div>
+          </div>
+          <span class="action-label">🤔 思考</span>
+        </div>
+
+        <div class="action-box">
+          <div class="emoji-character emoji-sleeping">
+            <div class="emoji-base"></div>
+            <div class="sleep-stars">✨</div>
+          </div>
+          <span class="action-label">😴 睡觉</span>
+        </div>
+
+        <div class="action-box">
+          <div class="emoji-character emoji-listening">
+            <div class="emoji-base"></div>
+            <div class="sound-lines">〰️</div>
+          </div>
+          <span class="action-label">👂 倾听</span>
+        </div>
+
+        <div class="action-box">
+          <div class="emoji-character emoji-speaking">
+            <div class="emoji-base"></div>
+            <div class="speech-particles">💭</div>
+          </div>
+          <span class="action-label">💬 说话</span>
+        </div>
+
+      </div>
+    </div>
+
+    <!-- 方案八：手绘涂鸦风格 -->
+    <div class="scheme scheme-sketch">
+      <div class="scheme-title">
+        方案八：手绘涂鸦风格（文艺向）
+        <span class="scheme-badge">文艺</span>
+      </div>
+      <div class="actions-row">
+        
+        <div class="action-box">
+          <div class="sketch-character sketch-thinking">
+            <div class="sketch-head">
+              <div class="sketch-eyes">
+                <div class="sketch-eye"></div>
+                <div class="sketch-eye"></div>
+              </div>
+            </div>
+            <div class="sketch-body"></div>
+            <div class="sketch-arms">
+              <div class="sketch-arm"></div>
+              <div class="sketch-arm"></div>
+            </div>
+            <div class="sketch-legs">
+              <div class="sketch-leg"></div>
+              <div class="sketch-leg"></div>
+            </div>
+            <div class="doodle-lines">
+              <div class="doodle"></div>
+            </div>
+          </div>
+          <span class="action-label">🤔 思考</span>
+        </div>
+
+        <div class="action-box">
+          <div class="sketch-character sketch-sleeping">
+            <div class="sketch-head">
+              <div class="sketch-eyes">
+                <div class="sketch-eye"></div>
+                <div class="sketch-eye"></div>
+              </div>
+            </div>
+            <div class="sketch-body"></div>
+            <div class="sketch-arms">
+              <div class="sketch-arm"></div>
+              <div class="sketch-arm"></div>
+            </div>
+            <div class="sketch-legs">
+              <div class="sketch-leg"></div>
+              <div class="sketch-leg"></div>
+            </div>
+            <div class="sleep-cloud">☁️</div>
+          </div>
+          <span class="action-label">😴 睡觉</span>
+        </div>
+
+        <div class="action-box">
+          <div class="sketch-character sketch-listening">
+            <div class="sketch-head">
+              <div class="sketch-eyes">
+                <div class="sketch-eye"></div>
+                <div class="sketch-eye"></div>
+              </div>
+            </div>
+            <div class="sketch-body"></div>
+            <div class="sketch-arms">
+              <div class="sketch-arm"></div>
+              <div class="sketch-arm"></div>
+            </div>
+            <div class="sketch-legs">
+              <div class="sketch-leg"></div>
+              <div class="sketch-leg"></div>
+            </div>
+            <div class="sound-arrows">➤</div>
+          </div>
+          <span class="action-label">👂 倾听</span>
+        </div>
+
+        <div class="action-box">
+          <div class="sketch-character sketch-speaking">
+            <div class="sketch-head">
+              <div class="sketch-eyes">
+                <div class="sketch-eye"></div>
+                <div class="sketch-eye"></div>
+              </div>
+              <div class="sketch-mouth"></div>
+            </div>
+            <div class="sketch-body"></div>
+            <div class="sketch-arms">
+              <div class="sketch-arm"></div>
+              <div class="sketch-arm"></div>
+            </div>
+            <div class="sketch-legs">
+              <div class="sketch-leg"></div>
+              <div class="sketch-leg"></div>
+            </div>
+            <div class="excitement-lines">✨</div>
+          </div>
+          <span class="action-label">💬 说话</span>
+        </div>
+
+      </div>
+    </div>
+
+    <!-- 参考资料 -->
+    <div class="reference-section">
+      <div class="reference-title">
+        📚 开源参考项目（商用友好）
+      </div>
+      <div class="reference-list">
+        <div class="reference-item">
+          <strong>BrowserQuest</strong>
+          Mozilla 开源的多人 HTML5 RPG 游戏
+          <br>• 代码: MPL 2.0 <span class="license-badge">商用OK</span>
+          <br>• 素材: CC-BY-SA 3.0
+          <br>• <a href="https://github.com/mozilla/BrowserQuest" target="_blank">github.com/mozilla/BrowserQuest</a>
+        </div>
+        <div class="reference-item">
+          <strong>Phaser.js</strong>
+          最流行的 HTML5 2D 游戏框架
+          <br>• 许可证: MIT <span class="license-badge">商用OK</span>
+          <br>• 支持 WebGL 和 Canvas 渲染
+          <br>• <a href="https://phaser.io/" target="_blank">phaser.io</a>
+        </div>
+        <div class="reference-item">
+          <strong>Liberated Pixel Cup (LPC)</strong>
+          开源像素角色素材库
+          <br>• 许可证: CC-BY-SA 3.0 / GPL 3.0 / OGA-BY 3.0
+          <br>• 数百个可组合的角色部件
+          <br>• <a href="https://opengameart.org/content/liberated-pixel-cup-lpc-base-assets-sprites-map-tiles" target="_blank">OpenGameArt</a>
+        </div>
+        <div class="reference-item">
+          <strong>Cocos2d-js</strong>
+          老牌 HTML5 游戏引擎
+          <br>• 许可证: MIT <span class="license-badge">商用OK</span>
+          <br>• 跨平台支持
+          <br>• <a href="https://cocos2d-x.org/" target="_blank">cocos2d-x.org</a>
+        </div>
+        <div class="reference-item">
+          <strong>Universal LPC Spritesheet</strong>
+          在线角色生成器
+          <br>• 基于 LPC 素材自动生成精灵图
+          <br>• <a href="https://sanderfrenken.github.io/Universal-LPC-Spritesheet-Character-Generator/" target="_blank">在线工具</a>
+        </div>
+        <div class="reference-item">
+          <strong>Pixelorama</strong>
+          开源像素画编辑器
+          <br>• 许可证: MIT <span class="license-badge">商用OK</span>
+          <br>• Godot 引擎开发
+          <br>• <a href="https://orama-interactive.itch.io/pixelorama" target="_blank">itch.io</a>
+        </div>
+      </div>
+    </div>
+
+  </div>
+
+  <div class="footer-note">
+    <p>💡 设计建议：方案一最贴合原项目风格，建议作为默认方案
+    <p>所有动画均使用 CSS 实现，无需图片资源，可直接集成到项目中</p>
+    <p>文件位置：<code>/Users/wisewong/Documents/Developer/openclaw_game/agent-design-showcase.html</code></p>
+  </div>
+
+</body>
+</html>

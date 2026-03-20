@@ -1,0 +1,16 @@
+{
+  "name": "openclaw-game",
+  "version": "1.0.0",
+  "description": "OpenClaw Agent Visualization",
+  "main": "server/index.js",
+  "type": "module",
+  "scripts": {
+    "start": "node server/index.js",
+    "dev": "node --watch server/index.js"
+  },
+  "dependencies": {
+    "better-sqlite3": "^12.6.2",
+    "express": "^4.21.0",
+    "marked": "^17.0.4"
+  }
+}
