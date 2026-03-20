@@ -586,6 +586,10 @@ set_service_key_equivalent() {
     "$PLIST_BUDDY" -c "Add 'NSServicesStatus:${CURRENT_SERVICE_KEY}:presentation_modes:ContextMenu' bool true" "$PBS_PLIST" >/dev/null 2>&1
   "$PLIST_BUDDY" -c "Set 'NSServicesStatus:${CURRENT_SERVICE_KEY}:presentation_modes:TouchBar' true" "$PBS_PLIST" >/dev/null 2>&1 || \
     "$PLIST_BUDDY" -c "Add 'NSServicesStatus:${CURRENT_SERVICE_KEY}:presentation_modes:TouchBar' bool true" "$PBS_PLIST" >/dev/null 2>&1
+  "$PLIST_BUDDY" -c "Set 'NSServicesStatus:${CURRENT_SERVICE_KEY}:enabled_services_menu' true" "$PBS_PLIST" >/dev/null 2>&1 || \
+    "$PLIST_BUDDY" -c "Add 'NSServicesStatus:${CURRENT_SERVICE_KEY}:enabled_services_menu' bool true" "$PBS_PLIST" >/dev/null 2>&1
+  "$PLIST_BUDDY" -c "Set 'NSServicesStatus:${CURRENT_SERVICE_KEY}:enabled_context_menu' true" "$PBS_PLIST" >/dev/null 2>&1 || \
+    "$PLIST_BUDDY" -c "Add 'NSServicesStatus:${CURRENT_SERVICE_KEY}:enabled_context_menu' bool true" "$PBS_PLIST" >/dev/null 2>&1
   "$PLIST_BUDDY" -c "Set 'ServicesShortcutsPresent' true" "$PBS_PLIST" >/dev/null 2>&1 || \
     "$PLIST_BUDDY" -c "Add 'ServicesShortcutsPresent' bool true" "$PBS_PLIST" >/dev/null 2>&1
 }

@@ -29,8 +29,8 @@
 ## 快速开始 | Quick Start
 
 ```bash
-git clone https://github.com/WiseWong6/wise-terminal-tiler.git
-cd wise-terminal-tiler
+git clone https://github.com/WiseWong6/wise-labs.git
+cd wise-labs/terminal-tiler
 
 mkdir -p ~/.local/bin
 ./scripts/install-agent-commands
@@ -108,8 +108,8 @@ mkdir -p ~/.local/bin
 仅适用于 macOS / MacBook 工作流；如果你主要在 Windows 上使用终端，这个项目还不具备这个能力，当然你可以去改造这份代码。
 
 ```bash
-git clone https://github.com/WiseWong6/wise-terminal-tiler.git
-cd wise-terminal-tiler
+git clone https://github.com/WiseWong6/wise-labs.git
+cd wise-labs/terminal-tiler
 
 mkdir -p ~/.local/bin
 ./scripts/install-agent-commands
@@ -315,4 +315,4 @@ EOF
 
 ## Star History
 
-[![Star History Chart](https://api.star-history.com/svg?repos=WiseWong6/wise-terminal-tiler&type=Date)](https://www.star-history.com/#WiseWong6/wise-terminal-tiler&Date)
+[![Star History Chart](https://api.star-history.com/svg?repos=WiseWong6/wise-labs&type=Date)](https://www.star-history.com/#WiseWong6/wise-labs&Date)

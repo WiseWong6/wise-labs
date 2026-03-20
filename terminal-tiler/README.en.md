@@ -27,8 +27,8 @@
 ## Quick Start
 
 ```bash
-git clone https://github.com/WiseWong6/wise-terminal-tiler.git
-cd wise-terminal-tiler
+git clone https://github.com/WiseWong6/wise-labs.git
+cd wise-labs/terminal-tiler
 
 mkdir -p ~/.local/bin
 cp scripts/terminal-tile-all ~/.local/bin/
@@ -98,8 +98,8 @@ Manual resizing works, but it breaks flow every time.
 This project is intentionally built for macOS and MacBook-style terminal workflows. If you mainly work on Windows, this project does not support that workflow yet, though you are free to adapt the code yourself.
 
 ```bash
-git clone https://github.com/WiseWong6/wise-terminal-tiler.git
-cd wise-terminal-tiler
+git clone https://github.com/WiseWong6/wise-labs.git
+cd wise-labs/terminal-tiler
 
 mkdir -p ~/.local/bin
 cp scripts/terminal-tile-all ~/.local/bin/
@@ -231,4 +231,4 @@ The hotkey only works on the terminal windows you are actively using. iTerm2 and
 
 ## Star History
 
-[![Star History Chart](https://api.star-history.com/svg?repos=WiseWong6/wise-terminal-tiler&type=Date)](https://www.star-history.com/#WiseWong6/wise-terminal-tiler&Date)
+[![Star History Chart](https://api.star-history.com/svg?repos=WiseWong6/wise-labs&type=Date)](https://www.star-history.com/#WiseWong6/wise-labs&Date)
