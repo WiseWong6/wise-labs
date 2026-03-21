@@ -1,0 +1,296 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>DocuRender | Mixed Format Viewer</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <!-- Inter font for modern SaaS feel -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+    <!-- Add KaTeX CSS for LaTeX Math support -->
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/katex@0.16.8/dist/katex.min.css">
+    <script>
+      tailwind.config = {
+        theme: {
+          extend: {
+            fontFamily: {
+              sans: ['Inter', 'system-ui', '-apple-system', 'sans-serif'],
+            },
+            colors: {
+              primary: '#0f172a',
+              secondary: '#334155',
+              accent: {
+                50: '#eef2ff',
+                100: '#e0e7ff',
+                200: '#c7d2fe',
+                300: '#a5b4fc',
+                400: '#818cf8',
+                500: '#6366f1',
+                600: '#4f46e5',
+                700: '#4338ca',
+                800: '#3730a3',
+                900: '#312e81',
+              },
+              surface: {
+                0: '#ffffff',
+                50: '#f8fafc',
+                100: '#f1f5f9',
+                200: '#e2e8f0',
+              },
+              sidebar: {
+                DEFAULT: 'rgba(15, 10, 30, 0.92)',
+                hover: 'rgba(255, 255, 255, 0.06)',
+                active: 'rgba(255, 255, 255, 0.08)',
+                border: 'rgba(255, 255, 255, 0.08)',
+              },
+            },
+            boxShadow: {
+              'card': '0 1px 3px 0 rgba(0,0,0,0.04), 0 1px 2px -1px rgba(0,0,0,0.03)',
+              'card-hover': '0 4px 12px -2px rgba(0,0,0,0.08), 0 2px 4px -2px rgba(0,0,0,0.04)',
+              'elevated': '0 8px 24px -4px rgba(0,0,0,0.12), 0 4px 8px -4px rgba(0,0,0,0.06)',
+              'modal': '0 24px 48px -12px rgba(0,0,0,0.25), 0 0 0 1px rgba(0,0,0,0.05)',
+              'glow': '0 0 20px -4px rgba(99, 102, 241, 0.3)',
+            },
+            animation: {
+              'fade-in': 'fadeIn 0.4s ease-out',
+              'fade-in-up': 'fadeInUp 0.4s ease-out',
+              'slide-up': 'slideUp 0.3s cubic-bezier(0.16, 1, 0.3, 1)',
+              'scale-in': 'scaleIn 0.3s cubic-bezier(0.16, 1, 0.3, 1)',
+              'pulse-subtle': 'pulseSubtle 2s ease-in-out infinite',
+              'shimmer': 'shimmer 1.5s ease-in-out infinite',
+            },
+            keyframes: {
+              fadeIn: {
+                '0%': { opacity: '0' },
+                '100%': { opacity: '1' },
+              },
+              fadeInUp: {
+                '0%': { opacity: '0', transform: 'translateY(8px)' },
+                '100%': { opacity: '1', transform: 'translateY(0)' },
+              },
+              slideUp: {
+                '0%': { opacity: '0', transform: 'translateY(16px) scale(0.98)' },
+                '100%': { opacity: '1', transform: 'translateY(0) scale(1)' },
+              },
+              scaleIn: {
+                '0%': { opacity: '0', transform: 'scale(0.95)' },
+                '100%': { opacity: '1', transform: 'scale(1)' },
+              },
+              pulseSubtle: {
+                '0%, 100%': { opacity: '1' },
+                '50%': { opacity: '0.7' },
+              },
+              shimmer: {
+                '0%': { backgroundPosition: '-200% 0' },
+                '100%': { backgroundPosition: '200% 0' },
+              },
+            },
+            typography: (theme) => ({
+              DEFAULT: {
+                css: {
+                  color: theme('colors.slate.700'),
+                  h1: { color: theme('colors.slate.900') },
+                  h2: { color: theme('colors.slate.900') },
+                  strong: { color: theme('colors.slate.900') },
+                  p: {
+                    lineHeight: '1.75',
+                    marginTop: '0.75em',
+                    marginBottom: '0.75em'
+                  },
+                },
+              },
+            }),
+          },
+        },
+      }
+    </script>
+    <style>
+      /* Custom scrollbar for cleaner look */
+      ::-webkit-scrollbar {
+        width: 8px;
+        height: 8px;
+      }
+      ::-webkit-scrollbar-track {
+        background: #f1f5f9;
+      }
+      ::-webkit-scrollbar-thumb {
+        background: #cbd5e1;
+        border-radius: 4px;
+      }
+      ::-webkit-scrollbar-thumb:hover {
+        background: #94a3b8;
+      }
+
+      /* Glass effects */
+      .glass-dark {
+        background: rgba(15, 10, 30, 0.92);
+        backdrop-filter: blur(20px);
+        -webkit-backdrop-filter: blur(20px);
+      }
+      .glass-light {
+        background: rgba(255, 255, 255, 0.8);
+        backdrop-filter: blur(12px);
+        -webkit-backdrop-filter: blur(12px);
+      }
+
+      /* Modal animations */
+      .modal-overlay {
+        animation: fadeIn 0.2s ease-out;
+      }
+      .modal-panel {
+        animation: slideUp 0.3s cubic-bezier(0.16, 1, 0.3, 1);
+      }
+
+      /* Custom checkbox */
+      .checkbox-custom {
+        appearance: none;
+        -webkit-appearance: none;
+        width: 1rem;
+        height: 1rem;
+        border: 1.5px solid #d1d5db;
+        border-radius: 0.25rem;
+        background: white;
+        cursor: pointer;
+        position: relative;
+        transition: all 0.15s ease;
+      }
+      .checkbox-custom:checked {
+        background: #4f46e5;
+        border-color: #4f46e5;
+      }
+      .checkbox-custom:checked::after {
+        content: '';
+        position: absolute;
+        left: 4.5px;
+        top: 1.5px;
+        width: 5px;
+        height: 8px;
+        border: solid white;
+        border-width: 0 2px 2px 0;
+        transform: rotate(45deg);
+      }
+      .checkbox-custom:focus-visible {
+        outline: none;
+        box-shadow: 0 0 0 2px rgba(99, 102, 241, 0.3);
+      }
+
+      /* Skeleton shimmer */
+      .skeleton {
+        background: linear-gradient(90deg, #f1f5f9 25%, #e2e8f0 50%, #f1f5f9 75%);
+        background-size: 200% 100%;
+        animation: shimmer 1.5s ease-in-out infinite;
+        border-radius: 0.375rem;
+      }
+
+      /* Column divider gradient */
+      .column-divider {
+        width: 1px;
+        background: linear-gradient(to bottom, transparent, #e2e8f0 10%, #e2e8f0 90%, transparent);
+      }
+
+      /* Dark sidebar scrollbar */
+      .sidebar-scroll::-webkit-scrollbar {
+        width: 6px;
+      }
+      .sidebar-scroll::-webkit-scrollbar-track {
+        background: transparent;
+      }
+      .sidebar-scroll::-webkit-scrollbar-thumb {
+        background: rgba(255, 255, 255, 0.1);
+        border-radius: 3px;
+      }
+      .sidebar-scroll::-webkit-scrollbar-thumb:hover {
+        background: rgba(255, 255, 255, 0.2);
+      }
+      
+      /* Global Styles for Markdown Body - Clean Table Reset */
+      .markdown-body table {
+        border-collapse: collapse;
+        width: 100%;
+        margin-top: 1.5rem;
+        margin-bottom: 1.5rem;
+        font-size: 0.875rem;
+      }
+      /* Ensure rehype-raw injected tables match the style */
+      .markdown-body th {
+        background-color: #f8fafc;
+        border: 1px solid #e2e8f0;
+        padding: 0.75rem;
+        font-weight: 600;
+        text-align: left;
+        color: #1e293b;
+      }
+      .markdown-body td {
+        border: 1px solid #e2e8f0;
+        padding: 0.75rem;
+        color: #475569;
+        vertical-align: top; /* Better for multiline cell content */
+      }
+      .markdown-body tr:nth-child(even) {
+        background-color: #fcfcfc;
+      }
+
+      /* PDF Page Styling & Text Layer */
+      .react-pdf__Page__canvas {
+        margin: 0 auto;
+        box-shadow: 0 4px 6px -1px rgb(0 0 0 / 0.1), 0 2px 4px -2px rgb(0 0 0 / 0.1);
+        border-radius: 4px;
+        display: block;
+        user-select: none;
+      }
+      
+      /* Essential CSS for react-pdf text layer */
+      .react-pdf__Page {
+        position: relative;
+        background-color: white;
+      }
+      .react-pdf__Page__textContent {
+        position: absolute;
+        top: 0;
+        left: 0;
+        transform-origin: 0 0;
+        display: block;
+        line-height: 1;
+        width: 100%;
+        height: 100%;
+        user-select: text; /* Allow selection */
+      }
+      .react-pdf__Page__textContent span {
+        color: transparent;
+        position: absolute;
+        white-space: pre;
+        cursor: text;
+        transform-origin: 0% 0%;
+      }
+      /* Custom class injected via customTextRenderer for highlighting */
+      .react-pdf__Page__textContent span.highlight {
+        background-color: rgba(255, 255, 0, 0.4);
+      }
+
+      /* Global Highlight Style for Editor and Render */
+      mark {
+        background-color: rgba(255, 255, 0, 0.4);
+        color: inherit;
+        padding: 0;
+      }
+
+      /* Fix Latex font size in mixed text */
+      .katex {
+        font-size: 1.1em; 
+      }
+      
+      /* Ensure superscripts don't mess up line-height too much */
+      sup {
+        vertical-align: super;
+        font-size: smaller;
+      }
+    </style>
+    <!-- Module resolution handled by Vite -->
+  </head>
+  <body>
+    <div id="root"></div>
+    <script type="module" src="/src/main.tsx"></script>
+  </body>
+</html>
