@@ -4,10 +4,15 @@ set -euo pipefail
 
 REPO_ROOT="${0:A:h:h}"
 BIN_DIR="${TILE_INSTALL_BIN_DIR:-$HOME/.local/bin}"
+APP_DIR="${TILE_INSTALL_APP_DIR:-$HOME/Applications}"
+HOTKEY_APP_BUNDLE_NAME="Terminal Tile Hotkeys.app"
+HOTKEY_APP_EXECUTABLE_NAME="Terminal Tile Hotkeys"
+HOTKEY_APP_BUNDLE_ID="ai.wise.TerminalTileHotkeys"
 CLAUDE_DIR="${CLAUDE_COMMANDS_DIR:-$HOME/.claude/commands}"
 CODEX_DIR="${CODEX_PROMPTS_DIR:-$HOME/.codex/prompts}"
 OPENCLAW_SKILLS_DIR="${OPENCLAW_SKILLS_DIR:-$HOME/.openclaw/workspace/skills}"
 OPENCLAW_SKILL_NAMES=(tile zl2 zl3 zl4 zr2 zr3 zr4)
+SWIFTC_CMD=""
 
 command_body() {
   local mode="$1"
@@ -28,9 +33,9 @@ EOF
 install_bin_scripts() {
   mkdir -p "$BIN_DIR"
 
+  cleanup_legacy_hotkey_runtime
   install_tile_core
-  install_hotkey_daemon
-  install_hotkey_helper
+  install_hotkey_app
 
   local name
   for name in \
@@ -46,126 +51,139 @@ install_bin_scripts() {
   install_ghostty_helper
 }
 
-install_hotkey_daemon() {
-  local source_path="${REPO_ROOT}/scripts/terminal-tile-hotkey-daemon"
-  local target_path="${BIN_DIR}/terminal-tile-hotkey-daemon"
-  local swiftc_cmd=""
-  local compile_source=""
-  local cleanup_source=0
+cleanup_legacy_hotkey_runtime() {
+  rm -f "${BIN_DIR}/terminal-tile-hotkey-daemon" 2>/dev/null || true
+  rm -f "${BIN_DIR}/terminal-tile-hotkey-helper" 2>/dev/null || true
+}
 
-  if command -v swiftc >/dev/null 2>&1; then
-    swiftc_cmd="$(command -v swiftc)"
-  elif command -v xcrun >/dev/null 2>&1; then
-    swiftc_cmd="$(xcrun --find swiftc 2>/dev/null || true)"
-  fi
-
-  if [[ -z "$swiftc_cmd" ]]; then
-    echo "ERROR: 需要 swiftc 来编译 terminal-tile-hotkey-daemon。" >&2
-    return 1
-  fi
-
-  compile_source="$source_path"
-  if head -n 1 "$source_path" | grep -q '^#!'; then
-    compile_source="$(mktemp "${TMPDIR:-/tmp}/terminal-tile-hotkey-daemon.XXXXXX.swift")"
-    cleanup_source=1
-    tail -n +2 "$source_path" > "$compile_source"
-  fi
-
-  if "$swiftc_cmd" -O "$compile_source" -o "$target_path"; then
-    chmod 0755 "$target_path"
-    if (( cleanup_source == 1 )); then
-      rm -f "$compile_source"
-    fi
-    echo "OK bin: ${target_path} (compiled)"
+resolve_swiftc() {
+  if [[ -n "$SWIFTC_CMD" ]]; then
+    printf '%s\n' "$SWIFTC_CMD"
     return 0
   fi
 
-  if (( cleanup_source == 1 )); then
-    rm -f "$compile_source"
+  if command -v swiftc >/dev/null 2>&1; then
+    SWIFTC_CMD="$(command -v swiftc)"
+  elif command -v xcrun >/dev/null 2>&1; then
+    SWIFTC_CMD="$(xcrun --find swiftc 2>/dev/null || true)"
   fi
-  echo "ERROR: swiftc 编译 terminal-tile-hotkey-daemon 失败。" >&2
+
+  if [[ -z "$SWIFTC_CMD" ]]; then
+    return 1
+  fi
+
+  printf '%s\n' "$SWIFTC_CMD"
+}
+
+compile_swift_binary() {
+  local target_path="$1"
+  shift
+
+  local swiftc_cmd
+  swiftc_cmd="$(resolve_swiftc 2>/dev/null || true)"
+  if [[ -z "$swiftc_cmd" ]]; then
+    return 1
+  fi
+
+  local tmp_dir
+  tmp_dir="$(mktemp -d "${TMPDIR:-/tmp}/terminal-tile-swift.XXXXXX")"
+  local -a compile_sources=()
+  local source_path target_source index=0
+
+  for source_path in "$@"; do
+    (( index += 1 ))
+    target_source="${tmp_dir}/${index}.swift"
+    if head -n 1 "$source_path" | grep -q '^#!'; then
+      tail -n +2 "$source_path" > "$target_source"
+    else
+      cp "$source_path" "$target_source"
+    fi
+    compile_sources+=("$target_source")
+  done
+
+  if "$swiftc_cmd" -O "${compile_sources[@]}" -o "$target_path"; then
+    chmod 0755 "$target_path"
+    rm -rf "$tmp_dir"
+    return 0
+  fi
+
+  rm -rf "$tmp_dir"
   return 1
 }
 
 install_tile_core() {
-  local source_path="${REPO_ROOT}/scripts/terminal-tile-core"
   local target_path="${BIN_DIR}/terminal-tile-core"
-  local swiftc_cmd=""
-  local compile_source=""
-  local cleanup_source=0
-
-  if command -v swiftc >/dev/null 2>&1; then
-    swiftc_cmd="$(command -v swiftc)"
-  elif command -v xcrun >/dev/null 2>&1; then
-    swiftc_cmd="$(xcrun --find swiftc 2>/dev/null || true)"
-  fi
-
-  if [[ -z "$swiftc_cmd" ]]; then
+  if ! resolve_swiftc >/dev/null 2>&1; then
     echo "ERROR: 需要 swiftc 来编译 terminal-tile-core。" >&2
     return 1
   fi
 
-  compile_source="$source_path"
-  if head -n 1 "$source_path" | grep -q '^#!'; then
-    compile_source="$(mktemp "${TMPDIR:-/tmp}/terminal-tile-core.XXXXXX.swift")"
-    cleanup_source=1
-    tail -n +2 "$source_path" > "$compile_source"
-  fi
-
-  if "$swiftc_cmd" -O "$compile_source" -o "$target_path"; then
-    chmod 0755 "$target_path"
-    if (( cleanup_source == 1 )); then
-      rm -f "$compile_source"
-    fi
+  if compile_swift_binary \
+    "$target_path" \
+    "${REPO_ROOT}/scripts/terminal-tile-engine.swift" \
+    "${REPO_ROOT}/scripts/terminal-tile-core"; then
     echo "OK bin: ${target_path} (compiled)"
     return 0
   fi
 
-  if (( cleanup_source == 1 )); then
-    rm -f "$compile_source"
-  fi
   echo "ERROR: swiftc 编译 terminal-tile-core 失败。" >&2
   return 1
 }
 
-install_hotkey_helper() {
-  local source_path="${REPO_ROOT}/scripts/terminal-tile-hotkey-helper"
-  local target_path="${BIN_DIR}/terminal-tile-hotkey-helper"
-  local swiftc_cmd=""
-  local compile_source=""
-  local cleanup_source=0
+install_hotkey_app() {
+  local bundle_path="${APP_DIR}/${HOTKEY_APP_BUNDLE_NAME}"
+  local contents_dir="${bundle_path}/Contents"
+  local macos_dir="${contents_dir}/MacOS"
+  local executable_path="${macos_dir}/${HOTKEY_APP_EXECUTABLE_NAME}"
 
-  if command -v swiftc >/dev/null 2>&1; then
-    swiftc_cmd="$(command -v swiftc)"
-  elif command -v xcrun >/dev/null 2>&1; then
-    swiftc_cmd="$(xcrun --find swiftc 2>/dev/null || true)"
+  if ! resolve_swiftc >/dev/null 2>&1; then
+    echo "ERROR: 需要 swiftc 来编译 Terminal Tile Hotkeys.app。" >&2
+    return 1
   fi
 
-  if [[ -n "$swiftc_cmd" ]]; then
-    compile_source="$source_path"
-    if head -n 1 "$source_path" | grep -q '^#!'; then
-      compile_source="$(mktemp "${TMPDIR:-/tmp}/terminal-tile-hotkey-helper.XXXXXX.swift")"
-      cleanup_source=1
-      tail -n +2 "$source_path" > "$compile_source"
-    fi
+  rm -rf "$bundle_path"
+  mkdir -p "$macos_dir"
 
-    if "$swiftc_cmd" -O "$compile_source" -o "$target_path"; then
-      chmod 0755 "$target_path"
-      if (( cleanup_source == 1 )); then
-        rm -f "$compile_source"
-      fi
-      echo "OK bin: ${target_path} (compiled)"
-      return 0
-    fi
-
-    if (( cleanup_source == 1 )); then
-      rm -f "$compile_source"
-    fi
+  if ! compile_swift_binary \
+    "$executable_path" \
+    "${REPO_ROOT}/scripts/terminal-tile-engine.swift" \
+    "${REPO_ROOT}/scripts/terminal-tile-hotkey-app"; then
+    echo "ERROR: swiftc 编译 Terminal Tile Hotkeys.app 失败。" >&2
+    return 1
   fi
 
-  rm -f "$target_path"
-  echo "ERROR: swiftc 编译 terminal-tile-hotkey-helper 失败。" >&2
-  return 1
+  cat > "${contents_dir}/Info.plist" <<EOF
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE plist PUBLIC "-//Apple//DTD PLIST 1.0//EN" "http://www.apple.com/DTDs/PropertyList-1.0.dtd">
+<plist version="1.0">
+<dict>
+  <key>CFBundleDevelopmentRegion</key>
+  <string>en</string>
+  <key>CFBundleExecutable</key>
+  <string>${HOTKEY_APP_EXECUTABLE_NAME}</string>
+  <key>CFBundleIdentifier</key>
+  <string>${HOTKEY_APP_BUNDLE_ID}</string>
+  <key>CFBundleInfoDictionaryVersion</key>
+  <string>6.0</string>
+  <key>CFBundleName</key>
+  <string>Terminal Tile Hotkeys</string>
+  <key>CFBundlePackageType</key>
+  <string>APPL</string>
+  <key>CFBundleShortVersionString</key>
+  <string>1.0</string>
+  <key>CFBundleVersion</key>
+  <string>1</string>
+  <key>LSUIElement</key>
+  <true/>
+</dict>
+</plist>
+EOF
+
+  if [[ -x /usr/bin/codesign ]]; then
+    /usr/bin/codesign --force --deep --sign - "$bundle_path" >/dev/null 2>&1 || true
+  fi
+
+  echo "OK app: ${bundle_path}"
 }
 
 install_ghostty_helper() {
@@ -341,7 +359,7 @@ bootstrap_hotkeys() {
 
   if (( zone_rc != 0 )); then
     echo "WARN hotkey: zone hotkey is not ready (exit=${zone_rc})." >&2
-    echo "WARN hotkey: run 'terminal-tile-hotkey zone-status' and then 'terminal-tile-hotkey zone-set ctrl+command+shift+t' if the Service binding is missing." >&2
+    echo "WARN hotkey: run 'terminal-tile-hotkey zone-status' and then 'terminal-tile-hotkey zone-set ctrl+command+shift+t' if the app runtime is not ready." >&2
   fi
 }
 
@@ -352,6 +370,7 @@ Usage:
 
 Installs:
   - ~/.local/bin/{tile,zl2..zr4,terminal-tile-*,ghostty-window-helper}
+  - ~/Applications/Terminal Tile Hotkeys.app
   - ~/.claude/commands/{tile,zl2..zr4}.md
   - ~/.codex/prompts/{tile,zl2..zr4}.md
   - ~/.openclaw/workspace/skills/{tile,zl2..zr4}

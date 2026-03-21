@@ -17,10 +17,11 @@ Primary user goal:
 
 - Primary command: `tile`
 - Zone wrappers: `zl2`, `zl3`, `zl4`, `zr2`, `zr3`, `zr4`
+- Shared Swift engine: `scripts/terminal-tile-engine.swift`
 - Main implementation: `scripts/terminal-tile-core`
 - Legacy fallback reference: `scripts/terminal-tile-all`
 - Ghostty helper: `scripts/ghostty-window-helper`
-- Hotkey helper: `scripts/terminal-tile-hotkey-helper`
+- Hotkey app source: `scripts/terminal-tile-hotkey-app`
 - Installer: `scripts/install-agent-commands`
 - Hotkey manager: `scripts/terminal-tile-hotkey`
 - Zone chooser: `scripts/terminal-tile-zone-picker`
@@ -68,12 +69,12 @@ Primary install command:
 
 What it installs:
 - local bin commands in `~/.local/bin`
+- hotkey app bundle in `~/Applications/Terminal Tile Hotkeys.app`
 - Claude commands in `~/.claude/commands`
 - Codex prompts in `~/.codex/prompts`
 - OpenClaw skills in `~/.openclaw/workspace/skills`
 - hotkeys via `terminal-tile-hotkey`
 - compiled Swift tiling core binary
-- compiled hotkey helper binary when `swiftc` is available
 - compiled Ghostty helper binary
 
 ## Configuration Model

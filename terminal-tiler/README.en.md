@@ -31,14 +31,7 @@ git clone https://github.com/WiseWong6/wise-labs.git
 cd wise-labs/terminal-tiler
 
 mkdir -p ~/.local/bin
-cp scripts/terminal-tile-all ~/.local/bin/
-cp scripts/terminal-tile-hotkey ~/.local/bin/
-cp scripts/zone ~/.local/bin/
-chmod +x ~/.local/bin/terminal-tile-all
-chmod +x ~/.local/bin/terminal-tile-hotkey
-chmod +x ~/.local/bin/zone
-
-~/.local/bin/terminal-tile-hotkey bootstrap
+./scripts/install-agent-commands
 ```
 
 ---
@@ -102,15 +95,7 @@ git clone https://github.com/WiseWong6/wise-labs.git
 cd wise-labs/terminal-tiler
 
 mkdir -p ~/.local/bin
-cp scripts/terminal-tile-all ~/.local/bin/
-cp scripts/terminal-tile-hotkey ~/.local/bin/
-cp scripts/zone ~/.local/bin/
-chmod +x ~/.local/bin/terminal-tile-all
-chmod +x ~/.local/bin/terminal-tile-hotkey
-chmod +x ~/.local/bin/zone
-
-# Recommended once after install
-~/.local/bin/terminal-tile-hotkey bootstrap
+./scripts/install-agent-commands
 ```
 
 ---
@@ -121,8 +106,8 @@ chmod +x ~/.local/bin/zone
 
 - Default binding: `ctrl+command+t`
 - Default zone picker binding: `ctrl+command+shift+t`
-- If a combo conflicts, the tool prompts for another combo such as `cmd+shift+t`, or you can enter `skip`
-- If zone hotkey setup fails during install, the installer now prints the exact recovery command instead of silently skipping it
+- The runtime now lives in `~/Applications/Terminal Tile Hotkeys.app`
+- If you want another combo, use `terminal-tile-hotkey set ...` or `terminal-tile-hotkey zone-set ...`
 
 ```bash
 terminal-tile-hotkey status
@@ -137,9 +122,9 @@ Notes:
 
 - `ctrl+command+t` runs the default full-screen tiling flow
 - `ctrl+command+shift+t` opens the zone picker with labeled options and runs immediately
-- Picker labels are `zl2 - 左边分屏 2 分之 1`, `zl3 - 左边分屏 3 分之 1`, `zl4 - 左边分屏 4 分之 1`, `zr2 - 右边分屏 2 分之 1`, `zr3 - 右边分屏 3 分之 1`, and `zr4 - 右边分屏 4 分之 1`
-- Both hotkeys are handled by a per-user LaunchAgent runtime, not Automator/Services
-- `status` and `zone-status` report daemon, helper, LaunchAgent, and combo state so you can verify the runtime directly
+- Picker labels are `zl2-左 1/2`, `zl3-左 1/3`, `zl4-左 1/4`, `zr2-右 1/2`, `zr3-右 1/3`, and `zr4-右 1/4`
+- Both hotkeys are handled by a per-user LaunchAgent that runs `Terminal Tile Hotkeys.app`
+- `status` and `zone-status` report the app bundle, LaunchAgent, Accessibility grant, and combo state directly
 
 ### Zone Mode
 
@@ -211,9 +196,10 @@ Current practical guidance:
 
 ### Permission note
 
-The hotkey only works on the terminal windows you are actively using. iTerm2, Terminal, and Ghostty rely on Accessibility permission before the script can control them:
+CLI execution continues to use the permissions of the terminal host you are running in. Hotkey execution is handled by `Terminal Tile Hotkeys.app`:
 
-- System Settings -> Privacy & Security -> Accessibility -> add Ghostty
+- System Settings -> Privacy & Security -> Accessibility -> add `~/Applications/Terminal Tile Hotkeys.app`
+- If you also run `tile` directly inside Ghostty, iTerm2, or Terminal, those terminal apps still need their own Accessibility permission
 
 ---
 

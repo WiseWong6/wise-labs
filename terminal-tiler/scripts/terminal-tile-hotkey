@@ -4,27 +4,26 @@ set -euo pipefail
 setopt typesetsilent
 
 APP_NAME="terminal-window-tiler"
-APP_MARKER="managed-by=terminal-window-tiler"
 TILE_HOME="${TILE_HOTKEY_HOME:-$HOME}"
 CONFIG_DIR="${TILE_HOME}/.config/${APP_NAME}"
 BIN_DIR="${TILE_HOME}/.local/bin"
+APP_DIR="${TILE_HOTKEY_APP_DIR:-${TILE_INSTALL_APP_DIR:-${TILE_HOME}/Applications}}"
+HOTKEY_APP_BUNDLE_NAME="Terminal Tile Hotkeys.app"
+HOTKEY_APP_EXECUTABLE_NAME="Terminal Tile Hotkeys"
+HOTKEY_APP_BUNDLE_ID="ai.wise.TerminalTileHotkeys"
+HOTKEY_APP_PATH="${APP_DIR}/${HOTKEY_APP_BUNDLE_NAME}"
+HOTKEY_APP_EXECUTABLE_PATH="${HOTKEY_APP_PATH}/Contents/MacOS/${HOTKEY_APP_EXECUTABLE_NAME}"
+HOTKEY_APP_LAUNCHER_PATH="${CONFIG_DIR}/launch-hotkey-app.sh"
 LAUNCH_AGENTS_DIR="${TILE_HOME}/Library/LaunchAgents"
 LAUNCH_AGENT_LABEL="ai.wise.terminal-window-tiler.hotkeys"
 LAUNCH_AGENT_PLIST="${LAUNCH_AGENTS_DIR}/${LAUNCH_AGENT_LABEL}.plist"
 HOTKEY_CONFIG_PLIST="${CONFIG_DIR}/hotkeys.plist"
-MAIN_SENTINEL_PATH="${CONFIG_DIR}/hotkey-bootstrap-v2"
-ZONE_SENTINEL_PATH="${CONFIG_DIR}/zone-hotkey-bootstrap-v2"
+MAIN_SENTINEL_PATH="${CONFIG_DIR}/hotkey-bootstrap-v3"
+ZONE_SENTINEL_PATH="${CONFIG_DIR}/zone-hotkey-bootstrap-v3"
 
 CURRENT_TARGET=""
 CURRENT_DEFAULT_COMBO=""
 CURRENT_SENTINEL_PATH=""
-
-cleanup_legacy_service_artifacts() {
-  rm -rf "${TILE_HOME}/Library/Services/Terminal Tile.workflow" 2>/dev/null || true
-  rm -rf "${TILE_HOME}/Library/Services/Terminal Tile Zone.workflow" 2>/dev/null || true
-  rm -f "${BIN_DIR}/terminal-tile-hotkey-run" 2>/dev/null || true
-  rm -f "${BIN_DIR}/terminal-tile-zone-hotkey-run" 2>/dev/null || true
-}
 
 usage() {
   cat <<'EOF'
@@ -74,40 +73,23 @@ ensure_dir() {
   mkdir -p "$1"
 }
 
-daemon_path() {
-  if [[ -x "${BIN_DIR}/terminal-tile-hotkey-daemon" ]]; then
-    printf '%s\n' "${BIN_DIR}/terminal-tile-hotkey-daemon"
-    return 0
-  fi
-  if command -v terminal-tile-hotkey-daemon >/dev/null 2>&1; then
-    command -v terminal-tile-hotkey-daemon
-    return 0
-  fi
-  return 1
+cleanup_legacy_hotkey_artifacts() {
+  rm -rf "${TILE_HOME}/Library/Services/Terminal Tile.workflow" 2>/dev/null || true
+  rm -rf "${TILE_HOME}/Library/Services/Terminal Tile Zone.workflow" 2>/dev/null || true
+  rm -f "${BIN_DIR}/terminal-tile-hotkey-run" 2>/dev/null || true
+  rm -f "${BIN_DIR}/terminal-tile-zone-hotkey-run" 2>/dev/null || true
+  rm -f "${BIN_DIR}/terminal-tile-hotkey-daemon" 2>/dev/null || true
+  rm -f "${BIN_DIR}/terminal-tile-hotkey-helper" 2>/dev/null || true
 }
 
-helper_path() {
-  if [[ -x "${BIN_DIR}/terminal-tile-hotkey-helper" ]]; then
-    printf '%s\n' "${BIN_DIR}/terminal-tile-hotkey-helper"
-    return 0
-  fi
-  if command -v terminal-tile-hotkey-helper >/dev/null 2>&1; then
-    command -v terminal-tile-hotkey-helper
-    return 0
-  fi
-  return 1
+hotkey_app_present() {
+  [[ -x "$HOTKEY_APP_EXECUTABLE_PATH" ]]
 }
 
-ensure_binaries_present() {
-  local daemon_bin helper_bin
-  daemon_bin="$(daemon_path 2>/dev/null || true)"
-  helper_bin="$(helper_path 2>/dev/null || true)"
-  if [[ -z "$daemon_bin" ]]; then
-    echo "ERROR daemon missing: terminal-tile-hotkey-daemon" >&2
-    return 1
-  fi
-  if [[ -z "$helper_bin" ]]; then
-    echo "ERROR helper missing: terminal-tile-hotkey-helper" >&2
+ensure_runtime_present() {
+  if ! hotkey_app_present; then
+    echo "ERROR app missing: ${HOTKEY_APP_PATH}" >&2
+    echo "请先运行 scripts/install-agent-commands。" >&2
     return 1
   fi
 }
@@ -117,9 +99,7 @@ combo_to_key_equivalent() {
   local raw="${combo:l}"
   raw="${raw//[[:space:]]/}"
 
-  if [[ -z "$raw" ]]; then
-    return 1
-  fi
+  [[ -n "$raw" ]] || return 1
 
   local -a parts
   parts=("${(@s:+:)raw}")
@@ -129,8 +109,8 @@ combo_to_key_equivalent() {
   local has_opt=0
   local has_ctrl=0
   local key=""
-
   local p
+
   for p in "${parts[@]}"; do
     case "$p" in
       cmd|command)
@@ -185,36 +165,6 @@ combo_to_key_equivalent() {
   printf '%s|%s\n' "$canonical" "$keyeq"
 }
 
-key_equivalent_to_combo() {
-  local keyeq="$1"
-  [[ -n "$keyeq" ]] || return 1
-
-  local key="${keyeq[-1]}"
-  local mods="${keyeq[1,-2]}"
-  local has_cmd=0
-  local has_shift=0
-  local has_opt=0
-  local has_ctrl=0
-  local i char
-  for (( i = 1; i <= ${#mods}; i++ )); do
-    char="${mods[$i]}"
-    case "$char" in
-      "@") has_cmd=1 ;;
-      "$") has_shift=1 ;;
-      "~") has_opt=1 ;;
-      "^") has_ctrl=1 ;;
-    esac
-  done
-
-  local -a out
-  (( has_cmd )) && out+=("cmd")
-  (( has_shift )) && out+=("shift")
-  (( has_ctrl )) && out+=("ctrl")
-  (( has_opt )) && out+=("opt")
-  out+=("${key:l}")
-  printf '%s\n' "${(j:+:)out}"
-}
-
 letter_to_keycode() {
   case "$1" in
     a) echo 0 ;;
@@ -264,18 +214,6 @@ key_equivalent_to_carbon_modifiers() {
   echo "$out"
 }
 
-load_hotkey_values() {
-  local prefix="$1"
-  if [[ ! -f "$HOTKEY_CONFIG_PLIST" ]]; then
-    return 0
-  fi
-  /usr/libexec/PlistBuddy -c "Print ${prefix}Enabled" "$HOTKEY_CONFIG_PLIST" 2>/dev/null || true
-  /usr/libexec/PlistBuddy -c "Print ${prefix}Combo" "$HOTKEY_CONFIG_PLIST" 2>/dev/null || true
-  /usr/libexec/PlistBuddy -c "Print ${prefix}KeyEquivalent" "$HOTKEY_CONFIG_PLIST" 2>/dev/null || true
-  /usr/libexec/PlistBuddy -c "Print ${prefix}KeyCode" "$HOTKEY_CONFIG_PLIST" 2>/dev/null || true
-  /usr/libexec/PlistBuddy -c "Print ${prefix}Modifiers" "$HOTKEY_CONFIG_PLIST" 2>/dev/null || true
-}
-
 ensure_hotkey_config_plist() {
   ensure_dir "$CONFIG_DIR"
   if [[ ! -f "$HOTKEY_CONFIG_PLIST" ]]; then
@@ -289,15 +227,23 @@ EOF
   fi
 }
 
+target_prefix() {
+  if [[ "$CURRENT_TARGET" == "zone" ]]; then
+    echo "Zone"
+  else
+    echo "Main"
+  fi
+}
+
 set_hotkey_values() {
   local prefix="$1"
   local combo="$2"
   local keyeq="$3"
   local keycode="$4"
   local modifiers="$5"
+  local pb="/usr/libexec/PlistBuddy"
 
   ensure_hotkey_config_plist
-  local pb="/usr/libexec/PlistBuddy"
 
   "$pb" -c "Delete ${prefix}Enabled" "$HOTKEY_CONFIG_PLIST" >/dev/null 2>&1 || true
   "$pb" -c "Delete ${prefix}Combo" "$HOTKEY_CONFIG_PLIST" >/dev/null 2>&1 || true
@@ -310,10 +256,12 @@ set_hotkey_values() {
   "$pb" -c "Add ${prefix}KeyCode integer ${keycode}" "$HOTKEY_CONFIG_PLIST" >/dev/null
   "$pb" -c "Add ${prefix}Modifiers integer ${modifiers}" "$HOTKEY_CONFIG_PLIST" >/dev/null
 
-  local helper_bin
-  helper_bin="$(helper_path)"
-  "$pb" -c "Delete HelperPath" "$HOTKEY_CONFIG_PLIST" >/dev/null 2>&1 || true
-  "$pb" -c "Add HelperPath string ${helper_bin}" "$HOTKEY_CONFIG_PLIST" >/dev/null
+  "$pb" -c "Delete AppBundlePath" "$HOTKEY_CONFIG_PLIST" >/dev/null 2>&1 || true
+  "$pb" -c "Delete AppExecutablePath" "$HOTKEY_CONFIG_PLIST" >/dev/null 2>&1 || true
+  "$pb" -c "Delete AppBundleIdentifier" "$HOTKEY_CONFIG_PLIST" >/dev/null 2>&1 || true
+  "$pb" -c "Add AppBundlePath string ${HOTKEY_APP_PATH}" "$HOTKEY_CONFIG_PLIST" >/dev/null
+  "$pb" -c "Add AppExecutablePath string ${HOTKEY_APP_EXECUTABLE_PATH}" "$HOTKEY_CONFIG_PLIST" >/dev/null
+  "$pb" -c "Add AppBundleIdentifier string ${HOTKEY_APP_BUNDLE_ID}" "$HOTKEY_CONFIG_PLIST" >/dev/null
 }
 
 clear_hotkey_values() {
@@ -331,10 +279,19 @@ launch_agent_present() {
   [[ -f "$LAUNCH_AGENT_PLIST" ]]
 }
 
+write_launcher_script() {
+  ensure_dir "$CONFIG_DIR"
+  cat > "$HOTKEY_APP_LAUNCHER_PATH" <<EOF
+#!/bin/zsh
+set -euo pipefail
+exec /usr/bin/open -W -n -g -a "${HOTKEY_APP_PATH}" --args --config "${HOTKEY_CONFIG_PLIST}"
+EOF
+  chmod 0755 "$HOTKEY_APP_LAUNCHER_PATH"
+}
+
 write_launch_agent() {
   ensure_dir "$LAUNCH_AGENTS_DIR"
-  local daemon_bin
-  daemon_bin="$(daemon_path)"
+  write_launcher_script
 
   cat > "$LAUNCH_AGENT_PLIST" <<EOF
 <?xml version="1.0" encoding="UTF-8"?>
@@ -345,18 +302,16 @@ write_launch_agent() {
   <string>${LAUNCH_AGENT_LABEL}</string>
   <key>ProgramArguments</key>
   <array>
-    <string>${daemon_bin}</string>
-    <string>--config</string>
-    <string>${HOTKEY_CONFIG_PLIST}</string>
+    <string>${HOTKEY_APP_LAUNCHER_PATH}</string>
   </array>
   <key>RunAtLoad</key>
   <true/>
   <key>KeepAlive</key>
   <true/>
   <key>StandardOutPath</key>
-  <string>${CONFIG_DIR}/hotkey-daemon.log</string>
+  <string>${CONFIG_DIR}/hotkey-app.log</string>
   <key>StandardErrorPath</key>
-  <string>${CONFIG_DIR}/hotkey-daemon.err.log</string>
+  <string>${CONFIG_DIR}/hotkey-app.err.log</string>
 </dict>
 </plist>
 EOF
@@ -364,6 +319,8 @@ EOF
 
 unload_agent() {
   launchctl bootout "gui/$(id -u)" "$LAUNCH_AGENT_PLIST" >/dev/null 2>&1 || true
+  osascript -e 'tell application id "'"${HOTKEY_APP_BUNDLE_ID}"'" to quit' >/dev/null 2>&1 || true
+  pkill -x "${HOTKEY_APP_EXECUTABLE_NAME}" >/dev/null 2>&1 || true
 }
 
 load_agent() {
@@ -381,11 +338,24 @@ agent_running() {
   launchctl print "gui/$(id -u)/${LAUNCH_AGENT_LABEL}" >/dev/null 2>&1
 }
 
-target_prefix() {
-  if [[ "$CURRENT_TARGET" == "zone" ]]; then
-    echo "Zone"
+app_accessibility_status() {
+  if ! hotkey_app_present; then
+    echo "missing"
+    return 0
+  fi
+
+  local auth_value=""
+  auth_value="$(
+    sqlite3 "$HOME/Library/Application Support/com.apple.TCC/TCC.db" \
+      "select auth_value from access where service='kTCCServiceAccessibility' and (client='${HOTKEY_APP_BUNDLE_ID}' or client='${HOTKEY_APP_EXECUTABLE_PATH}') order by last_modified desc limit 1;" \
+      2>/dev/null || true
+  )"
+  if [[ "$auth_value" == "2" ]]; then
+    echo "trusted"
+  elif [[ "$auth_value" == "0" ]]; then
+    echo "denied"
   else
-    echo "Main"
+    echo "untrusted"
   fi
 }
 
@@ -398,6 +368,7 @@ set_target_hotkey() {
     echo "示例：cmd+shift+t / ctrl+command+t"
     return 1
   fi
+
   canonical="${parsed%%|*}"
   keyeq="${parsed##*|}"
   key="${keyeq[-1]}"
@@ -411,8 +382,8 @@ set_target_hotkey() {
 
 cmd_bootstrap() {
   is_macos || { echo "快捷键初始化失败：仅支持 macOS。"; return 1; }
-  ensure_binaries_present || return 1
-  cleanup_legacy_service_artifacts
+  ensure_runtime_present || return 1
+  cleanup_legacy_hotkey_artifacts
   set_target_hotkey "$CURRENT_DEFAULT_COMBO" >/dev/null
   : > "$CURRENT_SENTINEL_PATH"
   echo "快捷键已就绪（${CURRENT_DEFAULT_COMBO}）。"
@@ -424,31 +395,31 @@ cmd_set() {
     usage
     return 1
   fi
-  ensure_binaries_present || return 1
+  ensure_runtime_present || return 1
   set_target_hotkey "$1"
 }
 
 cmd_status() {
   is_macos || { echo "ERROR macOS only"; return 1; }
   local has_error=0
-  local daemon_bin helper_bin prefix enabled combo
-  daemon_bin="$(daemon_path 2>/dev/null || true)"
-  helper_bin="$(helper_path 2>/dev/null || true)"
+  local prefix enabled combo accessibility_state
   prefix="$(target_prefix)"
 
-  if [[ -n "$daemon_bin" ]]; then
-    echo "OK daemon: ${daemon_bin}"
+  if [[ -d "$HOTKEY_APP_PATH" ]]; then
+    echo "OK app: ${HOTKEY_APP_PATH}"
   else
-    echo "ERROR daemon missing"
+    echo "ERROR app missing: ${HOTKEY_APP_PATH}"
     has_error=1
   fi
 
-  if [[ -n "$helper_bin" ]]; then
-    echo "OK helper: ${helper_bin}"
+  if hotkey_app_present; then
+    echo "OK executable: ${HOTKEY_APP_EXECUTABLE_PATH}"
   else
-    echo "ERROR helper missing"
+    echo "ERROR executable missing: ${HOTKEY_APP_EXECUTABLE_PATH}"
     has_error=1
   fi
+
+  echo "OK bundle-id: ${HOTKEY_APP_BUNDLE_ID}"
 
   if launch_agent_present; then
     echo "OK launch-agent: ${LAUNCH_AGENT_PLIST}"
@@ -460,6 +431,17 @@ cmd_status() {
     echo "OK runtime: running (${LAUNCH_AGENT_LABEL})"
   else
     echo "WARN runtime: not running"
+  fi
+
+  accessibility_state="$(app_accessibility_status)"
+  if [[ "$accessibility_state" == "trusted" ]]; then
+    echo "OK accessibility: trusted (${HOTKEY_APP_BUNDLE_NAME})"
+  elif [[ "$accessibility_state" == "denied" ]]; then
+    echo "WARN accessibility: denied (${HOTKEY_APP_BUNDLE_NAME})"
+  elif [[ "$accessibility_state" == "untrusted" ]]; then
+    echo "WARN accessibility: not granted (${HOTKEY_APP_BUNDLE_NAME})"
+  else
+    echo "WARN accessibility: app missing"
   fi
 
   enabled="$(/usr/libexec/PlistBuddy -c "Print ${prefix}Enabled" "$HOTKEY_CONFIG_PLIST" 2>/dev/null || true)"
@@ -487,7 +469,8 @@ cmd_uninstall() {
   if [[ "$main_enabled" != "true" && "$main_enabled" != "1" && "$zone_enabled" != "true" && "$zone_enabled" != "1" ]]; then
     unload_agent
     rm -f "$LAUNCH_AGENT_PLIST"
-    cleanup_legacy_service_artifacts
+    rm -f "$HOTKEY_APP_LAUNCHER_PATH"
+    cleanup_legacy_hotkey_artifacts
     echo "快捷键已卸载。"
   else
     restart_agent

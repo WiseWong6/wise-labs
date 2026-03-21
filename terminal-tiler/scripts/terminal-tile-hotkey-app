@@ -1,0 +1,484 @@
+#!/usr/bin/env swift
+
+import AppKit
+import Carbon
+import Foundation
+
+enum HotkeyAppError: Error, CustomStringConvertible {
+  case invalidInput(String)
+  case configMissing(String)
+  case configInvalid(String)
+  case hotkeyRegistrationFailed(String)
+
+  var description: String {
+    switch self {
+    case .invalidInput(let message),
+         .configMissing(let message),
+         .configInvalid(let message),
+         .hotkeyRegistrationFailed(let message):
+      return message
+    }
+  }
+}
+
+struct HotkeyConfig {
+  let combo: String
+  let keyCode: UInt32
+  let modifiers: UInt32
+}
+
+struct ZoneChoice {
+  let key: String
+  let label: String
+}
+
+let hotkeyZoneChoices: [ZoneChoice] = [
+  ZoneChoice(key: "zl2", label: "zl2-左 1/2"),
+  ZoneChoice(key: "zl3", label: "zl3-左 1/3"),
+  ZoneChoice(key: "zl4", label: "zl4-左 1/4"),
+  ZoneChoice(key: "zr2", label: "zr2-右 1/2"),
+  ZoneChoice(key: "zr3", label: "zr3-右 1/3"),
+  ZoneChoice(key: "zr4", label: "zr4-右 1/4"),
+]
+
+func hotkeyAppLog(_ message: String) {
+  let line = "[terminal-tile-hotkeys] \(message)\n"
+  FileHandle.standardError.write(Data(line.utf8))
+}
+
+final class ZoneChoiceButton: NSButton {
+  private let baseFill = NSColor.controlBackgroundColor.withAlphaComponent(0.82)
+  private let hoverFill = NSColor.controlAccentColor.withAlphaComponent(0.14)
+  private let pressedFill = NSColor.controlAccentColor.withAlphaComponent(0.22)
+  private let borderColor = NSColor.separatorColor.withAlphaComponent(0.65)
+  private var trackingAreaRef: NSTrackingArea?
+  private var hovered = false {
+    didSet { updateAppearance() }
+  }
+
+  override var isHighlighted: Bool {
+    didSet { updateAppearance() }
+  }
+
+  init(choice: ZoneChoice, target: AnyObject?, action: Selector?) {
+    super.init(frame: .zero)
+    identifier = NSUserInterfaceItemIdentifier(choice.key)
+    title = choice.label
+    self.target = target
+    self.action = action
+    isBordered = false
+    focusRingType = .none
+    bezelStyle = .regularSquare
+    font = .systemFont(ofSize: 14, weight: .semibold)
+    contentTintColor = .labelColor
+    keyEquivalent = ""
+    wantsLayer = true
+    layer?.cornerRadius = 12
+    layer?.borderWidth = 1
+    updateAppearance()
+  }
+
+  @available(*, unavailable)
+  required init?(coder: NSCoder) {
+    fatalError("init(coder:) has not been implemented")
+  }
+
+  override func updateTrackingAreas() {
+    super.updateTrackingAreas()
+    if let trackingAreaRef {
+      removeTrackingArea(trackingAreaRef)
+    }
+    let tracking = NSTrackingArea(
+      rect: bounds,
+      options: [.mouseEnteredAndExited, .activeAlways, .inVisibleRect],
+      owner: self,
+      userInfo: nil
+    )
+    addTrackingArea(tracking)
+    trackingAreaRef = tracking
+  }
+
+  override func mouseEntered(with event: NSEvent) {
+    hovered = true
+  }
+
+  override func mouseExited(with event: NSEvent) {
+    hovered = false
+  }
+
+  override func acceptsFirstMouse(for event: NSEvent?) -> Bool {
+    true
+  }
+
+  private func updateAppearance() {
+    let fill: NSColor
+    if isHighlighted {
+      fill = pressedFill
+    } else if hovered {
+      fill = hoverFill
+    } else {
+      fill = baseFill
+    }
+    layer?.backgroundColor = fill.cgColor
+    layer?.borderColor = borderColor.cgColor
+  }
+}
+
+final class ZonePickerController: NSObject, NSWindowDelegate {
+  private let application: NSApplication
+  private let panel: NSPanel
+  private var selectedKey: String?
+
+  init(application: NSApplication, choices: [ZoneChoice]) {
+    self.application = application
+    self.panel = NSPanel(
+      contentRect: NSRect(x: 0, y: 0, width: 470, height: 300),
+      styleMask: [.titled, .closable, .fullSizeContentView],
+      backing: .buffered,
+      defer: false
+    )
+    super.init()
+
+    panel.title = "Terminal Tile Zone"
+    panel.titleVisibility = .hidden
+    panel.titlebarAppearsTransparent = true
+    panel.isMovableByWindowBackground = true
+    panel.isFloatingPanel = true
+    panel.level = .modalPanel
+    panel.delegate = self
+    panel.isReleasedWhenClosed = false
+    panel.backgroundColor = .clear
+
+    let content = NSVisualEffectView(frame: NSRect(x: 0, y: 0, width: 470, height: 300))
+    content.material = .hudWindow
+    content.blendingMode = .behindWindow
+    content.state = .active
+    content.wantsLayer = true
+    content.layer?.cornerRadius = 18
+    content.layer?.masksToBounds = true
+    panel.contentView = content
+
+    let titleLabel = NSTextField(labelWithString: "选择终端分区布局")
+    titleLabel.font = .systemFont(ofSize: 20, weight: .bold)
+    titleLabel.frame = NSRect(x: 26, y: 248, width: 260, height: 26)
+    content.addSubview(titleLabel)
+
+    let subtitleLabel = NSTextField(labelWithString: "选择一个分区方向")
+    subtitleLabel.font = .systemFont(ofSize: 12, weight: .medium)
+    subtitleLabel.textColor = .secondaryLabelColor
+    subtitleLabel.frame = NSRect(x: 26, y: 228, width: 180, height: 18)
+    content.addSubview(subtitleLabel)
+
+    let leftCard = sectionCard(frame: NSRect(x: 22, y: 64, width: 202, height: 148), title: "左对齐")
+    let rightCard = sectionCard(frame: NSRect(x: 246, y: 64, width: 202, height: 148), title: "右对齐")
+    content.addSubview(leftCard)
+    content.addSubview(rightCard)
+
+    for choice in choices {
+      let isLeftColumn = choice.key.hasPrefix("zl")
+      let row: Int
+      switch choice.key {
+      case "zl2", "zr2":
+        row = 0
+      case "zl3", "zr3":
+        row = 1
+      default:
+        row = 2
+      }
+
+      let button = ZoneChoiceButton(choice: choice, target: self, action: #selector(selectZone(_:)))
+      button.frame = NSRect(
+        x: isLeftColumn ? 34 : 258,
+        y: 156 - (row * 38),
+        width: 180,
+        height: 34
+      )
+      content.addSubview(button)
+    }
+
+    let cancelButton = NSButton(title: "取消", target: self, action: #selector(cancel(_:)))
+    cancelButton.frame = NSRect(x: 374, y: 20, width: 70, height: 30)
+    cancelButton.bezelStyle = .recessed
+    cancelButton.font = .systemFont(ofSize: 13, weight: .medium)
+    cancelButton.keyEquivalent = "\u{1b}"
+    content.addSubview(cancelButton)
+  }
+
+  func run() -> String? {
+    centerPanelOnActiveScreen()
+    application.activate(ignoringOtherApps: true)
+    panel.makeKeyAndOrderFront(nil)
+    application.runModal(for: panel)
+    panel.orderOut(nil)
+    return selectedKey
+  }
+
+  func windowWillClose(_ notification: Notification) {
+    selectedKey = nil
+    application.stopModal()
+  }
+
+  @objc private func selectZone(_ sender: NSButton) {
+    selectedKey = sender.identifier?.rawValue
+    application.stopModal()
+  }
+
+  @objc private func cancel(_ sender: Any?) {
+    selectedKey = nil
+    application.stopModal()
+  }
+
+  private func centerPanelOnActiveScreen() {
+    let mouseLocation = NSEvent.mouseLocation
+    let targetScreen =
+      NSScreen.screens.first(where: { NSMouseInRect(mouseLocation, $0.frame, false) }) ??
+      NSScreen.main ??
+      NSScreen.screens.first
+
+    guard let targetScreen else {
+      panel.center()
+      return
+    }
+
+    let visibleFrame = targetScreen.visibleFrame
+    let panelFrame = panel.frame
+    let originX = visibleFrame.origin.x + ((visibleFrame.width - panelFrame.width) / 2)
+    let originY = visibleFrame.origin.y + ((visibleFrame.height - panelFrame.height) / 2)
+    panel.setFrameOrigin(NSPoint(x: round(originX), y: round(originY)))
+  }
+
+  private func sectionCard(frame: NSRect, title: String) -> NSView {
+    let card = NSVisualEffectView(frame: frame)
+    card.material = .sidebar
+    card.blendingMode = .withinWindow
+    card.state = .active
+    card.wantsLayer = true
+    card.layer?.cornerRadius = 16
+    card.layer?.borderWidth = 1
+    card.layer?.borderColor = NSColor.separatorColor.withAlphaComponent(0.4).cgColor
+
+    let header = NSTextField(labelWithString: title)
+    header.font = .systemFont(ofSize: 12, weight: .semibold)
+    header.textColor = .secondaryLabelColor
+    header.frame = NSRect(x: 14, y: frame.height - 26, width: frame.width - 28, height: 16)
+    card.addSubview(header)
+
+    return card
+  }
+}
+
+final class HotkeyAgent {
+  private let application: NSApplication
+  private let mainHotkey: HotkeyConfig?
+  private let zoneHotkey: HotkeyConfig?
+  private let eventTarget: EventTargetRef
+  private var hotKeyRefs: [EventHotKeyRef?] = []
+  private var isHandlingHotkey = false
+
+  init(mainHotkey: HotkeyConfig?, zoneHotkey: HotkeyConfig?) {
+    self.application = NSApplication.shared
+    self.mainHotkey = mainHotkey
+    self.zoneHotkey = zoneHotkey
+    self.eventTarget = GetEventDispatcherTarget()
+  }
+
+  func run() throws {
+    application.setActivationPolicy(.accessory)
+    application.finishLaunching()
+    primeAccessibilityPermission()
+
+    var eventSpec = EventTypeSpec(
+      eventClass: OSType(kEventClassKeyboard),
+      eventKind: UInt32(kEventHotKeyPressed)
+    )
+    let status = InstallEventHandler(
+      eventTarget,
+      { _, eventRef, userData in
+        guard let userData, let eventRef else { return noErr }
+        let agent = Unmanaged<HotkeyAgent>.fromOpaque(userData).takeUnretainedValue()
+        var hotKeyID = EventHotKeyID()
+        let result = GetEventParameter(
+          eventRef,
+          EventParamName(kEventParamDirectObject),
+          EventParamType(typeEventHotKeyID),
+          nil,
+          MemoryLayout<EventHotKeyID>.size,
+          nil,
+          &hotKeyID
+        )
+        guard result == noErr else { return result }
+        agent.handleHotkey(id: hotKeyID.id)
+        return noErr
+      },
+      1,
+      &eventSpec,
+      Unmanaged.passUnretained(self).toOpaque(),
+      nil
+    )
+
+    guard status == noErr else {
+      throw HotkeyAppError.hotkeyRegistrationFailed("安装全局热键监听失败：\(status)")
+    }
+
+    try registerHotkeys()
+    hotkeyAppLog("hotkey app ready")
+    application.run()
+  }
+
+  private func primeAccessibilityPermission() {
+    guard !isTileAccessibilityTrusted(prompt: false) else {
+      return
+    }
+    hotkeyAppLog("requesting accessibility permission")
+    _ = isTileAccessibilityTrusted(prompt: true)
+  }
+
+  private func registerHotkeys() throws {
+    try register(mainHotkey, id: 1)
+    try register(zoneHotkey, id: 2)
+  }
+
+  private func register(_ hotkey: HotkeyConfig?, id: UInt32) throws {
+    guard let hotkey else { return }
+    var ref: EventHotKeyRef?
+    let hotKeyID = EventHotKeyID(signature: fourCharCode("TTIL"), id: id)
+    let status = RegisterEventHotKey(
+      hotkey.keyCode,
+      hotkey.modifiers,
+      hotKeyID,
+      eventTarget,
+      0,
+      &ref
+    )
+    guard status == noErr else {
+      throw HotkeyAppError.hotkeyRegistrationFailed("注册快捷键失败：\(hotkey.combo) status=\(status)")
+    }
+    hotKeyRefs.append(ref)
+    hotkeyAppLog("registered \(hotkey.combo)")
+  }
+
+  private func handleHotkey(id: UInt32) {
+    DispatchQueue.main.async { [self] in
+      guard !isHandlingHotkey else {
+        hotkeyAppLog("ignored hotkey while busy")
+        return
+      }
+      isHandlingHotkey = true
+      defer { isHandlingHotkey = false }
+      invokeHotkey(id: id)
+    }
+  }
+
+  private func invokeHotkey(id: UInt32) {
+    let frontmostApplication = NSWorkspace.shared.frontmostApplication
+    guard let invokingApp = normalizedFrontmostTerminalApp(environment: ProcessInfo.processInfo.environment) else {
+      return
+    }
+    defer {
+      reactivateTerminalHost(frontmostApplication)
+    }
+
+    let zoneArgument: String?
+    switch id {
+    case 1:
+      zoneArgument = nil
+    case 2:
+      let picker = ZonePickerController(application: application, choices: hotkeyZoneChoices)
+      zoneArgument = picker.run()
+      if zoneArgument == nil {
+        return
+      }
+    default:
+      return
+    }
+
+    do {
+      let result = try executeTile(
+        options: TileExecutionOptions(
+          zoneArgument: zoneArgument,
+          environment: ProcessInfo.processInfo.environment,
+          invokingAppOverride: invokingApp,
+          promptForAccessibility: true
+        )
+      )
+      if let message = result.message {
+        hotkeyAppLog(message)
+      }
+      if let debugMessage = result.debugMessage {
+        hotkeyAppLog(debugMessage)
+      }
+    } catch {
+      hotkeyAppLog(String(describing: error))
+    }
+  }
+
+  private func reactivateTerminalHost(_ app: NSRunningApplication?) {
+    guard let app else { return }
+    _ = app.activate(options: [.activateAllWindows])
+  }
+}
+
+func fourCharCode(_ value: String) -> OSType {
+  value.utf8.reduce(0) { ($0 << 8) + OSType($1) }
+}
+
+func loadConfig(from path: String) throws -> [String: Any] {
+  let url = URL(fileURLWithPath: path)
+  guard FileManager.default.fileExists(atPath: url.path) else {
+    throw HotkeyAppError.configMissing("热键配置不存在：\(path)")
+  }
+
+  let data = try Data(contentsOf: url)
+  let plist = try PropertyListSerialization.propertyList(from: data, format: nil)
+  guard let dict = plist as? [String: Any] else {
+    throw HotkeyAppError.configInvalid("热键配置格式无效：\(path)")
+  }
+  return dict
+}
+
+func readHotkeyConfig(prefix: String, from dict: [String: Any]) throws -> HotkeyConfig? {
+  let enabled = (dict["\(prefix)Enabled"] as? Bool) ?? false
+  guard enabled else { return nil }
+
+  guard
+    let combo = dict["\(prefix)Combo"] as? String,
+    let keyCode = dict["\(prefix)KeyCode"] as? NSNumber,
+    let modifiers = dict["\(prefix)Modifiers"] as? NSNumber
+  else {
+    throw HotkeyAppError.configInvalid("缺少 \(prefix) 热键信息。")
+  }
+
+  return HotkeyConfig(
+    combo: combo,
+    keyCode: keyCode.uint32Value,
+    modifiers: modifiers.uint32Value
+  )
+}
+
+@main
+struct TerminalTileHotkeyAppMain {
+  static func main() {
+    do {
+      let args = Array(CommandLine.arguments.dropFirst())
+      if args == ["--check-accessibility"] {
+        let trusted = isTileAccessibilityTrusted(prompt: false)
+        print(trusted ? "trusted" : "untrusted")
+        exit(trusted ? 0 : 1)
+      }
+
+      guard args.count == 2, args[0] == "--config" else {
+        throw HotkeyAppError.invalidInput("Usage: Terminal Tile Hotkeys --config <plist-path> | --check-accessibility")
+      }
+
+      let config = try loadConfig(from: args[1])
+      let agent = HotkeyAgent(
+        mainHotkey: try readHotkeyConfig(prefix: "Main", from: config),
+        zoneHotkey: try readHotkeyConfig(prefix: "Zone", from: config)
+      )
+      try agent.run()
+    } catch {
+      hotkeyAppLog(String(describing: error))
+      exit(1)
+    }
+  }
+}
