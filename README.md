@@ -10,6 +10,14 @@
 
 ---
 
+## 仓库说明
+
+`wise-labs` 是一个多项目仓库。每个工具都放在自己的子目录里，安装或启动时要先 `cd` 到对应项目目录，再执行它自己的脚本或 `npm` 命令。
+
+根目录没有统一的 `./scripts/install-agent-commands`。例如 `terminal-tiler` 的安装脚本实际路径是 `terminal-tiler/scripts/install-agent-commands`。
+
+---
+
 ## Projects
 
 ### [terminal-tiler](./terminal-tiler)
@@ -17,28 +25,44 @@
 > macOS 终端窗口一键平铺工具
 
 - 一键整理 2~10 个终端窗口，按显示器分组平铺
-- 支持分区模式，给浏览器/微信留出固定区域
+- 支持左/右分区模式，给浏览器、微信或文档留固定区域
 - 分区热键会弹出原生 macOS 风格选择器，直接选 `zl2` 到 `zr4`
-- 支持 iTerm2 / Terminal / Ghostty 混用
-- 可在 Claude Code / Codex / OpenClaw 中直接使用
-
-**Quick Start:**
-
-`wise-labs` 是多项目仓库，`terminal-tiler` 的安装脚本在子目录里。
+- 支持 iTerm2 / Terminal / Ghostty，可在 Claude Code / Codex / OpenClaw 中直接使用
 
 ```bash
-git clone https://github.com/WiseWong6/wise-labs.git
-cd wise-labs/terminal-tiler
+cd terminal-tiler
 ./scripts/install-agent-commands
 ```
 
----
+### [mixed-preview](./mixed-preview)
+
+> 实时混合内容编辑器
+
+- 在同一个编辑器里混排 Markdown、HTML、JSON、Mermaid
+- 右侧实时预览，自动识别内容类型
+- Mermaid 支持导出 SVG / PNG
+- 内置示例内容和 AI 修复入口，适合写文档、方案和演示稿
+
+```bash
+cd mixed-preview
+npm install
+npm run dev
+```
 
 ### [openclaw_game](./openclaw_game)
 
-> OpenClaw agent 可视化项目
+> OpenClaw agent / sub-agent 可视化项目
 
-可视化展示 AI Agent 的行为和决策过程。
+- 可视化展示 OpenClaw agent、常驻 agent 和 sub-agent run
+- 支持 demo 模式和 live 模式
+- 读取本机 OpenClaw 数据目录，展示真实 session 和事件流
+- 适合调试 agent 编排、观察任务生命周期
+
+```bash
+cd openclaw_game
+npm install
+npm start
+```
 
 ---
 
