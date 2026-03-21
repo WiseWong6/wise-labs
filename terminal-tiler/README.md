@@ -282,6 +282,17 @@ EOF
 
 ---
 
+## 技术栈
+
+| 技术 | 用途 |
+|------|------|
+| Swift | 核心窗口管理逻辑 |
+| AppleScript | 与 macOS 应用交互 |
+| Shell | 安装脚本和 CLI 入口 |
+| launchd | 热键后台服务管理 |
+
+---
+
 ## 测试与兼容性
 
 **已验证（macOS）**
@@ -322,3 +333,9 @@ EOF
 ## Star History
 
 [![Star History Chart](https://api.star-history.com/svg?repos=WiseWong6/wise-labs&type=Date)](https://www.star-history.com/#WiseWong6/wise-labs&Date)
+
+---
+
+## License
+
+MIT License

@@ -1,14 +1,14 @@
-# mixed-preview
+# Mixed Preview
 
 <p align="center">
   <a href="./README.md">中文</a> | <a href="./README.en.md">English</a>
 </p>
 
-> 一个实时混合内容编辑器。
+> 一个实时混合内容编辑器 —— 在同一个编辑器里写 Markdown、Mermaid、JSON、HTML
 >
-> 在同一个编辑器里写 Markdown、HTML、JSON、Mermaid，右边立刻看到渲染结果。
->
-> 写文档时不用在四个工具之间来回切换。
+> 右边立刻看到渲染结果，不用在四个工具之间来回切换
+
+---
 
 ## 预览
 
@@ -34,14 +34,18 @@
 └──────────────┴───────────────────────────────────────┘
 ```
 
+---
+
 ## 它有什么用 | At a Glance
 
-- 输入即预览，600ms 防抖，不会卡
-- 自动检测内容类型：纯 JSON 直接贴进去能渲染，纯 Mermaid 语法也行，不需要手动加 ` ```mermaid `
-- Mermaid 图表支持导出 SVG / PNG（PNG 自动放大到 2500px 宽，白底）
-- HTML 完整文档在 iframe 沙盒里渲染，带样式隔离
-- 内置 6 个示例内容，一键切换：Mixed / Markdown / HTML / JSON / Flowchart / Sequence
-- AI 修复：写错了让 AI 帮你修，支持自定义 API 提供商
+- ⚡ **输入即预览**，600ms 防抖，不会卡
+- 🎯 **自动检测内容类型** —— 纯 JSON 直接贴进去能渲染，纯 Mermaid 语法也行
+- 📊 **Mermaid 图表导出** SVG / PNG（PNG 自动放大到 2500px 宽，白底）
+- 🔒 **HTML 沙盒渲染** —— 完整 HTML 文档在 iframe 中渲染，带样式隔离
+- 🎨 **内置 6 个示例** —— Mixed / Markdown / HTML / JSON / Flowchart / Sequence 一键切换
+- 🤖 **AI 修复** —— 写错了让 AI 帮你修，支持自定义 API 提供商
+
+---
 
 ## 快速开始 | Quick Start
 
@@ -70,12 +74,12 @@ npm run dev
 
 ## 为什么现有方案还没完全解决
 
-| 方案 | 擅长什么 | 为什么还不够 |
-|------|---------|-------------|
-| **mermaid.live** | Mermaid 图表预览和导出 | 只做 Mermaid，不支持 Markdown 混排；不能在同一个文件里同时写文字和画图 |
-| **Typora / StackEdit** | Markdown 实时预览 | 对 Mermaid 支持有限，不渲染 JSON，不支持完整 HTML 文档 |
-| **CodePen / JSFiddle** | HTML/CSS/JS 在线预览 | 面向前端开发，不是文档编辑器 |
-| **VS Code 预览** | Markdown 预览 | 需要装插件才支持 Mermaid，JSON 和 HTML 要分别用不同的预览方式 |
+| 方案 | 擅长什么 | 为什么还不够 | 这个工具补哪一段 |
+|------|---------|-------------|-----------------|
+| **mermaid.live** | Mermaid 图表预览和导出 | 只做 Mermaid，不支持 Markdown 混排 | 在同一个编辑器里同时写文字和画图 |
+| **Typora / StackEdit** | Markdown 实时预览 | 对 Mermaid 支持有限，不渲染 JSON，不支持完整 HTML 文档 | 一个编辑器搞定所有内容类型 |
+| **CodePen / JSFiddle** | HTML/CSS/JS 在线预览 | 面向前端开发，不是文档编辑器 | 为文档写作场景优化 |
+| **VS Code 预览** | Markdown 预览 | 需要装插件才支持 Mermaid，JSON 和 HTML 要分别用不同的预览方式 | 开箱即用，自动检测内容类型 |
 
 ---
 
@@ -130,6 +134,22 @@ npm run dev
 
 ---
 
+## 这个工具的边界
+
+**它做**
+- 一个编辑器里混合写 Markdown、HTML、JSON、Mermaid，实时预览
+- 自动检测内容类型，不需要手动指定
+- 高分辨率图表导出（SVG / PNG）
+- 可选的 AI 辅助修复
+
+**它不做**
+- 不是协作编辑器（没有多人实时协作）
+- 不是文件管理器（只有一个编辑区，不管理多个文件）
+- 不做持久化存储（内容在页面刷新后会重置为示例）
+- 不是 IDE（没有文件树、终端、Git 集成）
+
+---
+
 ## 技术栈
 
 | 依赖 | 用途 |
@@ -158,22 +178,6 @@ npm run format       # Prettier 格式化
 
 ---
 
-## 这个工具的边界
-
-**它做**
-- 一个编辑器里混合写 Markdown、HTML、JSON、Mermaid，实时预览
-- 自动检测内容类型，不需要手动指定
-- 高分辨率图表导出（SVG / PNG）
-- 可选的 AI 辅助修复
-
-**它不做**
-- 不是协作编辑器（没有多人实时协作）
-- 不是文件管理器（只有一个编辑区，不管理多个文件）
-- 不做持久化存储（内容在页面刷新后会重置为示例）
-- 不是 IDE（没有文件树、终端、Git 集成）
-
----
-
 ## 社交媒体
 
 <div align="center">
@@ -181,9 +185,8 @@ npm run format       # Prettier 格式化
   <p>
     <a href="https://www.xiaohongshu.com/user/profile/61f3ea4f000000001000db73">小红书</a> /
     <a href="https://x.com/killthewhys">Twitter(X)</a> /
-    扫码关注公众号
+    <a href="https://github.com/WiseWong6">GitHub</a>
   </p>
-  <img src="assets/wechat-wise-qr.jpg" alt="公众号歪斯二维码" width="220" />
 </div>
 
 ---
@@ -191,3 +194,9 @@ npm run format       # Prettier 格式化
 ## Star History
 
 [![Star History Chart](https://api.star-history.com/svg?repos=WiseWong6/wise-labs&type=Date)](https://www.star-history.com/#WiseWong6/wise-labs&Date)
+
+---
+
+## License
+
+MIT License
