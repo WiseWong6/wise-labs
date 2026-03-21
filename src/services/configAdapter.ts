@@ -1,4 +1,4 @@
-import { RestoreFormat, RestoreMode } from '../types';
+import { RestoreFormat, RestoreMode, UnifiedProvider, UnifiedModel, ModelCapability } from '../types';
 
 export type OcrProviderId = 'ucloud' | 'siliconflow' | 'bigmodel';
 export type OcrProviderLabel = 'UCloud' | 'SiliconFlow' | 'BigModel';
@@ -245,3 +245,119 @@ export const saveTextProviderConfigs = (configs: Array<{
 }>): void => {
   localStorage.setItem(TEXT_PROVIDERS_STORAGE_KEY, JSON.stringify(configs));
 };
+
+// --- Unified Provider Config (合并 OCR + LLM) ---
+const UNIFIED_PROVIDERS_STORAGE_KEY = 'WORKBENCH_UNIFIED_PROVIDERS_V1';
+
+// 默认供应商
+const DEFAULT_UNIFIED_PROVIDERS: UnifiedProvider[] = [
+  {
+    id: 'openai',
+    label: 'OpenAI',
+    type: 'openai-compat',
+    baseUrl: 'https://api.openai.com/v1',
+    apiKey: '',
+    enabled: true,
+    isDefault: true,
+    models: [
+      { id: 'gpt-4o', label: 'GPT-4o', capabilities: 'llm', enabled: true },
+      { id: 'gpt-4o-mini', label: 'GPT-4o Mini', capabilities: 'llm', enabled: true },
+    ],
+  },
+  {
+    id: 'anthropic',
+    label: 'Anthropic',
+    type: 'anthropic',
+    baseUrl: 'https://api.anthropic.com',
+    apiKey: '',
+    enabled: true,
+    isDefault: true,
+    models: [
+      { id: 'claude-sonnet-4-20250514', label: 'Claude Sonnet 4', capabilities: 'llm', enabled: true },
+    ],
+  },
+  {
+    id: 'siliconflow',
+    label: 'SiliconFlow',
+    type: 'openai-compat',
+    baseUrl: 'https://api.siliconflow.cn/v1',
+    apiKey: '',
+    enabled: false,
+    isDefault: false,
+    models: [
+      { id: 'deepseek-ai/DeepSeek-V3', label: 'DeepSeek-V3', capabilities: 'llm', enabled: false },
+      { id: 'Qwen/Qwen3-235B-A22B', label: 'Qwen3-235B', capabilities: 'llm', enabled: false },
+      { id: 'deepseek-ai/DeepSeek-OCR', label: 'DeepSeek-OCR', capabilities: 'ocr', enabled: false },
+    ],
+  },
+];
+
+export const getUnifiedProviders = (): UnifiedProvider[] => {
+  try {
+    const stored = localStorage.getItem(UNIFIED_PROVIDERS_STORAGE_KEY);
+    if (!stored) {
+      // 尝试从旧数据迁移
+      return migrateToUnified();
+    }
+    const parsed = JSON.parse(stored);
+    if (!Array.isArray(parsed) || parsed.length === 0) {
+      return DEFAULT_UNIFIED_PROVIDERS;
+    }
+    return parsed;
+  } catch {
+    return DEFAULT_UNIFIED_PROVIDERS;
+  }
+};
+
+export const saveUnifiedProviders = (providers: UnifiedProvider[]): void => {
+  localStorage.setItem(UNIFIED_PROVIDERS_STORAGE_KEY, JSON.stringify(providers));
+};
+
+// 从旧数据迁移到统一格式
+function migrateToUnified(): UnifiedProvider[] {
+  const providers: UnifiedProvider[] = [...DEFAULT_UNIFIED_PROVIDERS];
+
+  // 读取旧的 LLM 配置
+  const oldTextProviders = getTextProviderConfigs();
+  for (const old of oldTextProviders) {
+    // 跳过默认供应商（已内置）
+    if (old.id === 'openai' || old.id === 'anthropic') continue;
+
+    const newProvider: UnifiedProvider = {
+      id: old.id,
+      label: old.label,
+      type: old.type,
+      baseUrl: old.baseUrl,
+      apiKey: old.apiKey,
+      enabled: old.enabled,
+      isDefault: false,
+      models: old.models.map(m => ({
+        id: m.id,
+        label: m.label,
+        capabilities: 'llm' as ModelCapability,
+        enabled: m.enabled,
+      })),
+    };
+    providers.push(newProvider);
+  }
+
+  // 读取旧的 OCR 配置，合并到 SiliconFlow
+  const enabledOcrProviders = getEnabledProviderIds();
+  const siliconflowProvider = providers.find(p => p.id === 'siliconflow');
+  if (siliconflowProvider && enabledOcrProviders.includes('siliconflow')) {
+    const apiKey = getApiKey('siliconflow');
+    if (apiKey) {
+      siliconflowProvider.apiKey = apiKey;
+      siliconflowProvider.enabled = true;
+    }
+    const enabledModels = getEnabledModelIds('siliconflow');
+    for (const model of siliconflowProvider.models) {
+      if (model.capabilities === 'ocr') {
+        model.enabled = (enabledModels as string[]).includes(model.id);
+      }
+    }
+  }
+
+  saveUnifiedProviders(providers);
+  return providers;
+}

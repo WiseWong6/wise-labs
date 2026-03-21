@@ -139,6 +139,27 @@ export interface TextModelConfig {
   enabled: boolean;
 }
 
+// --- Unified Provider Config (合并 OCR + LLM) ---
+export type ModelCapability = 'llm' | 'ocr';
+
+export interface UnifiedModel {
+  id: string;
+  label: string;
+  capabilities: ModelCapability;
+  enabled: boolean;
+}
+
+export interface UnifiedProvider {
+  id: string;
+  label: string;
+  type: 'openai-compat' | 'anthropic';
+  baseUrl: string;
+  apiKey: string;
+  enabled: boolean;
+  isDefault: boolean;
+  models: UnifiedModel[];
+}
+
 // --- Upload Config ---
 export interface UploadConfigItem {
   id: string;
