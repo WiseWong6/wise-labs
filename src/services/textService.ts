@@ -14,7 +14,8 @@ export async function callTextModel(
   modelId: string,
   systemPrompt: string,
   userPrompt: string,
-  signal?: AbortSignal
+  signal?: AbortSignal,
+  options?: { temperature?: number; maxTokens?: number }
 ): Promise<TextModelResult> {
   const configs = getTextProviderConfigs();
   const providerConfig = configs.find(c => c.id === providerId);
@@ -30,7 +31,8 @@ export async function callTextModel(
         modelId,
         systemPrompt,
         userPrompt,
-        signal
+        signal,
+        options
       );
     }
     throw new Error(`未找到供应商配置: ${providerId}`);
@@ -47,7 +49,8 @@ export async function callTextModel(
       modelId,
       systemPrompt,
       userPrompt,
-      signal
+      signal,
+      options
     );
   }
 
@@ -57,7 +60,8 @@ export async function callTextModel(
     modelId,
     systemPrompt,
     userPrompt,
-    signal
+    signal,
+    options
   );
 }
 
@@ -67,7 +71,8 @@ async function callOpenAICompat(
   modelId: string,
   systemPrompt: string,
   userPrompt: string,
-  signal?: AbortSignal
+  signal?: AbortSignal,
+  options?: { temperature?: number; maxTokens?: number }
 ): Promise<TextModelResult> {
   const messages: Array<{ role: string; content: string }> = [];
   if (systemPrompt.trim()) {
@@ -85,8 +90,8 @@ async function callOpenAICompat(
       model: modelId,
       messages,
       stream: false,
-      temperature: 0.7,
-      max_tokens: 4096,
+      temperature: options?.temperature ?? 0.7,
+      max_tokens: options?.maxTokens ?? 4096,
     }),
     signal,
   });
@@ -114,11 +119,13 @@ async function callAnthropic(
   modelId: string,
   systemPrompt: string,
   userPrompt: string,
-  signal?: AbortSignal
+  signal?: AbortSignal,
+  options?: { temperature?: number; maxTokens?: number }
 ): Promise<TextModelResult> {
   const body: any = {
     model: modelId,
-    max_tokens: 4096,
+    max_tokens: options?.maxTokens ?? 4096,
+    temperature: options?.temperature ?? 0.7,
     messages: [{ role: 'user', content: userPrompt }],
   };
   if (systemPrompt.trim()) {

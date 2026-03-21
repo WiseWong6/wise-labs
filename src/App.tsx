@@ -3,7 +3,7 @@ import { Upload, Settings, Menu } from 'lucide-react';
 import { useStore } from './state/store';
 import Sidebar from './components/Sidebar';
 import ComparisonGrid from './components/ComparisonGrid';
-import PromptEditor from './components/PromptEditor';
+import LLMWorkspace from './components/LLMWorkspace';
 import SettingsModal from './components/SettingsModal';
 import UploadModal from './components/UploadModal';
 import StatusBar from './components/StatusBar';
@@ -100,37 +100,34 @@ const App: React.FC = () => {
           </div>
         </header>
 
-        {/* Prompt Editor (only in prompt mode) */}
-        {state.mode === 'prompt' && <PromptEditor />}
-
         {/* Main content area */}
-        <div className="flex-1 overflow-hidden">
-          {!hasActiveGroup && state.tasks.length === 0 ? (
-            <div className="flex-1 flex flex-col items-center justify-center h-full text-slate-400 select-none animate-fade-in">
-              <div className="w-20 h-20 rounded-2xl bg-gradient-to-br from-indigo-50 to-violet-50 flex items-center justify-center mb-5 shadow-card">
-                <Upload size={32} className="text-indigo-400" />
+        {state.mode === 'prompt' ? (
+          <LLMWorkspace />
+        ) : (
+          <div className="flex-1 overflow-hidden">
+            {!hasActiveGroup && state.tasks.length === 0 ? (
+              <div className="flex-1 flex flex-col items-center justify-center h-full text-slate-400 select-none animate-fade-in">
+                <div className="w-20 h-20 rounded-2xl bg-gradient-to-br from-indigo-50 to-violet-50 flex items-center justify-center mb-5 shadow-card">
+                  <Upload size={32} className="text-indigo-400" />
+                </div>
+                <p className="text-xl font-semibold text-slate-600">
+                  上传文件以开始 OCR 评测
+                </p>
+                <p className="text-sm mt-2 text-slate-400">
+                  支持 PDF、PNG、JPG 文件，可同时选择多个 OCR 模型进行对比
+                </p>
+                <button
+                  onClick={() => dispatch({ type: 'SET_SETTINGS_OPEN', open: true })}
+                  className="mt-5 px-4 py-2 text-xs font-medium text-indigo-600 bg-indigo-50 hover:bg-indigo-100 rounded-lg transition-all duration-150 active:scale-[0.97]"
+                >
+                  配置 API Key
+                </button>
               </div>
-              <p className="text-xl font-semibold text-slate-600">
-                {state.mode === 'ocr'
-                  ? '上传文件以开始 OCR 评测'
-                  : '输入 Prompt 并选择模型开始测试'}
-              </p>
-              <p className="text-sm mt-2 text-slate-400">
-                {state.mode === 'ocr'
-                  ? '支持 PDF、PNG、JPG 文件，可同时选择多个 OCR 模型进行对比'
-                  : '在左侧输入 Prompt，选择模型后点击 Run'}
-              </p>
-              <button
-                onClick={() => dispatch({ type: 'SET_SETTINGS_OPEN', open: true })}
-                className="mt-5 px-4 py-2 text-xs font-medium text-indigo-600 bg-indigo-50 hover:bg-indigo-100 rounded-lg transition-all duration-150 active:scale-[0.97]"
-              >
-                配置 API Key
-              </button>
-            </div>
-          ) : (
-            <ComparisonGrid />
-          )}
-        </div>
+            ) : (
+              <ComparisonGrid />
+            )}
+          </div>
+        )}
 
         {/* Status Bar */}
         <StatusBar />

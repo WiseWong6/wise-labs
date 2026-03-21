@@ -79,6 +79,8 @@ export interface Task {
   userPrompt?: string;
   response?: string;
   tokenUsage?: { prompt: number; completion: number };
+  temperature?: number;
+  maxTokens?: number;
 }
 
 // --- Provider Config ---
