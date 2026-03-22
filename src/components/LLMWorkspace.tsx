@@ -241,16 +241,15 @@ function example() {
         systemPrompt={systemPrompt}
         userPrompt={userPrompt}
         extractedVars={extractedVars}
-        onSystemPromptChange={setSystemPrompt}
-        onUserPromptChange={setUserPrompt}
-      />
-      <ModelConfigPanel
-        extractedVars={extractedVars}
         varValues={varValues}
         variableMeta={variableMeta}
+        onSystemPromptChange={setSystemPrompt}
+        onUserPromptChange={setUserPrompt}
         onVarChange={(key, val) => setVarValues(prev => ({ ...prev, [key]: val }))}
         onVarTypeChange={(key, type) => setVariableMeta(prev => ({ ...prev, [key]: { ...prev[key], type } }))}
         onRenameVar={renameVariable}
+      />
+      <ModelConfigPanel
         textModels={textModels}
         selectedModels={selectedModels}
         onToggleModel={(key) => setSelectedModels(prev =>
