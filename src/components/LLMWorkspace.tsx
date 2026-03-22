@@ -114,7 +114,66 @@ const LLMWorkspace: React.FC = () => {
   const substituteVars = (text: string) =>
     text.replace(/\{\{([A-Za-z][A-Za-z0-9_]*)\}\}/g, (_, key) => varValues[key] ?? `{{${key}}}`);
 
-  const handleRun = () => {
+  // Mock 响应生成
+  const generateMockResponse = (modelLabel: string) => {
+    const responses = [
+`## 分析结果
+
+这是一个 **${modelLabel}** 的模拟响应。
+
+### 主要观点
+
+1. **第一点**：这里是第一点内容的详细说明，可以包含多行文本。
+2. **第二点**：这里是第二点内容的详细说明。
+3. **第三点**：这里是第三点内容的详细说明。
+
+### 代码示例
+
+\`\`\`typescript
+function example() {
+  console.log("Hello from ${modelLabel}");
+  return {
+    status: "success",
+    data: [1, 2, 3, 4, 5]
+  };
+}
+\`\`\`
+
+### 总结
+
+综上所述，这是一个用于 UI 测试的模拟响应数据。实际运行时会显示真实的模型输出。`,
+
+`# ${modelLabel} 响应
+
+根据您的提示词，我提供以下分析：
+
+## 关键发现
+
+- 🔍 **发现 A**：这是一个重要的发现点
+- 🔍 **发现 B**：这是另一个重要的发现点  
+- 🔍 **发现 C**：这是第三个发现点
+
+## 详细说明
+
+这里是详细的说明文字，可以包含**粗体**、*斜体*和\`代码\`等元素。
+
+> 这是一段引用文字，用于展示引用样式。
+
+## 表格示例
+
+| 指标 | 数值 | 评价 |
+|------|------|------|
+| 速度 | 120ms | 优秀 |
+| 准确率 | 95% | 良好 |
+| 稳定性 | 99% | 优秀 |
+
+---
+
+*这是 ${modelLabel} 的模拟响应*`]
+    return responses[Math.floor(Math.random() * responses.length)];
+  };
+
+  const handleRun = (useMock = false) => {
     if (!userPrompt.trim()) return;
     if (selectedModels.length === 0) return;
     setIsRunning(true);
@@ -145,8 +204,10 @@ const LLMWorkspace: React.FC = () => {
           providerLabel: model.providerLabel,
           modelId: model.modelId,
           modelLabel: model.modelLabel,
-          status: 'queued' as const,
-          statusMessage: '等待处理...',
+          status: useMock ? 'done' : 'queued' as const,
+          statusMessage: useMock ? '完成' : '等待处理...',
+          response: useMock ? generateMockResponse(model.modelLabel) : undefined,
+          tokenUsage: useMock ? { prompt: 150, completion: 280 } : undefined,
           systemPrompt: resolvedSystem,
           userPrompt: resolvedUser,
           pagesData: {},
@@ -159,7 +220,10 @@ const LLMWorkspace: React.FC = () => {
 
     dispatch({ type: 'ADD_TASKS', tasks: newTasks });
     dispatch({ type: 'SET_ACTIVE_GROUP', groupId });
-    taskQueue.enqueueBatch(newTasks);
+    
+    if (!useMock) {
+      taskQueue.enqueueBatch(newTasks);
+    }
 
     setIsRunning(false);
   };
@@ -203,6 +267,7 @@ const LLMWorkspace: React.FC = () => {
         canRun={canRun}
         selectedCount={selectedModels.length}
         onRun={handleRun}
+        onMockRun={() => handleRun(true)}
       />
     </div>
   );
