@@ -144,7 +144,7 @@ const SettingsView: React.FC = () => {
 
       <div className="flex-1 flex overflow-hidden">
         {/* Left nav */}
-        <div className="w-48 border-r border-slate-200 bg-white flex flex-col shrink-0">
+        <div className="w-56 border-r border-slate-200 bg-white flex flex-col shrink-0">
           <div className="p-4 pb-2">
             <h2 className="text-sm font-bold text-slate-700">配置中心</h2>
           </div>
@@ -238,7 +238,7 @@ const ProvidersTab: React.FC<ProvidersTabProps> = ({
   return (
     <div className="flex-1 flex overflow-hidden">
       {/* Left list */}
-      <div className="w-64 border-r border-slate-200 bg-white flex flex-col shrink-0">
+      <div className="w-80 border-r border-slate-200 bg-white flex flex-col shrink-0">
         {/* Summary bar */}
         <div className="px-4 py-2.5 border-b border-slate-100 bg-slate-50 flex items-center gap-4 text-xs">
           <span className="flex items-center gap-1.5 text-slate-500 font-semibold"><Layers size={11} />{stats.providers} 供应商</span>
@@ -282,7 +282,7 @@ const ProvidersTab: React.FC<ProvidersTabProps> = ({
 
       {/* Right detail */}
       <div className="flex-1 overflow-y-auto bg-slate-50/60 min-w-0">
-        <div className="max-w-2xl px-7 py-6">
+        <div className="w-full px-8 py-6">
           {addingProvider ? (
             <AddProviderForm {...{ npLabel, setNpLabel, npType, setNpType, npBaseUrl, setNpBaseUrl, npApiKey, setNpApiKey }}
               onSubmit={submitProvider} onCancel={() => { setAddingProvider(false); setSelectedId(providers[0]?.id ?? null); }} />
@@ -685,7 +685,7 @@ const RestoreTab: React.FC<RestoreTabProps> = ({
   }, [llmModels, restoreLlmModelId, onSetLlmModel]);
 
   return (
-    <div className="space-y-5 pb-12 max-w-3xl">
+    <div className="space-y-5 pb-12 w-full">
       <div>
         <h3 className="text-lg font-bold text-slate-800">OCR 内容还原配置</h3>
         <p className="text-slate-400 text-xs mt-1">控制 OCR 识别文本如何被下游处理和渲染。所有更改自动保存。</p>
