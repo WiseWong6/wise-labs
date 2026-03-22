@@ -155,6 +155,12 @@ export interface UnifiedModel {
   label: string;
   capabilities: ModelCapability;
   enabled: boolean;
+  // Advanced capabilities (per-model)
+  vision?: boolean;         // Accepts image input
+  tools?: boolean;          // Supports function/tool calling
+  thinking?: boolean;       // Supports extended thinking / reasoning
+  maxOutputTokens?: number; // Hard cap for this model (e.g. 4096, 32768)
+  contextWindow?: number;   // Total context limit (e.g. 128000)
 }
 
 export interface UnifiedProvider {
