@@ -32,10 +32,14 @@ export interface OcrProviderConfig {
 export interface DefaultRestoreSettings {
   mode: RestoreMode;
   format: RestoreFormat;
+  systemPrompt?: string;
   prompt?: string;
   llmModelId?: string;
   temperature?: number;
   maxTokens?: number;
+  topP?: number;
+  timeout?: number;
+  enableThinking?: boolean;
 }
 
 const AVAILABLE_PROVIDERS: OcrProviderConfig[] = [
@@ -191,29 +195,28 @@ export const getDefaultOcrModel = (): OcrModelConfig => {
 };
 
 export const getDefaultRestoreSettings = (): DefaultRestoreSettings => {
+  const defaults: DefaultRestoreSettings = {
+    mode: 'default', format: 'auto', systemPrompt: '', prompt: '',
+    llmModelId: '', temperature: 0.7, maxTokens: 4096, topP: 1.0, timeout: 60, enableThinking: false,
+  };
   try {
     const stored = localStorage.getItem(RESTORE_SETTINGS_STORAGE_KEY);
-    if (!stored) {
-      return { mode: 'default', format: 'auto', prompt: '', llmModelId: '', temperature: 0.7, maxTokens: 4096 };
-    }
-
+    if (!stored) return defaults;
     const parsed = JSON.parse(stored) as Partial<DefaultRestoreSettings>;
     return {
       mode: parsed.mode === 'prompt' ? 'prompt' : 'default',
-      format:
-        parsed.format === 'json' ||
-        parsed.format === 'html' ||
-        parsed.format === 'md' ||
-        parsed.format === 'auto'
-          ? parsed.format
-          : 'auto',
-      prompt: parsed.prompt || '',
-      llmModelId: parsed.llmModelId || '',
+      format: (['json','html','md','auto'] as any[]).includes(parsed.format) ? parsed.format! : 'auto',
+      systemPrompt: parsed.systemPrompt ?? '',
+      prompt: parsed.prompt ?? '',
+      llmModelId: parsed.llmModelId ?? '',
       temperature: typeof parsed.temperature === 'number' ? parsed.temperature : 0.7,
       maxTokens: typeof parsed.maxTokens === 'number' ? parsed.maxTokens : 4096,
+      topP: typeof parsed.topP === 'number' ? parsed.topP : 1.0,
+      timeout: typeof parsed.timeout === 'number' ? parsed.timeout : 60,
+      enableThinking: typeof parsed.enableThinking === 'boolean' ? parsed.enableThinking : false,
     };
   } catch {
-    return { mode: 'default', format: 'auto', prompt: '', llmModelId: '', temperature: 0.7, maxTokens: 4096 };
+    return defaults;
   }
 };
 
