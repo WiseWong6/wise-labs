@@ -1,5 +1,5 @@
 import React, { useState, useMemo } from 'react';
-import { Play, Loader2 } from 'lucide-react';
+import { Play, Loader2, Eye, Wrench, Brain } from 'lucide-react';
 import { useStore, buildModelKey } from '../state/store';
 import { getUnifiedProviders } from '../services/configAdapter';
 import { Task, PromptGroup } from '../types';
@@ -15,7 +15,15 @@ const PromptEditor: React.FC = () => {
   // Get available LLM models from unified providers
   const textModels = useMemo(() => {
     const providers = getUnifiedProviders();
-    const models: Array<{ providerId: string; providerLabel: string; modelId: string; modelLabel: string }> = [];
+    const models: Array<{
+      providerId: string;
+      providerLabel: string;
+      modelId: string;
+      modelLabel: string;
+      vision?: boolean;
+      tools?: boolean;
+      thinking?: boolean;
+    }> = [];
     
     for (const provider of providers) {
       if (!provider.enabled) continue;
@@ -26,6 +34,9 @@ const PromptEditor: React.FC = () => {
           providerLabel: provider.label,
           modelId: model.id,
           modelLabel: model.label,
+          vision: model.vision,
+          tools: model.tools,
+          thinking: model.thinking,
         });
       }
     }
@@ -129,7 +140,20 @@ const PromptEditor: React.FC = () => {
                       : 'bg-white border-slate-200 text-slate-600 hover:border-slate-300 hover:shadow-card'
                   }`}
                 >
-                  {model.modelLabel}
+                  <div className="flex items-center gap-1.5">
+                    <span>{model.modelLabel}</span>
+                    <div className="flex items-center gap-0.5">
+                      {model.vision && (
+                        <span title="支持视觉"><Eye size={12} className={selected ? 'text-indigo-400' : 'text-slate-400'} /></span>
+                      )}
+                      {model.tools && (
+                        <span title="支持工具"><Wrench size={12} className={selected ? 'text-indigo-400' : 'text-slate-400'} /></span>
+                      )}
+                      {model.thinking && (
+                        <span title="支持思考"><Brain size={12} className={selected ? 'text-indigo-400' : 'text-slate-400'} /></span>
+                      )}
+                    </div>
+                  </div>
                   <span className="text-[11px] ml-1.5 opacity-60">{model.providerLabel}</span>
                 </button>
               );

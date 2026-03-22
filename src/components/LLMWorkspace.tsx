@@ -24,6 +24,7 @@ const LLMWorkspace: React.FC = () => {
   const [maxTokens, setMaxTokens] = useState(4096);
   const [seed, setSeed] = useState(0);
   const [enableThinking, setEnableThinking] = useState(false);
+  const [enableTools, setEnableTools] = useState(false);
   const [isRunning, setIsRunning] = useState(false);
   const [varValues, setVarValues] = useState<Record<string, string>>({});
   const [variableMeta, setVariableMeta] = useState<Record<string, VariableMeta>>({});
@@ -31,7 +32,15 @@ const LLMWorkspace: React.FC = () => {
   // Get available LLM models from unified providers
   const textModels = useMemo(() => {
     const providers = getUnifiedProviders();
-    const models: Array<{ providerId: string; providerLabel: string; modelId: string; modelLabel: string }> = [];
+    const models: Array<{
+      providerId: string;
+      providerLabel: string;
+      modelId: string;
+      modelLabel: string;
+      vision?: boolean;
+      tools?: boolean;
+      thinking?: boolean;
+    }> = [];
     
     for (const provider of providers) {
       if (!provider.enabled) continue;
@@ -42,6 +51,9 @@ const LLMWorkspace: React.FC = () => {
           providerLabel: provider.label,
           modelId: model.id,
           modelLabel: model.label,
+          vision: model.vision,
+          tools: model.tools,
+          thinking: model.thinking,
         });
       }
     }
@@ -179,10 +191,12 @@ const LLMWorkspace: React.FC = () => {
         maxTokens={maxTokens}
         seed={seed}
         enableThinking={enableThinking}
+        enableTools={enableTools}
         onTemperatureChange={setTemperature}
         onMaxTokensChange={setMaxTokens}
         onSeedChange={setSeed}
         onThinkingChange={setEnableThinking}
+        onToolsChange={setEnableTools}
       />
       <PromptResultsPanel
         isRunning={isRunning}

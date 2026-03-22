@@ -1,12 +1,16 @@
 import React from 'react';
 import { buildModelKey } from '../state/store';
 import { VariableType, VariableMeta } from '../types';
+import { Eye, Wrench, Brain } from 'lucide-react';
 
 interface TextModel {
   providerId: string;
   providerLabel: string;
   modelId: string;
   modelLabel: string;
+  vision?: boolean;
+  tools?: boolean;
+  thinking?: boolean;
 }
 
 interface Props {
@@ -23,10 +27,12 @@ interface Props {
   maxTokens: number;
   seed: number;
   enableThinking: boolean;
+  enableTools: boolean;
   onTemperatureChange: (v: number) => void;
   onMaxTokensChange: (v: number) => void;
   onSeedChange: (v: number) => void;
   onThinkingChange: (v: boolean) => void;
+  onToolsChange: (v: boolean) => void;
 }
 
 const VARIABLE_NAME_RE = /^[A-Za-z][A-Za-z0-9_]*$/;
@@ -45,10 +51,12 @@ const ModelConfigPanel: React.FC<Props> = ({
   maxTokens,
   seed,
   enableThinking,
+  enableTools,
   onTemperatureChange,
   onMaxTokensChange,
   onSeedChange,
   onThinkingChange,
+  onToolsChange,
 }) => {
   const [editingVar, setEditingVar] = React.useState<string | null>(null);
   const [editValue, setEditValue] = React.useState('');
@@ -271,7 +279,20 @@ const ModelConfigPanel: React.FC<Props> = ({
                       : 'bg-white border-slate-200 text-slate-600 hover:border-slate-300 hover:shadow-sm'
                   }`}
                 >
-                  <span className="font-medium truncate">{model.modelLabel}</span>
+                  <div className="flex items-center gap-2 min-w-0">
+                    <span className="font-medium truncate">{model.modelLabel}</span>
+                    <div className="flex items-center gap-0.5 flex-shrink-0">
+                      {model.vision && (
+                        <span title="支持视觉"><Eye size={10} className={selected ? 'text-indigo-400' : 'text-slate-400'} /></span>
+                      )}
+                      {model.tools && (
+                        <span title="支持工具"><Wrench size={10} className={selected ? 'text-indigo-400' : 'text-slate-400'} /></span>
+                      )}
+                      {model.thinking && (
+                        <span title="支持思考"><Brain size={10} className={selected ? 'text-indigo-400' : 'text-slate-400'} /></span>
+                      )}
+                    </div>
+                  </div>
                   <span className="text-[10px] opacity-40 ml-1 flex-none">{model.providerLabel}</span>
                 </button>
               );
@@ -298,12 +319,32 @@ const ModelConfigPanel: React.FC<Props> = ({
             <button
               onClick={() => onThinkingChange(!enableThinking)}
               className={`relative w-10 h-5 rounded-full transition-colors duration-200 ${
-                enableThinking ? 'bg-indigo-500' : 'bg-slate-200'
+                enableThinking ? 'bg-orange-500' : 'bg-slate-200'
               }`}
             >
               <span
                 className={`absolute top-0.5 left-0.5 w-4 h-4 bg-white rounded-full shadow-sm transition-transform duration-200 ${
                   enableThinking ? 'translate-x-5' : 'translate-x-0'
+                }`}
+              />
+            </button>
+          </div>
+
+          {/* Tools Mode */}
+          <div className="flex items-center justify-between">
+            <div className="flex flex-col">
+              <label className="text-xs text-slate-500">工具调用</label>
+              <span className="text-[10px] text-slate-400">启用 Tool Use</span>
+            </div>
+            <button
+              onClick={() => onToolsChange(!enableTools)}
+              className={`relative w-10 h-5 rounded-full transition-colors duration-200 ${
+                enableTools ? 'bg-teal-500' : 'bg-slate-200'
+              }`}
+            >
+              <span
+                className={`absolute top-0.5 left-0.5 w-4 h-4 bg-white rounded-full shadow-sm transition-transform duration-200 ${
+                  enableTools ? 'translate-x-5' : 'translate-x-0'
                 }`}
               />
             </button>
