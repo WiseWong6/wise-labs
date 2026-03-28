@@ -1,5 +1,5 @@
 import React, { useState } from 'react';
-import { PanelLeft, Code, Settings } from 'lucide-react';
+import { PanelLeft, Code, Settings, Github } from 'lucide-react';
 import Editor from './components/Editor';
 import MixedPreview from './components/MixedPreview';
 import AISettingsModal from './components/AISettingsModal';
@@ -102,6 +102,16 @@ const App: React.FC = () => {
               </button>
             ))}
           </div>
+
+          <a
+            href="https://github.com/WiseWong6/wise-labs"
+            target="_blank"
+            rel="noopener noreferrer"
+            className="p-2 rounded-md text-slate-400 hover:text-slate-600 hover:bg-slate-100 transition-colors"
+            title="GitHub"
+          >
+            <Github size={20} />
+          </a>
 
           <button
             onClick={() => setIsSettingsOpen(true)}
