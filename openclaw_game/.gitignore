@@ -1,0 +1,33 @@
+# Logs
+logs/
+*.log
+openclaw_game/logs/
+
+# OS files
+.DS_Store
+Thumbs.db
+
+# IDE
+.idea/
+.vscode/
+*.swp
+*.swo
+
+# Temporary files
+*.tmp
+*.temp
+
+# Node.js
+node_modules/
+
+# Database
+openclawd.db
+openclaw_game/openclawd.db
+
+# Tool metadata
+.claude/
+openclaw_game/.claude/
+
+# Playwright cache
+.playwright-mcp/
+openclaw_game/.playwright-mcp/

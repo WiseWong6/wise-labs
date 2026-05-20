@@ -1,0 +1,17 @@
+#!/bin/zsh
+
+# Deprecated: this project now uses macOS service hotkeys as the primary UX.
+# Keep this script as a compatibility placeholder to avoid silent breakage.
+
+set -u
+
+cat <<'EOF'
+terminal-tile-bind 已废弃，不再创建命令缩写。
+
+请改用系统快捷键：
+  1) terminal-tile-hotkey bootstrap
+  2) terminal-tile-hotkey set ctrl+command+t
+  3) terminal-tile-hotkey status
+EOF
+
+exit 2

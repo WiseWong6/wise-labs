@@ -1,0 +1,118 @@
+/* 防止微信浏览器/移动端水平滑动及滚动卡死 */
+html, body {
+  touch-action: pan-y;
+  overscroll-behavior-x: none;
+}
+
+.mermaid-container {
+  align-items: center;
+  min-height: 160px;
+  max-height: min(78vh, 820px);
+  overflow: auto;
+}
+
+.mermaid-diagram-canvas {
+  width: max-content;
+  max-width: none;
+  margin: 0 auto;
+  display: flex;
+  justify-content: center;
+}
+
+.mermaid-container svg {
+  max-width: none;
+  height: auto;
+}
+
+.mermaid-diagram-canvas > svg,
+.mermaid-container svg[id^="mermaid-"] {
+  display: block;
+  width: 100%;
+  min-width: 0;
+  margin: 0 auto;
+}
+
+/* CJK 字符底部不被裁切 */
+pre, code {
+  line-height: 1.6;
+}
+
+/* Mermaid SVG 文字防止裁切 */
+.mermaid-diagram-canvas svg text,
+.mermaid-diagram-canvas svg tspan,
+.mermaid-container svg[id^="mermaid-"] text,
+.mermaid-container svg[id^="mermaid-"] tspan {
+  overflow: visible;
+  text-rendering: optimizeLegibility;
+}
+
+/* Journey: section 标题加粗 */
+.mermaid-container svg .journey-section {
+  font-weight: 600;
+}
+
+/* Treemap: 方块描边加粗，颜色由 Mermaid SVG 对比度归一化处理 */
+.mermaid-container svg .treemap rect,
+.mermaid-container svg .treemapLeaf,
+.mermaid-container svg .treemapSection rect {
+  stroke-width: 2;
+}
+
+/* Packet: 标签字号提升 */
+.mermaid-container svg .packet text {
+  font-size: 13px;
+}
+
+.mermaid-diagram-canvas svg .quadrant-1,
+.mermaid-diagram-canvas svg .quadrant-2,
+.mermaid-diagram-canvas svg .quadrant-3,
+.mermaid-diagram-canvas svg .quadrant-4 {
+  fill-opacity: 0.32 !important;
+}
+
+.mermaid-container svg[id^="mermaid-"] .c4Boundary rect,
+.mermaid-container svg[id^="mermaid-"] .c4Shape rect,
+.mermaid-container svg[id^="mermaid-"] .person rect,
+.mermaid-container svg[id^="mermaid-"] .system rect {
+  fill-opacity: 0.18;
+}
+
+/* XY Chart: 提升可读性 */
+.mermaid-container svg .plot-title { font-size: 16px; font-weight: 600; }
+.mermaid-container svg .axis-label { font-size: 12px; }
+
+/* Timeline: 圆角美化 */
+.mermaid-container svg .timeline rect { rx: 8; ry: 8; }
+
+.mermaid-container svg .edgeLabel rect,
+.mermaid-container svg .labelBox {
+  opacity: 0.88 !important;
+}
+
+.mermaid-container svg .pieOuterCircle,
+.mermaid-container svg .pieCircle {
+  stroke-linejoin: round;
+}
+
+.mermaid-container svg .treemapLeaf {
+  fill-opacity: 0.78 !important;
+}
+
+.mermaid-container svg .treemapSection rect {
+  fill-opacity: 0.62 !important;
+  stroke-opacity: 0.8 !important;
+}
+
+.mermaid-container svg .architecture-groups .node-bkg,
+.mermaid-container svg .architecture-services .node-bkg {
+  stroke-opacity: 0.95 !important;
+}
+
+.mermaid-container svg .architecture-service-label,
+.mermaid-container svg .architecture-service-label text,
+.mermaid-container svg .architecture-service-label tspan,
+.mermaid-container svg .architecture-service-label *,
+.mermaid-container svg .architecture-service text,
+.mermaid-container svg .architecture-service tspan {
+  text-anchor: middle;
+}

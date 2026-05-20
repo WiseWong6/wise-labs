@@ -1,0 +1,2469 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>开源CSS角色 #81-100 - MIT许可证</title>
+  <style>
+    * { margin: 0; padding: 0; box-sizing: border-box; }
+    body {
+      font-family: 'Microsoft YaHei', sans-serif;
+      background: linear-gradient(135deg, #1a1a2e 0%, #16213e 50%, #0f3460 100%);
+      min-height: 100vh;
+      padding: 20px;
+      color: #fff;
+    }
+    .header { text-align: center; margin-bottom: 30px; }
+    .header h1 {
+      font-size: 2.5rem;
+      background: linear-gradient(90deg, #e94560, #ff6b6b, #feca57);
+      -webkit-background-clip: text;
+      -webkit-text-fill-color: transparent;
+      margin-bottom: 10px;
+    }
+    .license {
+      background: rgba(255,255,255,0.1);
+      padding: 10px 20px;
+      border-radius: 20px;
+      display: inline-block;
+      font-size: 0.9rem;
+      color: #aaa;
+    }
+    .characters-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+      gap: 20px;
+      max-width: 1600px;
+      margin: 0 auto;
+    }
+    .character-card {
+      background: rgba(255,255,255,0.05);
+      border-radius: 16px;
+      padding: 20px;
+      border: 1px solid rgba(255,255,255,0.1);
+      transition: transform 0.3s, box-shadow 0.3s;
+    }
+    .character-card:hover {
+      transform: translateY(-5px);
+      box-shadow: 0 10px 30px rgba(0,0,0,0.3);
+    }
+    .char-title {
+      font-size: 1.1rem;
+      margin-bottom: 15px;
+      color: #feca57;
+      text-align: center;
+    }
+    .actions-row {
+      display: flex;
+      justify-content: space-around;
+      flex-wrap: wrap;
+      gap: 15px;
+    }
+    .action-box { text-align: center; }
+    .action-label {
+      display: block;
+      font-size: 0.75rem;
+      color: #aaa;
+      margin-top: 8px;
+    }
+    .char {
+      position: relative;
+      width: 96px;
+      height: 120px;
+      image-rendering: pixelated;
+    }
+
+    /* ==================== 角色 #81: 史莱姆 ==================== */
+    .char81-thinking .char81-body {
+      position: absolute;
+      left: 16px;
+      top: 30px;
+      width: 4px;
+      height: 4px;
+      background: transparent;
+      box-shadow: 
+        8px 0 #2ecc71, 12px 0 #2ecc71, 16px 0 #2ecc71, 20px 0 #2ecc71, 24px 0 #2ecc71, 28px 0 #2ecc71, 32px 0 #2ecc71, 36px 0 #2ecc71,
+        4px 4px #27ae60, 8px 4px #2ecc71, 12px 4px #2ecc71, 16px 4px #2ecc71, 20px 4px #2ecc71, 24px 4px #2ecc71, 28px 4px #2ecc71, 32px 4px #2ecc71, 36px 4px #2ecc71, 40px 4px #27ae60,
+        0px 8px #27ae60, 4px 8px #2ecc71, 8px 8px #2ecc71, 12px 8px #2ecc71, 16px 8px #2ecc71, 20px 8px #2ecc71, 24px 8px #2ecc71, 28px 8px #2ecc71, 32px 8px #2ecc71, 36px 8px #2ecc71, 40px 8px #2ecc71, 44px 8px #27ae60,
+        0px 12px #27ae60, 4px 12px #2ecc71, 8px 12px #2ecc71, 12px 12px #000, 16px 12px #2ecc71, 20px 12px #2ecc71, 24px 12px #2ecc71, 28px 12px #000, 32px 12px #2ecc71, 36px 12px #2ecc71, 40px 12px #2ecc71, 44px 12px #27ae60,
+        0px 16px #27ae60, 4px 16px #2ecc71, 8px 16px #2ecc71, 12px 16px #2ecc71, 16px 16px #2ecc71, 20px 16px #2ecc71, 24px 16px #2ecc71, 28px 16px #2ecc71, 32px 16px #2ecc71, 36px 16px #2ecc71, 40px 16px #2ecc71, 44px 16px #27ae60,
+        4px 20px #27ae60, 8px 20px #2ecc71, 12px 20px #2ecc71, 16px 20px #2ecc71, 20px 20px #000, 24px 20px #000, 28px 20px #2ecc71, 32px 20px #2ecc71, 36px 20px #2ecc71, 40px 20px #27ae60,
+        4px 24px #27ae60, 8px 24px #2ecc71, 12px 24px #2ecc71, 16px 24px #2ecc71, 20px 24px #2ecc71, 24px 24px #2ecc71, 28px 24px #2ecc71, 32px 24px #2ecc71, 36px 24px #2ecc71, 40px 24px #27ae60,
+        8px 28px #27ae60, 12px 28px #27ae60, 16px 28px #2ecc71, 20px 28px #2ecc71, 24px 28px #2ecc71, 28px 28px #2ecc71, 32px 28px #27ae60, 36px 28px #27ae60,
+        12px 32px #27ae60, 16px 32px #27ae60, 20px 32px #27ae60, 24px 32px #27ae60, 28px 32px #27ae60;
+      animation: char81-bounce 1s ease-in-out infinite;
+    }
+    .char81-thinking .char81-bubble {
+      position: absolute;
+      left: 50px;
+      top: 5px;
+      width: 4px;
+      height: 4px;
+      background: transparent;
+      box-shadow: 0 0 #fff, 4px 0 #fff, -4px 4px #fff, 0 4px #fff, 4px 4px #fff, 8px 4px #fff, -4px 8px #fff, 0 8px #fff, 4px 8px #fff, 8px 8px #fff, 0 12px #fff, 4px 12px #fff;
+      animation: char81-bubble 2s ease-in-out infinite;
+    }
+    @keyframes char81-bounce { 0%, 100% { transform: translateY(0); } 50% { transform: translateY(-5px); } }
+    @keyframes char81-bubble { 0%, 100% { opacity: 0.5; transform: translateY(0); } 50% { opacity: 1; transform: translateY(-3px); } }
+
+    .char81-sleeping .char81-body {
+      position: absolute;
+      left: 16px;
+      top: 35px;
+      width: 4px;
+      height: 4px;
+      background: transparent;
+      box-shadow: 
+        8px 0 #2ecc71, 12px 0 #2ecc71, 16px 0 #2ecc71, 20px 0 #2ecc71, 24px 0 #2ecc71, 28px 0 #2ecc71, 32px 0 #2ecc71, 36px 0 #2ecc71,
+        4px 4px #27ae60, 8px 4px #2ecc71, 12px 4px #2ecc71, 16px 4px #2ecc71, 20px 4px #2ecc71, 24px 4px #2ecc71, 28px 4px #2ecc71, 32px 4px #2ecc71, 36px 4px #2ecc71, 40px 4px #27ae60,
+        0px 8px #27ae60, 4px 8px #2ecc71, 8px 8px #2ecc71, 12px 8px #2ecc71, 16px 8px #2ecc71, 20px 8px #2ecc71, 24px 8px #2ecc71, 28px 8px #2ecc71, 32px 8px #2ecc71, 36px 8px #2ecc71, 40px 8px #2ecc71, 44px 8px #27ae60,
+        0px 12px #27ae60, 4px 12px #2ecc71, 8px 12px #2ecc71, 12px 12px #2ecc71, 16px 12px #2ecc71, 20px 12px #2ecc71, 24px 12px #2ecc71, 28px 12px #2ecc71, 32px 12px #2ecc71, 36px 12px #2ecc71, 40px 12px #2ecc71, 44px 12px #27ae60,
+        0px 16px #27ae60, 4px 16px #2ecc71, 8px 16px #2ecc71, 12px 16px #2ecc71, 16px 16px #2ecc71, 20px 16px #2ecc71, 24px 16px #2ecc71, 28px 16px #2ecc71, 32px 16px #2ecc71, 36px 16px #2ecc71, 40px 16px #2ecc71, 44px 16px #27ae60,
+        4px 20px #27ae60, 8px 20px #2ecc71, 12px 20px #2ecc71, 16px 20px #2ecc71, 20px 20px #2ecc71, 24px 20px #2ecc71, 28px 20px #2ecc71, 32px 20px #2ecc71, 36px 20px #2ecc71, 40px 20px #27ae60,
+        4px 24px #27ae60, 8px 24px #2ecc71, 12px 24px #2ecc71, 16px 24px #2ecc71, 20px 24px #2ecc71, 24px 24px #2ecc71, 28px 24px #2ecc71, 32px 24px #2ecc71, 36px 24px #2ecc71, 40px 24px #27ae60,
+        8px 28px #27ae60, 12px 28px #27ae60, 16px 28px #2ecc71, 20px 28px #2ecc71, 24px 28px #2ecc71, 28px 28px #2ecc71, 32px 28px #27ae60, 36px 28px #27ae60,
+        12px 32px #27ae60, 16px 32px #27ae60, 20px 32px #27ae60, 24px 32px #27ae60, 28px 32px #27ae60;
+      animation: char81-sleep 2s ease-in-out infinite;
+    }
+    .char81-sleeping .char81-zzz { position: absolute; left: 55px; top: 5px; font-size: 12px; color: #fff; animation: char81-zzz 2s ease-in-out infinite; }
+    @keyframes char81-sleep { 0%, 100% { transform: scaleY(1); } 50% { transform: scaleY(0.9); } }
+    @keyframes char81-zzz { 0%, 100% { opacity: 0; transform: translateY(0) translateX(0); } 50% { opacity: 1; transform: translateY(-10px) translateX(5px); } }
+
+    .char81-listening .char81-body {
+      position: absolute;
+      left: 16px;
+      top: 30px;
+      width: 4px;
+      height: 4px;
+      background: transparent;
+      box-shadow: 
+        8px 0 #2ecc71, 12px 0 #2ecc71, 16px 0 #2ecc71, 20px 0 #2ecc71, 24px 0 #2ecc71, 28px 0 #2ecc71, 32px 0 #2ecc71, 36px 0 #2ecc71,
+        4px 4px #27ae60, 8px 4px #2ecc71, 12px 4px #2ecc71, 16px 4px #2ecc71, 20px 4px #2ecc71, 24px 4px #2ecc71, 28px 4px #2ecc71, 32px 4px #2ecc71, 36px 4px #2ecc71, 40px 4px #27ae60,
+        0px 8px #27ae60, 4px 8px #2ecc71, 8px 8px #2ecc71, 12px 8px #000, 16px 8px #000, 20px 8px #2ecc71, 24px 8px #2ecc71, 28px 8px #000, 32px 8px #000, 36px 8px #2ecc71, 40px 8px #2ecc71, 44px 8px #27ae60,
+        0px 12px #27ae60, 4px 12px #2ecc71, 8px 12px #2ecc71, 12px 12px #000, 16px 12px #000, 20px 12px #2ecc71, 24px 12px #2ecc71, 28px 12px #000, 32px 12px #000, 36px 12px #2ecc71, 40px 12px #2ecc71, 44px 12px #27ae60,
+        0px 16px #27ae60, 4px 16px #2ecc71, 8px 16px #2ecc71, 12px 16px #2ecc71, 16px 16px #2ecc71, 20px 16px #2ecc71, 24px 16px #2ecc71, 28px 16px #2ecc71, 32px 16px #2ecc71, 36px 16px #2ecc71, 40px 16px #2ecc71, 44px 16px #27ae60,
+        4px 20px #27ae60, 8px 20px #2ecc71, 12px 20px #2ecc71, 16px 20px #000, 20px 20px #000, 24px 20px #000, 28px 20px #2ecc71, 32px 20px #2ecc71, 36px 20px #2ecc71, 40px 20px #27ae60,
+        4px 24px #27ae60, 8px 24px #2ecc71, 12px 24px #2ecc71, 16px 24px #2ecc71, 20px 24px #2ecc71, 24px 24px #2ecc71, 28px 24px #2ecc71, 32px 24px #2ecc71, 36px 24px #2ecc71, 40px 24px #27ae60,
+        8px 28px #27ae60, 12px 28px #27ae60, 16px 28px #2ecc71, 20px 28px #2ecc71, 24px 28px #2ecc71, 28px 28px #2ecc71, 32px 28px #27ae60, 36px 28px #27ae60,
+        12px 32px #27ae60, 16px 32px #27ae60, 20px 32px #27ae60, 24px 32px #27ae60, 28px 32px #27ae60;
+      animation: char81-tilt 1s ease-in-out infinite alternate;
+    }
+    .char81-listening .char81-ear { position: absolute; left: 60px; top: 35px; width: 4px; height: 4px; background: transparent; box-shadow: 0 0 #feca57, 4px 0 #feca57, 0 4px #feca57, 4px 4px #feca57; animation: char81-ear 0.5s ease-in-out infinite; }
+    @keyframes char81-tilt { 0% { transform: rotate(-5deg); } 100% { transform: rotate(5deg); } }
+    @keyframes char81-ear { 0%, 100% { transform: scale(1); } 50% { transform: scale(1.2); } }
+
+    .char81-speaking .char81-body {
+      position: absolute;
+      left: 16px;
+      top: 30px;
+      width: 4px;
+      height: 4px;
+      background: transparent;
+      box-shadow: 
+        8px 0 #2ecc71, 12px 0 #2ecc71, 16px 0 #2ecc71, 20px 0 #2ecc71, 24px 0 #2ecc71, 28px 0 #2ecc71, 32px 0 #2ecc71, 36px 0 #2ecc71,
+        4px 4px #27ae60, 8px 4px #2ecc71, 12px 4px #2ecc71, 16px 4px #2ecc71, 20px 4px #2ecc71, 24px 4px #2ecc71, 28px 4px #2ecc71, 32px 4px #2ecc71, 36px 4px #2ecc71, 40px 4px #27ae60,
+        0px 8px #27ae60, 4px 8px #2ecc71, 8px 8px #2ecc71, 12px 8px #2ecc71, 16px 8px #000, 20px 8px #2ecc71, 24px 8px #2ecc71, 28px 8px #000, 32px 8px #2ecc71, 36px 8px #2ecc71, 40px 8px #2ecc71, 44px 8px #27ae60,
+        0px 12px #27ae60, 4px 12px #2ecc71, 8px 12px #2ecc71, 12px 12px #2ecc71, 16px 12px #2ecc71, 20px 12px #2ecc71, 24px 12px #2ecc71, 28px 12px #2ecc71, 32px 12px #2ecc71, 36px 12px #2ecc71, 40px 12px #2ecc71, 44px 12px #27ae60,
+        0px 16px #27ae60, 4px 16px #2ecc71, 8px 16px #2ecc71, 12px 16px #2ecc71, 16px 16px #000, 20px 16px #000, 24px 16px #000, 28px 16px #2ecc71, 32px 16px #2ecc71, 36px 16px #2ecc71, 40px 16px #2ecc71, 44px 16px #27ae60,
+        4px 20px #27ae60, 8px 20px #2ecc71, 12px 20px #2ecc71, 16px 20px #2ecc71, 20px 20px #2ecc71, 24px 20px #2ecc71, 28px 20px #2ecc71, 32px 20px #2ecc71, 36px 20px #2ecc71, 40px 20px #27ae60,
+        4px 24px #27ae60, 8px 24px #2ecc71, 12px 24px #2ecc71, 16px 24px #2ecc71, 20px 24px #2ecc71, 24px 24px #2ecc71, 28px 24px #2ecc71, 32px 24px #2ecc71, 36px 24px #2ecc71, 40px 24px #27ae60,
+        8px 28px #27ae60, 12px 28px #27ae60, 16px 28px #2ecc71, 20px 28px #2ecc71, 24px 28px #2ecc71, 28px 28px #2ecc71, 32px 28px #27ae60, 36px 28px #27ae60,
+        12px 32px #27ae60, 16px 32px #27ae60, 20px 32px #27ae60, 24px 32px #27ae60, 28px 32px #27ae60;
+      animation: char81-jump 0.5s ease-in-out infinite;
+    }
+    @keyframes char81-jump { 0%, 100% { transform: translateY(0); } 50% { transform: translateY(-8px); } }
+
+    /* ==================== 角色 #82: 骷髅 ==================== */
+    .char82-thinking .char82-body {
+      position: absolute;
+      left: 20px;
+      top: 20px;
+      width: 4px;
+      height: 4px;
+      background: transparent;
+      box-shadow: 
+        8px 0 #ecf0f1, 12px 0 #ecf0f1, 16px 0 #ecf0f1, 20px 0 #ecf0f1, 24px 0 #ecf0f1,
+        4px 4px #ecf0f1, 8px 4px #ecf0f1, 12px 4px #ecf0f1, 16px 4px #ecf0f1, 20px 4px #ecf0f1, 24px 4px #ecf0f1, 28px 4px #ecf0f1,
+        0px 8px #ecf0f1, 4px 8px #000, 8px 8px #ecf0f1, 12px 8px #ecf0f1, 16px 8px #ecf0f1, 20px 8px #ecf0f1, 24px 8px #ecf0f1, 28px 8px #000, 32px 8px #ecf0f1,
+        0px 12px #ecf0f1, 4px 12px #ecf0f1, 8px 12px #ecf0f1, 12px 12px #ecf0f1, 16px 12px #ecf0f1, 20px 12px #ecf0f1, 24px 12px #ecf0f1, 28px 12px #ecf0f1, 32px 12px #ecf0f1,
+        0px 16px #ecf0f1, 4px 16px #ecf0f1, 8px 16px #000, 12px 16px #ecf0f1, 16px 16px #ecf0f1, 20px 16px #ecf0f1, 24px 16px #000, 28px 16px #ecf0f1, 32px 16px #ecf0f1,
+        4px 20px #ecf0f1, 8px 20px #ecf0f1, 12px 20px #ecf0f1, 16px 20px #ecf0f1, 20px 20px #ecf0f1, 24px 20px #ecf0f1, 28px 20px #ecf0f1,
+        16px 24px #000, 20px 24px #000,
+        8px 28px #ecf0f1, 12px 28px #000, 16px 28px #ecf0f1, 20px 28px #ecf0f1, 24px 28px #000, 28px 28px #ecf0f1,
+        12px 32px #95a5a6, 16px 32px #95a5a6, 20px 32px #95a5a6, 24px 32px #95a5a6,
+        8px 36px #95a5a6, 12px 36px #7f8c8d, 16px 36px #7f8c8d, 20px 36px #7f8c8d, 24px 36px #7f8c8d, 28px 36px #95a5a6,
+        8px 40px #95a5a6, 12px 40px #7f8c8d, 16px 40px #7f8c8d, 20px 40px #7f8c8d, 24px 40px #7f8c8d, 28px 40px #95a5a6,
+        4px 44px #95a5a6, 8px 44px #95a5a6, 12px 44px #7f8c8d, 16px 44px #7f8c8d, 20px 44px #7f8c8d, 24px 44px #7f8c8d, 28px 44px #95a5a6, 32px 44px #95a5a6,
+        0px 48px #95a5a6, 4px 48px #000, 8px 48px #000, 28px 48px #000, 32px 48px #000, 36px 48px #95a5a6,
+        0px 52px #95a5a6, 4px 52px #000, 8px 52px #000, 28px 52px #000, 32px 52px #000, 36px 52px #95a5a6,
+        8px 56px #95a5a6, 12px 56px #7f8c8d, 24px 56px #7f8c8d, 28px 56px #95a5a6,
+        8px 60px #7f8c8d, 12px 60px #7f8c8d, 24px 60px #7f8c8d, 28px 60px #7f8c8d;
+      animation: char82-tap 1s ease-in-out infinite;
+    }
+    .char82-thinking .char82-bubble { position: absolute; left: 55px; top: 0; width: 4px; height: 4px; background: transparent; box-shadow: 4px 0 #fff, 8px 0 #fff, 0 4px #fff, 4px 4px #fff, 8px 4px #fff, 12px 4px #fff, 0 8px #fff, 4px 8px #fff, 8px 8px #fff, 12px 8px #fff, 4px 12px #fff, 8px 12px #fff; animation: char82-bubble 2s ease-in-out infinite; }
+    @keyframes char82-tap { 0%, 100% { transform: translateX(0); } 50% { transform: translateX(3px); } }
+    @keyframes char82-bubble { 0%, 100% { opacity: 0.3; } 50% { opacity: 1; } }
+
+    .char82-sleeping .char82-body {
+      position: absolute;
+      left: 20px;
+      top: 20px;
+      width: 4px;
+      height: 4px;
+      background: transparent;
+      box-shadow: 
+        8px 0 #ecf0f1, 12px 0 #ecf0f1, 16px 0 #ecf0f1, 20px 0 #ecf0f1, 24px 0 #ecf0f1,
+        4px 4px #ecf0f1, 8px 4px #ecf0f1, 12px 4px #ecf0f1, 16px 4px #ecf0f1, 20px 4px #ecf0f1, 24px 4px #ecf0f1, 28px 4px #ecf0f1,
+        0px 8px #ecf0f1, 4px 8px #ecf0f1, 8px 8px #ecf0f1, 12px 8px #ecf0f1, 16px 8px #ecf0f1, 20px 8px #ecf0f1, 24px 8px #ecf0f1, 28px 8px #ecf0f1, 32px 8px #ecf0f1,
+        0px 12px #ecf0f1, 4px 12px #ecf0f1, 8px 12px #ecf0f1, 12px 12px #ecf0f1, 16px 12px #ecf0f1, 20px 12px #ecf0f1, 24px 12px #ecf0f1, 28px 12px #ecf0f1, 32px 12px #ecf0f1,
+        0px 16px #ecf0f1, 4px 16px #ecf0f1, 8px 16px #ecf0f1, 12px 16px #ecf0f1, 16px 16px #ecf0f1, 20px 16px #ecf0f1, 24px 16px #ecf0f1, 28px 16px #ecf0f1, 32px 16px #ecf0f1,
+        4px 20px #ecf0f1, 8px 20px #ecf0f1, 12px 20px #ecf0f1, 16px 20px #ecf0f1, 20px 20px #ecf0f1, 24px 20px #ecf0f1, 28px 20px #ecf0f1,
+        16px 24px #000, 20px 24px #000,
+        8px 28px #ecf0f1, 12px 28px #ecf0f1, 16px 28px #ecf0f1, 20px 28px #ecf0f1, 24px 28px #ecf0f1, 28px 28px #ecf0f1,
+        12px 32px #95a5a6, 16px 32px #95a5a6, 20px 32px #95a5a6, 24px 32px #95a5a6,
+        8px 36px #95a5a6, 12px 36px #7f8c8d, 16px 36px #7f8c8d, 20px 36px #7f8c8d, 24px 36px #7f8c8d, 28px 36px #95a5a6,
+        8px 40px #95a5a6, 12px 40px #7f8c8d, 16px 40px #7f8c8d, 20px 40px #7f8c8d, 24px 40px #7f8c8d, 28px 40px #95a5a6,
+        4px 44px #95a5a6, 8px 44px #95a5a6, 12px 44px #7f8c8d, 16px 44px #7f8c8d, 20px 44px #7f8c8d, 24px 44px #7f8c8d, 28px 44px #95a5a6, 32px 44px #95a5a6,
+        0px 48px #95a5a6, 4px 48px #000, 8px 48px #000, 28px 48px #000, 32px 48px #000, 36px 48px #95a5a6,
+        0px 52px #95a5a6, 4px 52px #000, 8px 52px #000, 28px 52px #000, 32px 52px #000, 36px 52px #95a5a6,
+        8px 56px #95a5a6, 12px 56px #7f8c8d, 24px 56px #7f8c8d, 28px 56px #95a5a6,
+        8px 60px #7f8c8d, 12px 60px #7f8c8d, 24px 60px #7f8c8d, 28px 60px #7f8c8d;
+      animation: char82-sleep 2s ease-in-out infinite;
+    }
+    .char82-sleeping .char82-zzz { position: absolute; left: 55px; top: 5px; font-size: 14px; color: #bdc3c7; animation: char82-zzz 2s ease-in-out infinite; }
+    @keyframes char82-sleep { 0%, 100% { transform: rotate(0deg); } 50% { transform: rotate(3deg); } }
+    @keyframes char82-zzz { 0%, 100% { opacity: 0; transform: translateY(0); } 50% { opacity: 1; transform: translateY(-8px); } }
+
+    .char82-listening .char82-body {
+      position: absolute;
+      left: 20px;
+      top: 20px;
+      width: 4px;
+      height: 4px;
+      background: transparent;
+      box-shadow: 
+        8px 0 #ecf0f1, 12px 0 #ecf0f1, 16px 0 #ecf0f1, 20px 0 #ecf0f1, 24px 0 #ecf0f1,
+        4px 4px #ecf0f1, 8px 4px #ecf0f1, 12px 4px #ecf0f1, 16px 4px #ecf0f1, 20px 4px #ecf0f1, 24px 4px #ecf0f1, 28px 4px #ecf0f1,
+        0px 8px #ecf0f1, 4px 8px #000, 8px 8px #ecf0f1, 12px 8px #ecf0f1, 16px 8px #ecf0f1, 20px 8px #ecf0f1, 24px 8px #ecf0f1, 28px 8px #000, 32px 8px #ecf0f1,
+        0px 12px #ecf0f1, 4px 12px #ecf0f1, 8px 12px #ecf0f1, 12px 12px #ecf0f1, 16px 12px #ecf0f1, 20px 12px #ecf0f1, 24px 12px #ecf0f1, 28px 12px #ecf0f1, 32px 12px #ecf0f1,
+        0px 16px #ecf0f1, 4px 16px #ecf0f1, 8px 16px #000, 12px 16px #ecf0f1, 16px 16px #ecf0f1, 20px 16px #ecf0f1, 24px 16px #000, 28px 16px #ecf0f1, 32px 16px #ecf0f1,
+        4px 20px #ecf0f1, 8px 20px #ecf0f1, 12px 20px #ecf0f1, 16px 20px #ecf0f1, 20px 20px #ecf0f1, 24px 20px #ecf0f1, 28px 20px #ecf0f1,
+        16px 24px #000, 20px 24px #000,
+        8px 28px #ecf0f1, 12px 28px #000, 16px 28px #ecf0f1, 20px 28px #ecf0f1, 24px 28px #000, 28px 28px #ecf0f1,
+        12px 32px #95a5a6, 16px 32px #95a5a6, 20px 32px #95a5a6, 24px 32px #95a5a6,
+        8px 36px #95a5a6, 12px 36px #7f8c8d, 16px 36px #7f8c8d, 20px 36px #7f8c8d, 24px 36px #7f8c8d, 28px 36px #95a5a6,
+        8px 40px #95a5a6, 12px 40px #7f8c8d, 16px 40px #7f8c8d, 20px 40px #7f8c8d, 24px 40px #7f8c8d, 28px 40px #95a5a6,
+        4px 44px #95a5a6, 8px 44px #95a5a6, 12px 44px #7f8c8d, 16px 44px #7f8c8d, 20px 44px #7f8c8d, 24px 44px #7f8c8d, 28px 44px #95a5a6, 32px 44px #95a5a6,
+        0px 48px #95a5a6, 4px 48px #000, 8px 48px #000, 28px 48px #000, 32px 48px #000, 36px 48px #95a5a6,
+        0px 52px #95a5a6, 4px 52px #000, 8px 52px #000, 28px 52px #000, 32px 52px #000, 36px 52px #95a5a6,
+        8px 56px #95a5a6, 12px 56px #7f8c8d, 24px 56px #7f8c8d, 28px 56px #95a5a6,
+        8px 60px #7f8c8d, 12px 60px #7f8c8d, 24px 60px #7f8c8d, 28px 60px #7f8c8d;
+      animation: char82-tilt 1.5s ease-in-out infinite alternate;
+    }
+    .char82-listening .char82-sound { position: absolute; left: 60px; top: 30px; width: 4px; height: 4px; background: transparent; box-shadow: 0 0 #f39c12, 8px 0 #f39c12, 0 8px #f39c12, 8px 8px #f39c12, 16px 0 #f39c12, 16px 8px #f39c12; animation: char82-sound 1s ease-in-out infinite; }
+    @keyframes char82-tilt { 0% { transform: rotate(-8deg); } 100% { transform: rotate(0deg); } }
+    @keyframes char82-sound { 0%, 100% { opacity: 0.5; transform: scale(0.8); } 50% { opacity: 1; transform: scale(1.2); } }
+
+    .char82-speaking .char82-body {
+      position: absolute;
+      left: 20px;
+      top: 20px;
+      width: 4px;
+      height: 4px;
+      background: transparent;
+      box-shadow: 
+        8px 0 #ecf0f1, 12px 0 #ecf0f1, 16px 0 #ecf0f1, 20px 0 #ecf0f1, 24px 0 #ecf0f1,
+        4px 4px #ecf0f1, 8px 4px #ecf0f1, 12px 4px #ecf0f1, 16px 4px #ecf0f1, 20px 4px #ecf0f1, 24px 4px #ecf0f1, 28px 4px #ecf0f1,
+        0px 8px #ecf0f1, 4px 8px #000, 8px 8px #ecf0f1, 12px 8px #ecf0f1, 16px 8px #ecf0f1, 20px 8px #ecf0f1, 24px 8px #ecf0f1, 28px 8px #000, 32px 8px #ecf0f1,
+        0px 12px #ecf0f1, 4px 12px #ecf0f1, 8px 12px #ecf0f1, 12px 12px #ecf0f1, 16px 12px #ecf0f1, 20px 12px #ecf0f1, 24px 12px #ecf0f1, 28px 12px #ecf0f1, 32px 12px #ecf0f1,
+        0px 16px #ecf0f1, 4px 16px #ecf0f1, 8px 16px #000, 12px 16px #ecf0f1, 16px 16px #ecf0f1, 20px 16px #ecf0f1, 24px 16px #000, 28px 16px #ecf0f1, 32px 16px #ecf0f1,
+        4px 20px #ecf0f1, 8px 20px #ecf0f1, 12px 20px #ecf0f1, 16px 20px #ecf0f1, 20px 20px #ecf0f1, 24px 20px #ecf0f1, 28px 20px #ecf0f1,
+        16px 24px #000, 20px 24px #000,
+        8px 28px #ecf0f1, 12px 28px #000, 16px 28px #ecf0f1, 20px 28px #000, 24px 28px #000, 28px 28px #ecf0f1,
+        12px 32px #95a5a6, 16px 32px #95a5a6, 20px 32px #95a5a6, 24px 32px #95a5a6,
+        8px 36px #95a5a6, 12px 36px #7f8c8d, 16px 36px #7f8c8d, 20px 36px #7f8c8d, 24px 36px #7f8c8d, 28px 36px #95a5a6,
+        8px 40px #95a5a6, 12px 40px #7f8c8d, 16px 40px #7f8c8d, 20px 40px #7f8c8d, 24px 40px #7f8c8d, 28px 40px #95a5a6,
+        4px 44px #95a5a6, 8px 44px #95a5a6, 12px 44px #7f8c8d, 16px 44px #7f8c8d, 20px 44px #7f8c8d, 24px 44px #7f8c8d, 28px 44px #95a5a6, 32px 44px #95a5a6,
+        0px 48px #95a5a6, 4px 48px #000, 8px 48px #000, 28px 48px #000, 32px 48px #000, 36px 48px #95a5a6,
+        0px 52px #95a5a6, 4px 52px #000, 8px 52px #000, 28px 52px #000, 32px 52px #000, 36px 52px #95a5a6,
+        8px 56px #95a5a6, 12px 56px #7f8c8d, 24px 56px #7f8c8d, 28px 56px #95a5a6,
+        8px 60px #7f8c8d, 12px 60px #7f8c8d, 24px 60px #7f8c8d, 28px 60px #7f8c8d;
+      animation: char82-talk 0.4s ease-in-out infinite;
+    }
+    @keyframes char82-talk { 0%, 100% { transform: translateY(0); } 50% { transform: translateY(-3px); } }
+
+    /* ==================== 角色 #83: 幽灵 ==================== */
+    .char83-thinking .char83-body {
+      position: absolute;
+      left: 20px;
+      top: 15px;
+      width: 4px;
+      height: 4px;
+      background: transparent;
+      box-shadow: 
+        8px 0 #ecf0f1, 12px 0 #ecf0f1, 16px 0 #ecf0f1, 20px 0 #ecf0f1, 24px 0 #ecf0f1, 28px 0 #ecf0f1,
+        4px 4px #ecf0f1, 8px 4px #ecf0f1, 12px 4px #ecf0f1, 16px 4px #ecf0f1, 20px 4px #ecf0f1, 24px 4px #ecf0f1, 28px 4px #ecf0f1, 32px 4px #ecf0f1,
+        0px 8px #ecf0f1, 4px 8px #ecf0f1, 8px 8px #000, 12px 8px #000, 16px 8px #ecf0f1, 20px 8px #ecf0f1, 24px 8px #000, 28px 8px #000, 32px 8px #ecf0f1, 36px 8px #ecf0f1,
+        0px 12px #ecf0f1, 4px 12px #ecf0f1, 8px 12px #000, 12px 12px #000, 16px 12px #ecf0f1, 20px 12px #ecf0f1, 24px 12px #000, 28px 12px #000, 32px 12px #ecf0f1, 36px 12px #ecf0f1,
+        0px 16px #ecf0f1, 4px 16px #ecf0f1, 8px 16px #ecf0f1, 12px 16px #ecf0f1, 16px 16px #ecf0f1, 20px 16px #ecf0f1, 24px 16px #ecf0f1, 28px 16px #ecf0f1, 32px 16px #ecf0f1, 36px 16px #ecf0f1,
+        0px 20px #ecf0f1, 4px 20px #ecf0f1, 8px 20px #ecf0f1, 12px 20px #ecf0f1, 16px 20px #000, 20px 20px #000, 24px 20px #ecf0f1, 28px 20px #ecf0f1, 32px 20px #ecf0f1, 36px 20px #ecf0f1,
+        0px 24px #ecf0f1, 4px 24px #ecf0f1, 8px 24px #ecf0f1, 12px 24px #ecf0f1, 16px 24px #ecf0f1, 20px 24px #ecf0f1, 24px 24px #ecf0f1, 28px 24px #ecf0f1, 32px 24px #ecf0f1, 36px 24px #ecf0f1,
+        4px 28px #ecf0f1, 8px 28px #ecf0f1, 12px 28px #ecf0f1, 16px 28px #ecf0f1, 20px 28px #ecf0f1, 24px 28px #ecf0f1, 28px 28px #ecf0f1, 32px 28px #ecf0f1,
+        8px 32px #ecf0f1, 12px 32px #ecf0f1, 16px 32px #ecf0f1, 20px 32px #ecf0f1, 24px 32px #ecf0f1, 28px 32px #ecf0f1,
+        8px 36px #ecf0f1, 12px 36px #ecf0f1, 24px 36px #ecf0f1, 28px 36px #ecf0f1,
+        12px 40px #ecf0f1, 24px 40px #ecf0f1;
+      animation: char83-float 2s ease-in-out infinite;
+      opacity: 0.9;
+    }
+    .char83-thinking .char83-bubble { position: absolute; left: 55px; top: 5px; width: 4px; height: 4px; background: transparent; box-shadow: 4px 0 #fff, 8px 0 #fff, 0 4px #fff, 4px 4px #fff, 8px 4px #fff, 12px 4px #fff, 0 8px #fff, 4px 8px #fff, 8px 8px #fff, 12px 8px #fff, 4px 12px #fff, 8px 12px #fff; animation: char83-bubble 2s ease-in-out infinite; }
+    @keyframes char83-float { 0%, 100% { transform: translateY(0); } 50% { transform: translateY(-10px); } }
+    @keyframes char83-bubble { 0%, 100% { opacity: 0.4; transform: translateY(0); } 50% { opacity: 0.9; transform: translateY(-5px); } }
+
+    .char83-sleeping .char83-body {
+      position: absolute;
+      left: 20px;
+      top: 15px;
+      width: 4px;
+      height: 4px;
+      background: transparent;
+      box-shadow: 
+        8px 0 #bdc3c7, 12px 0 #bdc3c7, 16px 0 #bdc3c7, 20px 0 #bdc3c7, 24px 0 #bdc3c7, 28px 0 #bdc3c7,
+        4px 4px #bdc3c7, 8px 4px #bdc3c7, 12px 4px #bdc3c7, 16px 4px #bdc3c7, 20px 4px #bdc3c7, 24px 4px #bdc3c7, 28px 4px #bdc3c7, 32px 4px #bdc3c7,
+        0px 8px #bdc3c7, 4px 8px #95a5a6, 8px 8px #95a5a6, 12px 8px #95a5a6, 16px 8px #bdc3c7, 20px 8px #bdc3c7, 24px 8px #95a5a6, 28px 8px #95a5a6, 32px 8px #95a5a6, 36px 8px #bdc3c7,
+        0px 12px #bdc3c7, 4px 12px #95a5a6, 8px 12px #95a5a6, 12px 12px #95a5a6, 16px 12px #bdc3c7, 20px 12px #bdc3c7, 24px 12px #95a5a6, 28px 12px #95a5a6, 32px 12px #95a5a6, 36px 12px #bdc3c7,
+        0px 16px #bdc3c7, 4px 16px #bdc3c7, 8px 16px #bdc3c7, 12px 16px #bdc3c7, 16px 16px #bdc3c7, 20px 16px #bdc3c7, 24px 16px #bdc3c7, 28px 16px #bdc3c7, 32px 16px #bdc3c7, 36px 16px #bdc3c7,
+        0px 20px #bdc3c7, 4px 20px #bdc3c7, 8px 20px #bdc3c7, 12px 20px #bdc3c7, 16px 20px #95a5a6, 20px 20px #95a5a6, 24px 20px #bdc3c7, 28px 20px #bdc3c7, 32px 20px #bdc3c7, 36px 20px #bdc3c7,
+        0px 24px #bdc3c7, 4px 24px #bdc3c7, 8px 24px #bdc3c7, 12px 24px #bdc3c7, 16px 24px #bdc3c7, 20px 24px #bdc3c7, 24px 24px #bdc3c7, 28px 24px #bdc3c7, 32px 24px #bdc3c7, 36px 24px #bdc3c7,
+        4px 28px #bdc3c7, 8px 28px #bdc3c7, 12px 28px #bdc3c7, 16px 28px #bdc3c7, 20px 28px #bdc3c7, 24px 28px #bdc3c7, 28px 28px #bdc3c7, 32px 28px #bdc3c7,
+        8px 32px #bdc3c7, 12px 32px #bdc3c7, 16px 32px #bdc3c7, 20px 32px #bdc3c7, 24px 32px #bdc3c7, 28px 32px #bdc3c7,
+        8px 36px #bdc3c7, 12px 36px #bdc3c7, 24px 36px #bdc3c7, 28px 36px #bdc3c7,
+        12px 40px #bdc3c7, 24px 40px #bdc3c7;
+      animation: char83-sleep 3s ease-in-out infinite;
+      opacity: 0.7;
+    }
+    .char83-sleeping .char83-zzz { position: absolute; left: 55px; top: 5px; font-size: 14px; color: #bdc3c7; animation: char83-zzz 2s ease-in-out infinite; }
+    @keyframes char83-sleep { 0%, 100% { transform: translateY(0) scale(1); } 50% { transform: translateY(-5px) scale(0.95); } }
+    @keyframes char83-zzz { 0%, 100% { opacity: 0; transform: translateY(0) translateX(0); } 50% { opacity: 0.8; transform: translateY(-12px) translateX(8px); } }
+
+    .char83-listening .char83-body {
+      position: absolute;
+      left: 20px;
+      top: 15px;
+      width: 4px;
+      height: 4px;
+      background: transparent;
+      box-shadow: 
+        8px 0 #ecf0f1, 12px 0 #ecf0f1, 16px 0 #ecf0f1, 20px 0 #ecf0f1, 24px 0 #ecf0f1, 28px 0 #ecf0f1,
+        4px 4px #ecf0f1, 8px 4px #ecf0f1, 12px 4px #ecf0f1, 16px 4px #ecf0f1, 20px 4px #ecf0f1, 24px 4px #ecf0f1, 28px 4px #ecf0f1, 32px 4px #ecf0f1,
+        0px 8px #ecf0f1, 4px 8px #ecf0f1, 8px 8px #000, 12px 8px #000, 16px 8px #ecf0f1, 20px 8px #ecf0f1, 24px 8px #000, 28px 8px #000, 32px 8px #ecf0f1, 36px 8px #ecf0f1,
+        0px 12px #ecf0f1, 4px 12px #ecf0f1, 8px 12px #000, 12px 12px #000, 16px 12px #ecf0f1, 20px 12px #ecf0f1, 24px 12px #000, 28px 12px #000, 32px 12px #ecf0f1, 36px 12px #ecf0f1,
+        0px 16px #ecf0f1, 4px 16px #ecf0f1, 8px 16px #ecf0f1, 12px 16px #ecf0f1, 16px 16px #ecf0f1, 20px 16px #ecf0f1, 24px 16px #ecf0f1, 28px 16px #ecf0f1, 32px 16px #ecf0f1, 36px 16px #ecf0f1,
+        0px 20px #ecf0f1, 4px 20px #ecf0f1, 8px 20px #ecf0f1, 12px 20px #ecf0f1, 16px 20px #000, 20px 20px #000, 24px 20px #ecf0f1, 28px 20px #ecf0f1, 32px 20px #ecf0f1, 36px 20px #ecf0f1,
+        0px 24px #ecf0f1, 4px 24px #ecf0f1, 8px 24px #ecf0f1, 12px 24px #ecf0f1, 16px 24px #ecf0f1, 20px 24px #ecf0f1, 24px 24px #ecf0f1, 28px 24px #ecf0f1, 32px 24px #ecf0f1, 36px 24px #ecf0f1,
+        4px 28px #ecf0f1, 8px 28px #ecf0f1, 12px 28px #ecf0f1, 16px 28px #ecf0f1, 20px 28px #ecf0f1, 24px 28px #ecf0f1, 28px 28px #ecf0f1, 32px 28px #ecf0f1,
+        8px 32px #ecf0f1, 12px 32px #ecf0f1, 16px 32px #ecf0f1, 20px 32px #ecf0f1, 24px 32px #ecf0f1, 28px 32px #ecf0f1,
+        8px 36px #ecf0f1, 12px 36px #ecf0f1, 24px 36px #ecf0f1, 28px 36px #ecf0f1,
+        12px 40px #ecf0f1, 24px 40px #ecf0f1;
+      animation: char83-listen 1s ease-in-out infinite alternate;
+      opacity: 0.9;
+    }
+    .char83-listening .char83-ear { position: absolute; left: 60px; top: 25px; width: 4px; height: 4px; background: transparent; box-shadow: 0 0 #f39c12, 4px 0 #f39c12, 8px 0 #f39c12, 4px 4px #f39c12, 8px 4px #f39c12, 12px 4px #f39c12, 8px 8px #f39c12, 12px 8px #f39c12, 16px 8px #f39c12; animation: char83-ear 0.5s ease-in-out infinite; }
+    @keyframes char83-listen { 0% { transform: translateX(0) scaleX(1); } 100% { transform: translateX(5px) scaleX(0.9); } }
+    @keyframes char83-ear { 0%, 100% { transform: scale(1); opacity: 0.7; } 50% { transform: scale(1.2); opacity: 1; } }
+
+    .char83-speaking .char83-body {
+      position: absolute;
+      left: 20px;
+      top: 15px;
+      width: 4px;
+      height: 4px;
+      background: transparent;
+      box-shadow: 
+        8px 0 #ecf0f1, 12px 0 #ecf0f1, 16px 0 #ecf0f1, 20px 0 #ecf0f1, 24px 0 #ecf0f1, 28px 0 #ecf0f1,
+        4px 4px #ecf0f1, 8px 4px #ecf0f1, 12px 4px #ecf0f1, 16px 4px #ecf0f1, 20px 4px #ecf0f1, 24px 4px #ecf0f1, 28px 4px #ecf0f1, 32px 4px #ecf0f1,
+        0px 8px #ecf0f1, 4px 8px #ecf0f1, 8px 8px #000, 12px 8px #000, 16px 8px #ecf0f1, 20px 8px #ecf0f1, 24px 8px #000, 28px 8px #000, 32px 8px #ecf0f1, 36px 8px #ecf0f1,
+        0px 12px #ecf0f1, 4px 12px #ecf0f1, 8px 12px #000, 12px 12px #000, 16px 12px #ecf0f1, 20px 12px #ecf0f1, 24px 12px #000, 28px 12px #000, 32px 12px #ecf0f1, 36px 12px #ecf0f1,
+        0px 16px #ecf0f1, 4px 16px #ecf0f1, 8px 16px #ecf0f1, 12px 16px #ecf0f1, 16px 16px #ecf0f1, 20px 16px #ecf0f1, 24px 16px #ecf0f1, 28px 16px #ecf0f1, 32px 16px #ecf0f1, 36px 16px #ecf0f1,
+        0px 20px #ecf0f1, 4px 20px #ecf0f1, 8px 20px #ecf0f1, 12px 20px #ecf0f1, 16px 20px #000, 20px 20px #000, 24px 20px #000, 28px 20px #000, 32px 20px #ecf0f1, 36px 20px #ecf0f1,
+        0px 24px #ecf0f1, 4px 24px #ecf0f1, 8px 24px #ecf0f1, 12px 24px #ecf0f1, 16px 24px #ecf0f1, 20px 24px #ecf0f1, 24px 24px #ecf0f1, 28px 24px #ecf0f1, 32px 24px #ecf0f1, 36px 24px #ecf0f1,
+        4px 28px #ecf0f1, 8px 28px #ecf0f1, 12px 28px #ecf0f1, 16px 28px #ecf0f1, 20px 28px #ecf0f1, 24px 28px #ecf0f1, 28px 28px #ecf0f1, 32px 28px #ecf0f1,
+        8px 32px #ecf0f1, 12px 32px #ecf0f1, 16px 32px #ecf0f1, 20px 32px #ecf0f1, 24px 32px #ecf0f1, 28px 32px #ecf0f1,
+        8px 36px #ecf0f1, 12px 36px #ecf0f1, 24px 36px #ecf0f1, 28px 36px #ecf0f1,
+        12px 40px #ecf0f1, 24px 40px #ecf0f1;
+      animation: char83-shake 0.3s ease-in-out infinite;
+      opacity: 0.9;
+    }
+    @keyframes char83-shake { 0%, 100% { transform: translateX(0); } 25% { transform: translateX(-3px); } 75% { transform: translateX(3px); } }
+
+    /* ==================== 角色 #84: 僵尸 ==================== */
+    .char84-thinking .char84-body {
+      position: absolute;
+      left: 18px;
+      top: 10px;
+      width: 4px;
+      height: 4px;
+      background: transparent;
+      box-shadow: 
+        8px 0 #2ecc71, 12px 0 #2ecc71, 16px 0 #2ecc71, 20px 0 #2ecc71, 24px 0 #2ecc71, 28px 0 #2ecc71,
+        4px 4px #2ecc71, 8px 4px #2ecc71, 12px 4px #2ecc71, 16px 4px #2ecc71, 20px 4px #2ecc71, 24px 4px #2ecc71, 28px 4px #2ecc71, 32px 4px #2ecc71,
+        0px 8px #27ae60, 4px 8px #2ecc71, 8px 8px #000, 12px 8px #000, 16px 8px #2ecc71, 20px 8px #2ecc71, 24px 8px #000, 28px 8px #000, 32px 8px #2ecc71, 36px 8px #27ae60,
+        0px 12px #27ae60, 4px 12px #2ecc71, 8px 12px #000, 12px 12px #000, 16px 12px #2ecc71, 20px 12px #2ecc71, 24px 12px #000, 28px 12px #000, 32px 12px #2ecc71, 36px 12px #27ae60,
+        0px 16px #27ae60, 4px 16px #2ecc71, 8px 16px #2ecc71, 12px 16px #2ecc71, 16px 16px #8e44ad, 20px 16px #8e44ad, 24px 16px #2ecc71, 28px 16px #2ecc71, 32px 16px #2ecc71, 36px 16px #27ae60,
+        0px 20px #27ae60, 4px 20px #2ecc71, 8px 20px #2ecc71, 12px 20px #2ecc71, 16px 20px #2ecc71, 20px 20px #2ecc71, 24px 20px #2ecc71, 28px 20px #2ecc71, 32px 20px #2ecc71, 36px 20px #27ae60,
+        0px 24px #27ae60, 4px 24px #27ae60, 8px 24px #27ae60, 12px 24px #27ae60, 16px 24px #27ae60, 20px 24px #27ae60, 24px 24px #27ae60, 28px 24px #27ae60, 32px 24px #27ae60, 36px 24px #27ae60,
+        4px 28px #27ae60, 8px 28px #2ecc71, 12px 28px #2ecc71, 16px 28px #8e44ad, 20px 28px #8e44ad, 24px 28px #8e44ad, 28px 28px #2ecc71, 32px 28px #2ecc71, 36px 28px #27ae60,
+        4px 32px #27ae60, 8px 32px #2ecc71, 12px 32px #2ecc71, 16px 32px #8e44ad, 20px 32px #8e44ad, 24px 32px #8e44ad, 28px 32px #2ecc71, 32px 32px #2ecc71, 36px 32px #27ae60,
+        4px 36px #27ae60, 8px 36px #2ecc71, 12px 36px #2ecc71, 16px 36px #2ecc71, 20px 36px #2ecc71, 24px 36px #2ecc71, 28px 36px #2ecc71, 32px 36px #2ecc71, 36px 36px #27ae60,
+        4px 40px #27ae60, 8px 40px #2ecc71, 12px 40px #2ecc71, 16px 40px #2ecc71, 20px 40px #2ecc71, 24px 40px #2ecc71, 28px 40px #2ecc71, 32px 40px #2ecc71, 36px 40px #27ae60,
+        8px 44px #27ae60, 12px 44px #27ae60, 24px 44px #27ae60, 28px 44px #27ae60,
+        8px 48px #27ae60, 12px 48px #27ae60, 24px 48px #27ae60, 28px 48px #27ae60,
+        4px 52px #1e8449, 8px 52px #1e8449, 24px 52px #1e8449, 28px 52px #1e8449;
+      animation: char84-think 1.5s ease-in-out infinite;
+    }
+    .char84-thinking .char84-bubble { position: absolute; left: 55px; top: 0; width: 4px; height: 4px; background: transparent; box-shadow: 4px 0 #8e44ad, 8px 0 #8e44ad, 0 4px #8e44ad, 4px 4px #8e44ad, 8px 4px #8e44ad, 12px 4px #8e44ad, 0 8px #8e44ad, 4px 8px #8e44ad, 8px 8px #8e44ad, 12px 8px #8e44ad; animation: char84-bubble 2s ease-in-out infinite; }
+    @keyframes char84-think { 0%, 100% { transform: translateY(0); } 50% { transform: translateY(-3px); } }
+    @keyframes char84-bubble { 0%, 100% { opacity: 0.3; } 50% { opacity: 0.8; } }
+
+    .char84-sleeping .char84-body {
+      position: absolute;
+      left: 18px;
+      top: 15px;
+      width: 4px;
+      height: 4px;
+      background: transparent;
+      box-shadow: 
+        8px 0 #2ecc71, 12px 0 #2ecc71, 16px 0 #2ecc71, 20px 0 #2ecc71, 24px 0 #2ecc71, 28px 0 #2ecc71,
+        4px 4px #2ecc71, 8px 4px #2ecc71, 12px 4px #2ecc71, 16px 4px #2ecc71, 20px 4px #2ecc71, 24px 4px #2ecc71, 28px 4px #2ecc71, 32px 4px #2ecc71,
+        0px 8px #27ae60, 4px 8px #2ecc71, 8px 8px #95a5a6, 12px 8px #95a5a6, 16px 8px #2ecc71, 20px 8px #2ecc71, 24px 8px #95a5a6, 28px 8px #95a5a6, 32px 8px #2ecc71, 36px 8px #27ae60,
+        0px 12px #27ae60, 4px 12px #2ecc71, 8px 12px #95a5a6, 12px 12px #95a5a6, 16px 12px #2ecc71, 20px 12px #2ecc71, 24px 12px #95a5a6, 28px 12px #95a5a6, 32px 12px #2ecc71, 36px 12px #27ae60,
+        0px 16px #27ae60, 4px 16px #2ecc71, 8px 16px #2ecc71, 12px 16px #2ecc71, 16px 16px #8e44ad, 20px 16px #8e44ad, 24px 16px #2ecc71, 28px 16px #2ecc71, 32px 16px #2ecc71, 36px 16px #27ae60,
+        0px 20px #27ae60, 4px 20px #2ecc71, 8px 20px #2ecc71, 12px 20px #2ecc71, 16px 20px #2ecc71, 20px 20px #2ecc71, 24px 20px #2ecc71, 28px 20px #2ecc71, 32px 20px #2ecc71, 36px 20px #27ae60,
+        0px 24px #27ae60, 4px 24px #27ae60, 8px 24px #27ae60, 12px 24px #27ae60, 16px 24px #27ae60, 20px 24px #27ae60, 24px 24px #27ae60, 28px 24px #27ae60, 32px 24px #27ae60, 36px 24px #27ae60,
+        4px 28px #27ae60, 8px 28px #2ecc71, 12px 28px #2ecc71, 16px 28px #8e44ad, 20px 28px #8e44ad, 24px 28px #8e44ad, 28px 28px #2ecc71, 32px 28px #2ecc71, 36px 28px #27ae60,
+        4px 32px #27ae60, 8px 32px #2ecc71, 12px 32px #2ecc71, 16px 32px #8e44ad, 20px 32px #8e44ad, 24px 32px #8e44ad, 28px 32px #2ecc71, 32px 32px #2ecc71, 36px 32px #27ae60,
+        4px 36px #27ae60, 8px 36px #2ecc71, 12px 36px #2ecc71, 16px 36px #2ecc71, 20px 36px #2ecc71, 24px 36px #2ecc71, 28px 36px #2ecc71, 32px 36px #2ecc71, 36px 36px #27ae60,
+        4px 40px #27ae60, 8px 40px #2ecc71, 12px 40px #2ecc71, 16px 40px #2ecc71, 20px 40px #2ecc71, 24px 40px #2ecc71, 28px 40px #2ecc71, 32px 40px #2ecc71, 36px 40px #27ae60,
+        8px 44px #27ae60, 12px 44px #27ae60, 24px 44px #27ae60, 28px 44px #27ae60,
+        8px 48px #27ae60, 12px 48px #27ae60, 24px 48px #27ae60, 28px 48px #27ae60;
+      animation: char84-sleep 2s ease-in-out infinite;
+    }
+    .char84-sleeping .char84-zzz { position: absolute; left: 55px; top: 5px; font-size: 14px; color: #27ae60; animation: char84-zzz 2s ease-in-out infinite; }
+    @keyframes char84-sleep { 0%, 100% { transform: rotate(0deg); } 50% { transform: rotate(2deg); } }
+    @keyframes char84-zzz { 0%, 100% { opacity: 0; } 50% { opacity: 0.7; } }
+
+    .char84-listening .char84-body {
+      position: absolute;
+      left: 18px;
+      top: 10px;
+      width: 4px;
+      height: 4px;
+      background: transparent;
+      box-shadow: 
+        8px 0 #2ecc71, 12px 0 #2ecc71, 16px 0 #2ecc71, 20px 0 #2ecc71, 24px 0 #2ecc71, 28px 0 #2ecc71,
+        4px 4px #2ecc71, 8px 4px #2ecc71, 12px 4px #2ecc71, 16px 4px #2ecc71, 20px 4px #2ecc71, 24px 4px #2ecc71, 28px 4px #2ecc71, 32px 4px #2ecc71,
+        0px 8px #27ae60, 4px 8px #2ecc71, 8px 8px #000, 12px 8px #000, 16px 8px #2ecc71, 20px 8px #2ecc71, 24px 8px #000, 28px 8px #000, 32px 8px #2ecc71, 36px 8px #27ae60,
+        0px 12px #27ae60, 4px 12px #2ecc71, 8px 12px #000, 12px 12px #000, 16px 12px #2ecc71, 20px 12px #2ecc71, 24px 12px #000, 28px 12px #000, 32px 12px #2ecc71, 36px 12px #27ae60,
+        0px 16px #27ae60, 4px 16px #2ecc71, 8px 16px #2ecc71, 12px 16px #2ecc71, 16px 16px #8e44ad, 20px 16px #8e44ad, 24px 16px #2ecc71, 28px 16px #2ecc71, 32px 16px #2ecc71, 36px 16px #27ae60,
+        0px 20px #27ae60, 4px 20px #2ecc71, 8px 20px #2ecc71, 12px 20px #2ecc71, 16px 20px #000, 20px 20px #000, 24px 20px #2ecc71, 28px 20px #2ecc71, 32px 20px #2ecc71, 36px 20px #27ae60,
+        0px 24px #27ae60, 4px 24px #27ae60, 8px 24px #27ae60, 12px 24px #27ae60, 16px 24px #27ae60, 20px 24px #27ae60, 24px 24px #27ae60, 28px 24px #27ae60, 32px 24px #27ae60, 36px 24px #27ae60,
+        4px 28px #27ae60, 8px 28px #2ecc71, 12px 28px #2ecc71, 16px 28px #8e44ad, 20px 28px #8e44ad, 24px 28px #8e44ad, 28px 28px #2ecc71, 32px 28px #2ecc71, 36px 28px #27ae60,
+        4px 32px #27ae60, 8px 32px #2ecc71, 12px 32px #2ecc71, 16px 32px #8e44ad, 20px 32px #8e44ad, 24px 32px #8e44ad, 28px 32px #2ecc71, 32px 32px #2ecc71, 36px 32px #27ae60,
+        4px 36px #27ae60, 8px 36px #2ecc71, 12px 36px #2ecc71, 16px 36px #2ecc71, 20px 36px #2ecc71, 24px 36px #2ecc71, 28px 36px #2ecc71, 32px 36px #2ecc71, 36px 36px #27ae60,
+        4px 40px #27ae60, 8px 40px #2ecc71, 12px 40px #2ecc71, 16px 40px #2ecc71, 20px 40px #2ecc71, 24px 40px #2ecc71, 28px 40px #2ecc71, 32px 40px #2ecc71, 36px 40px #27ae60,
+        8px 44px #27ae60, 12px 44px #27ae60, 24px 44px #27ae60, 28px 44px #27ae60,
+        8px 48px #27ae60, 12px 48px #27ae60, 24px 48px #27ae60, 28px 48px #27ae60,
+        4px 52px #1e8449, 8px 52px #1e8449, 24px 52px #1e8449, 28px 52px #1e8449;
+      animation: char84-tilt 1.5s ease-in-out infinite alternate;
+    }
+    .char84-listening .char84-hand { position: absolute; left: 60px; top: 35px; width: 4px; height: 4px; background: transparent; box-shadow: 0 0 #2ecc71, 0 4px #2ecc71, 4px 4px #2ecc71; animation: char84-hand 0.8s ease-in-out infinite; }
+    @keyframes char84-tilt { 0% { transform: rotate(-5deg); } 100% { transform: rotate(5deg); } }
+    @keyframes char84-hand { 0%, 100% { transform: translateX(0); } 50% { transform: translateX(5px); } }
+
+    .char84-speaking .char84-body {
+      position: absolute;
+      left: 18px;
+      top: 10px;
+      width: 4px;
+      height: 4px;
+      background: transparent;
+      box-shadow: 
+        8px 0 #2ecc71, 12px 0 #2ecc71, 16px 0 #2ecc71, 20px 0 #2ecc71, 24px 0 #2ecc71, 28px 0 #2ecc71,
+        4px 4px #2ecc71, 8px 4px #2ecc71, 12px 4px #2ecc71, 16px 4px #2ecc71, 20px 4px #2ecc71, 24px 4px #2ecc71, 28px 4px #2ecc71, 32px 4px #2ecc71,
+        0px 8px #27ae60, 4px 8px #2ecc71, 8px 8px #000, 12px 8px #000, 16px 8px #2ecc71, 20px 8px #2ecc71, 24px 8px #000, 28px 8px #000, 32px 8px #2ecc71, 36px 8px #27ae60,
+        0px 12px #27ae60, 4px 12px #2ecc71, 8px 12px #000, 12px 12px #000, 16px 12px #2ecc71, 20px 12px #2ecc71, 24px 12px #000, 28px 12px #000, 32px 12px #2ecc71, 36px 12px #27ae60,
+        0px 16px #27ae60, 4px 16px #2ecc71, 8px 16px #2ecc71, 12px 16px #2ecc71, 16px 16px #8e44ad, 20px 16px #8e44ad, 24px 16px #2ecc71, 28px 16px #2ecc71, 32px 16px #2ecc71, 36px 16px #27ae60,
+        0px 20px #27ae60, 4px 20px #2ecc71, 8px 20px #2ecc71, 12px 20px #2ecc71, 16px 20px #e74c3c, 20px 20px #e74c3c, 24px 20px #e74c3c, 28px 20px #2ecc71, 32px 20px #2ecc71, 36px 20px #27ae60,
+        0px 24px #27ae60, 4px 24px #27ae60, 8px 24px #27ae60, 12px 24px #27ae60, 16px 24px #27ae60, 20px 24px #27ae60, 24px 24px #27ae60, 28px 24px #27ae60, 32px 24px #27ae60, 36px 24px #27ae60,
+        4px 28px #27ae60, 8px 28px #2ecc71, 12px 28px #2ecc71, 16px 28px #8e44ad, 20px 28px #8e44ad, 24px 28px #8e44ad, 28px 28px #2ecc71, 32px 28px #2ecc71, 36px 28px #27ae60,
+        4px 32px #27ae60, 8px 32px #2ecc71, 12px 32px #2ecc71, 16px 32px #8e44ad, 20px 32px #8e44ad, 24px 32px #8e44ad, 28px 32px #2ecc71, 32px 32px #2ecc71, 36px 32px #27ae60,
+        4px 36px #27ae60, 8px 36px #2ecc71, 12px 36px #2ecc71, 16px 36px #2ecc71, 20px 36px #2ecc71, 24px 36px #2ecc71, 28px 36px #2ecc71, 32px 36px #2ecc71, 36px 36px #27ae60,
+        4px 40px #27ae60, 8px 40px #2ecc71, 12px 40px #2ecc71, 16px 40px #2ecc71, 20px 40px #2ecc71, 24px 40px #2ecc71, 28px 40px #2ecc71, 32px 40px #2ecc71, 36px 40px #27ae60,
+        8px 44px #27ae60, 12px 44px #27ae60, 24px 44px #27ae60, 28px 44px #27ae60,
+        8px 48px #27ae60, 12px 48px #27ae60, 24px 48px #27ae60, 28px 48px #27ae60,
+        4px 52px #1e8449, 8px 52px #1e8449, 24px 52px #1e8449, 28px 52px #1e8449;
+      animation: char84-moan 0.6s ease-in-out infinite;
+    }
+    @keyframes char84-moan { 0%, 100% { transform: translateY(0) scaleY(1); } 50% { transform: translateY(-5px) scaleY(1.05); } }
+
+    /* ==================== 角色 #85: 南瓜头 ==================== */
+    .char85-thinking .char85-body {
+      position: absolute;
+      left: 16px;
+      top: 15px;
+      width: 4px;
+      height: 4px;
+      background: transparent;
+      box-shadow: 
+        16px 0 #27ae60, 20px 0 #27ae60,
+        16px 4px #2ecc71, 20px 4px #2ecc71,
+        4px 8px #e67e22, 8px 8px #e67e22, 12px 8px #d35400, 16px 8px #d35400, 20px 8px #d35400, 24px 8px #d35400, 28px 8px #e67e22, 32px 8px #e67e22,
+        0px 12px #e67e22, 4px 12px #f39c12, 8px 12px #e67e22, 12px 12px #e67e22, 16px 12px #d35400, 20px 12px #d35400, 24px 12px #e67e22, 28px 12px #e67e22, 32px 12px #f39c12, 36px 12px #e67e22,
+        0px 16px #e67e22, 4px 16px #e67e22, 8px 16px #f39c12, 12px 16px #000, 16px 16px #f39c12, 20px 16px #f39c12, 24px 16px #000, 28px 16px #f39c12, 32px 16px #e67e22, 36px 16px #e67e22,
+        0px 20px #e67e22, 4px 20px #e67e22, 8px 20px #f39c12, 12px 20px #000, 16px 20px #f39c12, 20px 20px #f39c12, 24px 20px #000, 28px 20px #f39c12, 32px 20px #e67e22, 36px 20px #e67e22,
+        0px 24px #e67e22, 4px 24px #e67e22, 8px 24px #f39c12, 12px 24px #f39c12, 16px 24px #000, 20px 24px #000, 24px 24px #f39c12, 28px 24px #f39c12, 32px 24px #e67e22, 36px 24px #e67e22,
+        4px 28px #e67e22, 8px 28px #e67e22, 12px 28px #f39c12, 16px 28px #f39c12, 20px 28px #f39c12, 24px 28px #f39c12, 28px 28px #e67e22, 32px 28px #e67e22,
+        8px 32px #e67e22, 12px 32px #e67e22, 16px 32px #f39c12, 20px 32px #f39c12, 24px 32px #e67e22, 28px 32px #e67e22;
+      animation: char85-pulse 2s ease-in-out infinite;
+    }
+    .char85-thinking .char85-bubble { position: absolute; left: 50px; top: 0; width: 4px; height: 4px; background: transparent; box-shadow: 0 0 #f39c12, 4px 0 #f39c12, -4px 4px #f39c12, 0 4px #f39c12, 4px 4px #f39c12, 8px 4px #f39c12; animation: char85-bubble 2s ease-in-out infinite; }
+    @keyframes char85-pulse { 0%, 100% { filter: brightness(1); } 50% { filter: brightness(1.2); } }
+    @keyframes char85-bubble { 0%, 100% { opacity: 0.4; transform: translateY(0); } 50% { opacity: 0.9; transform: translateY(-5px); } }
+
+    .char85-sleeping .char85-body {
+      position: absolute;
+      left: 16px;
+      top: 20px;
+      width: 4px;
+      height: 4px;
+      background: transparent;
+      box-shadow: 
+        16px 0 #27ae60, 20px 0 #27ae60,
+        16px 4px #2ecc71, 20px 4px #2ecc71,
+        4px 8px #a04000, 8px 8px #a04000, 12px 8px #8b4513, 16px 8px #8b4513, 20px 8px #8b4513, 24px 8px #8b4513, 28px 8px #a04000, 32px 8px #a04000,
+        0px 12px #a04000, 4px 12px #a04000, 8px 12px #a04000, 12px 12px #a04000, 16px 12px #8b4513, 20px 12px #8b4513, 24px 12px #a04000, 28px 12px #a04000, 32px 12px #a04000, 36px 12px #a04000,
+        0px 16px #a04000, 4px 16px #a04000, 8px 16px #a04000, 12px 16px #95a5a6, 16px 16px #a04000, 20px 16px #a04000, 24px 16px #95a5a6, 28px 16px #a04000, 32px 16px #a04000, 36px 16px #a04000,
+        0px 20px #a04000, 4px 20px #a04000, 8px 20px #a04000, 12px 20px #95a5a6, 16px 20px #a04000, 20px 20px #a04000, 24px 20px #95a5a6, 28px 20px #a04000, 32px 20px #a04000, 36px 20px #a04000,
+        0px 24px #a04000, 4px 24px #a04000, 8px 24px #a04000, 12px 24px #a04000, 16px 24px #95a5a6, 20px 24px #95a5a6, 24px 24px #a04000, 28px 24px #a04000, 32px 24px #a04000, 36px 24px #a04000,
+        4px 28px #a04000, 8px 28px #a04000, 12px 28px #a04000, 16px 28px #a04000, 20px 28px #a04000, 24px 28px #a04000, 28px 28px #a04000, 32px 28px #a04000,
+        8px 32px #a04000, 12px 32px #a04000, 16px 32px #a04000, 20px 32px #a04000, 24px 32px #a04000, 28px 32px #a04000;
+      animation: char85-dim 3s ease-in-out infinite;
+    }
+    .char85-sleeping .char85-zzz { position: absolute; left: 50px; top: 5px; font-size: 12px; color: #e67e22; animation: char85-zzz 2s ease-in-out infinite; }
+    @keyframes char85-dim { 0%, 100% { opacity: 0.6; } 50% { opacity: 0.8; } }
+    @keyframes char85-zzz { 0%, 100% { opacity: 0; } 50% { opacity: 0.7; } }
+
+    .char85-listening .char85-body {
+      position: absolute;
+      left: 16px;
+      top: 15px;
+      width: 4px;
+      height: 4px;
+      background: transparent;
+      box-shadow: 
+        16px 0 #27ae60, 20px 0 #27ae60,
+        16px 4px #2ecc71, 20px 4px #2ecc71,
+        4px 8px #e67e22, 8px 8px #e67e22, 12px 8px #d35400, 16px 8px #d35400, 20px 8px #d35400, 24px 8px #d35400, 28px 8px #e67e22, 32px 8px #e67e22,
+        0px 12px #e67e22, 4px 12px #f39c12, 8px 12px #e67e22, 12px 12px #e67e22, 16px 12px #d35400, 20px 12px #d35400, 24px 12px #e67e22, 28px 12px #e67e22, 32px 12px #f39c12, 36px 12px #e67e22,
+        0px 16px #e67e22, 4px 16px #e67e22, 8px 16px #f39c12, 12px 16px #000, 16px 16px #f39c12, 20px 16px #f39c12, 24px 16px #000, 28px 16px #f39c12, 32px 16px #e67e22, 36px 16px #e67e22,
+        0px 20px #e67e22, 4px 20px #e67e22, 8px 20px #f39c12, 12px 20px #000, 16px 20px #f39c12, 20px 20px #f39c12, 24px 20px #000, 28px 20px #f39c12, 32px 20px #e67e22, 36px 20px #e67e22,
+        0px 24px #e67e22, 4px 24px #e67e22, 8px 24px #f39c12, 12px 24px #f39c12, 16px 24px #000, 20px 24px #000, 24px 24px #f39c12, 28px 24px #f39c12, 32px 24px #e67e22, 36px 24px #e67e22,
+        4px 28px #e67e22, 8px 28px #e67e22, 12px 28px #f39c12, 16px 28px #f39c12, 20px 28px #f39c12, 24px 28px #f39c12, 28px 28px #e67e22, 32px 28px #e67e22,
+        8px 32px #e67e22, 12px 32px #e67e22, 16px 32px #f39c12, 20px 32px #f39c12, 24px 32px #e67e22, 28px 32px #e67e22;
+      animation: char85-tilt 1s ease-in-out infinite alternate;
+    }
+    @keyframes char85-tilt { 0% { transform: rotate(-10deg); } 100% { transform: rotate(10deg); } }
+
+    .char85-speaking .char85-body {
+      position: absolute;
+      left: 16px;
+      top: 15px;
+      width: 4px;
+      height: 4px;
+      background: transparent;
+      box-shadow: 
+        16px 0 #27ae60, 20px 0 #27ae60,
+        16px 4px #2ecc71, 20px 4px #2ecc71,
+        4px 8px #e67e22, 8px 8px #e67e22, 12px 8px #d35400, 16px 8px #d35400, 20px 8px #d35400, 24px 8px #d35400, 28px 8px #e67e22, 32px 8px #e67e22,
+        0px 12px #e67e22, 4px 12px #f39c12, 8px 12px #e67e22, 12px 12px #e67e22, 16px 12px #d35400, 20px 12px #d35400, 24px 12px #e67e22, 28px 12px #e67e22, 32px 12px #f39c12, 36px 12px #e67e22,
+        0px 16px #e67e22, 4px 16px #e67e22, 8px 16px #f39c12, 12px 16px #000, 16px 16px #f39c12, 20px 16px #f39c12, 24px 16px #000, 28px 16px #f39c12, 32px 16px #e67e22, 36px 16px #e67e22,
+        0px 20px #e67e22, 4px 20px #e67e22, 8px 20px #f39c12, 12px 20px #000, 16px 20px #f39c12, 20px 20px #f39c12, 24px 20px #000, 28px 20px #f39c12, 32px 20px #e67e22, 36px 20px #e67e22,
+        0px 24px #e67e22, 4px 24px #e67e22, 8px 24px #f39c12, 12px 24px #f39c12, 16px 24px #000, 20px 24px #000, 24px 24px #f39c12, 28px 24px #f39c12, 32px 24px #e67e22, 36px 24px #e67e22,
+        4px 28px #e67e22, 8px 28px #e67e22, 12px 28px #f39c12, 16px 28px #f39c12, 20px 28px #f39c12, 24px 28px #f39c12, 28px 28px #e67e22, 32px 28px #e67e22,
+        8px 32px #e67e22, 12px 32px #e67e22, 16px 32px #f39c12, 20px 32px #f39c12, 24px 32px #e67e22, 28px 32px #e67e22;
+      animation: char85-shake 0.4s ease-in-out infinite;
+    }
+    @keyframes char85-shake { 0%, 100% { transform: translateX(0); } 25% { transform: translateX(-3px) rotate(-3deg); } 75% { transform: translateX(3px) rotate(3deg); } }
+
+    /* ==================== 角色 #86: 雪人 ==================== */
+    .char86-thinking .char86-body {
+      position: absolute;
+      left: 20px;
+      top: 5px;
+      width: 4px;
+      height: 4px;
+      background: transparent;
+      box-shadow: 
+        8px 0 #2c3e50, 12px 0 #2c3e50, 16px 0 #2c3e50, 20px 0 #2c3e50,
+        8px 4px #e74c3c, 12px 4px #e74c3c, 16px 4px #e74c3c, 20px 4px #e74c3c,
+        4px 8px #e74c3c, 8px 8px #e74c3c, 12px 8px #e74c3c, 16px 8px #e74c3c, 20px 8px #e74c3c, 24px 8px #e74c3c,
+        8px 12px #ecf0f1, 12px 12px #ecf0f1, 16px 12px #ecf0f1, 20px 12px #ecf0f1,
+        4px 16px #ecf0f1, 8px 16px #ecf0f1, 12px 16px #000, 16px 16px #000, 20px 16px #ecf0f1, 24px 16px #ecf0f1,
+        4px 20px #ecf0f1, 8px 20px #ecf0f1, 12px 20px #f39c12, 16px 20px #ecf0f1, 20px 20px #ecf0f1, 24px 20px #ecf0f1,
+        8px 24px #ecf0f1, 12px 24px #ecf0f1, 16px 24px #ecf0f1, 20px 24px #ecf0f1,
+        0px 28px #ecf0f1, 4px 28px #ecf0f1, 8px 28px #ecf0f1, 12px 28px #ecf0f1, 16px 28px #ecf0f1, 20px 28px #ecf0f1, 24px 28px #ecf0f1, 28px 28px #ecf0f1,
+        0px 32px #ecf0f1, 4px 32px #2c3e50, 8px 32px #2c3e50, 12px 32px #2c3e50, 16px 32px #e74c3c, 20px 32px #2c3e50, 24px 32px #2c3e50, 28px 32px #ecf0f1,
+        0px 36px #ecf0f1, 4px 36px #ecf0f1, 8px 36px #ecf0f1, 12px 36px #ecf0f1, 16px 36px #ecf0f1, 20px 36px #ecf0f1, 24px 36px #ecf0f1, 28px 36px #ecf0f1,
+        4px 40px #ecf0f1, 8px 40px #2c3e50, 12px 40px #ecf0f1, 16px 40px #ecf0f1, 20px 40px #ecf0f1, 24px 40px #2c3e50;
+      animation: char86-think 2s ease-in-out infinite;
+    }
+    .char86-thinking .char86-bubble { position: absolute; left: 55px; top: 10px; width: 4px; height: 4px; background: transparent; box-shadow: 0 0 #3498db, 4px 0 #3498db, -4px 4px #3498db, 0 4px #3498db, 4px 4px #3498db, 8px 4px #3498db, 0 8px #3498db, 4px 8px #3498db; animation: char86-bubble 2s ease-in-out infinite; }
+    @keyframes char86-think { 0%, 100% { transform: translateY(0); } 50% { transform: translateY(-4px); } }
+    @keyframes char86-bubble { 0%, 100% { opacity: 0.4; } 50% { opacity: 0.9; } }
+
+    .char86-sleeping .char86-body {
+      position: absolute;
+      left: 20px;
+      top: 10px;
+      width: 4px;
+      height: 4px;
+      background: transparent;
+      box-shadow: 
+        8px 0 #2c3e50, 12px 0 #2c3e50, 16px 0 #2c3e50, 20px 0 #2c3e50,
+        8px 4px #e74c3c, 12px 4px #e74c3c, 16px 4px #e74c3c, 20px 4px #e74c3c,
+        4px 8px #e74c3c, 8px 8px #e74c3c, 12px 8px #e74c3c, 16px 8px #e74c3c, 20px 8px #e74c3c, 24px 8px #e74c3c,
+        8px 12px #bdc3c7, 12px 12px #bdc3c7, 16px 12px #bdc3c7, 20px 12px #bdc3c7,
+        4px 16px #bdc3c7, 8px 16px #bdc3c7, 12px 16px #95a5a6, 16px 16px #95a5a6, 20px 16px #bdc3c7, 24px 16px #bdc3c7,
+        4px 20px #bdc3c7, 8px 20px #bdc3c7, 12px 20px #bdc3c7, 16px 20px #bdc3c7, 20px 20px #bdc3c7, 24px 20px #bdc3c7,
+        8px 24px #bdc3c7, 12px 24px #bdc3c7, 16px 24px #bdc3c7, 20px 24px #bdc3c7,
+        0px 28px #bdc3c7, 4px 28px #bdc3c7, 8px 28px #bdc3c7, 12px 28px #bdc3c7, 16px 28px #bdc3c7, 20px 28px #bdc3c7, 24px 28px #bdc3c7, 28px 28px #bdc3c7,
+        0px 32px #bdc3c7, 4px 32px #34495e, 8px 32px #34495e, 12px 32px #34495e, 16px 32px #c0392b, 20px 32px #34495e, 24px 32px #34495e, 28px 32px #bdc3c7,
+        0px 36px #bdc3c7, 4px 36px #bdc3c7, 8px 36px #bdc3c7, 12px 36px #bdc3c7, 16px 36px #bdc3c7, 20px 36px #bdc3c7, 24px 36px #bdc3c7, 28px 36px #bdc3c7,
+        4px 40px #bdc3c7, 8px 40px #34495e, 12px 40px #bdc3c7, 16px 40px #bdc3c7, 20px 40px #bdc3c7, 24px 40px #34495e;
+      animation: char86-sleep 2s ease-in-out infinite;
+    }
+    .char86-sleeping .char86-zzz { position: absolute; left: 55px; top: 5px; font-size: 14px; color: #3498db; animation: char86-zzz 2s ease-in-out infinite; }
+    @keyframes char86-sleep { 0%, 100% { transform: scale(1); } 50% { transform: scale(0.98); } }
+    @keyframes char86-zzz { 0%, 100% { opacity: 0; transform: translateY(0); } 50% { opacity: 0.8; transform: translateY(-10px); } }
+
+    .char86-listening .char86-body {
+      position: absolute;
+      left: 20px;
+      top: 5px;
+      width: 4px;
+      height: 4px;
+      background: transparent;
+      box-shadow: 
+        8px 0 #2c3e50, 12px 0 #2c3e50, 16px 0 #2c3e50, 20px 0 #2c3e50,
+        8px 4px #e74c3c, 12px 4px #e74c3c, 16px 4px #e74c3c, 20px 4px #e74c3c,
+        4px 8px #e74c3c, 8px 8px #e74c3c, 12px 8px #e74c3c, 16px 8px #e74c3c, 20px 8px #e74c3c, 24px 8px #e74c3c,
+        8px 12px #ecf0f1, 12px 12px #ecf0f1, 16px 12px #ecf0f1, 20px 12px #ecf0f1,
+        4px 16px #ecf0f1, 8px 16px #ecf0f1, 12px 16px #000, 16px 16px #000, 20px 16px #ecf0f1, 24px 16px #ecf0f1,
+        4px 20px #ecf0f1, 8px 20px #ecf0f1, 12px 20px #f39c12, 16px 20px #ecf0f1, 20px 20px #ecf0f1, 24px 20px #ecf0f1,
+        8px 24px #ecf0f1, 12px 24px #ecf0f1, 16px 24px #ecf0f1, 20px 24px #ecf0f1,
+        0px 28px #ecf0f1, 4px 28px #ecf0f1, 8px 28px #ecf0f1, 12px 28px #ecf0f1, 16px 28px #ecf0f1, 20px 28px #ecf0f1, 24px 28px #ecf0f1, 28px 28px #ecf0f1,
+        0px 32px #ecf0f1, 4px 32px #2c3e50, 8px 32px #2c3e50, 12px 32px #2c3e50, 16px 32px #e74c3c, 20px 32px #2c3e50, 24px 32px #2c3e50, 28px 32px #ecf0f1,
+        0px 36px #ecf0f1, 4px 36px #ecf0f1, 8px 36px #ecf0f1, 12px 36px #ecf0f1, 16px 36px #ecf0f1, 20px 36px #ecf0f1, 24px 36px #ecf0f1, 28px 36px #ecf0f1,
+        4px 40px #ecf0f1, 8px 40px #2c3e50, 12px 40px #ecf0f1, 16px 40px #ecf0f1, 20px 40px #ecf0f1, 24px 40px #2c3e50;
+      animation: char86-tilt 1s ease-in-out infinite alternate;
+    }
+    @keyframes char86-tilt { 0% { transform: rotate(-8deg); } 100% { transform: rotate(8deg); } }
+
+    .char86-speaking .char86-body {
+      position: absolute;
+      left: 20px;
+      top: 5px;
+      width: 4px;
+      height: 4px;
+      background: transparent;
+      box-shadow: 
+        8px 0 #2c3e50, 12px 0 #2c3e50, 16px 0 #2c3e50, 20px 0 #2c3e50,
+        8px 4px #e74c3c, 12px 4px #e74c3c, 16px 4px #e74c3c, 20px 4px #e74c3c,
+        4px 8px #e74c3c, 8px 8px #e74c3c, 12px 8px #e74c3c, 16px 8px #e74c3c, 20px 8px #e74c3c, 24px 8px #e74c3c,
+        8px 12px #ecf0f1, 12px 12px #ecf0f1, 16px 12px #ecf0f1, 20px 12px #ecf0f1,
+        4px 16px #ecf0f1, 8px 16px #ecf0f1, 12px 16px #000, 16px 16px #000, 20px 16px #ecf0f1, 24px 16px #ecf0f1,
+        4px 20px #ecf0f1, 8px 20px #ecf0f1, 12px 20px #e74c3c, 16px 20px #ecf0f1, 20px 20px #ecf0f1, 24px 20px #ecf0f1,
+        8px 24px #ecf0f1, 12px 24px #ecf0f1, 16px 24px #ecf0f1, 20px 24px #ecf0f1,
+        0px 28px #ecf0f1, 4px 28px #ecf0f1, 8px 28px #ecf0f1, 12px 28px #ecf0f1, 16px 28px #ecf0f1, 20px 28px #ecf0f1, 24px 28px #ecf0f1, 28px 28px #ecf0f1,
+        0px 32px #ecf0f1, 4px 32px #2c3e50, 8px 32px #2c3e50, 12px 32px #2c3e50, 16px 32px #e74c3c, 20px 32px #2c3e50, 24px 32px #2c3e50, 28px 32px #ecf0f1,
+        0px 36px #ecf0f1, 4px 36px #ecf0f1, 8px 36px #ecf0f1, 12px 36px #ecf0f1, 16px 36px #ecf0f1, 20px 36px #ecf0f1, 24px 36px #ecf0f1, 28px 36px #ecf0f1,
+        4px 40px #ecf0f1, 8px 40px #2c3e50, 12px 40px #ecf0f1, 16px 40px #ecf0f1, 20px 40px #ecf0f1, 24px 40px #2c3e50;
+      animation: char86-bounce 0.5s ease-in-out infinite;
+    }
+    @keyframes char86-bounce { 0%, 100% { transform: translateY(0) scaleY(1); } 50% { transform: translateY(-6px) scaleY(1.05); } }
+
+    /* ==================== 角色 #87: 姜饼人 ==================== */
+    .char87-thinking .char87-body {
+      position: absolute;
+      left: 22px;
+      top: 5px;
+      width: 4px;
+      height: 4px;
+      background: transparent;
+      box-shadow: 
+        8px 0 #d35400, 12px 0 #d35400, 16px 0 #d35400,
+        4px 4px #d35400, 8px 4px #d35400, 12px 4px #fff, 16px 4px #d35400, 20px 4px #d35400,
+        0px 8px #d35400, 4px 8px #d35400, 8px 8px #d35400, 12px 8px #d35400, 16px 8px #d35400, 20px 8px #d35400, 24px 8px #d35400,
+        0px 12px #d35400, 4px 12px #e74c3c, 8px 12px #d35400, 12px 12px #d35400, 16px 12px #d35400, 20px 12px #e74c3c, 24px 12px #d35400,
+        4px 16px #d35400, 8px 16px #d35400, 12px 16px #d35400, 16px 16px #d35400, 20px 16px #d35400,
+        0px 20px #d35400, 4px 20px #d35400, 8px 20px #d35400, 12px 20px #d35400, 16px 20px #d35400, 20px 20px #d35400, 24px 20px #d35400,
+        0px 24px #d35400, 4px 24px #d35400, 8px 24px #d35400, 12px 24px #d35400, 16px 24px #d35400, 20px 24px #d35400, 24px 24px #d35400,
+        4px 28px #d35400, 8px 28px #d35400, 12px 28px #d35400, 16px 28px #d35400, 20px 28px #d35400,
+        8px 32px #d35400, 12px 32px #d35400, 16px 32px #d35400,
+        8px 36px #d35400, 16px 36px #d35400;
+      animation: char87-think 1.5s ease-in-out infinite;
+    }
+    .char87-thinking .char87-bubble { position: absolute; left: 55px; top: 5px; width: 4px; height: 4px; background: transparent; box-shadow: 0 0 #e74c3c, 4px 0 #e74c3c, -4px 4px #e74c3c, 0 4px #e74c3c, 4px 4px #e74c3c, 8px 4px #e74c3c, 0 8px #e74c3c, 4px 8px #e74c3c; animation: char87-bubble 2s ease-in-out infinite; }
+    @keyframes char87-think { 0%, 100% { transform: translateY(0); } 50% { transform: translateY(-3px); } }
+    @keyframes char87-bubble { 0%, 100% { opacity: 0.4; } 50% { opacity: 0.9; } }
+
+    .char87-sleeping .char87-body {
+      position: absolute;
+      left: 22px;
+      top: 10px;
+      width: 4px;
+      height: 4px;
+      background: transparent;
+      box-shadow: 
+        8px 0 #a04000, 12px 0 #a04000, 16px 0 #a04000,
+        4px 4px #a04000, 8px 4px #a04000, 12px 4px #bdc3c7, 16px 4px #a04000, 20px 4px #a04000,
+        0px 8px #a04000, 4px 8px #a04000, 8px 8px #a04000, 12px 8px #a04000, 16px 8px #a04000, 20px 8px #a04000, 24px 8px #a04000,
+        0px 12px #a04000, 4px 12px #c0392b, 8px 12px #a04000, 12px 12px #a04000, 16px 12px #a04000, 20px 12px #c0392b, 24px 12px #a04000,
+        4px 16px #a04000, 8px 16px #a04000, 12px 16px #a04000, 16px 16px #a04000, 20px 16px #a04000,
+        0px 20px #a04000, 4px 20px #a04000, 8px 20px #a04000, 12px 20px #a04000, 16px 20px #a04000, 20px 20px #a04000, 24px 20px #a04000,
+        0px 24px #a04000, 4px 24px #a04000, 8px 24px #a04000, 12px 24px #a04000, 16px 24px #a04000, 20px 24px #a04000, 24px 24px #a04000,
+        4px 28px #a04000, 8px 28px #a04000, 12px 28px #a04000, 16px 28px #a04000, 20px 28px #a04000,
+        8px 32px #a04000, 12px 32px #a04000, 16px 32px #a04000,
+        8px 36px #a04000, 16px 36px #a04000;
+      animation: char87-sleep 2s ease-in-out infinite;
+    }
+    .char87-sleeping .char87-zzz { position: absolute; left: 55px; top: 5px; font-size: 12px; color: #d35400; animation: char87-zzz 2s ease-in-out infinite; }
+    @keyframes char87-sleep { 0%, 100% { transform: scale(1); } 50% { transform: scale(0.95); } }
+    @keyframes char87-zzz { 0%, 100% { opacity: 0; transform: translateY(0); } 50% { opacity: 0.8; transform: translateY(-8px); } }
+
+    .char87-listening .char87-body {
+      position: absolute;
+      left: 22px;
+      top: 5px;
+      width: 4px;
+      height: 4px;
+      background: transparent;
+      box-shadow: 
+        8px 0 #d35400, 12px 0 #d35400, 16px 0 #d35400,
+        4px 4px #d35400, 8px 4px #d35400, 12px 4px #fff, 16px 4px #d35400, 20px 4px #d35400,
+        0px 8px #d35400, 4px 8px #d35400, 8px 8px #d35400, 12px 8px #d35400, 16px 8px #d35400, 20px 8px #d35400, 24px 8px #d35400,
+        0px 12px #d35400, 4px 12px #e74c3c, 8px 12px #d35400, 12px 12px #d35400, 16px 12px #d35400, 20px 12px #e74c3c, 24px 12px #d35400,
+        4px 16px #d35400, 8px 16px #d35400, 12px 16px #d35400, 16px 16px #d35400, 20px 16px #d35400,
+        0px 20px #d35400, 4px 20px #d35400, 8px 20px #d35400, 12px 20px #d35400, 16px 20px #d35400, 20px 20px #d35400, 24px 20px #d35400,
+        0px 24px #d35400, 4px 24px #d35400, 8px 24px #d35400, 12px 24px #d35400, 16px 24px #d35400, 20px 24px #d35400, 24px 24px #d35400,
+        4px 28px #d35400, 8px 28px #d35400, 12px 28px #d35400, 16px 28px #d35400, 20px 28px #d35400,
+        8px 32px #d35400, 12px 32px #d35400, 16px 32px #d35400,
+        8px 36px #d35400, 16px 36px #d35400;
+      animation: char87-tilt 1s ease-in-out infinite alternate;
+    }
+    @keyframes char87-tilt { 0% { transform: rotate(-10deg); } 100% { transform: rotate(10deg); } }
+
+    .char87-speaking .char87-body {
+      position: absolute;
+      left: 22px;
+      top: 5px;
+      width: 4px;
+      height: 4px;
+      background: transparent;
+      box-shadow: 
+        8px 0 #d35400, 12px 0 #d35400, 16px 0 #d35400,
+        4px 4px #d35400, 8px 4px #d35400, 12px 4px #fff, 16px 4px #d35400, 20px 4px #d35400,
+        0px 8px #d35400, 4px 8px #d35400, 8px 8px #d35400, 12px 8px #d35400, 16px 8px #d35400, 20px 8px #d35400, 24px 8px #d35400,
+        0px 12px #d35400, 4px 12px #e74c3c, 8px 12px #d35400, 12px 12px #d35400, 16px 12px #d35400, 20px 12px #e74c3c, 24px 12px #d35400,
+        4px 16px #d35400, 8px 16px #d35400, 12px 16px #d35400, 16px 16px #d35400, 20px 16px #d35400,
+        0px 20px #d35400, 4px 20px #d35400, 8px 20px #d35400, 12px 20px #d35400, 16px 20px #d35400, 20px 20px #d35400, 24px 20px #d35400,
+        0px 24px #d35400, 4px 24px #d35400, 8px 24px #d35400, 12px 24px #d35400, 16px 24px #d35400, 20px 24px #d35400, 24px 24px #d35400,
+        4px 28px #d35400, 8px 28px #d35400, 12px 28px #d35400, 16px 28px #d35400, 20px 28px #d35400,
+        8px 32px #d35400, 12px 32px #d35400, 16px 32px #d35400,
+        8px 36px #d35400, 16px 36px #d35400;
+      animation: char87-bounce 0.4s ease-in-out infinite;
+    }
+    @keyframes char87-bounce { 0%, 100% { transform: translateY(0); } 50% { transform: translateY(-5px); } }
+
+    /* ==================== 角色 #88: 小丑 ==================== */
+    .char88-thinking .char88-body {
+      position: absolute;
+      left: 18px;
+      top: 10px;
+      width: 4px;
+      height: 4px;
+      background: transparent;
+      box-shadow: 
+        12px 0 #e74c3c, 16px 0 #e74c3c,
+        8px 4px #e74c3c, 12px 4px #e74c3c, 16px 4px #e74c3c, 20px 4px #e74c3c,
+        4px 8px #3498db, 8px 8px #3498db, 12px 8px #3498db, 16px 8px #3498db, 20px 8px #3498db, 24px 8px #3498db,
+        0px 12px #fff, 4px 12px #fff, 8px 12px #fff, 12px 12px #000, 16px 12px #000, 20px 12px #fff, 24px 12px #fff, 28px 12px #fff,
+        0px 16px #fff, 4px 16px #fff, 8px 16px #e74c3c, 12px 16px #e74c3c, 16px 16px #e74c3c, 20px 16px #e74c3c, 24px 16px #fff, 28px 16px #fff,
+        0px 20px #fff, 4px 20px #e74c3c, 8px 20px #e74c3c, 12px 20px #e74c3c, 16px 20px #e74c3c, 20px 20px #e74c3c, 24px 20px #e74c3c, 28px 20px #fff,
+        4px 24px #9b59b6, 8px 24px #9b59b6, 12px 24px #9b59b6, 16px 24px #9b59b6, 20px 24px #9b59b6, 24px 24px #9b59b6,
+        4px 28px #f1c40f, 8px 28px #f1c40f, 12px 28px #f1c40f, 16px 28px #f1c40f, 20px 28px #f1c40f, 24px 28px #f1c40f,
+        4px 32px #f1c40f, 8px 32px #f1c40f, 12px 32px #f1c40f, 16px 32px #f1c40f, 20px 32px #f1c40f, 24px 32px #f1c40f,
+        8px 36px #e74c3c, 12px 36px #e74c3c, 16px 36px #e74c3c, 20px 36px #e74c3c,
+        12px 40px #2c3e50, 16px 40px #2c3e50;
+      animation: char88-think 1.5s ease-in-out infinite;
+    }
+    .char88-thinking .char88-bubble { position: absolute; left: 55px; top: 5px; width: 4px; height: 4px; background: transparent; box-shadow: 0 0 #9b59b6, 4px 0 #9b59b6, -4px 4px #9b59b6, 0 4px #9b59b6, 4px 4px #9b59b6, 8px 4px #9b59b6, 0 8px #9b59b6, 4px 8px #9b59b6; animation: char88-bubble 2s ease-in-out infinite; }
+    @keyframes char88-think { 0%, 100% { transform: translateY(0); } 50% { transform: translateY(-4px); } }
+    @keyframes char88-bubble { 0%, 100% { opacity: 0.4; } 50% { opacity: 0.9; } }
+
+    .char88-sleeping .char88-body {
+      position: absolute;
+      left: 18px;
+      top: 15px;
+      width: 4px;
+      height: 4px;
+      background: transparent;
+      box-shadow: 
+        12px 0 #c0392b, 16px 0 #c0392b,
+        8px 4px #c0392b, 12px 4px #c0392b, 16px 4px #c0392b, 20px 4px #c0392b,
+        4px 8px #2980b9, 8px 8px #2980b9, 12px 8px #2980b9, 16px 8px #2980b9, 20px 8px #2980b9, 24px 8px #2980b9,
+        0px 12px #bdc3c7, 4px 12px #bdc3c7, 8px 12px #bdc3c7, 12px 12px #7f8c8d, 16px 12px #7f8c8d, 20px 12px #bdc3c7, 24px 12px #bdc3c7, 28px 12px #bdc3c7,
+        0px 16px #bdc3c7, 4px 16px #bdc3c7, 8px 16px #c0392b, 12px 16px #c0392b, 16px 16px #c0392b, 20px 16px #c0392b, 24px 16px #bdc3c7, 28px 16px #bdc3c7,
+        0px 20px #bdc3c7, 4px 20px #c0392b, 8px 20px #c0392b, 12px 20px #c0392b, 16px 20px #c0392b, 20px 20px #c0392b, 24px 20px #c0392b, 28px 20px #bdc3c7,
+        4px 24px #8e44ad, 8px 24px #8e44ad, 12px 24px #8e44ad, 16px 24px #8e44ad, 20px 24px #8e44ad, 24px 24px #8e44ad,
+        4px 28px #f39c12, 8px 28px #f39c12, 12px 28px #f39c12, 16px 28px #f39c12, 20px 28px #f39c12, 24px 28px #f39c12,
+        4px 32px #f39c12, 8px 32px #f39c12, 12px 32px #f39c12, 16px 32px #f39c12, 20px 32px #f39c12, 24px 32px #f39c12,
+        8px 36px #c0392b, 12px 36px #c0392b, 16px 36px #c0392b, 20px 36px #c0392b,
+        12px 40px #2c3e50, 16px 40px #2c3e50;
+      animation: char88-sleep 2s ease-in-out infinite;
+    }
+    .char88-sleeping .char88-zzz { position: absolute; left: 55px; top: 5px; font-size: 12px; color: #9b59b6; animation: char88-zzz 2s ease-in-out infinite; }
+    @keyframes char88-sleep { 0%, 100% { transform: scale(1); } 50% { transform: scale(0.97); } }
+    @keyframes char88-zzz { 0%, 100% { opacity: 0; } 50% { opacity: 0.8; } }
+
+    .char88-listening .char88-body {
+      position: absolute;
+      left: 18px;
+      top: 10px;
+      width: 4px;
+      height: 4px;
+      background: transparent;
+      box-shadow: 
+        12px 0 #e74c3c, 16px 0 #e74c3c,
+        8px 4px #e74c3c, 12px 4px #e74c3c, 16px 4px #e74c3c, 20px 4px #e74c3c,
+        4px 8px #3498db, 8px 8px #3498db, 12px 8px #3498db, 16px 8px #3498db, 20px 8px #3498db, 24px 8px #3498db,
+        0px 12px #fff, 4px 12px #fff, 8px 12px #fff, 12px 12px #000, 16px 12px #000, 20px 12px #fff, 24px 12px #fff, 28px 12px #fff,
+        0px 16px #fff, 4px 16px #fff, 8px 16px #e74c3c, 12px 16px #e74c3c, 16px 16px #e74c3c, 20px 16px #e74c3c, 24px 16px #fff, 28px 16px #fff,
+        0px 20px #fff, 4px 20px #e74c3c, 8px 20px #e74c3c, 12px 20px #e74c3c, 16px 20px #e74c3c, 20px 20px #e74c3c, 24px 20px #e74c3c, 28px 20px #fff,
+        4px 24px #9b59b6, 8px 24px #9b59b6, 12px 24px #9b59b6, 16px 24px #9b59b6, 20px 24px #9b59b6, 24px 24px #9b59b6,
+        4px 28px #f1c40f, 8px 28px #f1c40f, 12px 28px #f1c40f, 16px 28px #f1c40f, 20px 28px #f1c40f, 24px 28px #f1c40f,
+        4px 32px #f1c40f, 8px 32px #f1c40f, 12px 32px #f1c40f, 16px 32px #f1c40f, 20px 32px #f1c40f, 24px 32px #f1c40f,
+        8px 36px #e74c3c, 12px 36px #e74c3c, 16px 36px #e74c3c, 20px 36px #e74c3c,
+        12px 40px #2c3e50, 16px 40px #2c3e50;
+      animation: char88-tilt 1s ease-in-out infinite alternate;
+    }
+    @keyframes char88-tilt { 0% { transform: rotate(-12deg); } 100% { transform: rotate(12deg); } }
+
+    .char88-speaking .char88-body {
+      position: absolute;
+      left: 18px;
+      top: 10px;
+      width: 4px;
+      height: 4px;
+      background: transparent;
+      box-shadow: 
+        12px 0 #e74c3c, 16px 0 #e74c3c,
+        8px 4px #e74c3c, 12px 4px #e74c3c, 16px 4px #e74c3c, 20px 4px #e74c3c,
+        4px 8px #3498db, 8px 8px #3498db, 12px 8px #3498db, 16px 8px #3498db, 20px 8px #3498db, 24px 8px #3498db,
+        0px 12px #fff, 4px 12px #fff, 8px 12px #fff, 12px 12px #000, 16px 12px #000, 20px 12px #fff, 24px 12px #fff, 28px 12px #fff,
+        0px 16px #fff, 4px 16px #fff, 8px 16px #e74c3c, 12px 16px #e74c3c, 16px 16px #e74c3c, 20px 16px #e74c3c, 24px 16px #fff, 28px 16px #fff,
+        0px 20px #fff, 4px 20px #e74c3c, 8px 20px #e74c3c, 12px 20px #e74c3c, 16px 20px #e74c3c, 20px 20px #e74c3c, 24px 20px #e74c3c, 28px 20px #fff,
+        4px 24px #9b59b6, 8px 24px #9b59b6, 12px 24px #9b59b6, 16px 24px #9b59b6, 20px 24px #9b59b6, 24px 24px #9b59b6,
+        4px 28px #f1c40f, 8px 28px #f1c40f, 12px 28px #f1c40f, 16px 28px #f1c40f, 20px 28px #f1c40f, 24px 28px #f1c40f,
+        4px 32px #f1c40f, 8px 32px #f1c40f, 12px 32px #f1c40f, 16px 32px #f1c40f, 20px 32px #f1c40f, 24px 32px #f1c40f,
+        8px 36px #e74c3c, 12px 36px #e74c3c, 16px 36px #e74c3c, 20px 36px #e74c3c,
+        12px 40px #2c3e50, 16px 40px #2c3e50;
+      animation: char88-laugh 0.3s ease-in-out infinite;
+    }
+    @keyframes char88-laugh { 0%, 100% { transform: translateY(0); } 25% { transform: translateY(-4px) rotate(-3deg); } 75% { transform: translateY(-4px) rotate(3deg); } }
+
+    /* ==================== 角色 #89: 巫师 ==================== */
+    .char89-thinking .char89-body {
+      position: absolute;
+      left: 20px;
+      top: 5px;
+      width: 4px;
+      height: 4px;
+      background: transparent;
+      box-shadow: 
+        12px 0 #8e44ad,
+        8px 4px #8e44ad, 12px 4px #8e44ad, 16px 4px #8e44ad,
+        4px 8px #8e44ad, 8px 8px #8e44ad, 12px 8px #f1c40f, 16px 8px #8e44ad, 20px 8px #8e44ad,
+        0px 12px #8e44ad, 4px 12px #8e44ad, 8px 12px #8e44ad, 12px 12px #8e44ad, 16px 12px #8e44ad, 20px 12px #8e44ad, 24px 12px #8e44ad,
+        0px 16px #f5f5f5, 4px 16px #f5f5f5, 8px 16px #f5f5f5, 12px 16px #f5f5f5, 16px 16px #f5f5f5, 20px 16px #f5f5f5, 24px 16px #f5f5f5,
+        0px 20px #f5f5f5, 4px 20px #000, 8px 20px #f5f5f5, 12px 20px #f5f5f5, 16px 20px #f5f5f5, 20px 20px #000, 24px 20px #f5f5f5,
+        0px 24px #f5f5f5, 4px 24px #f5f5f5, 8px 24px #f5f5f5, 12px 24px #f5f5f5, 16px 24px #f5f5f5, 20px 24px #f5f5f5, 24px 24px #f5f5f5,
+        0px 28px #2c3e50, 4px 28px #2c3e50, 8px 28px #34495e, 12px 28px #34495e, 16px 28px #34495e, 20px 28px #2c3e50, 24px 28px #2c3e50,
+        4px 32px #2c3e50, 8px 32px #34495e, 12px 32px #f1c40f, 16px 32px #34495e, 20px 32px #2c3e50,
+        8px 36px #34495e, 12px 36px #34495e, 16px 36px #34495e,
+        8px 40px #2c3e50, 12px 40px #2c3e50, 16px 40px #2c3e50;
+      animation: char89-think 2s ease-in-out infinite;
+    }
+    .char89-thinking .char89-bubble { position: absolute; left: 55px; top: 0; width: 4px; height: 4px; background: transparent; box-shadow: 0 0 #f1c40f, 4px 0 #f1c40f, -4px 4px #f1c40f, 0 4px #f1c40f, 4px 4px #f1c40f, 8px 4px #f1c40f, 0 8px #f1c40f, 4px 8px #f1c40f; animation: char89-bubble 2s ease-in-out infinite; }
+    @keyframes char89-think { 0%, 100% { transform: translateY(0); } 50% { transform: translateY(-3px); } }
+    @keyframes char89-bubble { 0%, 100% { opacity: 0.4; } 50% { opacity: 0.9; } }
+
+    .char89-sleeping .char89-body {
+      position: absolute;
+      left: 20px;
+      top: 10px;
+      width: 4px;
+      height: 4px;
+      background: transparent;
+      box-shadow: 
+        12px 0 #6c3483,
+        8px 4px #6c3483, 12px 4px #6c3483, 16px 4px #6c3483,
+        4px 8px #6c3483, 8px 8px #6c3483, 12px 8px #b7950b, 16px 8px #6c3483, 20px 8px #6c3483,
+        0px 12px #6c3483, 4px 12px #6c3483, 8px 12px #6c3483, 12px 12px #6c3483, 16px 12px #6c3483, 20px 12px #6c3483, 24px 12px #6c3483,
+        0px 16px #bdc3c7, 4px 16px #bdc3c7, 8px 16px #bdc3c7, 12px 16px #bdc3c7, 16px 16px #bdc3c7, 20px 16px #bdc3c7, 24px 16px #bdc3c7,
+        0px 20px #bdc3c7, 4px 20px #7f8c8d, 8px 20px #bdc3c7, 12px 20px #bdc3c7, 16px 20px #bdc3c7, 20px 20px #7f8c8d, 24px 20px #bdc3c7,
+        0px 24px #bdc3c7, 4px 24px #bdc3c7, 8px 24px #bdc3c7, 12px 24px #bdc3c7, 16px 24px #bdc3c7, 20px 24px #bdc3c7, 24px 24px #bdc3c7,
+        0px 28px #1a252f, 4px 28px #1a252f, 8px 28px #2c3e50, 12px 28px #2c3e50, 16px 28px #2c3e50, 20px 28px #1a252f, 24px 28px #1a252f,
+        4px 32px #1a252f, 8px 32px #2c3e50, 12px 32px #b7950b, 16px 32px #2c3e50, 20px 32px #1a252f,
+        8px 36px #2c3e50, 12px 36px #2c3e50, 16px 36px #2c3e50,
+        8px 40px #1a252f, 12px 40px #1a252f, 16px 40px #1a252f;
+      animation: char89-sleep 2s ease-in-out infinite;
+    }
+    .char89-sleeping .char89-zzz { position: absolute; left: 55px; top: 5px; font-size: 12px; color: #f1c40f; animation: char89-zzz 2s ease-in-out infinite; }
+    @keyframes char89-sleep { 0%, 100% { transform: scale(1); } 50% { transform: scale(0.96); } }
+    @keyframes char89-zzz { 0%, 100% { opacity: 0; } 50% { opacity: 0.8; } }
+
+    .char89-listening .char89-body {
+      position: absolute;
+      left: 20px;
+      top: 5px;
+      width: 4px;
+      height: 4px;
+      background: transparent;
+      box-shadow: 
+        12px 0 #8e44ad,
+        8px 4px #8e44ad, 12px 4px #8e44ad, 16px 4px #8e44ad,
+        4px 8px #8e44ad, 8px 8px #8e44ad, 12px 8px #f1c40f, 16px 8px #8e44ad, 20px 8px #8e44ad,
+        0px 12px #8e44ad, 4px 12px #8e44ad, 8px 12px #8e44ad, 12px 12px #8e44ad, 16px 12px #8e44ad, 20px 12px #8e44ad, 24px 12px #8e44ad,
+        0px 16px #f5f5f5, 4px 16px #f5f5f5, 8px 16px #f5f5f5, 12px 16px #f5f5f5, 16px 16px #f5f5f5, 20px 16px #f5f5f5, 24px 16px #f5f5f5,
+        0px 20px #f5f5f5, 4px 20px #000, 8px 20px #f5f5f5, 12px 20px #f5f5f5, 16px 20px #f5f5f5, 20px 20px #000, 24px 20px #f5f5f5,
+        0px 24px #f5f5f5, 4px 24px #f5f5f5, 8px 24px #f5f5f5, 12px 24px #f5f5f5, 16px 24px #f5f5f5, 20px 24px #f5f5f5, 24px 24px #f5f5f5,
+        0px 28px #2c3e50, 4px 28px #2c3e50, 8px 28px #34495e, 12px 28px #34495e, 16px 28px #34495e, 20px 28px #2c3e50, 24px 28px #2c3e50,
+        4px 32px #2c3e50, 8px 32px #34495e, 12px 32px #f1c40f, 16px 32px #34495e, 20px 32px #2c3e50,
+        8px 36px #34495e, 12px 36px #34495e, 16px 36px #34495e,
+        8px 40px #2c3e50, 12px 40px #2c3e50, 16px 40px #2c3e50;
+      animation: char89-tilt 1.5s ease-in-out infinite alternate;
+    }
+    @keyframes char89-tilt { 0% { transform: rotate(-8deg); } 100% { transform: rotate(8deg); } }
+
+    .char89-speaking .char89-body {
+      position: absolute;
+      left: 20px;
+      top: 5px;
+      width: 4px;
+      height: 4px;
+      background: transparent;
+      box-shadow: 
+        12px 0 #8e44ad,
+        8px 4px #8e44ad, 12px 4px #8e44ad, 16px 4px #8e44ad,
+        4px 8px #8e44ad, 8px 8px #8e44ad, 12px 8px #f1c40f, 16px 8px #8e44ad, 20px 8px #8e44ad,
+        0px 12px #8e44ad, 4px 12px #8e44ad, 8px 12px #8e44ad, 12px 12px #8e44ad, 16px 12px #8e44ad, 20px 12px #8e44ad, 24px 12px #8e44ad,
+        0px 16px #f5f5f5, 4px 16px #f5f5f5, 8px 16px #f5f5f5, 12px 16px #f5f5f5, 16px 16px #f5f5f5, 20px 16px #f5f5f5, 24px 16px #f5f5f5,
+        0px 20px #f5f5f5, 4px 20px #000, 8px 20px #f5f5f5, 12px 20px #f5f5f5, 16px 20px #f5f5f5, 20px 20px #000, 24px 20px #f5f5f5,
+        0px 24px #f5f5f5, 4px 24px #f5f5f5, 8px 24px #f5f5f5, 12px 24px #f5f5f5, 16px 24px #f5f5f5, 20px 24px #f5f5f5, 24px 24px #f5f5f5,
+        0px 28px #2c3e50, 4px 28px #2c3e50, 8px 28px #34495e, 12px 28px #34495e, 16px 28px #34495e, 20px 28px #2c3e50, 24px 28px #2c3e50,
+        4px 32px #2c3e50, 8px 32px #34495e, 12px 32px #f1c40f, 16px 32px #34495e, 20px 32px #2c3e50,
+        8px 36px #34495e, 12px 36px #34495e, 16px 36px #34495e,
+        8px 40px #2c3e50, 12px 40px #2c3e50, 16px 40px #2c3e50;
+      animation: char89-cast 0.5s ease-in-out infinite;
+    }
+    @keyframes char89-cast { 0%, 100% { transform: translateY(0); } 50% { transform: translateY(-6px); } }
+
+    /* ==================== 角色 #90: 恶魔 ==================== */
+    .char90-thinking .char90-body {
+      position: absolute;
+      left: 18px;
+      top: 5px;
+      width: 4px;
+      height: 4px;
+      background: transparent;
+      box-shadow: 
+        4px 0 #c0392b, 8px 0 #c0392b, 20px 0 #c0392b, 24px 0 #c0392b,
+        4px 4px #c0392b, 8px 4px #c0392b, 20px 4px #c0392b, 24px 4px #c0392b,
+        4px 8px #e74c3c, 8px 8px #e74c3c, 12px 8px #e74c3c, 16px 8px #e74c3c, 20px 8px #e74c3c, 24px 8px #e74c3c,
+        0px 12px #e74c3c, 4px 12px #e74c3c, 8px 12px #000, 12px 12px #e74c3c, 16px 12px #e74c3c, 20px 12px #000, 24px 12px #e74c3c, 28px 12px #e74c3c,
+        0px 16px #e74c3c, 4px 16px #e74c3c, 8px 16px #000, 12px 16px #e74c3c, 16px 16px #e74c3c, 20px 16px #000, 24px 16px #e74c3c, 28px 16px #e74c3c,
+        0px 20px #e74c3c, 4px 20px #e74c3c, 8px 20px #e74c3c, 12px 20px #f1c40f, 16px 20px #f1c40f, 20px 20px #e74c3c, 24px 20px #e74c3c, 28px 20px #e74c3c,
+        4px 24px #c0392b, 8px 24px #c0392b, 12px 24px #c0392b, 16px 24px #c0392b, 20px 24px #c0392b, 24px 24px #c0392b,
+        4px 28px #c0392b, 8px 28px #c0392b, 12px 28px #c0392b, 16px 28px #c0392b, 20px 28px #c0392b, 24px 28px #c0392b,
+        8px 32px #2c3e50, 12px 32px #2c3e50, 16px 32px #2c3e50, 20px 32px #2c3e50,
+        8px 36px #2c3e50, 12px 36px #2c3e50, 16px 36px #2c3e50, 20px 36px #2c3e50,
+        4px 40px #2c3e50, 8px 40px #2c3e50, 20px 40px #2c3e50, 24px 40px #2c3e50;
+      animation: char90-think 1.5s ease-in-out infinite;
+    }
+    .char90-thinking .char90-bubble { position: absolute; left: 55px; top: 0; width: 4px; height: 4px; background: transparent; box-shadow: 0 0 #e74c3c, 4px 0 #e74c3c, -4px 4px #e74c3c, 0 4px #e74c3c, 4px 4px #e74c3c, 8px 4px #e74c3c, 0 8px #e74c3c, 4px 8px #e74c3c; animation: char90-bubble 2s ease-in-out infinite; }
+    @keyframes char90-think { 0%, 100% { transform: translateY(0); } 50% { transform: translateY(-4px); } }
+    @keyframes char90-bubble { 0%, 100% { opacity: 0.4; } 50% { opacity: 0.9; } }
+
+    .char90-sleeping .char90-body {
+      position: absolute;
+      left: 18px;
+      top: 10px;
+      width: 4px;
+      height: 4px;
+      background: transparent;
+      box-shadow: 
+        4px 0 #922b21, 8px 0 #922b21, 20px 0 #922b21, 24px 0 #922b21,
+        4px 4px #922b21, 8px 4px #922b21, 20px 4px #922b21, 24px 4px #922b21,
+        4px 8px #c0392b, 8px 8px #c0392b, 12px 8px #c0392b, 16px 8px #c0392b, 20px 8px #c0392b, 24px 8px #c0392b,
+        0px 12px #c0392b, 4px 12px #c0392b, 8px 12px #7f8c8d, 12px 12px #c0392b, 16px 12px #c0392b, 20px 12px #7f8c8d, 24px 12px #c0392b, 28px 12px #c0392b,
+        0px 16px #c0392b, 4px 16px #c0392b, 8px 16px #7f8c8d, 12px 16px #c0392b, 16px 16px #c0392b, 20px 16px #7f8c8d, 24px 16px #c0392b, 28px 16px #c0392b,
+        0px 20px #c0392b, 4px 20px #c0392b, 8px 20px #c0392b, 12px 20px #b7950b, 16px 20px #b7950b, 20px 20px #c0392b, 24px 20px #c0392b, 28px 20px #c0392b,
+        4px 24px #922b21, 8px 24px #922b21, 12px 24px #922b21, 16px 24px #922b21, 20px 24px #922b21, 24px 24px #922b21,
+        4px 28px #922b21, 8px 28px #922b21, 12px 28px #922b21, 16px 28px #922b21, 20px 28px #922b21, 24px 28px #922b21,
+        8px 32px #1a252f, 12px 32px #1a252f, 16px 32px #1a252f, 20px 32px #1a252f,
+        8px 36px #1a252f, 12px 36px #1a252f, 16px 36px #1a252f, 20px 36px #1a252f,
+        4px 40px #1a252f, 8px 40px #1a252f, 20px 40px #1a252f, 24px 40px #1a252f;
+      animation: char90-sleep 2s ease-in-out infinite;
+    }
+    .char90-sleeping .char90-zzz { position: absolute; left: 55px; top: 5px; font-size: 12px; color: #e74c3c; animation: char90-zzz 2s ease-in-out infinite; }
+    @keyframes char90-sleep { 0%, 100% { transform: scale(1); } 50% { transform: scale(0.95); } }
+    @keyframes char90-zzz { 0%, 100% { opacity: 0; } 50% { opacity: 0.8; } }
+
+    .char90-listening .char90-body {
+      position: absolute;
+      left: 18px;
+      top: 5px;
+      width: 4px;
+      height: 4px;
+      background: transparent;
+      box-shadow: 
+        4px 0 #c0392b, 8px 0 #c0392b, 20px 0 #c0392b, 24px 0 #c0392b,
+        4px 4px #c0392b, 8px 4px #c0392b, 20px 4px #c0392b, 24px 4px #c0392b,
+        4px 8px #e74c3c, 8px 8px #e74c3c, 12px 8px #e74c3c, 16px 8px #e74c3c, 20px 8px #e74c3c, 24px 8px #e74c3c,
+        0px 12px #e74c3c, 4px 12px #e74c3c, 8px 12px #000, 12px 12px #e74c3c, 16px 12px #e74c3c, 20px 12px #000, 24px 12px #e74c3c, 28px 12px #e74c3c,
+        0px 16px #e74c3c, 4px 16px #e74c3c, 8px 16px #000, 12px 16px #e74c3c, 16px 16px #e74c3c, 20px 16px #000, 24px 16px #e74c3c, 28px 16px #e74c3c,
+        0px 20px #e74c3c, 4px 20px #e74c3c, 8px 20px #e74c3c, 12px 20px #f1c40f, 16px 20px #f1c40f, 20px 20px #e74c3c, 24px 20px #e74c3c, 28px 20px #e74c3c,
+        4px 24px #c0392b, 8px 24px #c0392b, 12px 24px #c0392b, 16px 24px #c0392b, 20px 24px #c0392b, 24px 24px #c0392b,
+        4px 28px #c0392b, 8px 28px #c0392b, 12px 28px #c0392b, 16px 28px #c0392b, 20px 28px #c0392b, 24px 28px #c0392b,
+        8px 32px #2c3e50, 12px 32px #2c3e50, 16px 32px #2c3e50, 20px 32px #2c3e50,
+        8px 36px #2c3e50, 12px 36px #2c3e50, 16px 36px #2c3e50, 20px 36px #2c3e50,
+        4px 40px #2c3e50, 8px 40px #2c3e50, 20px 40px #2c3e50, 24px 40px #2c3e50;
+      animation: char90-tilt 1s ease-in-out infinite alternate;
+    }
+    @keyframes char90-tilt { 0% { transform: rotate(-10deg); } 100% { transform: rotate(10deg); } }
+
+    .char90-speaking .char90-body {
+      position: absolute;
+      left: 18px;
+      top: 5px;
+      width: 4px;
+      height: 4px;
+      background: transparent;
+      box-shadow: 
+        4px 0 #c0392b, 8px 0 #c0392b, 20px 0 #c0392b, 24px 0 #c0392b,
+        4px 4px #c0392b, 8px 4px #c0392b, 20px 4px #c0392b, 24px 4px #c0392b,
+        4px 8px #e74c3c, 8px 8px #e74c3c, 12px 8px #e74c3c, 16px 8px #e74c3c, 20px 8px #e74c3c, 24px 8px #e74c3c,
+        0px 12px #e74c3c, 4px 12px #e74c3c, 8px 12px #000, 12px 12px #e74c3c, 16px 12px #e74c3c, 20px 12px #000, 24px 12px #e74c3c, 28px 12px #e74c3c,
+        0px 16px #e74c3c, 4px 16px #e74c3c, 8px 16px #000, 12px 16px #e74c3c, 16px 16px #e74c3c, 20px 16px #000, 24px 16px #e74c3c, 28px 16px #e74c3c,
+        0px 20px #e74c3c, 4px 20px #e74c3c, 8px 20px #e74c3c, 12px 20px #f1c40f, 16px 20px #f1c40f, 20px 20px #e74c3c, 24px 20px #e74c3c, 28px 20px #e74c3c,
+        4px 24px #c0392b, 8px 24px #c0392b, 12px 24px #c0392b, 16px 24px #c0392b, 20px 24px #c0392b, 24px 24px #c0392b,
+        4px 28px #c0392b, 8px 28px #c0392b, 12px 28px #c0392b, 16px 28px #c0392b, 20px 28px #c0392b, 24px 28px #c0392b,
+        8px 32px #2c3e50, 12px 32px #2c3e50, 16px 32px #2c3e50, 20px 32px #2c3e50,
+        8px 36px #2c3e50, 12px 36px #2c3e50, 16px 36px #2c3e50, 20px 36px #2c3e50,
+        4px 40px #2c3e50, 8px 40px #2c3e50, 20px 40px #2c3e50, 24px 40px #2c3e50;
+      animation: char90-roar 0.4s ease-in-out infinite;
+    }
+    @keyframes char90-roar { 0%, 100% { transform: translateY(0) scale(1); } 50% { transform: translateY(-5px) scale(1.05); } }
+
+    /* ==================== 角色 #91: 天使 ==================== */
+    .char91-thinking .char91-body {
+      position: absolute;
+      left: 20px;
+      top: 15px;
+      width: 4px;
+      height: 4px;
+      background: transparent;
+      box-shadow: 
+        0px 4px #f1c40f, 4px 4px #f1c40f, 20px 4px #f1c40f, 24px 4px #f1c40f,
+        0px 8px #f1c40f, 4px 8px #f1c40f, 8px 8px #f39c12, 16px 8px #f39c12, 20px 8px #f1c40f, 24px 8px #f1c40f,
+        8px 12px #f5f5f5, 12px 12px #f5f5f5, 16px 12px #f5f5f5,
+        4px 16px #f5f5f5, 8px 16px #f5f5f5, 12px 16px #000, 16px 16px #000, 20px 16px #f5f5f5,
+        4px 20px #f5f5f5, 8px 20px #f5f5f5, 12px 20px #f5f5f5, 16px 20px #f5f5f5, 20px 20px #f5f5f5,
+        4px 24px #f5f5f5, 8px 24px #f5f5f5, 12px 24px #f5f5f5, 16px 24px #f5f5f5, 20px 24px #f5f5f5,
+        0px 28px #3498db, 4px 28px #3498db, 8px 28px #3498db, 12px 28px #3498db, 16px 28px #3498db, 20px 28px #3498db, 24px 28px #3498db,
+        0px 32px #3498db, 4px 32px #3498db, 8px 32px #3498db, 12px 32px #f1c40f, 16px 32px #3498db, 20px 32px #3498db, 24px 32px #3498db,
+        4px 36px #3498db, 8px 36px #3498db, 12px 36px #3498db, 16px 36px #3498db, 20px 36px #3498db,
+        8px 40px #f1c40f, 12px 40px #f1c40f, 16px 40px #f1c40f;
+      animation: char91-think 2s ease-in-out infinite;
+    }
+    .char91-thinking .char91-bubble { position: absolute; left: 55px; top: 10px; width: 4px; height: 4px; background: transparent; box-shadow: 0 0 #f1c40f, 4px 0 #f1c40f, -4px 4px #f1c40f, 0 4px #f1c40f, 4px 4px #f1c40f, 8px 4px #f1c40f, 0 8px #f1c40f, 4px 8px #f1c40f; animation: char91-bubble 2s ease-in-out infinite; }
+    @keyframes char91-think { 0%, 100% { transform: translateY(0); } 50% { transform: translateY(-5px); } }
+    @keyframes char91-bubble { 0%, 100% { opacity: 0.4; } 50% { opacity: 0.9; } }
+
+    .char91-sleeping .char91-body {
+      position: absolute;
+      left: 20px;
+      top: 20px;
+      width: 4px;
+      height: 4px;
+      background: transparent;
+      box-shadow: 
+        0px 4px #b7950b, 4px 4px #b7950b, 20px 4px #b7950b, 24px 4px #b7950b,
+        0px 8px #b7950b, 4px 8px #b7950b, 8px 8px #d4ac0d, 16px 8px #d4ac0d, 20px 8px #b7950b, 24px 8px #b7950b,
+        8px 12px #bdc3c7, 12px 12px #bdc3c7, 16px 12px #bdc3c7,
+        4px 16px #bdc3c7, 8px 16px #bdc3c7, 12px 16px #7f8c8d, 16px 16px #7f8c8d, 20px 16px #bdc3c7,
+        4px 20px #bdc3c7, 8px 20px #bdc3c7, 12px 20px #bdc3c7, 16px 20px #bdc3c7, 20px 20px #bdc3c7,
+        4px 24px #bdc3c7, 8px 24px #bdc3c7, 12px 24px #bdc3c7, 16px 24px #bdc3c7, 20px 24px #bdc3c7,
+        0px 28px #2980b9, 4px 28px #2980b9, 8px 28px #2980b9, 12px 28px #2980b9, 16px 28px #2980b9, 20px 28px #2980b9, 24px 28px #2980b9,
+        0px 32px #2980b9, 4px 32px #2980b9, 8px 32px #2980b9, 12px 32px #b7950b, 16px 32px #2980b9, 20px 32px #2980b9, 24px 32px #2980b9,
+        4px 36px #2980b9, 8px 36px #2980b9, 12px 36px #2980b9, 16px 36px #2980b9, 20px 36px #2980b9,
+        8px 40px #b7950b, 12px 40px #b7950b, 16px 40px #b7950b;
+      animation: char91-sleep 2s ease-in-out infinite;
+    }
+    .char91-sleeping .char91-zzz { position: absolute; left: 55px; top: 5px; font-size: 12px; color: #f1c40f; animation: char91-zzz 2s ease-in-out infinite; }
+    @keyframes char91-sleep { 0%, 100% { transform: scale(1); } 50% { transform: scale(0.97); } }
+    @keyframes char91-zzz { 0%, 100% { opacity: 0; } 50% { opacity: 0.8; } }
+
+    .char91-listening .char91-body {
+      position: absolute;
+      left: 20px;
+      top: 15px;
+      width: 4px;
+      height: 4px;
+      background: transparent;
+      box-shadow: 
+        0px 4px #f1c40f, 4px 4px #f1c40f, 20px 4px #f1c40f, 24px 4px #f1c40f,
+        0px 8px #f1c40f, 4px 8px #f1c40f, 8px 8px #f39c12, 16px 8px #f39c12, 20px 8px #f1c40f, 24px 8px #f1c40f,
+        8px 12px #f5f5f5, 12px 12px #f5f5f5, 16px 12px #f5f5f5,
+        4px 16px #f5f5f5, 8px 16px #f5f5f5, 12px 16px #000, 16px 16px #000, 20px 16px #f5f5f5,
+        4px 20px #f5f5f5, 8px 20px #f5f5f5, 12px 20px #f5f5f5, 16px 20px #f5f5f5, 20px 20px #f5f5f5,
+        4px 24px #f5f5f5, 8px 24px #f5f5f5, 12px 24px #f5f5f5, 16px 24px #f5f5f5, 20px 24px #f5f5f5,
+        0px 28px #3498db, 4px 28px #3498db, 8px 28px #3498db, 12px 28px #3498db, 16px 28px #3498db, 20px 28px #3498db, 24px 28px #3498db,
+        0px 32px #3498db, 4px 32px #3498db, 8px 32px #3498db, 12px 32px #f1c40f, 16px 32px #3498db, 20px 32px #3498db, 24px 32px #3498db,
+        4px 36px #3498db, 8px 36px #3498db, 12px 36px #3498db, 16px 36px #3498db, 20px 36px #3498db,
+        8px 40px #f1c40f, 12px 40px #f1c40f, 16px 40px #f1c40f;
+      animation: char91-tilt 1s ease-in-out infinite alternate;
+    }
+    @keyframes char91-tilt { 0% { transform: rotate(-8deg); } 100% { transform: rotate(8deg); } }
+
+    .char91-speaking .char91-body {
+      position: absolute;
+      left: 20px;
+      top: 15px;
+      width: 4px;
+      height: 4px;
+      background: transparent;
+      box-shadow: 
+        0px 4px #f1c40f, 4px 4px #f1c40f, 20px 4px #f1c40f, 24px 4px #f1c40f,
+        0px 8px #f1c40f, 4px 8px #f1c40f, 8px 8px #f39c12, 16px 8px #f39c12, 20px 8px #f1c40f, 24px 8px #f1c40f,
+        8px 12px #f5f5f5, 12px 12px #f5f5f5, 16px 12px #f5f5f5,
+        4px 16px #f5f5f5, 8px 16px #f5f5f5, 12px 16px #000, 16px 16px #000, 20px 16px #f5f5f5,
+        4px 20px #f5f5f5, 8px 20px #f5f5f5, 12px 20px #f5f5f5, 16px 20px #f5f5f5, 20px 20px #f5f5f5,
+        4px 24px #f5f5f5, 8px 24px #f5f5f5, 12px 24px #f5f5f5, 16px 24px #f5f5f5, 20px 24px #f5f5f5,
+        0px 28px #3498db, 4px 28px #3498db, 8px 28px #3498db, 12px 28px #3498db, 16px 28px #3498db, 20px 28px #3498db, 24px 28px #3498db,
+        0px 32px #3498db, 4px 32px #3498db, 8px 32px #3498db, 12px 32px #f1c40f, 16px 32px #3498db, 20px 32px #3498db, 24px 32px #3498db,
+        4px 36px #3498db, 8px 36px #3498db, 12px 36px #3498db, 16px 36px #3498db, 20px 36px #3498db,
+        8px 40px #f1c40f, 12px 40px #f1c40f, 16px 40px #f1c40f;
+      animation: char91-glow 0.5s ease-in-out infinite;
+    }
+    @keyframes char91-glow { 0%, 100% { filter: brightness(1); transform: translateY(0); } 50% { filter: brightness(1.3); transform: translateY(-3px); } }
+
+    /* ==================== 角色 #92: 美人鱼 ==================== */
+    .char92-thinking .char92-body {
+      position: absolute;
+      left: 20px;
+      top: 10px;
+      width: 4px;
+      height: 4px;
+      background: transparent;
+      box-shadow: 
+        12px 0 #e74c3c, 16px 0 #e74c3c,
+        8px 4px #e74c3c, 12px 4px #f5f5f5, 16px 4px #f5f5f5, 20px 4px #e74c3c,
+        4px 8px #f5f5f5, 8px 8px #f5f5f5, 12px 8px #000, 16px 8px #000, 20px 8px #f5f5f5, 24px 8px #f5f5f5,
+        4px 12px #f5f5f5, 8px 12px #f5f5f5, 12px 12px #f5f5f5, 16px 12px #f5f5f5, 20px 12px #f5f5f5, 24px 12px #f5f5f5,
+        0px 16px #3498db, 4px 16px #3498db, 8px 16px #3498db, 12px 16px #3498db, 16px 16px #3498db, 20px 16px #3498db, 24px 16px #3498db, 28px 16px #3498db,
+        4px 20px #3498db, 8px 20px #3498db, 12px 20px #f1c40f, 16px 20px #3498db, 20px 20px #3498db, 24px 20px #3498db,
+        4px 24px #3498db, 8px 24px #3498db, 12px 24px #3498db, 16px 24px #3498db, 20px 24px #3498db, 24px 24px #3498db,
+        8px 28px #1abc9c, 12px 28px #1abc9c, 16px 28px #1abc9c, 20px 28px #1abc9c,
+        4px 32px #1abc9c, 8px 32px #16a085, 12px 32px #1abc9c, 16px 32px #1abc9c, 20px 32px #16a085, 24px 32px #1abc9c,
+        4px 36px #1abc9c, 8px 36px #1abc9c, 12px 36px #16a085, 16px 36px #16a085, 20px 36px #1abc9c, 24px 36px #1abc9c;
+      animation: char92-think 2s ease-in-out infinite;
+    }
+    .char92-thinking .char92-bubble { position: absolute; left: 55px; top: 10px; width: 4px; height: 4px; background: transparent; box-shadow: 0 0 #1abc9c, 4px 0 #1abc9c, -4px 4px #1abc9c, 0 4px #1abc9c, 4px 4px #1abc9c, 8px 4px #1abc9c, 0 8px #1abc9c, 4px 8px #1abc9c; animation: char92-bubble 2s ease-in-out infinite; }
+    @keyframes char92-think { 0%, 100% { transform: translateY(0); } 50% { transform: translateY(-4px); } }
+    @keyframes char92-bubble { 0%, 100% { opacity: 0.4; } 50% { opacity: 0.9; } }
+
+    .char92-sleeping .char92-body {
+      position: absolute;
+      left: 20px;
+      top: 15px;
+      width: 4px;
+      height: 4px;
+      background: transparent;
+      box-shadow: 
+        12px 0 #c0392b, 16px 0 #c0392b,
+        8px 4px #c0392b, 12px 4px #bdc3c7, 16px 4px #bdc3c7, 20px 4px #c0392b,
+        4px 8px #bdc3c7, 8px 8px #bdc3c7, 12px 8px #7f8c8d, 16px 8px #7f8c8d, 20px 8px #bdc3c7, 24px 8px #bdc3c7,
+        4px 12px #bdc3c7, 8px 12px #bdc3c7, 12px 12px #bdc3c7, 16px 12px #bdc3c7, 20px 12px #bdc3c7, 24px 12px #bdc3c7,
+        0px 16px #2980b9, 4px 16px #2980b9, 8px 16px #2980b9, 12px 16px #2980b9, 16px 16px #2980b9, 20px 16px #2980b9, 24px 16px #2980b9, 28px 16px #2980b9,
+        4px 20px #2980b9, 8px 20px #2980b9, 12px 20px #b7950b, 16px 20px #2980b9, 20px 20px #2980b9, 24px 20px #2980b9,
+        4px 24px #2980b9, 8px 24px #2980b9, 12px 24px #2980b9, 16px 24px #2980b9, 20px 24px #2980b9, 24px 24px #2980b9,
+        8px 28px #148f77, 12px 28px #148f77, 16px 28px #148f77, 20px 28px #148f77,
+        4px 32px #148f77, 8px 32px #117a65, 12px 32px #148f77, 16px 32px #148f77, 20px 32px #117a65, 24px 32px #148f77,
+        4px 36px #148f77, 8px 36px #148f77, 12px 36px #117a65, 16px 36px #117a65, 20px 36px #148f77, 24px 36px #148f77;
+      animation: char92-sleep 2s ease-in-out infinite;
+    }
+    .char92-sleeping .char92-zzz { position: absolute; left: 55px; top: 5px; font-size: 12px; color: #1abc9c; animation: char92-zzz 2s ease-in-out infinite; }
+    @keyframes char92-sleep { 0%, 100% { transform: scale(1); } 50% { transform: scale(0.98); } }
+    @keyframes char92-zzz { 0%, 100% { opacity: 0; } 50% { opacity: 0.8; } }
+
+    .char92-listening .char92-body {
+      position: absolute;
+      left: 20px;
+      top: 10px;
+      width: 4px;
+      height: 4px;
+      background: transparent;
+      box-shadow: 
+        12px 0 #e74c3c, 16px 0 #e74c3c,
+        8px 4px #e74c3c, 12px 4px #f5f5f5, 16px 4px #f5f5f5, 20px 4px #e74c3c,
+        4px 8px #f5f5f5, 8px 8px #f5f5f5, 12px 8px #000, 16px 8px #000, 20px 8px #f5f5f5, 24px 8px #f5f5f5,
+        4px 12px #f5f5f5, 8px 12px #f5f5f5, 12px 12px #f5f5f5, 16px 12px #f5f5f5, 20px 12px #f5f5f5, 24px 12px #f5f5f5,
+        0px 16px #3498db, 4px 16px #3498db, 8px 16px #3498db, 12px 16px #3498db, 16px 16px #3498db, 20px 16px #3498db, 24px 16px #3498db, 28px 16px #3498db,
+        4px 20px #3498db, 8px 20px #3498db, 12px 20px #f1c40f, 16px 20px #3498db, 20px 20px #3498db, 24px 20px #3498db,
+        4px 24px #3498db, 8px 24px #3498db, 12px 24px #3498db, 16px 24px #3498db, 20px 24px #3498db, 24px 24px #3498db,
+        8px 28px #1abc9c, 12px 28px #1abc9c, 16px 28px #1abc9c, 20px 28px #1abc9c,
+        4px 32px #1abc9c, 8px 32px #16a085, 12px 32px #1abc9c, 16px 32px #1abc9c, 20px 32px #16a085, 24px 32px #1abc9c,
+        4px 36px #1abc9c, 8px 36px #1abc9c, 12px 36px #16a085, 16px 36px #16a085, 20px 36px #1abc9c, 24px 36px #1abc9c;
+      animation: char92-tilt 1s ease-in-out infinite alternate;
+    }
+    @keyframes char92-tilt { 0% { transform: rotate(-8deg); } 100% { transform: rotate(8deg); } }
+
+    .char92-speaking .char92-body {
+      position: absolute;
+      left: 20px;
+      top: 10px;
+      width: 4px;
+      height: 4px;
+      background: transparent;
+      box-shadow: 
+        12px 0 #e74c3c, 16px 0 #e74c3c,
+        8px 4px #e74c3c, 12px 4px #f5f5f5, 16px 4px #f5f5f5, 20px 4px #e74c3c,
+        4px 8px #f5f5f5, 8px 8px #f5f5f5, 12px 8px #000, 16px 8px #000, 20px 8px #f5f5f5, 24px 8px #f5f5f5,
+        4px 12px #f5f5f5, 8px 12px #f5f5f5, 12px 12px #f5f5f5, 16px 12px #f5f5f5, 20px 12px #f5f5f5, 24px 12px #f5f5f5,
+        0px 16px #3498db, 4px 16px #3498db, 8px 16px #3498db, 12px 16px #3498db, 16px 16px #3498db, 20px 16px #3498db, 24px 16px #3498db, 28px 16px #3498db,
+        4px 20px #3498db, 8px 20px #3498db, 12px 20px #f1c40f, 16px 20px #3498db, 20px 20px #3498db, 24px 20px #3498db,
+        4px 24px #3498db, 8px 24px #3498db, 12px 24px #3498db, 16px 24px #3498db, 20px 24px #3498db, 24px 24px #3498db,
+        8px 28px #1abc9c, 12px 28px #1abc9c, 16px 28px #1abc9c, 20px 28px #1abc9c,
+        4px 32px #1abc9c, 8px 32px #16a085, 12px 32px #1abc9c, 16px 32px #1abc9c, 20px 32px #16a085, 24px 32px #1abc9c,
+        4px 36px #1abc9c, 8px 36px #1abc9c, 12px 36px #16a085, 16px 36px #16a085, 20px 36px #1abc9c, 24px 36px #1abc9c;
+      animation: char92-sing 0.5s ease-in-out infinite;
+    }
+    @keyframes char92-sing { 0%, 100% { transform: translateY(0); } 50% { transform: translateY(-5px); } }
+
+    /* ==================== 角色 #93: 树精 ==================== */
+    .char93-thinking .char93-body {
+      position: absolute;
+      left: 18px;
+      top: 5px;
+      width: 4px;
+      height: 4px;
+      background: transparent;
+      box-shadow: 
+        8px 0 #27ae60, 12px 0 #27ae60, 16px 0 #27ae60, 20px 0 #27ae60,
+        4px 4px #27ae60, 8px 4px #2ecc71, 12px 4px #2ecc71, 16px 4px #2ecc71, 20px 4px #2ecc71, 24px 4px #27ae60,
+        4px 8px #27ae60, 8px 8px #2ecc71, 12px 8px #000, 16px 8px #000, 20px 8px #2ecc71, 24px 8px #27ae60,
+        0px 12px #8e44ad, 4px 12px #8e44ad, 8px 12px #27ae60, 12px 12px #2ecc71, 16px 12px #2ecc71, 20px 12px #27ae60, 24px 12px #8e44ad,
+        0px 16px #27ae60, 4px 16px #27ae60, 8px 16px #27ae60, 12px 16px #2ecc71, 16px 16px #2ecc71, 20px 16px #27ae60, 24px 16px #27ae60,
+        0px 20px #27ae60, 4px 20px #2ecc71, 8px 20px #27ae60, 12px 20px #27ae60, 16px 20px #27ae60, 20px 20px #2ecc71, 24px 20px #27ae60,
+        0px 24px #27ae60, 4px 24px #27ae60, 8px 24px #2ecc71, 12px 24px #27ae60, 16px 24px #27ae60, 20px 24px #2ecc71, 24px 24px #27ae60, 28px 24px #27ae60,
+        4px 28px #27ae60, 8px 28px #27ae60, 12px 28px #2ecc71, 16px 28px #2ecc71, 20px 28px #27ae60, 24px 28px #27ae60,
+        4px 32px #795548, 8px 32px #795548, 12px 32px #795548, 16px 32px #795548, 20px 32px #795548, 24px 32px #795548,
+        8px 36px #795548, 12px 36px #795548, 16px 36px #795548, 20px 36px #795548,
+        8px 40px #5d4037, 12px 40px #5d4037, 16px 40px #5d4037, 20px 40px #5d4037;
+      animation: char93-think 2.5s ease-in-out infinite;
+    }
+    .char93-thinking .char93-bubble { position: absolute; left: 55px; top: 5px; width: 4px; height: 4px; background: transparent; box-shadow: 0 0 #27ae60, 4px 0 #27ae60, -4px 4px #27ae60, 0 4px #27ae60, 4px 4px #27ae60, 8px 4px #27ae60, 0 8px #27ae60, 4px 8px #27ae60; animation: char93-bubble 2s ease-in-out infinite; }
+    @keyframes char93-think { 0%, 100% { transform: translateY(0); } 50% { transform: translateY(-3px); } }
+    @keyframes char93-bubble { 0%, 100% { opacity: 0.4; } 50% { opacity: 0.9; } }
+
+    .char93-sleeping .char93-body {
+      position: absolute;
+      left: 18px;
+      top: 10px;
+      width: 4px;
+      height: 4px;
+      background: transparent;
+      box-shadow: 
+        8px 0 #1e8449, 12px 0 #1e8449, 16px 0 #1e8449, 20px 0 #1e8449,
+        4px 4px #1e8449, 8px 4px #27ae60, 12px 4px #27ae60, 16px 4px #27ae60, 20px 4px #27ae60, 24px 4px #1e8449,
+        4px 8px #1e8449, 8px 8px #27ae60, 12px 8px #7f8c8d, 16px 8px #7f8c8d, 20px 8px #27ae60, 24px 8px #1e8449,
+        0px 12px #7d3c98, 4px 12px #7d3c98, 8px 12px #1e8449, 12px 12px #27ae60, 16px 12px #27ae60, 20px 12px #1e8449, 24px 12px #7d3c98,
+        0px 16px #1e8449, 4px 16px #1e8449, 8px 16px #1e8449, 12px 16px #27ae60, 16px 16px #27ae60, 20px 16px #1e8449, 24px 16px #1e8449,
+        0px 20px #1e8449, 4px 20px #27ae60, 8px 20px #1e8449, 12px 20px #1e8449, 16px 20px #1e8449, 20px 20px #27ae60, 24px 20px #1e8449,
+        0px 24px #1e8449, 4px 24px #1e8449, 8px 24px #27ae60, 12px 24px #1e8449, 16px 24px #1e8449, 20px 24px #27ae60, 24px 24px #1e8449, 28px 24px #1e8449,
+        4px 28px #1e8449, 8px 28px #1e8449, 12px 28px #27ae60, 16px 28px #27ae60, 20px 28px #1e8449, 24px 28px #1e8449,
+        4px 32px #5d4037, 8px 32px #5d4037, 12px 32px #5d4037, 16px 32px #5d4037, 20px 32px #5d4037, 24px 32px #5d4037,
+        8px 36px #5d4037, 12px 36px #5d4037, 16px 36px #5d4037, 20px 36px #5d4037,
+        8px 40px #4e342e, 12px 40px #4e342e, 16px 40px #4e342e, 20px 40px #4e342e;
+      animation: char93-sleep 3s ease-in-out infinite;
+    }
+    .char93-sleeping .char93-zzz { position: absolute; left: 55px; top: 5px; font-size: 12px; color: #27ae60; animation: char93-zzz 2s ease-in-out infinite; }
+    @keyframes char93-sleep { 0%, 100% { transform: scale(1); } 50% { transform: scale(0.98); } }
+    @keyframes char93-zzz { 0%, 100% { opacity: 0; } 50% { opacity: 0.8; } }
+
+    .char93-listening .char93-body {
+      position: absolute;
+      left: 18px;
+      top: 5px;
+      width: 4px;
+      height: 4px;
+      background: transparent;
+      box-shadow: 
+        8px 0 #27ae60, 12px 0 #27ae60, 16px 0 #27ae60, 20px 0 #27ae60,
+        4px 4px #27ae60, 8px 4px #2ecc71, 12px 4px #2ecc71, 16px 4px #2ecc71, 20px 4px #2ecc71, 24px 4px #27ae60,
+        4px 8px #27ae60, 8px 8px #2ecc71, 12px 8px #000, 16px 8px #000, 20px 8px #2ecc71, 24px 8px #27ae60,
+        0px 12px #8e44ad, 4px 12px #8e44ad, 8px 12px #27ae60, 12px 12px #2ecc71, 16px 12px #2ecc71, 20px 12px #27ae60, 24px 12px #8e44ad,
+        0px 16px #27ae60, 4px 16px #27ae60, 8px 16px #27ae60, 12px 16px #2ecc71, 16px 16px #2ecc71, 20px 16px #27ae60, 24px 16px #27ae60,
+        0px 20px #27ae60, 4px 20px #2ecc71, 8px 20px #27ae60, 12px 20px #27ae60, 16px 20px #27ae60, 20px 20px #2ecc71, 24px 20px #27ae60,
+        0px 24px #27ae60, 4px 24px #27ae60, 8px 24px #2ecc71, 12px 24px #27ae60, 16px 24px #27ae60, 20px 24px #2ecc71, 24px 24px #27ae60, 28px 24px #27ae60,
+        4px 28px #27ae60, 8px 28px #27ae60, 12px 28px #2ecc71, 16px 28px #2ecc71, 20px 28px #27ae60, 24px 28px #27ae60,
+        4px 32px #795548, 8px 32px #795548, 12px 32px #795548, 16px 32px #795548, 20px 32px #795548, 24px 32px #795548,
+        8px 36px #795548, 12px 36px #795548, 16px 36px #795548, 20px 36px #795548,
+        8px 40px #5d4037, 12px 40px #5d4037, 16px 40px #5d4037, 20px 40px #5d4037;
+      animation: char93-tilt 1.5s ease-in-out infinite alternate;
+    }
+    @keyframes char93-tilt { 0% { transform: rotate(-5deg); } 100% { transform: rotate(5deg); } }
+
+    .char93-speaking .char93-body {
+      position: absolute;
+      left: 18px;
+      top: 5px;
+      width: 4px;
+      height: 4px;
+      background: transparent;
+      box-shadow: 
+        8px 0 #27ae60, 12px 0 #27ae60, 16px 0 #27ae60, 20px 0 #27ae60,
+        4px 4px #27ae60, 8px 4px #2ecc71, 12px 4px #2ecc71, 16px 4px #2ecc71, 20px 4px #2ecc71, 24px 4px #27ae60,
+        4px 8px #27ae60, 8px 8px #2ecc71, 12px 8px #000, 16px 8px #000, 20px 8px #2ecc71, 24px 8px #27ae60,
+        0px 12px #8e44ad, 4px 12px #8e44ad, 8px 12px #27ae60, 12px 12px #2ecc71, 16px 12px #2ecc71, 20px 12px #27ae60, 24px 12px #8e44ad,
+        0px 16px #27ae60, 4px 16px #27ae60, 8px 16px #27ae60, 12px 16px #2ecc71, 16px 16px #2ecc71, 20px 16px #27ae60, 24px 16px #27ae60,
+        0px 20px #27ae60, 4px 20px #2ecc71, 8px 20px #27ae60, 12px 20px #27ae60, 16px 20px #27ae60, 20px 20px #2ecc71, 24px 20px #27ae60,
+        0px 24px #27ae60, 4px 24px #27ae60, 8px 24px #2ecc71, 12px 24px #27ae60, 16px 24px #27ae60, 20px 24px #2ecc71, 24px 24px #27ae60, 28px 24px #27ae60,
+        4px 28px #27ae60, 8px 28px #27ae60, 12px 28px #2ecc71, 16px 28px #2ecc71, 20px 28px #27ae60, 24px 28px #27ae60,
+        4px 32px #795548, 8px 32px #795548, 12px 32px #795548, 16px 32px #795548, 20px 32px #795548, 24px 32px #795548,
+        8px 36px #795548, 12px 36px #795548, 16px 36px #795548, 20px 36px #795548,
+        8px 40px #5d4037, 12px 40px #5d4037, 16px 40px #5d4037, 20px 40px #5d4037;
+      animation: char93-rustle 0.4s ease-in-out infinite;
+    }
+    @keyframes char93-rustle { 0%, 100% { transform: translateX(0); } 25% { transform: translateX(-2px); } 75% { transform: translateX(2px); } }
+
+    /* ==================== 角色 #94: 石巨人 ==================== */
+    .char94-thinking .char94-body {
+      position: absolute;
+      left: 18px;
+      top: 10px;
+      width: 4px;
+      height: 4px;
+      background: transparent;
+      box-shadow: 
+        8px 0 #7f8c8d, 12px 0 #7f8c8d, 16px 0 #7f8c8d, 20px 0 #7f8c8d,
+        4px 4px #7f8c8d, 8px 4px #95a5a6, 12px 4px #95a5a6, 16px 4px #95a5a6, 20px 4px #95a5a6, 24px 4px #7f8c8d,
+        4px 8px #7f8c8d, 8px 8px #000, 12px 8px #000, 16px 8px #000, 20px 8px #000, 24px 8px #7f8c8d,
+        0px 12px #7f8c8d, 4px 12px #95a5a6, 8px 12px #95a5a6, 12px 12px #95a5a6, 16px 12px #95a5a6, 20px 12px #95a5a6, 24px 12px #95a5a6, 28px 12px #7f8c8d,
+        0px 16px #7f8c8d, 4px 16px #95a5a6, 8px 16px #95a5a6, 12px 16px #95a5a6, 16px 16px #95a5a6, 20px 16px #95a5a6, 24px 16px #95a5a6, 28px 16px #7f8c8d,
+        0px 20px #7f8c8d, 4px 20px #7f8c8d, 8px 20px #7f8c8d, 12px 20px #f39c12, 16px 20px #f39c12, 20px 20px #7f8c8d, 24px 20px #7f8c8d, 28px 20px #7f8c8d,
+        0px 24px #7f8c8d, 4px 24px #95a5a6, 8px 24px #95a5a6, 12px 24px #95a5a6, 16px 24px #95a5a6, 20px 24px #95a5a6, 24px 24px #95a5a6, 28px 24px #7f8c8d,
+        0px 28px #7f8c8d, 4px 28px #7f8c8d, 8px 28px #95a5a6, 12px 28px #95a5a6, 16px 28px #95a5a6, 20px 28px #95a5a6, 24px 28px #7f8c8d, 28px 28px #7f8c8d,
+        4px 32px #7f8c8d, 8px 32px #7f8c8d, 12px 32px #7f8c8d, 16px 32px #7f8c8d, 20px 32px #7f8c8d, 24px 32px #7f8c8d,
+        4px 36px #7f8c8d, 8px 36px #7f8c8d, 20px 36px #7f8c8d, 24px 36px #7f8c8d;
+      animation: char94-think 3s ease-in-out infinite;
+    }
+    .char94-thinking .char94-bubble { position: absolute; left: 55px; top: 5px; width: 4px; height: 4px; background: transparent; box-shadow: 0 0 #7f8c8d, 4px 0 #7f8c8d, -4px 4px #7f8c8d, 0 4px #7f8c8d, 4px 4px #7f8c8d, 8px 4px #7f8c8d, 0 8px #7f8c8d, 4px 8px #7f8c8d; animation: char94-bubble 2s ease-in-out infinite; }
+    @keyframes char94-think { 0%, 100% { transform: translateY(0); } 50% { transform: translateY(-2px); } }
+    @keyframes char94-bubble { 0%, 100% { opacity: 0.4; } 50% { opacity: 0.9; } }
+
+    .char94-sleeping .char94-body {
+      position: absolute;
+      left: 18px;
+      top: 15px;
+      width: 4px;
+      height: 4px;
+      background: transparent;
+      box-shadow: 
+        8px 0 #5f6a6a, 12px 0 #5f6a6a, 16px 0 #5f6a6a, 20px 0 #5f6a6a,
+        4px 4px #5f6a6a, 8px 4px #7f8c8d, 12px 4px #7f8c8d, 16px 4px #7f8c8d, 20px 4px #7f8c8d, 24px 4px #5f6a6a,
+        4px 8px #5f6a6a, 8px 8px #7f8c8d, 12px 8px #7f8c8d, 16px 8px #7f8c8d, 20px 8px #7f8c8d, 24px 8px #5f6a6a,
+        0px 12px #5f6a6a, 4px 12px #7f8c8d, 8px 12px #7f8c8d, 12px 12px #7f8c8d, 16px 12px #7f8c8d, 20px 12px #7f8c8d, 24px 12px #7f8c8d, 28px 12px #5f6a6a,
+        0px 16px #5f6a6a, 4px 16px #7f8c8d, 8px 16px #7f8c8d, 12px 16px #7f8c8d, 16px 16px #7f8c8d, 20px 16px #7f8c8d, 24px 16px #7f8c8d, 28px 16px #5f6a6a,
+        0px 20px #5f6a6a, 4px 20px #5f6a6a, 8px 20px #5f6a6a, 12px 20px #b7950b, 16px 20px #b7950b, 20px 20px #5f6a6a, 24px 20px #5f6a6a, 28px 20px #5f6a6a,
+        0px 24px #5f6a6a, 4px 24px #7f8c8d, 8px 24px #7f8c8d, 12px 24px #7f8c8d, 16px 24px #7f8c8d, 20px 24px #7f8c8d, 24px 24px #7f8c8d, 28px 24px #5f6a6a,
+        0px 28px #5f6a6a, 4px 28px #5f6a6a, 8px 28px #7f8c8d, 12px 28px #7f8c8d, 16px 28px #7f8c8d, 20px 28px #7f8c8d, 24px 28px #5f6a6a, 28px 28px #5f6a6a,
+        4px 32px #5f6a6a, 8px 32px #5f6a6a, 12px 32px #5f6a6a, 16px 32px #5f6a6a, 20px 32px #5f6a6a, 24px 32px #5f6a6a,
+        4px 36px #5f6a6a, 8px 36px #5f6a6a, 20px 36px #5f6a6a, 24px 36px #5f6a6a;
+      animation: char94-sleep 4s ease-in-out infinite;
+    }
+    .char94-sleeping .char94-zzz { position: absolute; left: 55px; top: 5px; font-size: 12px; color: #7f8c8d; animation: char94-zzz 2s ease-in-out infinite; }
+    @keyframes char94-sleep { 0%, 100% { transform: scale(1); } 50% { transform: scale(0.98); } }
+    @keyframes char94-zzz { 0%, 100% { opacity: 0; } 50% { opacity: 0.8; } }
+
+    .char94-listening .char94-body {
+      position: absolute;
+      left: 18px;
+      top: 10px;
+      width: 4px;
+      height: 4px;
+      background: transparent;
+      box-shadow: 
+        8px 0 #7f8c8d, 12px 0 #7f8c8d, 16px 0 #7f8c8d, 20px 0 #7f8c8d,
+        4px 4px #7f8c8d, 8px 4px #95a5a6, 12px 4px #95a5a6, 16px 4px #95a5a6, 20px 4px #95a5a6, 24px 4px #7f8c8d,
+        4px 8px #7f8c8d, 8px 8px #000, 12px 8px #000, 16px 8px #000, 20px 8px #000, 24px 8px #7f8c8d,
+        0px 12px #7f8c8d, 4px 12px #95a5a6, 8px 12px #95a5a6, 12px 12px #95a5a6, 16px 12px #95a5a6, 20px 12px #95a5a6, 24px 12px #95a5a6, 28px 12px #7f8c8d,
+        0px 16px #7f8c8d, 4px 16px #95a5a6, 8px 16px #95a5a6, 12px 16px #95a5a6, 16px 16px #95a5a6, 20px 16px #95a5a6, 24px 16px #95a5a6, 28px 16px #7f8c8d,
+        0px 20px #7f8c8d, 4px 20px #7f8c8d, 8px 20px #7f8c8d, 12px 20px #f39c12, 16px 20px #f39c12, 20px 20px #7f8c8d, 24px 20px #7f8c8d, 28px 20px #7f8c8d,
+        0px 24px #7f8c8d, 4px 24px #95a5a6, 8px 24px #95a5a6, 12px 24px #95a5a6, 16px 24px #95a5a6, 20px 24px #95a5a6, 24px 24px #95a5a6, 28px 24px #7f8c8d,
+        0px 28px #7f8c8d, 4px 28px #7f8c8d, 8px 28px #95a5a6, 12px 28px #95a5a6, 16px 28px #95a5a6, 20px 28px #95a5a6, 24px 28px #7f8c8d, 28px 28px #7f8c8d,
+        4px 32px #7f8c8d, 8px 32px #7f8c8d, 12px 32px #7f8c8d, 16px 32px #7f8c8d, 20px 32px #7f8c8d, 24px 32px #7f8c8d,
+        4px 36px #7f8c8d, 8px 36px #7f8c8d, 20px 36px #7f8c8d, 24px 36px #7f8c8d;
+      animation: char94-tilt 2s ease-in-out infinite alternate;
+    }
+    @keyframes char94-tilt { 0% { transform: rotate(-3deg); } 100% { transform: rotate(3deg); } }
+
+    .char94-speaking .char94-body {
+      position: absolute;
+      left: 18px;
+      top: 10px;
+      width: 4px;
+      height: 4px;
+      background: transparent;
+      box-shadow: 
+        8px 0 #7f8c8d, 12px 0 #7f8c8d, 16px 0 #7f8c8d, 20px 0 #7f8c8d,
+        4px 4px #7f8c8d, 8px 4px #95a5a6, 12px 4px #95a5a6, 16px 4px #95a5a6, 20px 4px #95a5a6, 24px 4px #7f8c8d,
+        4px 8px #7f8c8d, 8px 8px #000, 12px 8px #000, 16px 8px #000, 20px 8px #000, 24px 8px #7f8c8d,
+        0px 12px #7f8c8d, 4px 12px #95a5a6, 8px 12px #95a5a6, 12px 12px #95a5a6, 16px 12px #95a5a6, 20px 12px #95a5a6, 24px 12px #95a5a6, 28px 12px #7f8c8d,
+        0px 16px #7f8c8d, 4px 16px #95a5a6, 8px 16px #95a5a6, 12px 16px #95a5a6, 16px 16px #95a5a6, 20px 16px #95a5a6, 24px 16px #95a5a6, 28px 16px #7f8c8d,
+        0px 20px #7f8c8d, 4px 20px #7f8c8d, 8px 20px #7f8c8d, 12px 20px #f39c12, 16px 20px #f39c12, 20px 20px #7f8c8d, 24px 20px #7f8c8d, 28px 20px #7f8c8d,
+        0px 24px #7f8c8d, 4px 24px #95a5a6, 8px 24px #95a5a6, 12px 24px #95a5a6, 16px 24px #95a5a6, 20px 24px #95a5a6, 24px 24px #95a5a6, 28px 24px #7f8c8d,
+        0px 28px #7f8c8d, 4px 28px #7f8c8d, 8px 28px #95a5a6, 12px 28px #95a5a6, 16px 28px #95a5a6, 20px 28px #95a5a6, 24px 28px #7f8c8d, 28px 28px #7f8c8d,
+        4px 32px #7f8c8d, 8px 32px #7f8c8d, 12px 32px #7f8c8d, 16px 32px #7f8c8d, 20px 32px #7f8c8d, 24px 32px #7f8c8d,
+        4px 36px #7f8c8d, 8px 36px #7f8c8d, 20px 36px #7f8c8d, 24px 36px #7f8c8d;
+      animation: char94-rumble 0.6s ease-in-out infinite;
+    }
+    @keyframes char94-rumble { 0%, 100% { transform: translateY(0); } 50% { transform: translateY(-2px); } }
+
+    /* ==================== 角色 #95: 蝙蝠 ==================== */
+    .char95-thinking .char95-body {
+      position: absolute;
+      left: 20px;
+      top: 20px;
+      width: 4px;
+      height: 4px;
+      background: transparent;
+      box-shadow: 
+        0px 0 #2c3e50, 4px 0 #2c3e50, 20px 0 #2c3e50, 24px 0 #2c3e50,
+        0px 4px #2c3e50, 4px 4px #8e44ad, 8px 4px #8e44ad, 16px 4px #8e44ad, 20px 4px #8e44ad, 24px 4px #2c3e50,
+        4px 8px #2c3e50, 8px 8px #2c3e50, 12px 8px #2c3e50, 16px 8px #2c3e50, 20px 8px #2c3e50,
+        8px 12px #2c3e50, 12px 12px #e74c3c, 16px 12px #2c3e50,
+        8px 16px #2c3e50, 12px 16px #2c3e50, 16px 16px #2c3e50,
+        4px 20px #2c3e50, 8px 20px #2c3e50, 12px 20px #2c3e50, 16px 20px #2c3e50, 20px 20px #2c3e50;
+      animation: char95-think 1.5s ease-in-out infinite;
+    }
+    .char95-thinking .char95-bubble { position: absolute; left: 50px; top: 10px; width: 4px; height: 4px; background: transparent; box-shadow: 0 0 #8e44ad, 4px 0 #8e44ad, -4px 4px #8e44ad, 0 4px #8e44ad, 4px 4px #8e44ad, 8px 4px #8e44ad, 0 8px #8e44ad, 4px 8px #8e44ad; animation: char95-bubble 2s ease-in-out infinite; }
+    @keyframes char95-think { 0%, 100% { transform: translateY(0); } 50% { transform: translateY(-6px); } }
+    @keyframes char95-bubble { 0%, 100% { opacity: 0.4; } 50% { opacity: 0.9; } }
+
+    .char95-sleeping .char95-body {
+      position: absolute;
+      left: 20px;
+      top: 25px;
+      width: 4px;
+      height: 4px;
+      background: transparent;
+      box-shadow: 
+        0px 0 #1a252f, 4px 0 #1a252f, 20px 0 #1a252f, 24px 0 #1a252f,
+        0px 4px #1a252f, 4px 4px #7d3c98, 8px 4px #7d3c98, 16px 4px #7d3c98, 20px 4px #7d3c98, 24px 4px #1a252f,
+        4px 8px #1a252f, 8px 8px #1a252f, 12px 8px #1a252f, 16px 8px #1a252f, 20px 8px #1a252f,
+        8px 12px #1a252f, 12px 12px #bdc3c7, 16px 12px #1a252f,
+        8px 16px #1a252f, 12px 16px #1a252f, 16px 16px #1a252f,
+        4px 20px #1a252f, 8px 20px #1a252f, 12px 20px #1a252f, 16px 20px #1a252f, 20px 20px #1a252f;
+      animation: char95-sleep 2s ease-in-out infinite;
+    }
+    .char95-sleeping .char95-zzz { position: absolute; left: 50px; top: 5px; font-size: 12px; color: #8e44ad; animation: char95-zzz 2s ease-in-out infinite; }
+    @keyframes char95-sleep { 0%, 100% { transform: scale(1); } 50% { transform: scale(0.9); } }
+    @keyframes char95-zzz { 0%, 100% { opacity: 0; } 50% { opacity: 0.8; } }
+
+    .char95-listening .char95-body {
+      position: absolute;
+      left: 20px;
+      top: 20px;
+      width: 4px;
+      height: 4px;
+      background: transparent;
+      box-shadow: 
+        0px 0 #2c3e50, 4px 0 #2c3e50, 20px 0 #2c3e50, 24px 0 #2c3e50,
+        0px 4px #2c3e50, 4px 4px #8e44ad, 8px 4px #8e44ad, 16px 4px #8e44ad, 20px 4px #8e44ad, 24px 4px #2c3e50,
+        4px 8px #2c3e50, 8px 8px #2c3e50, 12px 8px #2c3e50, 16px 8px #2c3e50, 20px 8px #2c3e50,
+        8px 12px #2c3e50, 12px 12px #e74c3c, 16px 12px #2c3e50,
+        8px 16px #2c3e50, 12px 16px #2c3e50, 16px 16px #2c3e50,
+        4px 20px #2c3e50, 8px 20px #2c3e50, 12px 20px #2c3e50, 16px 20px #2c3e50, 20px 20px #2c3e50;
+      animation: char95-tilt 1s ease-in-out infinite alternate;
+    }
+    @keyframes char95-tilt { 0% { transform: rotate(-15deg); } 100% { transform: rotate(15deg); } }
+
+    .char95-speaking .char95-body {
+      position: absolute;
+      left: 20px;
+      top: 20px;
+      width: 4px;
+      height: 4px;
+      background: transparent;
+      box-shadow: 
+        0px 0 #2c3e50, 4px 0 #2c3e50, 20px 0 #2c3e50, 24px 0 #2c3e50,
+        0px 4px #2c3e50, 4px 4px #8e44ad, 8px 4px #8e44ad, 16px 4px #8e44ad, 20px 4px #8e44ad, 24px 4px #2c3e50,
+        4px 8px #2c3e50, 8px 8px #2c3e50, 12px 8px #2c3e50, 16px 8px #2c3e50, 20px 8px #2c3e50,
+        8px 12px #2c3e50, 12px 12px #e74c3c, 16px 12px #2c3e50,
+        8px 16px #2c3e50, 12px 16px #2c3e50, 16px 16px #2c3e50,
+        4px 20px #2c3e50, 8px 20px #2c3e50, 12px 20px #2c3e50, 16px 20px #2c3e50, 20px 20px #2c3e50;
+      animation: char95-flap 0.3s ease-in-out infinite;
+    }
+    @keyframes char95-flap { 0%, 100% { transform: translateY(0) scaleY(1); } 50% { transform: translateY(-4px) scaleY(0.9); } }
+
+    /* ==================== 角色 #96: 机器人 ==================== */
+    .char96-thinking .char96-body {
+      position: absolute;
+      left: 20px;
+      top: 10px;
+      width: 4px;
+      height: 4px;
+      background: transparent;
+      box-shadow: 
+        8px 0 #95a5a6, 12px 0 #95a5a6, 16px 0 #95a5a6,
+        4px 4px #95a5a6, 8px 4px #95a5a6, 12px 4px #95a5a6, 16px 4px #95a5a6, 20px 4px #95a5a6,
+        0px 8px #e74c3c, 4px 8px #95a5a6, 8px 8px #2ecc71, 12px 8px #2ecc71, 16px 8px #2ecc71, 20px 8px #95a5a6, 24px 8px #e74c3c,
+        0px 12px #e74c3c, 4px 12px #95a5a6, 8px 12px #2ecc71, 12px 12px #2ecc71, 16px 12px #2ecc71, 20px 12px #95a5a6, 24px 12px #e74c3c,
+        4px 16px #95a5a6, 8px 16px #95a5a6, 12px 16px #95a5a6, 16px 16px #95a5a6, 20px 16px #95a5a6,
+        0px 20px #3498db, 4px 20px #3498db, 8px 20px #95a5a6, 12px 20px #95a5a6, 16px 20px #95a5a6, 20px 20px #3498db, 24px 20px #3498db,
+        0px 24px #3498db, 4px 24px #3498db, 8px 24px #95a5a6, 12px 24px #95a5a6, 16px 24px #95a5a6, 20px 24px #3498db, 24px 24px #3498db,
+        4px 28px #7f8c8d, 8px 28px #7f8c8d, 12px 28px #7f8c8d, 16px 28px #7f8c8d, 20px 28px #7f8c8d,
+        8px 32px #7f8c8d, 12px 32px #7f8c8d, 16px 32px #7f8c8d;
+      animation: char96-think 2s ease-in-out infinite;
+    }
+    .char96-thinking .char96-bubble { position: absolute; left: 55px; top: 5px; width: 4px; height: 4px; background: transparent; box-shadow: 0 0 #2ecc71, 4px 0 #2ecc71, -4px 4px #2ecc71, 0 4px #2ecc71, 4px 4px #2ecc71, 8px 4px #2ecc71, 0 8px #2ecc71, 4px 8px #2ecc71; animation: char96-bubble 2s ease-in-out infinite; }
+    @keyframes char96-think { 0%, 100% { transform: translateY(0); } 50% { transform: translateY(-3px); } }
+    @keyframes char96-bubble { 0%, 100% { opacity: 0.4; } 50% { opacity: 0.9; } }
+
+    .char96-sleeping .char96-body {
+      position: absolute;
+      left: 20px;
+      top: 15px;
+      width: 4px;
+      height: 4px;
+      background: transparent;
+      box-shadow: 
+        8px 0 #7f8c8d, 12px 0 #7f8c8d, 16px 0 #7f8c8d,
+        4px 4px #7f8c8d, 8px 4px #7f8c8d, 12px 4px #7f8c8d, 16px 4px #7f8c8d, 20px 4px #7f8c8d,
+        0px 8px #c0392b, 4px 8px #7f8c8d, 8px 8px #7f8c8d, 12px 8px #7f8c8d, 16px 8px #7f8c8d, 20px 8px #7f8c8d, 24px 8px #c0392b,
+        0px 12px #c0392b, 4px 12px #7f8c8d, 8px 12px #7f8c8d, 12px 12px #7f8c8d, 16px 12px #7f8c8d, 20px 12px #7f8c8d, 24px 12px #c0392b,
+        4px 16px #7f8c8d, 8px 16px #7f8c8d, 12px 16px #7f8c8d, 16px 16px #7f8c8d, 20px 16px #7f8c8d,
+        0px 20px #2980b9, 4px 20px #2980b9, 8px 20px #7f8c8d, 12px 20px #7f8c8d, 16px 20px #7f8c8d, 20px 20px #2980b9, 24px 20px #2980b9,
+        0px 24px #2980b9, 4px 24px #2980b9, 8px 24px #7f8c8d, 12px 24px #7f8c8d, 16px 24px #7f8c8d, 20px 24px #2980b9, 24px 24px #2980b9,
+        4px 28px #5f6a6a, 8px 28px #5f6a6a, 12px 28px #5f6a6a, 16px 28px #5f6a6a, 20px 28px #5f6a6a,
+        8px 32px #5f6a6a, 12px 32px #5f6a6a, 16px 32px #5f6a6a;
+      animation: char96-sleep 2s ease-in-out infinite;
+    }
+    .char96-sleeping .char96-zzz { position: absolute; left: 55px; top: 5px; font-size: 12px; color: #2ecc71; animation: char96-zzz 2s ease-in-out infinite; }
+    @keyframes char96-sleep { 0%, 100% { transform: scale(1); } 50% { transform: scale(0.95); } }
+    @keyframes char96-zzz { 0%, 100% { opacity: 0; } 50% { opacity: 0.8; } }
+
+    .char96-listening .char96-body {
+      position: absolute;
+      left: 20px;
+      top: 10px;
+      width: 4px;
+      height: 4px;
+      background: transparent;
+      box-shadow: 
+        8px 0 #95a5a6, 12px 0 #95a5a6, 16px 0 #95a5a6,
+        4px 4px #95a5a6, 8px 4px #95a5a6, 12px 4px #95a5a6, 16px 4px #95a5a6, 20px 4px #95a5a6,
+        0px 8px #e74c3c, 4px 8px #95a5a6, 8px 8px #f1c40f, 12px 8px #f1c40f, 16px 8px #f1c40f, 20px 8px #95a5a6, 24px 8px #e74c3c,
+        0px 12px #e74c3c, 4px 12px #95a5a6, 8px 12px #f1c40f, 12px 12px #f1c40f, 16px 12px #f1c40f, 20px 12px #95a5a6, 24px 12px #e74c3c,
+        4px 16px #95a5a6, 8px 16px #95a5a6, 12px 16px #95a5a6, 16px 16px #95a5a6, 20px 16px #95a5a6,
+        0px 20px #3498db, 4px 20px #3498db, 8px 20px #95a5a6, 12px 20px #95a5a6, 16px 20px #95a5a6, 20px 20px #3498db, 24px 20px #3498db,
+        0px 24px #3498db, 4px 24px #3498db, 8px 24px #95a5a6, 12px 24px #95a5a6, 16px 24px #95a5a6, 20px 24px #3498db, 24px 24px #3498db,
+        4px 28px #7f8c8d, 8px 28px #7f8c8d, 12px 28px #7f8c8d, 16px 28px #7f8c8d, 20px 28px #7f8c8d,
+        8px 32px #7f8c8d, 12px 32px #7f8c8d, 16px 32px #7f8c8d;
+      animation: char96-tilt 1s ease-in-out infinite alternate;
+    }
+    @keyframes char96-tilt { 0% { transform: rotate(-8deg); } 100% { transform: rotate(8deg); } }
+
+    .char96-speaking .char96-body {
+      position: absolute;
+      left: 20px;
+      top: 10px;
+      width: 4px;
+      height: 4px;
+      background: transparent;
+      box-shadow: 
+        8px 0 #95a5a6, 12px 0 #95a5a6, 16px 0 #95a5a6,
+        4px 4px #95a5a6, 8px 4px #95a5a6, 12px 4px #95a5a6, 16px 4px #95a5a6, 20px 4px #95a5a6,
+        0px 8px #e74c3c, 4px 8px #95a5a6, 8px 8px #e74c3c, 12px 8px #e74c3c, 16px 8px #e74c3c, 20px 8px #95a5a6, 24px 8px #e74c3c,
+        0px 12px #e74c3c, 4px 12px #95a5a6, 8px 12px #e74c3c, 12px 12px #e74c3c, 16px 12px #e74c3c, 20px 12px #95a5a6, 24px 12px #e74c3c,
+        4px 16px #95a5a6, 8px 16px #95a5a6, 12px 16px #95a5a6, 16px 16px #95a5a6, 20px 16px #95a5a6,
+        0px 20px #3498db, 4px 20px #3498db, 8px 20px #95a5a6, 12px 20px #95a5a6, 16px 20px #95a5a6, 20px 20px #3498db, 24px 20px #3498db,
+        0px 24px #3498db, 4px 24px #3498db, 8px 24px #95a5a6, 12px 24px #95a5a6, 16px 24px #95a5a6, 20px 24px #3498db, 24px 24px #3498db,
+        4px 28px #7f8c8d, 8px 28px #7f8c8d, 12px 28px #7f8c8d, 16px 28px #7f8c8d, 20px 28px #7f8c8d,
+        8px 32px #7f8c8d, 12px 32px #7f8c8d, 16px 32px #7f8c8d;
+      animation: char96-beep 0.4s ease-in-out infinite;
+    }
+    @keyframes char96-beep { 0%, 100% { transform: translateY(0); filter: brightness(1); } 50% { transform: translateY(-4px); filter: brightness(1.3); } }
+
+    /* ==================== 角色 #97: 忍者 ==================== */
+    .char97-thinking .char97-body {
+      position: absolute;
+      left: 20px;
+      top: 10px;
+      width: 4px;
+      height: 4px;
+      background: transparent;
+      box-shadow: 
+        8px 0 #2c3e50, 12px 0 #2c3e50, 16px 0 #2c3e50,
+        4px 4px #e74c3c, 8px 4px #2c3e50, 12px 4px #2c3e50, 16px 4px #2c3e50, 20px 4px #e74c3c,
+        0px 8px #2c3e50, 4px 8px #2c3e50, 8px 8px #fff, 12px 8px #fff, 16px 8px #2c3e50, 20px 8px #2c3e50, 24px 8px #2c3e50,
+        0px 12px #2c3e50, 4px 12px #2c3e50, 8px 12px #2c3e50, 12px 12px #2c3e50, 16px 12px #2c3e50, 20px 12px #2c3e50, 24px 12px #2c3e50,
+        0px 16px #2c3e50, 4px 16px #2c3e50, 8px 16px #2c3e50, 12px 16px #2c3e50, 16px 16px #2c3e50, 20px 16px #2c3e50, 24px 16px #2c3e50,
+        4px 20px #2c3e50, 8px 20px #e74c3c, 12px 20px #e74c3c, 16px 20px #e74c3c, 20px 20px #2c3e50,
+        4px 24px #2c3e50, 8px 24px #2c3e50, 12px 24px #2c3e50, 16px 24px #2c3e50, 20px 24px #2c3e50,
+        8px 28px #2c3e50, 12px 28px #2c3e50, 16px 28px #2c3e50,
+        4px 32px #2c3e50, 8px 32px #2c3e50, 16px 32px #2c3e50, 20px 32px #2c3e50;
+      animation: char97-think 1.5s ease-in-out infinite;
+    }
+    .char97-thinking .char97-bubble { position: absolute; left: 55px; top: 5px; width: 4px; height: 4px; background: transparent; box-shadow: 0 0 #e74c3c, 4px 0 #e74c3c, -4px 4px #e74c3c, 0 4px #e74c3c, 4px 4px #e74c3c, 8px 4px #e74c3c, 0 8px #e74c3c, 4px 8px #e74c3c; animation: char97-bubble 2s ease-in-out infinite; }
+    @keyframes char97-think { 0%, 100% { transform: translateY(0); } 50% { transform: translateY(-4px); } }
+    @keyframes char97-bubble { 0%, 100% { opacity: 0.4; } 50% { opacity: 0.9; } }
+
+    .char97-sleeping .char97-body {
+      position: absolute;
+      left: 20px;
+      top: 15px;
+      width: 4px;
+      height: 4px;
+      background: transparent;
+      box-shadow: 
+        8px 0 #1a252f, 12px 0 #1a252f, 16px 0 #1a252f,
+        4px 4px #c0392b, 8px 4px #1a252f, 12px 4px #1a252f, 16px 4px #1a252f, 20px 4px #c0392b,
+        0px 8px #1a252f, 4px 8px #1a252f, 8px 8px #bdc3c7, 12px 8px #bdc3c7, 16px 8px #1a252f, 20px 8px #1a252f, 24px 8px #1a252f,
+        0px 12px #1a252f, 4px 12px #1a252f, 8px 12px #1a252f, 12px 12px #1a252f, 16px 12px #1a252f, 20px 12px #1a252f, 24px 12px #1a252f,
+        0px 16px #1a252f, 4px 16px #1a252f, 8px 16px #1a252f, 12px 16px #1a252f, 16px 16px #1a252f, 20px 16px #1a252f, 24px 16px #1a252f,
+        4px 20px #1a252f, 8px 20px #c0392b, 12px 20px #c0392b, 16px 20px #c0392b, 20px 20px #1a252f,
+        4px 24px #1a252f, 8px 24px #1a252f, 12px 24px #1a252f, 16px 24px #1a252f, 20px 24px #1a252f,
+        8px 28px #1a252f, 12px 28px #1a252f, 16px 28px #1a252f,
+        4px 32px #1a252f, 8px 32px #1a252f, 16px 32px #1a252f, 20px 32px #1a252f;
+      animation: char97-sleep 2s ease-in-out infinite;
+    }
+    .char97-sleeping .char97-zzz { position: absolute; left: 55px; top: 5px; font-size: 12px; color: #e74c3c; animation: char97-zzz 2s ease-in-out infinite; }
+    @keyframes char97-sleep { 0%, 100% { transform: scale(1); } 50% { transform: scale(0.95); } }
+    @keyframes char97-zzz { 0%, 100% { opacity: 0; } 50% { opacity: 0.8; } }
+
+    .char97-listening .char97-body {
+      position: absolute;
+      left: 20px;
+      top: 10px;
+      width: 4px;
+      height: 4px;
+      background: transparent;
+      box-shadow: 
+        8px 0 #2c3e50, 12px 0 #2c3e50, 16px 0 #2c3e50,
+        4px 4px #e74c3c, 8px 4px #2c3e50, 12px 4px #2c3e50, 16px 4px #2c3e50, 20px 4px #e74c3c,
+        0px 8px #2c3e50, 4px 8px #2c3e50, 8px 8px #fff, 12px 8px #fff, 16px 8px #2c3e50, 20px 8px #2c3e50, 24px 8px #2c3e50,
+        0px 12px #2c3e50, 4px 12px #2c3e50, 8px 12px #2c3e50, 12px 12px #2c3e50, 16px 12px #2c3e50, 20px 12px #2c3e50, 24px 12px #2c3e50,
+        0px 16px #2c3e50, 4px 16px #2c3e50, 8px 16px #2c3e50, 12px 16px #2c3e50, 16px 16px #2c3e50, 20px 16px #2c3e50, 24px 16px #2c3e50,
+        4px 20px #2c3e50, 8px 20px #e74c3c, 12px 20px #e74c3c, 16px 20px #e74c3c, 20px 20px #2c3e50,
+        4px 24px #2c3e50, 8px 24px #2c3e50, 12px 24px #2c3e50, 16px 24px #2c3e50, 20px 24px #2c3e50,
+        8px 28px #2c3e50, 12px 28px #2c3e50, 16px 28px #2c3e50,
+        4px 32px #2c3e50, 8px 32px #2c3e50, 16px 32px #2c3e50, 20px 32px #2c3e50;
+      animation: char97-tilt 1s ease-in-out infinite alternate;
+    }
+    @keyframes char97-tilt { 0% { transform: rotate(-10deg); } 100% { transform: rotate(10deg); } }
+
+    .char97-speaking .char97-body {
+      position: absolute;
+      left: 20px;
+      top: 10px;
+      width: 4px;
+      height: 4px;
+      background: transparent;
+      box-shadow: 
+        8px 0 #2c3e50, 12px 0 #2c3e50, 16px 0 #2c3e50,
+        4px 4px #e74c3c, 8px 4px #2c3e50, 12px 4px #2c3e50, 16px 4px #2c3e50, 20px 4px #e74c3c,
+        0px 8px #2c3e50, 4px 8px #2c3e50, 8px 8px #e74c3c, 12px 8px #e74c3c, 16px 8px #2c3e50, 20px 8px #2c3e50, 24px 8px #2c3e50,
+        0px 12px #2c3e50, 4px 12px #2c3e50, 8px 12px #2c3e50, 12px 12px #2c3e50, 16px 12px #2c3e50, 20px 12px #2c3e50, 24px 12px #2c3e50,
+        0px 16px #2c3e50, 4px 16px #2c3e50, 8px 16px #2c3e50, 12px 16px #2c3e50, 16px 16px #2c3e50, 20px 16px #2c3e50, 24px 16px #2c3e50,
+        4px 20px #2c3e50, 8px 20px #e74c3c, 12px 20px #e74c3c, 16px 20px #e74c3c, 20px 20px #2c3e50,
+        4px 24px #2c3e50, 8px 24px #2c3e50, 12px 24px #2c3e50, 16px 24px #2c3e50, 20px 24px #2c3e50,
+        8px 28px #2c3e50, 12px 28px #2c3e50, 16px 28px #2c3e50,
+        4px 32px #2c3e50, 8px 32px #2c3e50, 16px 32px #2c3e50, 20px 32px #2c3e50;
+      animation: char97-strike 0.4s ease-in-out infinite;
+    }
+    @keyframes char97-strike { 0%, 100% { transform: translateY(0); } 50% { transform: translateY(-5px); } }
+
+    /* ==================== 角色 #98: 骑士 ==================== */
+    .char98-thinking .char98-body {
+      position: absolute;
+      left: 20px;
+      top: 5px;
+      width: 4px;
+      height: 4px;
+      background: transparent;
+      box-shadow: 
+        8px 0 #95a5a6, 12px 0 #95a5a6, 16px 0 #95a5a6,
+        4px 4px #95a5a6, 8px 4px #95a5a6, 12px 4px #f1c40f, 16px 4px #95a5a6, 20px 4px #95a5a6,
+        0px 8px #95a5a6, 4px 8px #95a5a6, 8px 8px #95a5a6, 12px 8px #95a5a6, 16px 8px #95a5a6, 20px 8px #95a5a6, 24px 8px #95a5a6,
+        0px 12px #95a5a6, 4px 12px #000, 8px 12px #95a5a6, 12px 12px #95a5a6, 16px 12px #95a5a6, 20px 12px #000, 24px 12px #95a5a6,
+        0px 16px #95a5a6, 4px 16px #95a5a6, 8px 16px #95a5a6, 12px 16px #95a5a6, 16px 16px #95a5a6, 20px 16px #95a5a6, 24px 16px #95a5a6,
+        0px 20px #3498db, 4px 20px #3498db, 8px 20px #3498db, 12px 20px #f1c40f, 16px 20px #3498db, 20px 20px #3498db, 24px 20px #3498db,
+        0px 24px #3498db, 4px 24px #3498db, 8px 24px #3498db, 12px 24px #3498db, 16px 24px #3498db, 20px 24px #3498db, 24px 24px #3498db,
+        0px 28px #95a5a6, 4px 28px #95a5a6, 8px 28px #95a5a6, 12px 28px #95a5a6, 16px 28px #95a5a6, 20px 28px #95a5a6, 24px 28px #95a5a6,
+        0px 32px #95a5a6, 4px 32px #7f8c8d, 8px 32px #7f8c8d, 12px 32px #7f8c8d, 16px 32px #7f8c8d, 20px 32px #7f8c8d, 24px 32px #95a5a6,
+        4px 36px #7f8c8d, 8px 36px #7f8c8d, 16px 36px #7f8c8d, 20px 36px #7f8c8d,
+        8px 40px #7f8c8d, 12px 40px #7f8c8d, 16px 40px #7f8c8d;
+      animation: char98-think 2s ease-in-out infinite;
+    }
+    .char98-thinking .char98-bubble { position: absolute; left: 55px; top: 5px; width: 4px; height: 4px; background: transparent; box-shadow: 0 0 #f1c40f, 4px 0 #f1c40f, -4px 4px #f1c40f, 0 4px #f1c40f, 4px 4px #f1c40f, 8px 4px #f1c40f, 0 8px #f1c40f, 4px 8px #f1c40f; animation: char98-bubble 2s ease-in-out infinite; }
+    @keyframes char98-think { 0%, 100% { transform: translateY(0); } 50% { transform: translateY(-3px); } }
+    @keyframes char98-bubble { 0%, 100% { opacity: 0.4; } 50% { opacity: 0.9; } }
+
+    .char98-sleeping .char98-body {
+      position: absolute;
+      left: 20px;
+      top: 10px;
+      width: 4px;
+      height: 4px;
+      background: transparent;
+      box-shadow: 
+        8px 0 #7f8c8d, 12px 0 #7f8c8d, 16px 0 #7f8c8d,
+        4px 4px #7f8c8d, 8px 4px #7f8c8d, 12px 4px #b7950b, 16px 4px #7f8c8d, 20px 4px #7f8c8d,
+        0px 8px #7f8c8d, 4px 8px #7f8c8d, 8px 8px #7f8c8d, 12px 8px #7f8c8d, 16px 8px #7f8c8d, 20px 8px #7f8c8d, 24px 8px #7f8c8d,
+        0px 12px #7f8c8d, 4px 12px #5f6a6a, 8px 12px #7f8c8d, 12px 12px #7f8c8d, 16px 12px #7f8c8d, 20px 12px #5f6a6a, 24px 12px #7f8c8d,
+        0px 16px #7f8c8d, 4px 16px #7f8c8d, 8px 16px #7f8c8d, 12px 16px #7f8c8d, 16px 16px #7f8c8d, 20px 16px #7f8c8d, 24px 16px #7f8c8d,
+        0px 20px #2980b9, 4px 20px #2980b9, 8px 20px #2980b9, 12px 20px #b7950b, 16px 20px #2980b9, 20px 20px #2980b9, 24px 20px #2980b9,
+        0px 24px #2980b9, 4px 24px #2980b9, 8px 24px #2980b9, 12px 24px #2980b9, 16px 24px #2980b9, 20px 24px #2980b9, 24px 24px #2980b9,
+        0px 28px #7f8c8d, 4px 28px #7f8c8d, 8px 28px #7f8c8d, 12px 28px #7f8c8d, 16px 28px #7f8c8d, 20px 28px #7f8c8d, 24px 28px #7f8c8d,
+        0px 32px #7f8c8d, 4px 32px #5f6a6a, 8px 32px #5f6a6a, 12px 32px #5f6a6a, 16px 32px #5f6a6a, 20px 32px #5f6a6a, 24px 32px #7f8c8d,
+        4px 36px #5f6a6a, 8px 36px #5f6a6a, 16px 36px #5f6a6a, 20px 36px #5f6a6a,
+        8px 40px #5f6a6a, 12px 40px #5f6a6a, 16px 40px #5f6a6a;
+      animation: char98-sleep 2s ease-in-out infinite;
+    }
+    .char98-sleeping .char98-zzz { position: absolute; left: 55px; top: 5px; font-size: 12px; color: #f1c40f; animation: char98-zzz 2s ease-in-out infinite; }
+    @keyframes char98-sleep { 0%, 100% { transform: scale(1); } 50% { transform: scale(0.97); } }
+    @keyframes char98-zzz { 0%, 100% { opacity: 0; } 50% { opacity: 0.8; } }
+
+    .char98-listening .char98-body {
+      position: absolute;
+      left: 20px;
+      top: 5px;
+      width: 4px;
+      height: 4px;
+      background: transparent;
+      box-shadow: 
+        8px 0 #95a5a6, 12px 0 #95a5a6, 16px 0 #95a5a6,
+        4px 4px #95a5a6, 8px 4px #95a5a6, 12px 4px #f1c40f, 16px 4px #95a5a6, 20px 4px #95a5a6,
+        0px 8px #95a5a6, 4px 8px #95a5a6, 8px 8px #95a5a6, 12px 8px #95a5a6, 16px 8px #95a5a6, 20px 8px #95a5a6, 24px 8px #95a5a6,
+        0px 12px #95a5a6, 4px 12px #000, 8px 12px #95a5a6, 12px 12px #95a5a6, 16px 12px #95a5a6, 20px 12px #000, 24px 12px #95a5a6,
+        0px 16px #95a5a6, 4px 16px #95a5a6, 8px 16px #95a5a6, 12px 16px #95a5a6, 16px 16px #95a5a6, 20px 16px #95a5a6, 24px 16px #95a5a6,
+        0px 20px #3498db, 4px 20px #3498db, 8px 20px #3498db, 12px 20px #f1c40f, 16px 20px #3498db, 20px 20px #3498db, 24px 20px #3498db,
+        0px 24px #3498db, 4px 24px #3498db, 8px 24px #3498db, 12px 24px #3498db, 16px 24px #3498db, 20px 24px #3498db, 24px 24px #3498db,
+        0px 28px #95a5a6, 4px 28px #95a5a6, 8px 28px #95a5a6, 12px 28px #95a5a6, 16px 28px #95a5a6, 20px 28px #95a5a6, 24px 28px #95a5a6,
+        0px 32px #95a5a6, 4px 32px #7f8c8d, 8px 32px #7f8c8d, 12px 32px #7f8c8d, 16px 32px #7f8c8d, 20px 32px #7f8c8d, 24px 32px #95a5a6,
+        4px 36px #7f8c8d, 8px 36px #7f8c8d, 16px 36px #7f8c8d, 20px 36px #7f8c8d,
+        8px 40px #7f8c8d, 12px 40px #7f8c8d, 16px 40px #7f8c8d;
+      animation: char98-tilt 1.5s ease-in-out infinite alternate;
+    }
+    @keyframes char98-tilt { 0% { transform: rotate(-6deg); } 100% { transform: rotate(6deg); } }
+
+    .char98-speaking .char98-body {
+      position: absolute;
+      left: 20px;
+      top: 5px;
+      width: 4px;
+      height: 4px;
+      background: transparent;
+      box-shadow: 
+        8px 0 #95a5a6, 12px 0 #95a5a6, 16px 0 #95a5a6,
+        4px 4px #95a5a6, 8px 4px #95a5a6, 12px 4px #f1c40f, 16px 4px #95a5a6, 20px 4px #95a5a6,
+        0px 8px #95a5a6, 4px 8px #95a5a6, 8px 8px #95a5a6, 12px 8px #95a5a6, 16px 8px #95a5a6, 20px 8px #95a5a6, 24px 8px #95a5a6,
+        0px 12px #95a5a6, 4px 12px #000, 8px 12px #95a5a6, 12px 12px #95a5a6, 16px 12px #95a5a6, 20px 12px #000, 24px 12px #95a5a6,
+        0px 16px #95a5a6, 4px 16px #95a5a6, 8px 16px #95a5a6, 12px 16px #95a5a6, 16px 16px #95a5a6, 20px 16px #95a5a6, 24px 16px #95a5a6,
+        0px 20px #3498db, 4px 20px #3498db, 8px 20px #3498db, 12px 20px #f1c40f, 16px 20px #3498db, 20px 20px #3498db, 24px 20px #3498db,
+        0px 24px #3498db, 4px 24px #3498db, 8px 24px #3498db, 12px 24px #3498db, 16px 24px #3498db, 20px 24px #3498db, 24px 24px #3498db,
+        0px 28px #95a5a6, 4px 28px #95a5a6, 8px 28px #95a5a6, 12px 28px #95a5a6, 16px 28px #95a5a6, 20px 28px #95a5a6, 24px 28px #95a5a6,
+        0px 32px #95a5a6, 4px 32px #7f8c8d, 8px 32px #7f8c8d, 12px 32px #7f8c8d, 16px 32px #7f8c8d, 20px 32px #7f8c8d, 24px 32px #95a5a6,
+        4px 36px #7f8c8d, 8px 36px #7f8c8d, 16px 36px #7f8c8d, 20px 36px #7f8c8d,
+        8px 40px #7f8c8d, 12px 40px #7f8c8d, 16px 40px #7f8c8d;
+      animation: char98-speak 0.5s ease-in-out infinite;
+    }
+    @keyframes char98-speak { 0%, 100% { transform: translateY(0); } 50% { transform: translateY(-4px); } }
+
+    /* ==================== 角色 #99: 海盗 ==================== */
+    .char99-thinking .char99-body {
+      position: absolute;
+      left: 18px;
+      top: 10px;
+      width: 4px;
+      height: 4px;
+      background: transparent;
+      box-shadow: 
+        8px 0 #2c3e50, 12px 0 #2c3e50, 16px 0 #2c3e50,
+        4px 4px #e74c3c, 8px 4px #e74c3c, 12px 4px #e74c3c, 16px 4px #e74c3c, 20px 4px #e74c3c,
+        0px 8px #2c3e50, 4px 8px #f1c40f, 8px 8px #000, 12px 8px #000, 16px 8px #f1c40f, 20px 8px #2c3e50, 24px 8px #2c3e50,
+        0px 12px #2c3e50, 4px 12px #f1c40f, 8px 12px #f1c40f, 12px 12px #f1c40f, 16px 12px #f1c40f, 20px 12px #f1c40f, 24px 12px #2c3e50,
+        0px 16px #2c3e50, 4px 16px #2c3e50, 8px 16px #2c3e50, 12px 16px #2c3e50, 16px 16px #2c3e50, 20px 16px #2c3e50, 24px 16px #2c3e50,
+        4px 20px #ecf0f1, 8px 20px #ecf0f1, 12px 20px #ecf0f1, 16px 20px #ecf0f1, 20px 20px #ecf0f1,
+        4px 24px #ecf0f1, 8px 24px #ecf0f1, 12px 24px #ecf0f1, 16px 24px #ecf0f1, 20px 24px #ecf0f1,
+        0px 28px #34495e, 4px 28px #34495e, 8px 28px #34495e, 12px 28px #34495e, 16px 28px #34495e, 20px 28px #34495e, 24px 28px #34495e,
+        4px 32px #34495e, 8px 32px #34495e, 12px 32px #34495e, 16px 32px #34495e, 20px 32px #34495e,
+        8px 36px #34495e, 12px 36px #34495e, 16px 36px #34495e,
+        4px 40px #2c3e50, 8px 40px #2c3e50, 16px 40px #2c3e50, 20px 40px #2c3e50;
+      animation: char99-think 2s ease-in-out infinite;
+    }
+    .char99-thinking .char99-bubble { position: absolute; left: 55px; top: 5px; width: 4px; height: 4px; background: transparent; box-shadow: 0 0 #f1c40f, 4px 0 #f1c40f, -4px 4px #f1c40f, 0 4px #f1c40f, 4px 4px #f1c40f, 8px 4px #f1c40f, 0 8px #f1c40f, 4px 8px #f1c40f; animation: char99-bubble 2s ease-in-out infinite; }
+    @keyframes char99-think { 0%, 100% { transform: translateY(0); } 50% { transform: translateY(-4px); } }
+    @keyframes char99-bubble { 0%, 100% { opacity: 0.4; } 50% { opacity: 0.9; } }
+
+    .char99-sleeping .char99-body {
+      position: absolute;
+      left: 18px;
+      top: 15px;
+      width: 4px;
+      height: 4px;
+      background: transparent;
+      box-shadow: 
+        8px 0 #1a252f, 12px 0 #1a252f, 16px 0 #1a252f,
+        4px 4px #c0392b, 8px 4px #c0392b, 12px 4px #c0392b, 16px 4px #c0392b, 20px 4px #c0392b,
+        0px 8px #1a252f, 4px 8px #b7950b, 8px 8px #7f8c8d, 12px 8px #7f8c8d, 16px 8px #b7950b, 20px 8px #1a252f, 24px 8px #1a252f,
+        0px 12px #1a252f, 4px 12px #b7950b, 8px 12px #b7950b, 12px 12px #b7950b, 16px 12px #b7950b, 20px 12px #b7950b, 24px 12px #1a252f,
+        0px 16px #1a252f, 4px 16px #1a252f, 8px 16px #1a252f, 12px 16px #1a252f, 16px 16px #1a252f, 20px 16px #1a252f, 24px 16px #1a252f,
+        4px 20px #bdc3c7, 8px 20px #bdc3c7, 12px 20px #bdc3c7, 16px 20px #bdc3c7, 20px 20px #bdc3c7,
+        4px 24px #bdc3c7, 8px 24px #bdc3c7, 12px 24px #bdc3c7, 16px 24px #bdc3c7, 20px 24px #bdc3c7,
+        0px 28px #2c3e50, 4px 28px #2c3e50, 8px 28px #2c3e50, 12px 28px #2c3e50, 16px 28px #2c3e50, 20px 28px #2c3e50, 24px 28px #2c3e50,
+        4px 32px #2c3e50, 8px 32px #2c3e50, 12px 32px #2c3e50, 16px 32px #2c3e50, 20px 32px #2c3e50,
+        8px 36px #2c3e50, 12px 36px #2c3e50, 16px 36px #2c3e50,
+        4px 40px #1a252f, 8px 40px #1a252f, 16px 40px #1a252f, 20px 40px #1a252f;
+      animation: char99-sleep 2s ease-in-out infinite;
+    }
+    .char99-sleeping .char99-zzz { position: absolute; left: 55px; top: 5px; font-size: 12px; color: #f1c40f; animation: char99-zzz 2s ease-in-out infinite; }
+    @keyframes char99-sleep { 0%, 100% { transform: scale(1); } 50% { transform: scale(0.97); } }
+    @keyframes char99-zzz { 0%, 100% { opacity: 0; } 50% { opacity: 0.8; } }
+
+    .char99-listening .char99-body {
+      position: absolute;
+      left: 18px;
+      top: 10px;
+      width: 4px;
+      height: 4px;
+      background: transparent;
+      box-shadow: 
+        8px 0 #2c3e50, 12px 0 #2c3e50, 16px 0 #2c3e50,
+        4px 4px #e74c3c, 8px 4px #e74c3c, 12px 4px #e74c3c, 16px 4px #e74c3c, 20px 4px #e74c3c,
+        0px 8px #2c3e50, 4px 8px #f1c40f, 8px 8px #000, 12px 8px #000, 16px 8px #f1c40f, 20px 8px #2c3e50, 24px 8px #2c3e50,
+        0px 12px #2c3e50, 4px 12px #f1c40f, 8px 12px #f1c40f, 12px 12px #f1c40f, 16px 12px #f1c40f, 20px 12px #f1c40f, 24px 12px #2c3e50,
+        0px 16px #2c3e50, 4px 16px #2c3e50, 8px 16px #2c3e50, 12px 16px #2c3e50, 16px 16px #2c3e50, 20px 16px #2c3e50, 24px 16px #2c3e50,
+        4px 20px #ecf0f1, 8px 20px #ecf0f1, 12px 20px #ecf0f1, 16px 20px #ecf0f1, 20px 20px #ecf0f1,
+        4px 24px #ecf0f1, 8px 24px #ecf0f1, 12px 24px #ecf0f1, 16px 24px #ecf0f1, 20px 24px #ecf0f1,
+        0px 28px #34495e, 4px 28px #34495e, 8px 28px #34495e, 12px 28px #34495e, 16px 28px #34495e, 20px 28px #34495e, 24px 28px #34495e,
+        4px 32px #34495e, 8px 32px #34495e, 12px 32px #34495e, 16px 32px #34495e, 20px 32px #34495e,
+        8px 36px #34495e, 12px 36px #34495e, 16px 36px #34495e,
+        4px 40px #2c3e50, 8px 40px #2c3e50, 16px 40px #2c3e50, 20px 40px #2c3e50;
+      animation: char99-tilt 1s ease-in-out infinite alternate;
+    }
+    @keyframes char99-tilt { 0% { transform: rotate(-12deg); } 100% { transform: rotate(12deg); } }
+
+    .char99-speaking .char99-body {
+      position: absolute;
+      left: 18px;
+      top: 10px;
+      width: 4px;
+      height: 4px;
+      background: transparent;
+      box-shadow: 
+        8px 0 #2c3e50, 12px 0 #2c3e50, 16px 0 #2c3e50,
+        4px 4px #e74c3c, 8px 4px #e74c3c, 12px 4px #e74c3c, 16px 4px #e74c3c, 20px 4px #e74c3c,
+        0px 8px #2c3e50, 4px 8px #f1c40f, 8px 8px #000, 12px 8px #000, 16px 8px #f1c40f, 20px 8px #2c3e50, 24px 8px #2c3e50,
+        0px 12px #2c3e50, 4px 12px #f1c40f, 8px 12px #f1c40f, 12px 12px #f1c40f, 16px 12px #f1c40f, 20px 12px #f1c40f, 24px 12px #2c3e50,
+        0px 16px #2c3e50, 4px 16px #2c3e50, 8px 16px #2c3e50, 12px 16px #2c3e50, 16px 16px #2c3e50, 20px 16px #2c3e50, 24px 16px #2c3e50,
+        4px 20px #ecf0f1, 8px 20px #ecf0f1, 12px 20px #ecf0f1, 16px 20px #ecf0f1, 20px 20px #ecf0f1,
+        4px 24px #ecf0f1, 8px 24px #ecf0f1, 12px 24px #ecf0f1, 16px 24px #ecf0f1, 20px 24px #ecf0f1,
+        0px 28px #34495e, 4px 28px #34495e, 8px 28px #34495e, 12px 28px #34495e, 16px 28px #34495e, 20px 28px #34495e, 24px 28px #34495e,
+        4px 32px #34495e, 8px 32px #34495e, 12px 32px #34495e, 16px 32px #34495e, 20px 32px #34495e,
+        8px 36px #34495e, 12px 36px #34495e, 16px 36px #34495e,
+        4px 40px #2c3e50, 8px 40px #2c3e50, 16px 40px #2c3e50, 20px 40px #2c3e50;
+      animation: char99-yarr 0.4s ease-in-out infinite;
+    }
+    @keyframes char99-yarr { 0%, 100% { transform: translateY(0); } 50% { transform: translateY(-5px); } }
+
+    /* ==================== 角色 #100: 宇航员 ==================== */
+    .char100-thinking .char100-body {
+      position: absolute;
+      left: 20px;
+      top: 5px;
+      width: 4px;
+      height: 4px;
+      background: transparent;
+      box-shadow: 
+        8px 0 #ecf0f1, 12px 0 #ecf0f1, 16px 0 #ecf0f1,
+        4px 4px #ecf0f1, 8px 4px #ecf0f1, 12px 4px #ecf0f1, 16px 4px #ecf0f1, 20px 4px #ecf0f1,
+        0px 8px #ecf0f1, 4px 8px #3498db, 8px 8px #3498db, 12px 8px #3498db, 16px 8px #3498db, 20px 8px #3498db, 24px 8px #ecf0f1,
+        0px 12px #ecf0f1, 4px 12px #3498db, 8px 12px #3498db, 12px 12px #3498db, 16px 12px #3498db, 20px 12px #3498db, 24px 12px #ecf0f1,
+        0px 16px #ecf0f1, 4px 16px #ecf0f1, 8px 16px #ecf0f1, 12px 16px #ecf0f1, 16px 16px #ecf0f1, 20px 16px #ecf0f1, 24px 16px #ecf0f1,
+        4px 20px #e74c3c, 8px 20px #e74c3c, 12px 20px #e74c3c, 16px 20px #e74c3c, 20px 20px #e74c3c,
+        4px 24px #ecf0f1, 8px 24px #ecf0f1, 12px 24px #ecf0f1, 16px 24px #ecf0f1, 20px 24px #ecf0f1,
+        4px 28px #ecf0f1, 8px 28px #ecf0f1, 12px 24px #f1c40f, 16px 28px #ecf0f1, 20px 28px #ecf0f1,
+        8px 32px #ecf0f1, 12px 32px #ecf0f1, 16px 32px #ecf0f1,
+        8px 36px #7f8c8d, 12px 36px #7f8c8d, 16px 36px #7f8c8d,
+        4px 40px #7f8c8d, 8px 40px #7f8c8d, 16px 40px #7f8c8d, 20px 40px #7f8c8d;
+      animation: char100-think 2s ease-in-out infinite;
+    }
+    .char100-thinking .char100-bubble { position: absolute; left: 55px; top: 5px; width: 4px; height: 4px; background: transparent; box-shadow: 0 0 #3498db, 4px 0 #3498db, -4px 4px #3498db, 0 4px #3498db, 4px 4px #3498db, 8px 4px #3498db, 0 8px #3498db, 4px 8px #3498db; animation: char100-bubble 2s ease-in-out infinite; }
+    @keyframes char100-think { 0%, 100% { transform: translateY(0); } 50% { transform: translateY(-5px); } }
+    @keyframes char100-bubble { 0%, 100% { opacity: 0.4; } 50% { opacity: 0.9; } }
+
+    .char100-sleeping .char100-body {
+      position: absolute;
+      left: 20px;
+      top: 10px;
+      width: 4px;
+      height: 4px;
+      background: transparent;
+      box-shadow: 
+        8px 0 #bdc3c7, 12px 0 #bdc3c7, 16px 0 #bdc3c7,
+        4px 4px #bdc3c7, 8px 4px #bdc3c7, 12px 4px #bdc3c7, 16px 4px #bdc3c7, 20px 4px #bdc3c7,
+        0px 8px #bdc3c7, 4px 8px #2980b9, 8px 8px #2980b9, 12px 8px #2980b9, 16px 8px #2980b9, 20px 8px #2980b9, 24px 8px #bdc3c7,
+        0px 12px #bdc3c7, 4px 12px #2980b9, 8px 12px #2980b9, 12px 12px #2980b9, 16px 12px #2980b9, 20px 12px #2980b9, 24px 12px #bdc3c7,
+        0px 16px #bdc3c7, 4px 16px #bdc3c7, 8px 16px #bdc3c7, 12px 16px #bdc3c7, 16px 16px #bdc3c7, 20px 16px #bdc3c7, 24px 16px #bdc3c7,
+        4px 20px #c0392b, 8px 20px #c0392b, 12px 20px #c0392b, 16px 20px #c0392b, 20px 20px #c0392b,
+        4px 24px #bdc3c7, 8px 24px #bdc3c7, 12px 24px #bdc3c7, 16px 24px #bdc3c7, 20px 24px #bdc3c7,
+        4px 28px #bdc3c7, 8px 28px #bdc3c7, 12px 28px #b7950b, 16px 28px #bdc3c7, 20px 28px #bdc3c7,
+        8px 32px #bdc3c7, 12px 32px #bdc3c7, 16px 32px #bdc3c7,
+        8px 36px #5f6a6a, 12px 36px #5f6a6a, 16px 36px #5f6a6a,
+        4px 40px #5f6a6a, 8px 40px #5f6a6a, 16px 40px #5f6a6a, 20px 40px #5f6a6a;
+      animation: char100-sleep 2s ease-in-out infinite;
+    }
+    .char100-sleeping .char100-zzz { position: absolute; left: 55px; top: 5px; font-size: 12px; color: #3498db; animation: char100-zzz 2s ease-in-out infinite; }
+    @keyframes char100-sleep { 0%, 100% { transform: scale(1); } 50% { transform: scale(0.96); } }
+    @keyframes char100-zzz { 0%, 100% { opacity: 0; } 50% { opacity: 0.8; } }
+
+    .char100-listening .char100-body {
+      position: absolute;
+      left: 20px;
+      top: 5px;
+      width: 4px;
+      height: 4px;
+      background: transparent;
+      box-shadow: 
+        8px 0 #ecf0f1, 12px 0 #ecf0f1, 16px 0 #ecf0f1,
+        4px 4px #ecf0f1, 8px 4px #ecf0f1, 12px 4px #ecf0f1, 16px 4px #ecf0f1, 20px 4px #ecf0f1,
+        0px 8px #ecf0f1, 4px 8px #3498db, 8px 8px #3498db, 12px 8px #3498db, 16px 8px #3498db, 20px 8px #3498db, 24px 8px #ecf0f1,
+        0px 12px #ecf0f1, 4px 12px #3498db, 8px 12px #3498db, 12px 12px #3498db, 16px 12px #3498db, 20px 12px #3498db, 24px 12px #ecf0f1,
+        0px 16px #ecf0f1, 4px 16px #ecf0f1, 8px 16px #ecf0f1, 12px 16px #ecf0f1, 16px 16px #ecf0f1, 20px 16px #ecf0f1, 24px 16px #ecf0f1,
+        4px 20px #e74c3c, 8px 20px #e74c3c, 12px 20px #e74c3c, 16px 20px #e74c3c, 20px 20px #e74c3c,
+        4px 24px #ecf0f1, 8px 24px #ecf0f1, 12px 24px #ecf0f1, 16px 24px #ecf0f1, 20px 24px #ecf0f1,
+        4px 28px #ecf0f1, 8px 28px #ecf0f1, 12px 28px #f1c40f, 16px 28px #ecf0f1, 20px 28px #ecf0f1,
+        8px 32px #ecf0f1, 12px 32px #ecf0f1, 16px 32px #ecf0f1,
+        8px 36px #7f8c8d, 12px 36px #7f8c8d, 16px 36px #7f8c8d,
+        4px 40px #7f8c8d, 8px 40px #7f8c8d, 16px 40px #7f8c8d, 20px 40px #7f8c8d;
+      animation: char100-tilt 1s ease-in-out infinite alternate;
+    }
+    @keyframes char100-tilt { 0% { transform: rotate(-8deg); } 100% { transform: rotate(8deg); } }
+
+    .char100-speaking .char100-body {
+      position: absolute;
+      left: 20px;
+      top: 5px;
+      width: 4px;
+      height: 4px;
+      background: transparent;
+      box-shadow: 
+        8px 0 #ecf0f1, 12px 0 #ecf0f1, 16px 0 #ecf0f1,
+        4px 4px #ecf0f1, 8px 4px #ecf0f1, 12px 4px #ecf0f1, 16px 4px #ecf0f1, 20px 4px #ecf0f1,
+        0px 8px #ecf0f1, 4px 8px #3498db, 8px 8px #3498db, 12px 8px #3498db, 16px 8px #3498db, 20px 8px #3498db, 24px 8px #ecf0f1,
+        0px 12px #ecf0f1, 4px 12px #3498db, 8px 12px #3498db, 12px 12px #3498db, 16px 12px #3498db, 20px 12px #3498db, 24px 12px #ecf0f1,
+        0px 16px #ecf0f1, 4px 16px #ecf0f1, 8px 16px #ecf0f1, 12px 16px #ecf0f1, 16px 16px #ecf0f1, 20px 16px #ecf0f1, 24px 16px #ecf0f1,
+        4px 20px #2ecc71, 8px 20px #2ecc71, 12px 20px #2ecc71, 16px 20px #2ecc71, 20px 20px #2ecc71,
+        4px 24px #ecf0f1, 8px 24px #ecf0f1, 12px 24px #ecf0f1, 16px 24px #ecf0f1, 20px 24px #ecf0f1,
+        4px 28px #ecf0f1, 8px 28px #ecf0f1, 12px 28px #f1c40f, 16px 28px #ecf0f1, 20px 28px #ecf0f1,
+        8px 32px #ecf0f1, 12px 32px #ecf0f1, 16px 32px #ecf0f1,
+        8px 36px #7f8c8d, 12px 36px #7f8c8d, 16px 36px #7f8c8d,
+        4px 40px #7f8c8d, 8px 40px #7f8c8d, 16px 40px #7f8c8d, 20px 40px #7f8c8d;
+      animation: char100-transmit 0.5s ease-in-out infinite;
+    }
+    @keyframes char100-transmit { 0%, 100% { transform: translateY(0); filter: brightness(1); } 50% { transform: translateY(-4px); filter: brightness(1.2); } }
+  </style>
+</head>
+<body>
+  <div class="header">
+    <h1>开源CSS像素角色 #81-100</h1>
+    <div class="license">MIT许可证 - 完全可商用</div>
+  </div>
+
+  <div class="characters-grid">
+    <!-- 角色 #81: 史莱姆 -->
+    <div class="character-card">
+      <div class="char-title">#81 史莱姆</div>
+      <div class="actions-row">
+        <div class="action-box">
+          <div class="char char81-thinking"><div class="char81-body"></div><div class="char81-bubble"></div></div>
+          <span class="action-label">思考</span>
+        </div>
+        <div class="action-box">
+          <div class="char char81-sleeping"><div class="char81-body"></div><div class="char81-zzz">zZ</div></div>
+          <span class="action-label">睡觉</span>
+        </div>
+        <div class="action-box">
+          <div class="char char81-listening"><div class="char81-body"></div><div class="char81-ear"></div></div>
+          <span class="action-label">倾听</span>
+        </div>
+        <div class="action-box">
+          <div class="char char81-speaking"><div class="char81-body"></div></div>
+          <span class="action-label">说话</span>
+        </div>
+      </div>
+    </div>
+
+    <!-- 角色 #82: 骷髅 -->
+    <div class="character-card">
+      <div class="char-title">#82 骷髅</div>
+      <div class="actions-row">
+        <div class="action-box">
+          <div class="char char82-thinking"><div class="char82-body"></div><div class="char82-bubble"></div></div>
+          <span class="action-label">思考</span>
+        </div>
+        <div class="action-box">
+          <div class="char char82-sleeping"><div class="char82-body"></div><div class="char82-zzz">zZ</div></div>
+          <span class="action-label">睡觉</span>
+        </div>
+        <div class="action-box">
+          <div class="char char82-listening"><div class="char82-body"></div><div class="char82-sound"></div></div>
+          <span class="action-label">倾听</span>
+        </div>
+        <div class="action-box">
+          <div class="char char82-speaking"><div class="char82-body"></div></div>
+          <span class="action-label">说话</span>
+        </div>
+      </div>
+    </div>
+
+    <!-- 角色 #83: 幽灵 -->
+    <div class="character-card">
+      <div class="char-title">#83 幽灵</div>
+      <div class="actions-row">
+        <div class="action-box">
+          <div class="char char83-thinking"><div class="char83-body"></div><div class="char83-bubble"></div></div>
+          <span class="action-label">思考</span>
+        </div>
+        <div class="action-box">
+          <div class="char char83-sleeping"><div class="char83-body"></div><div class="char83-zzz">zZ</div></div>
+          <span class="action-label">睡觉</span>
+        </div>
+        <div class="action-box">
+          <div class="char char83-listening"><div class="char83-body"></div><div class="char83-ear"></div></div>
+          <span class="action-label">倾听</span>
+        </div>
+        <div class="action-box">
+          <div class="char char83-speaking"><div class="char83-body"></div></div>
+          <span class="action-label">说话</span>
+        </div>
+      </div>
+    </div>
+
+    <!-- 角色 #84: 僵尸 -->
+    <div class="character-card">
+      <div class="char-title">#84 僵尸</div>
+      <div class="actions-row">
+        <div class="action-box">
+          <div class="char char84-thinking"><div class="char84-body"></div><div class="char84-bubble"></div></div>
+          <span class="action-label">思考</span>
+        </div>
+        <div class="action-box">
+          <div class="char char84-sleeping"><div class="char84-body"></div><div class="char84-zzz">zZ</div></div>
+          <span class="action-label">睡觉</span>
+        </div>
+        <div class="action-box">
+          <div class="char char84-listening"><div class="char84-body"></div><div class="char84-hand"></div></div>
+          <span class="action-label">倾听</span>
+        </div>
+        <div class="action-box">
+          <div class="char char84-speaking"><div class="char84-body"></div></div>
+          <span class="action-label">说话</span>
+        </div>
+      </div>
+    </div>
+
+    <!-- 角色 #85: 南瓜头 -->
+    <div class="character-card">
+      <div class="char-title">#85 南瓜头</div>
+      <div class="actions-row">
+        <div class="action-box">
+          <div class="char char85-thinking"><div class="char85-body"></div><div class="char85-bubble"></div></div>
+          <span class="action-label">思考</span>
+        </div>
+        <div class="action-box">
+          <div class="char char85-sleeping"><div class="char85-body"></div><div class="char85-zzz">zZ</div></div>
+          <span class="action-label">睡觉</span>
+        </div>
+        <div class="action-box">
+          <div class="char char85-listening"><div class="char85-body"></div></div>
+          <span class="action-label">倾听</span>
+        </div>
+        <div class="action-box">
+          <div class="char char85-speaking"><div class="char85-body"></div></div>
+          <span class="action-label">说话</span>
+        </div>
+      </div>
+    </div>
+
+    <!-- 角色 #86: 雪人 -->
+    <div class="character-card">
+      <div class="char-title">#86 雪人</div>
+      <div class="actions-row">
+        <div class="action-box">
+          <div class="char char86-thinking"><div class="char86-body"></div><div class="char86-bubble"></div></div>
+          <span class="action-label">思考</span>
+        </div>
+        <div class="action-box">
+          <div class="char char86-sleeping"><div class="char86-body"></div><div class="char86-zzz">zZ</div></div>
+          <span class="action-label">睡觉</span>
+        </div>
+        <div class="action-box">
+          <div class="char char86-listening"><div class="char86-body"></div></div>
+          <span class="action-label">倾听</span>
+        </div>
+        <div class="action-box">
+          <div class="char char86-speaking"><div class="char86-body"></div></div>
+          <span class="action-label">说话</span>
+        </div>
+      </div>
+    </div>
+
+    <!-- 角色 #87: 姜饼人 -->
+    <div class="character-card">
+      <div class="char-title">#87 姜饼人</div>
+      <div class="actions-row">
+        <div class="action-box">
+          <div class="char char87-thinking"><div class="char87-body"></div><div class="char87-bubble"></div></div>
+          <span class="action-label">思考</span>
+        </div>
+        <div class="action-box">
+          <div class="char char87-sleeping"><div class="char87-body"></div><div class="char87-zzz">zZ</div></div>
+          <span class="action-label">睡觉</span>
+        </div>
+        <div class="action-box">
+          <div class="char char87-listening"><div class="char87-body"></div></div>
+          <span class="action-label">倾听</span>
+        </div>
+        <div class="action-box">
+          <div class="char char87-speaking"><div class="char87-body"></div></div>
+          <span class="action-label">说话</span>
+        </div>
+      </div>
+    </div>
+
+    <!-- 角色 #88: 小丑 -->
+    <div class="character-card">
+      <div class="char-title">#88 小丑</div>
+      <div class="actions-row">
+        <div class="action-box">
+          <div class="char char88-thinking"><div class="char88-body"></div><div class="char88-bubble"></div></div>
+          <span class="action-label">思考</span>
+        </div>
+        <div class="action-box">
+          <div class="char char88-sleeping"><div class="char88-body"></div><div class="char88-zzz">zZ</div></div>
+          <span class="action-label">睡觉</span>
+        </div>
+        <div class="action-box">
+          <div class="char char88-listening"><div class="char88-body"></div></div>
+          <span class="action-label">倾听</span>
+        </div>
+        <div class="action-box">
+          <div class="char char88-speaking"><div class="char88-body"></div></div>
+          <span class="action-label">说话</span>
+        </div>
+      </div>
+    </div>
+
+    <!-- 角色 #89: 巫师 -->
+    <div class="character-card">
+      <div class="char-title">#89 巫师</div>
+      <div class="actions-row">
+        <div class="action-box">
+          <div class="char char89-thinking"><div class="char89-body"></div><div class="char89-bubble"></div></div>
+          <span class="action-label">思考</span>
+        </div>
+        <div class="action-box">
+          <div class="char char89-sleeping"><div class="char89-body"></div><div class="char89-zzz">zZ</div></div>
+          <span class="action-label">睡觉</span>
+        </div>
+        <div class="action-box">
+          <div class="char char89-listening"><div class="char89-body"></div></div>
+          <span class="action-label">倾听</span>
+        </div>
+        <div class="action-box">
+          <div class="char char89-speaking"><div class="char89-body"></div></div>
+          <span class="action-label">说话</span>
+        </div>
+      </div>
+    </div>
+
+    <!-- 角色 #90: 恶魔 -->
+    <div class="character-card">
+      <div class="char-title">#90 恶魔</div>
+      <div class="actions-row">
+        <div class="action-box">
+          <div class="char char90-thinking"><div class="char90-body"></div><div class="char90-bubble"></div></div>
+          <span class="action-label">思考</span>
+        </div>
+        <div class="action-box">
+          <div class="char char90-sleeping"><div class="char90-body"></div><div class="char90-zzz">zZ</div></div>
+          <span class="action-label">睡觉</span>
+        </div>
+        <div class="action-box">
+          <div class="char char90-listening"><div class="char90-body"></div></div>
+          <span class="action-label">倾听</span>
+        </div>
+        <div class="action-box">
+          <div class="char char90-speaking"><div class="char90-body"></div></div>
+          <span class="action-label">说话</span>
+        </div>
+      </div>
+    </div>
+
+    <!-- 角色 #91: 天使 -->
+    <div class="character-card">
+      <div class="char-title">#91 天使</div>
+      <div class="actions-row">
+        <div class="action-box">
+          <div class="char char91-thinking"><div class="char91-body"></div><div class="char91-bubble"></div></div>
+          <span class="action-label">思考</span>
+        </div>
+        <div class="action-box">
+          <div class="char char91-sleeping"><div class="char91-body"></div><div class="char91-zzz">zZ</div></div>
+          <span class="action-label">睡觉</span>
+        </div>
+        <div class="action-box">
+          <div class="char char91-listening"><div class="char91-body"></div></div>
+          <span class="action-label">倾听</span>
+        </div>
+        <div class="action-box">
+          <div class="char char91-speaking"><div class="char91-body"></div></div>
+          <span class="action-label">说话</span>
+        </div>
+      </div>
+    </div>
+
+    <!-- 角色 #92: 美人鱼 -->
+    <div class="character-card">
+      <div class="char-title">#92 美人鱼</div>
+      <div class="actions-row">
+        <div class="action-box">
+          <div class="char char92-thinking"><div class="char92-body"></div><div class="char92-bubble"></div></div>
+          <span class="action-label">思考</span>
+        </div>
+        <div class="action-box">
+          <div class="char char92-sleeping"><div class="char92-body"></div><div class="char92-zzz">zZ</div></div>
+          <span class="action-label">睡觉</span>
+        </div>
+        <div class="action-box">
+          <div class="char char92-listening"><div class="char92-body"></div></div>
+          <span class="action-label">倾听</span>
+        </div>
+        <div class="action-box">
+          <div class="char char92-speaking"><div class="char92-body"></div></div>
+          <span class="action-label">说话</span>
+        </div>
+      </div>
+    </div>
+
+    <!-- 角色 #93: 树精 -->
+    <div class="character-card">
+      <div class="char-title">#93 树精</div>
+      <div class="actions-row">
+        <div class="action-box">
+          <div class="char char93-thinking"><div class="char93-body"></div><div class="char93-bubble"></div></div>
+          <span class="action-label">思考</span>
+        </div>
+        <div class="action-box">
+          <div class="char char93-sleeping"><div class="char93-body"></div><div class="char93-zzz">zZ</div></div>
+          <span class="action-label">睡觉</span>
+        </div>
+        <div class="action-box">
+          <div class="char char93-listening"><div class="char93-body"></div></div>
+          <span class="action-label">倾听</span>
+        </div>
+        <div class="action-box">
+          <div class="char char93-speaking"><div class="char93-body"></div></div>
+          <span class="action-label">说话</span>
+        </div>
+      </div>
+    </div>
+
+    <!-- 角色 #94: 石巨人 -->
+    <div class="character-card">
+      <div class="char-title">#94 石巨人</div>
+      <div class="actions-row">
+        <div class="action-box">
+          <div class="char char94-thinking"><div class="char94-body"></div><div class="char94-bubble"></div></div>
+          <span class="action-label">思考</span>
+        </div>
+        <div class="action-box">
+          <div class="char char94-sleeping"><div class="char94-body"></div><div class="char94-zzz">zZ</div></div>
+          <span class="action-label">睡觉</span>
+        </div>
+        <div class="action-box">
+          <div class="char char94-listening"><div class="char94-body"></div></div>
+          <span class="action-label">倾听</span>
+        </div>
+        <div class="action-box">
+          <div class="char char94-speaking"><div class="char94-body"></div></div>
+          <span class="action-label">说话</span>
+        </div>
+      </div>
+    </div>
+
+    <!-- 角色 #95: 蝙蝠 -->
+    <div class="character-card">
+      <div class="char-title">#95 蝙蝠</div>
+      <div class="actions-row">
+        <div class="action-box">
+          <div class="char char95-thinking"><div class="char95-body"></div><div class="char95-bubble"></div></div>
+          <span class="action-label">思考</span>
+        </div>
+        <div class="action-box">
+          <div class="char char95-sleeping"><div class="char95-body"></div><div class="char95-zzz">zZ</div></div>
+          <span class="action-label">睡觉</span>
+        </div>
+        <div class="action-box">
+          <div class="char char95-listening"><div class="char95-body"></div></div>
+          <span class="action-label">倾听</span>
+        </div>
+        <div class="action-box">
+          <div class="char char95-speaking"><div class="char95-body"></div></div>
+          <span class="action-label">说话</span>
+        </div>
+      </div>
+    </div>
+
+    <!-- 角色 #96: 机器人 -->
+    <div class="character-card">
+      <div class="char-title">#96 机器人</div>
+      <div class="actions-row">
+        <div class="action-box">
+          <div class="char char96-thinking"><div class="char96-body"></div><div class="char96-bubble"></div></div>
+          <span class="action-label">思考</span>
+        </div>
+        <div class="action-box">
+          <div class="char char96-sleeping"><div class="char96-body"></div><div class="char96-zzz">zZ</div></div>
+          <span class="action-label">睡觉</span>
+        </div>
+        <div class="action-box">
+          <div class="char char96-listening"><div class="char96-body"></div></div>
+          <span class="action-label">倾听</span>
+        </div>
+        <div class="action-box">
+          <div class="char char96-speaking"><div class="char96-body"></div></div>
+          <span class="action-label">说话</span>
+        </div>
+      </div>
+    </div>
+
+    <!-- 角色 #97: 忍者 -->
+    <div class="character-card">
+      <div class="char-title">#97 忍者</div>
+      <div class="actions-row">
+        <div class="action-box">
+          <div class="char char97-thinking"><div class="char97-body"></div><div class="char97-bubble"></div></div>
+          <span class="action-label">思考</span>
+        </div>
+        <div class="action-box">
+          <div class="char char97-sleeping"><div class="char97-body"></div><div class="char97-zzz">zZ</div></div>
+          <span class="action-label">睡觉</span>
+        </div>
+        <div class="action-box">
+          <div class="char char97-listening"><div class="char97-body"></div></div>
+          <span class="action-label">倾听</span>
+        </div>
+        <div class="action-box">
+          <div class="char char97-speaking"><div class="char97-body"></div></div>
+          <span class="action-label">说话</span>
+        </div>
+      </div>
+    </div>
+
+    <!-- 角色 #98: 骑士 -->
+    <div class="character-card">
+      <div class="char-title">#98 骑士</div>
+      <div class="actions-row">
+        <div class="action-box">
+          <div class="char char98-thinking"><div class="char98-body"></div><div class="char98-bubble"></div></div>
+          <span class="action-label">思考</span>
+        </div>
+        <div class="action-box">
+          <div class="char char98-sleeping"><div class="char98-body"></div><div class="char98-zzz">zZ</div></div>
+          <span class="action-label">睡觉</span>
+        </div>
+        <div class="action-box">
+          <div class="char char98-listening"><div class="char98-body"></div></div>
+          <span class="action-label">倾听</span>
+        </div>
+        <div class="action-box">
+          <div class="char char98-speaking"><div class="char98-body"></div></div>
+          <span class="action-label">说话</span>
+        </div>
+      </div>
+    </div>
+
+    <!-- 角色 #99: 海盗 -->
+    <div class="character-card">
+      <div class="char-title">#99 海盗</div>
+      <div class="actions-row">
+        <div class="action-box">
+          <div class="char char99-thinking"><div class="char99-body"></div><div class="char99-bubble"></div></div>
+          <span class="action-label">思考</span>
+        </div>
+        <div class="action-box">
+          <div class="char char99-sleeping"><div class="char99-body"></div><div class="char99-zzz">zZ</div></div>
+          <span class="action-label">睡觉</span>
+        </div>
+        <div class="action-box">
+          <div class="char char99-listening"><div class="char99-body"></div></div>
+          <span class="action-label">倾听</span>
+        </div>
+        <div class="action-box">
+          <div class="char char99-speaking"><div class="char99-body"></div></div>
+          <span class="action-label">说话</span>
+        </div>
+      </div>
+    </div>
+
+    <!-- 角色 #100: 宇航员 -->
+    <div class="character-card">
+      <div class="char-title">#100 宇航员</div>
+      <div class="actions-row">
+        <div class="action-box">
+          <div class="char char100-thinking"><div class="char100-body"></div><div class="char100-bubble"></div></div>
+          <span class="action-label">思考</span>
+        </div>
+        <div class="action-box">
+          <div class="char char100-sleeping"><div class="char100-body"></div><div class="char100-zzz">zZ</div></div>
+          <span class="action-label">睡觉</span>
+        </div>
+        <div class="action-box">
+          <div class="char char100-listening"><div class="char100-body"></div></div>
+          <span class="action-label">倾听</span>
+        </div>
+        <div class="action-box">
+          <div class="char char100-speaking"><div class="char100-body"></div></div>
+          <span class="action-label">说话</span>
+        </div>
+      </div>
+    </div>
+  </div>
+</body>
+</html>

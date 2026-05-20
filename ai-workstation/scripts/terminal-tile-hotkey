@@ -1,0 +1,526 @@
+#!/bin/zsh
+
+set -euo pipefail
+setopt typesetsilent
+
+APP_NAME="terminal-window-tiler"
+TILE_HOME="${TILE_HOTKEY_HOME:-$HOME}"
+CONFIG_DIR="${TILE_HOME}/.config/${APP_NAME}"
+BIN_DIR="${TILE_HOME}/.local/bin"
+APP_DIR="${TILE_HOTKEY_APP_DIR:-${TILE_INSTALL_APP_DIR:-${TILE_HOME}/Applications}}"
+HOTKEY_APP_BUNDLE_NAME="Terminal Tile Hotkeys.app"
+HOTKEY_APP_EXECUTABLE_NAME="Terminal Tile Hotkeys"
+HOTKEY_APP_BUNDLE_ID="ai.wise.TerminalTileHotkeys"
+HOTKEY_APP_PATH="${APP_DIR}/${HOTKEY_APP_BUNDLE_NAME}"
+HOTKEY_APP_EXECUTABLE_PATH="${HOTKEY_APP_PATH}/Contents/MacOS/${HOTKEY_APP_EXECUTABLE_NAME}"
+HOTKEY_APP_LAUNCHER_PATH="${CONFIG_DIR}/launch-hotkey-app.sh"
+LAUNCH_AGENTS_DIR="${TILE_HOME}/Library/LaunchAgents"
+LAUNCH_AGENT_LABEL="ai.wise.terminal-window-tiler.hotkeys"
+LAUNCH_AGENT_PLIST="${LAUNCH_AGENTS_DIR}/${LAUNCH_AGENT_LABEL}.plist"
+HOTKEY_CONFIG_PLIST="${CONFIG_DIR}/hotkeys.plist"
+MAIN_SENTINEL_PATH="${CONFIG_DIR}/hotkey-bootstrap-v3"
+ZONE_SENTINEL_PATH="${CONFIG_DIR}/zone-hotkey-bootstrap-v3"
+
+CURRENT_TARGET=""
+CURRENT_DEFAULT_COMBO=""
+CURRENT_SENTINEL_PATH=""
+
+usage() {
+  cat <<'EOF'
+Usage:
+  terminal-tile-hotkey bootstrap
+  terminal-tile-hotkey set <combo>
+  terminal-tile-hotkey status
+  terminal-tile-hotkey uninstall
+
+  terminal-tile-hotkey zone-bootstrap
+  terminal-tile-hotkey zone-set <combo>
+  terminal-tile-hotkey zone-status
+  terminal-tile-hotkey zone-uninstall
+
+Hotkey combo format:
+  cmd|command, shift, opt|option|alt, ctrl|control + single letter (a-z)
+Examples:
+  terminal-tile-hotkey set ctrl+command+t
+  terminal-tile-hotkey zone-set ctrl+command+shift+t
+EOF
+}
+
+configure_target() {
+  case "${1:-main}" in
+    main)
+      CURRENT_TARGET="main"
+      CURRENT_DEFAULT_COMBO="ctrl+command+t"
+      CURRENT_SENTINEL_PATH="$MAIN_SENTINEL_PATH"
+      ;;
+    zone)
+      CURRENT_TARGET="zone"
+      CURRENT_DEFAULT_COMBO="ctrl+command+shift+t"
+      CURRENT_SENTINEL_PATH="$ZONE_SENTINEL_PATH"
+      ;;
+    *)
+      echo "未知 target: ${1:-}" >&2
+      return 1
+      ;;
+  esac
+}
+
+is_macos() {
+  [[ "$(uname -s)" == "Darwin" ]]
+}
+
+ensure_dir() {
+  mkdir -p "$1"
+}
+
+cleanup_legacy_hotkey_artifacts() {
+  rm -rf "${TILE_HOME}/Library/Services/Terminal Tile.workflow" 2>/dev/null || true
+  rm -rf "${TILE_HOME}/Library/Services/Terminal Tile Zone.workflow" 2>/dev/null || true
+  rm -f "${BIN_DIR}/terminal-tile-hotkey-run" 2>/dev/null || true
+  rm -f "${BIN_DIR}/terminal-tile-zone-hotkey-run" 2>/dev/null || true
+  rm -f "${BIN_DIR}/terminal-tile-hotkey-daemon" 2>/dev/null || true
+  rm -f "${BIN_DIR}/terminal-tile-hotkey-helper" 2>/dev/null || true
+}
+
+hotkey_app_present() {
+  [[ -x "$HOTKEY_APP_EXECUTABLE_PATH" ]]
+}
+
+ensure_runtime_present() {
+  if ! hotkey_app_present; then
+    echo "ERROR app missing: ${HOTKEY_APP_PATH}" >&2
+    echo "请先运行 scripts/install-agent-commands。" >&2
+    return 1
+  fi
+}
+
+combo_to_key_equivalent() {
+  local combo="$1"
+  local raw="${combo:l}"
+  raw="${raw//[[:space:]]/}"
+
+  [[ -n "$raw" ]] || return 1
+
+  local -a parts
+  parts=("${(@s:+:)raw}")
+
+  local has_cmd=0
+  local has_shift=0
+  local has_opt=0
+  local has_ctrl=0
+  local key=""
+  local p
+
+  for p in "${parts[@]}"; do
+    case "$p" in
+      cmd|command)
+        (( has_cmd == 0 )) || return 1
+        has_cmd=1
+        ;;
+      shift)
+        (( has_shift == 0 )) || return 1
+        has_shift=1
+        ;;
+      opt|option|alt)
+        (( has_opt == 0 )) || return 1
+        has_opt=1
+        ;;
+      ctrl|control)
+        (( has_ctrl == 0 )) || return 1
+        has_ctrl=1
+        ;;
+      [a-z])
+        [[ -z "$key" ]] || return 1
+        key="$p"
+        ;;
+      *)
+        return 1
+        ;;
+    esac
+  done
+
+  [[ -n "$key" ]] || return 1
+  (( has_cmd || has_shift || has_opt || has_ctrl )) || return 1
+
+  local mods=""
+  if (( has_cmd )); then
+    mods="@"
+    (( has_shift )) && mods="${mods}$"
+    (( has_opt )) && mods="${mods}~"
+    (( has_ctrl )) && mods="${mods}^"
+  else
+    (( has_ctrl )) && mods="${mods}^"
+    (( has_opt )) && mods="${mods}~"
+    (( has_shift )) && mods="${mods}$"
+  fi
+
+  local -a canonical_mods
+  (( has_cmd )) && canonical_mods+=("cmd")
+  (( has_shift )) && canonical_mods+=("shift")
+  (( has_ctrl )) && canonical_mods+=("ctrl")
+  (( has_opt )) && canonical_mods+=("opt")
+
+  local canonical="${(j:+:)canonical_mods}+$key"
+  local keyeq="${mods}${key}"
+  printf '%s|%s\n' "$canonical" "$keyeq"
+}
+
+letter_to_keycode() {
+  case "$1" in
+    a) echo 0 ;;
+    b) echo 11 ;;
+    c) echo 8 ;;
+    d) echo 2 ;;
+    e) echo 14 ;;
+    f) echo 3 ;;
+    g) echo 5 ;;
+    h) echo 4 ;;
+    i) echo 34 ;;
+    j) echo 38 ;;
+    k) echo 40 ;;
+    l) echo 37 ;;
+    m) echo 46 ;;
+    n) echo 45 ;;
+    o) echo 31 ;;
+    p) echo 35 ;;
+    q) echo 12 ;;
+    r) echo 15 ;;
+    s) echo 1 ;;
+    t) echo 17 ;;
+    u) echo 32 ;;
+    v) echo 9 ;;
+    w) echo 13 ;;
+    x) echo 7 ;;
+    y) echo 16 ;;
+    z) echo 6 ;;
+    *) return 1 ;;
+  esac
+}
+
+key_equivalent_to_carbon_modifiers() {
+  local keyeq="$1"
+  local mods="${keyeq[1,-2]}"
+  local out=0
+  local i char
+  for (( i = 1; i <= ${#mods}; i++ )); do
+    char="${mods[$i]}"
+    case "$char" in
+      "@") (( out += 256 )) ;;
+      "$") (( out += 512 )) ;;
+      "~") (( out += 2048 )) ;;
+      "^") (( out += 4096 )) ;;
+    esac
+  done
+  echo "$out"
+}
+
+ensure_hotkey_config_plist() {
+  ensure_dir "$CONFIG_DIR"
+  if [[ ! -f "$HOTKEY_CONFIG_PLIST" ]]; then
+    cat > "$HOTKEY_CONFIG_PLIST" <<'EOF'
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE plist PUBLIC "-//Apple//DTD PLIST 1.0//EN" "http://www.apple.com/DTDs/PropertyList-1.0.dtd">
+<plist version="1.0">
+<dict/>
+</plist>
+EOF
+  fi
+}
+
+target_prefix() {
+  if [[ "$CURRENT_TARGET" == "zone" ]]; then
+    echo "Zone"
+  else
+    echo "Main"
+  fi
+}
+
+set_hotkey_values() {
+  local prefix="$1"
+  local combo="$2"
+  local keyeq="$3"
+  local keycode="$4"
+  local modifiers="$5"
+  local pb="/usr/libexec/PlistBuddy"
+
+  ensure_hotkey_config_plist
+
+  "$pb" -c "Delete ${prefix}Enabled" "$HOTKEY_CONFIG_PLIST" >/dev/null 2>&1 || true
+  "$pb" -c "Delete ${prefix}Combo" "$HOTKEY_CONFIG_PLIST" >/dev/null 2>&1 || true
+  "$pb" -c "Delete ${prefix}KeyEquivalent" "$HOTKEY_CONFIG_PLIST" >/dev/null 2>&1 || true
+  "$pb" -c "Delete ${prefix}KeyCode" "$HOTKEY_CONFIG_PLIST" >/dev/null 2>&1 || true
+  "$pb" -c "Delete ${prefix}Modifiers" "$HOTKEY_CONFIG_PLIST" >/dev/null 2>&1 || true
+  "$pb" -c "Add ${prefix}Enabled bool true" "$HOTKEY_CONFIG_PLIST" >/dev/null
+  "$pb" -c "Add ${prefix}Combo string ${combo}" "$HOTKEY_CONFIG_PLIST" >/dev/null
+  "$pb" -c "Add ${prefix}KeyEquivalent string ${keyeq}" "$HOTKEY_CONFIG_PLIST" >/dev/null
+  "$pb" -c "Add ${prefix}KeyCode integer ${keycode}" "$HOTKEY_CONFIG_PLIST" >/dev/null
+  "$pb" -c "Add ${prefix}Modifiers integer ${modifiers}" "$HOTKEY_CONFIG_PLIST" >/dev/null
+
+  "$pb" -c "Delete AppBundlePath" "$HOTKEY_CONFIG_PLIST" >/dev/null 2>&1 || true
+  "$pb" -c "Delete AppExecutablePath" "$HOTKEY_CONFIG_PLIST" >/dev/null 2>&1 || true
+  "$pb" -c "Delete AppBundleIdentifier" "$HOTKEY_CONFIG_PLIST" >/dev/null 2>&1 || true
+  "$pb" -c "Add AppBundlePath string ${HOTKEY_APP_PATH}" "$HOTKEY_CONFIG_PLIST" >/dev/null
+  "$pb" -c "Add AppExecutablePath string ${HOTKEY_APP_EXECUTABLE_PATH}" "$HOTKEY_CONFIG_PLIST" >/dev/null
+  "$pb" -c "Add AppBundleIdentifier string ${HOTKEY_APP_BUNDLE_ID}" "$HOTKEY_CONFIG_PLIST" >/dev/null
+}
+
+clear_hotkey_values() {
+  local prefix="$1"
+  [[ -f "$HOTKEY_CONFIG_PLIST" ]] || return 0
+  local pb="/usr/libexec/PlistBuddy"
+  "$pb" -c "Delete ${prefix}Enabled" "$HOTKEY_CONFIG_PLIST" >/dev/null 2>&1 || true
+  "$pb" -c "Delete ${prefix}Combo" "$HOTKEY_CONFIG_PLIST" >/dev/null 2>&1 || true
+  "$pb" -c "Delete ${prefix}KeyEquivalent" "$HOTKEY_CONFIG_PLIST" >/dev/null 2>&1 || true
+  "$pb" -c "Delete ${prefix}KeyCode" "$HOTKEY_CONFIG_PLIST" >/dev/null 2>&1 || true
+  "$pb" -c "Delete ${prefix}Modifiers" "$HOTKEY_CONFIG_PLIST" >/dev/null 2>&1 || true
+}
+
+launch_agent_present() {
+  [[ -f "$LAUNCH_AGENT_PLIST" ]]
+}
+
+write_launcher_script() {
+  ensure_dir "$CONFIG_DIR"
+  cat > "$HOTKEY_APP_LAUNCHER_PATH" <<EOF
+#!/bin/zsh
+set -euo pipefail
+exec /usr/bin/open -W -n -g -a "${HOTKEY_APP_PATH}" --args --config "${HOTKEY_CONFIG_PLIST}"
+EOF
+  chmod 0755 "$HOTKEY_APP_LAUNCHER_PATH"
+}
+
+write_launch_agent() {
+  ensure_dir "$LAUNCH_AGENTS_DIR"
+  write_launcher_script
+
+  cat > "$LAUNCH_AGENT_PLIST" <<EOF
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE plist PUBLIC "-//Apple//DTD PLIST 1.0//EN" "http://www.apple.com/DTDs/PropertyList-1.0.dtd">
+<plist version="1.0">
+<dict>
+  <key>Label</key>
+  <string>${LAUNCH_AGENT_LABEL}</string>
+  <key>ProgramArguments</key>
+  <array>
+    <string>${HOTKEY_APP_LAUNCHER_PATH}</string>
+  </array>
+  <key>RunAtLoad</key>
+  <true/>
+  <key>KeepAlive</key>
+  <true/>
+  <key>StandardOutPath</key>
+  <string>${CONFIG_DIR}/hotkey-app.log</string>
+  <key>StandardErrorPath</key>
+  <string>${CONFIG_DIR}/hotkey-app.err.log</string>
+</dict>
+</plist>
+EOF
+}
+
+unload_agent() {
+  launchctl bootout "gui/$(id -u)" "$LAUNCH_AGENT_PLIST" >/dev/null 2>&1 || true
+  osascript -e 'tell application id "'"${HOTKEY_APP_BUNDLE_ID}"'" to quit' >/dev/null 2>&1 || true
+  pkill -x "${HOTKEY_APP_EXECUTABLE_NAME}" >/dev/null 2>&1 || true
+}
+
+load_agent() {
+  launchctl bootstrap "gui/$(id -u)" "$LAUNCH_AGENT_PLIST" >/dev/null 2>&1 || true
+  launchctl kickstart -k "gui/$(id -u)/${LAUNCH_AGENT_LABEL}" >/dev/null 2>&1 || true
+}
+
+restart_agent() {
+  unload_agent
+  write_launch_agent
+  load_agent
+}
+
+agent_running() {
+  launchctl print "gui/$(id -u)/${LAUNCH_AGENT_LABEL}" >/dev/null 2>&1
+}
+
+app_accessibility_status() {
+  if ! hotkey_app_present; then
+    echo "missing"
+    return 0
+  fi
+
+  local auth_value=""
+  auth_value="$(
+    sqlite3 "$HOME/Library/Application Support/com.apple.TCC/TCC.db" \
+      "select auth_value from access where service='kTCCServiceAccessibility' and (client='${HOTKEY_APP_BUNDLE_ID}' or client='${HOTKEY_APP_EXECUTABLE_PATH}') order by last_modified desc limit 1;" \
+      2>/dev/null || true
+  )"
+  if [[ "$auth_value" == "2" ]]; then
+    echo "trusted"
+  elif [[ "$auth_value" == "0" ]]; then
+    echo "denied"
+  else
+    echo "untrusted"
+  fi
+}
+
+set_target_hotkey() {
+  local combo="$1"
+  local parsed canonical keyeq key keycode modifiers prefix
+  parsed="$(combo_to_key_equivalent "$combo" 2>/dev/null || true)"
+  if [[ -z "$parsed" ]]; then
+    echo "快捷键格式无效：$combo"
+    echo "示例：cmd+shift+t / ctrl+command+t"
+    return 1
+  fi
+
+  canonical="${parsed%%|*}"
+  keyeq="${parsed##*|}"
+  key="${keyeq[-1]}"
+  keycode="$(letter_to_keycode "$key")"
+  modifiers="$(key_equivalent_to_carbon_modifiers "$keyeq")"
+  prefix="$(target_prefix)"
+  set_hotkey_values "$prefix" "$canonical" "$keyeq" "$keycode" "$modifiers"
+  restart_agent
+  echo "快捷键已更新：${canonical}"
+}
+
+cmd_bootstrap() {
+  is_macos || { echo "快捷键初始化失败：仅支持 macOS。"; return 1; }
+  ensure_runtime_present || return 1
+  cleanup_legacy_hotkey_artifacts
+  set_target_hotkey "$CURRENT_DEFAULT_COMBO" >/dev/null
+  : > "$CURRENT_SENTINEL_PATH"
+  echo "快捷键已就绪（${CURRENT_DEFAULT_COMBO}）。"
+}
+
+cmd_set() {
+  is_macos || { echo "仅支持 macOS。"; return 1; }
+  if [[ $# -ne 1 ]]; then
+    usage
+    return 1
+  fi
+  ensure_runtime_present || return 1
+  set_target_hotkey "$1"
+}
+
+cmd_status() {
+  is_macos || { echo "ERROR macOS only"; return 1; }
+  local has_error=0
+  local prefix enabled combo accessibility_state
+  prefix="$(target_prefix)"
+
+  if [[ -d "$HOTKEY_APP_PATH" ]]; then
+    echo "OK app: ${HOTKEY_APP_PATH}"
+  else
+    echo "ERROR app missing: ${HOTKEY_APP_PATH}"
+    has_error=1
+  fi
+
+  if hotkey_app_present; then
+    echo "OK executable: ${HOTKEY_APP_EXECUTABLE_PATH}"
+  else
+    echo "ERROR executable missing: ${HOTKEY_APP_EXECUTABLE_PATH}"
+    has_error=1
+  fi
+
+  echo "OK bundle-id: ${HOTKEY_APP_BUNDLE_ID}"
+
+  if launch_agent_present; then
+    echo "OK launch-agent: ${LAUNCH_AGENT_PLIST}"
+  else
+    echo "WARN launch-agent: missing"
+  fi
+
+  if agent_running; then
+    echo "OK runtime: running (${LAUNCH_AGENT_LABEL})"
+  else
+    echo "WARN runtime: not running"
+  fi
+
+  accessibility_state="$(app_accessibility_status)"
+  if [[ "$accessibility_state" == "trusted" ]]; then
+    echo "OK accessibility: trusted (${HOTKEY_APP_BUNDLE_NAME})"
+  elif [[ "$accessibility_state" == "denied" ]]; then
+    echo "WARN accessibility: denied (${HOTKEY_APP_BUNDLE_NAME})"
+  elif [[ "$accessibility_state" == "untrusted" ]]; then
+    echo "WARN accessibility: not granted (${HOTKEY_APP_BUNDLE_NAME})"
+  else
+    echo "WARN accessibility: app missing"
+  fi
+
+  enabled="$(/usr/libexec/PlistBuddy -c "Print ${prefix}Enabled" "$HOTKEY_CONFIG_PLIST" 2>/dev/null || true)"
+  combo="$(/usr/libexec/PlistBuddy -c "Print ${prefix}Combo" "$HOTKEY_CONFIG_PLIST" 2>/dev/null || true)"
+  if [[ "$enabled" == "true" || "$enabled" == "1" ]]; then
+    echo "OK hotkey[${CURRENT_TARGET}]: ${combo}"
+  else
+    echo "WARN hotkey[${CURRENT_TARGET}]: disabled"
+  fi
+
+  return "$has_error"
+}
+
+cmd_uninstall() {
+  is_macos || { echo "仅支持 macOS。"; return 1; }
+  local prefix
+  prefix="$(target_prefix)"
+  clear_hotkey_values "$prefix"
+  rm -f "$CURRENT_SENTINEL_PATH"
+
+  local main_enabled zone_enabled
+  main_enabled="$(/usr/libexec/PlistBuddy -c 'Print MainEnabled' "$HOTKEY_CONFIG_PLIST" 2>/dev/null || true)"
+  zone_enabled="$(/usr/libexec/PlistBuddy -c 'Print ZoneEnabled' "$HOTKEY_CONFIG_PLIST" 2>/dev/null || true)"
+
+  if [[ "$main_enabled" != "true" && "$main_enabled" != "1" && "$zone_enabled" != "true" && "$zone_enabled" != "1" ]]; then
+    unload_agent
+    rm -f "$LAUNCH_AGENT_PLIST"
+    rm -f "$HOTKEY_APP_LAUNCHER_PATH"
+    cleanup_legacy_hotkey_artifacts
+    echo "快捷键已卸载。"
+  else
+    restart_agent
+    echo "快捷键已更新，已移除 ${CURRENT_TARGET} 绑定。"
+  fi
+}
+
+if [[ $# -lt 1 ]]; then
+  usage
+  exit 1
+fi
+
+subcommand="$1"
+shift || true
+
+case "$subcommand" in
+  bootstrap)
+    configure_target main || exit 1
+    cmd_bootstrap "$@"
+    ;;
+  set)
+    configure_target main || exit 1
+    cmd_set "$@"
+    ;;
+  status)
+    configure_target main || exit 1
+    cmd_status "$@"
+    ;;
+  uninstall)
+    configure_target main || exit 1
+    cmd_uninstall "$@"
+    ;;
+  zone-bootstrap)
+    configure_target zone || exit 1
+    cmd_bootstrap "$@"
+    ;;
+  zone-set)
+    configure_target zone || exit 1
+    cmd_set "$@"
+    ;;
+  zone-status)
+    configure_target zone || exit 1
+    cmd_status "$@"
+    ;;
+  zone-uninstall)
+    configure_target zone || exit 1
+    cmd_uninstall "$@"
+    ;;
+  *)
+    usage
+    exit 1
+    ;;
+esac

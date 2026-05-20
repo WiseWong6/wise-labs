@@ -1,0 +1,1180 @@
+#!/bin/zsh
+
+# Tile terminal windows across iTerm2, Terminal, and Ghostty.
+# Per-screen independent layout with fixed policy for 2..10 windows.
+# Optional env vars: TILE_GAP, TILE_MARGIN_TOP, TILE_MARGIN_RIGHT, TILE_MARGIN_BOTTOM, TILE_MARGIN_LEFT
+
+print_usage() {
+  cat <<'EOF'
+Usage:
+  terminal-tile-all
+  terminal-tile-all ZONE
+
+Zones:
+  zl2  zl3  zl4
+  zr2  zr3  zr4
+EOF
+}
+
+zone_layout_from_arg() {
+  local key="$1"
+  key="${key//[[:space:]]/}"
+  key="${key//-/}"
+  key="${key//_/}"
+  key="${(L)key}"
+
+  case "$key" in
+    zl2)
+      echo "term-left-half"
+      return 0
+      ;;
+    zl3)
+      echo "term-left-third"
+      return 0
+      ;;
+    zl4)
+      echo "term-left-quarter"
+      return 0
+      ;;
+    zr2)
+      echo "term-right-half"
+      return 0
+      ;;
+    zr3)
+      echo "term-right-third"
+      return 0
+      ;;
+    zr4)
+      echo "term-right-quarter"
+      return 0
+      ;;
+    *)
+      return 1
+      ;;
+  esac
+}
+
+looks_like_zone_arg() {
+  local key="$1"
+  key="${key//[[:space:]]/}"
+  key="${key//-/}"
+  key="${key//_/}"
+  key="${(L)key}"
+  case "$key" in
+    zl2|zl3|zl4|zr2|zr3|zr4)
+      return 0
+      ;;
+    *)
+      return 1
+      ;;
+  esac
+}
+
+ZONE_ARG=""
+while (( $# > 0 )); do
+  case "$1" in
+    -h|--help)
+      print_usage
+      exit 0
+      ;;
+    *)
+      if [[ -n "$ZONE_ARG" ]]; then
+        echo "仅支持一个可选分区参数。" >&2
+        print_usage >&2
+        exit 2
+      fi
+      if looks_like_zone_arg "$1"; then
+        ZONE_ARG="$1"
+      else
+        echo "未知参数: $1" >&2
+        print_usage >&2
+        exit 2
+      fi
+      ;;
+  esac
+  shift
+done
+
+bootstrap_hotkey_once() {
+  if [[ "${TILE_SKIP_HOTKEY_BOOTSTRAP:-0}" == "1" ]]; then
+    return
+  fi
+
+  local conf_dir="$HOME/.config/terminal-window-tiler"
+  local sentinel="${conf_dir}/hotkey-bootstrap-v1"
+  if [[ -f "$sentinel" ]]; then
+    return
+  fi
+
+  local hotkey_cmd=""
+  hotkey_cmd="$(command -v terminal-tile-hotkey 2>/dev/null || true)"
+  if [[ -z "$hotkey_cmd" ]]; then
+    local script_dir="${0:A:h}"
+    if [[ ! -x "$script_dir/terminal-tile-hotkey" ]]; then
+      local x_file="${(%):-%x}"
+      script_dir="${x_file:A:h}"
+    fi
+    if [[ -x "$script_dir/terminal-tile-hotkey" ]]; then
+      hotkey_cmd="$script_dir/terminal-tile-hotkey"
+    fi
+  fi
+
+  if [[ -z "$hotkey_cmd" ]]; then
+    return
+  fi
+
+  "$hotkey_cmd" bootstrap
+  local bootstrap_code=$?
+  if (( bootstrap_code == 0 )); then
+    mkdir -p "$conf_dir"
+    : > "$sentinel"
+  else
+    echo "快捷键自动初始化失败（窗口整理将继续执行）。"
+  fi
+}
+
+bootstrap_hotkey_once
+
+resolve_local_helper() {
+  local helper_name="$1"
+  local candidate=""
+  local script_dir="${0:A:h}"
+
+  candidate="$HOME/.local/bin/${helper_name}"
+  if [[ -x "$candidate" ]]; then
+    echo "$candidate"
+    return 0
+  fi
+
+  if [[ -x "${script_dir}/${helper_name}" ]]; then
+    echo "${script_dir}/${helper_name}"
+    return 0
+  fi
+
+  if command -v "$helper_name" >/dev/null 2>&1; then
+    command -v "$helper_name"
+    return 0
+  fi
+
+  return 1
+}
+
+read_config_scope() {
+  local config_file="${TILE_CONFIG_FILE:-$HOME/.config/terminal-window-tiler/config}"
+  local line=""
+  local key=""
+  local value=""
+
+  [[ -f "$config_file" ]] || return 0
+
+  while IFS= read -r line || [[ -n "$line" ]]; do
+    line="${line#"${line%%[![:space:]]*}"}"
+    [[ -z "$line" || "$line" == \#* ]] && continue
+    [[ "$line" == *"="* ]] || continue
+
+    key="${line%%=*}"
+    value="${line#*=}"
+    key="${key//[[:space:]]/}"
+    value="${value#"${value%%[![:space:]]*}"}"
+    value="${value%"${value##*[![:space:]]}"}"
+
+    if [[ "$key" == "TILE_SCOPE" ]]; then
+      echo "$value"
+      return 0
+    fi
+  done < "$config_file"
+}
+
+normalize_scope() {
+  local value="${1:-}"
+  value="${value//[[:space:]]/}"
+  value="${(L)value}"
+  case "$value" in
+    ""|current)
+      echo "current"
+      ;;
+    all|cross|crossterminal|cross-terminal|global)
+      echo "all"
+      ;;
+    *)
+      echo "current"
+      ;;
+  esac
+}
+
+detect_invoking_terminal() {
+  local explicit_app="${TILE_INVOKING_TERMINAL_APP:-}"
+  local term_program="${TERM_PROGRAM:-}"
+  local bundle_id="${__CFBundleIdentifier:-}"
+
+  case "$explicit_app" in
+    iTerm2|Terminal|Ghostty)
+      echo "$explicit_app"
+      return 0
+      ;;
+  esac
+
+  case "$term_program" in
+    iTerm.app)
+      echo "iTerm2"
+      return 0
+      ;;
+    Apple_Terminal)
+      echo "Terminal"
+      return 0
+      ;;
+    ghostty)
+      echo "Ghostty"
+      return 0
+      ;;
+  esac
+
+  case "$bundle_id" in
+    com.googlecode.iterm2)
+      echo "iTerm2"
+      return 0
+      ;;
+    com.apple.Terminal)
+      echo "Terminal"
+      return 0
+      ;;
+    com.mitchellh.ghostty)
+      echo "Ghostty"
+      return 0
+      ;;
+  esac
+
+  return 1
+}
+
+GAP=${TILE_GAP:-10}
+M_TOP=${TILE_MARGIN_TOP:-6}
+M_RIGHT=${TILE_MARGIN_RIGHT:-8}
+M_BOTTOM=${TILE_MARGIN_BOTTOM:-8}
+M_LEFT=${TILE_MARGIN_LEFT:-8}
+DEBUG_MODE=${TILE_DEBUG:-0}
+TILE_MODE=${TILE_MODE:-}
+TILE_ZONE_LAYOUT=""
+ZONE_LAYOUT=""
+CONFIG_SCOPE="$(read_config_scope)"
+TILE_SCOPE_VALUE="$(normalize_scope "${TILE_SCOPE:-$CONFIG_SCOPE}")"
+INVOKING_TERMINAL_APP="$(detect_invoking_terminal || true)"
+
+if [[ -n "$ZONE_ARG" ]]; then
+  if ! ZONE_LAYOUT="$(zone_layout_from_arg "$ZONE_ARG")"; then
+    echo "无效分区: $ZONE_ARG（请使用 zl2/zl3/zl4/zr2/zr3/zr4）" >&2
+    print_usage >&2
+    exit 2
+  fi
+  TILE_ZONE_LAYOUT="$ZONE_LAYOUT"
+fi
+
+# Zone mode always uses full multi-terminal mode.
+if [[ -n "$TILE_ZONE_LAYOUT" ]]; then
+  TILE_MODE=""
+elif [[ -z "$TILE_MODE" && "$TILE_SCOPE_VALUE" == "current" && "$INVOKING_TERMINAL_APP" == "iTerm2" ]]; then
+  TILE_MODE="iterm_fast"
+elif [[ -z "$TILE_MODE" && "$TILE_SCOPE_VALUE" == "current" && "$INVOKING_TERMINAL_APP" == "Terminal" ]]; then
+  TILE_MODE="terminal_fast"
+fi
+
+if [[ "$TILE_MODE" == "iterm_fast" ]]; then
+result=$(osascript <<APPLESCRIPT
+use framework "AppKit"
+
+on colCountFor(n)
+  if n is 1 then return 1
+  if n is 2 then return 2
+  if n is 3 then return 3
+  if n is 4 then return 2
+  if n is 5 then return 3
+  if n is 6 then return 3
+  if n is 7 then return 4
+  if n is 8 then return 4
+  if n is 9 then return 3
+  if n is 10 then return 4
+
+  set c to 1
+  repeat while ((c * c) < n)
+    set c to c + 1
+  end repeat
+  return c
+end colCountFor
+
+on firstScreenVisibleRectTopLeft()
+  set screenList to current application's NSScreen's screens()
+  if (count of screenList) = 0 then return {}
+
+  set maxY to -999999
+  repeat with s in screenList
+    set f to s's frame() as list
+    set o to item 1 of f
+    set z to item 2 of f
+    set yTopCandidate to (item 2 of o) + (item 2 of z)
+    if yTopCandidate > maxY then set maxY to yTopCandidate
+  end repeat
+
+  set s to item 1 of screenList
+  set vf to s's visibleFrame() as list
+  set vo to item 1 of vf
+  set vz to item 2 of vf
+  set leftPos to (item 1 of vo) as integer
+  set widthPos to (item 1 of vz) as integer
+  set heightPos to (item 2 of vz) as integer
+  set topPos to (maxY - ((item 2 of vo) + (item 2 of vz))) as integer
+  set rightPos to leftPos + widthPos
+  set bottomPos to topPos + heightPos
+  return {leftPos, topPos, rightPos, bottomPos}
+end firstScreenVisibleRectTopLeft
+
+set gap to ${GAP}
+set mTop to ${M_TOP}
+set mRight to ${M_RIGHT}
+set mBottom to ${M_BOTTOM}
+set mLeft to ${M_LEFT}
+set debugMode to "${DEBUG_MODE}"
+
+set winRecords to {}
+set iTermCount to 0
+
+try
+  tell application "iTerm2"
+    if it is running then
+      set idList to id of every window
+      set bdList to bounds of every window
+      repeat with i from 1 to (count of idList)
+        set wb to item i of bdList
+        set end of winRecords to {"iTerm2", item i of idList, item 1 of wb, item 2 of wb, item 3 of wb, item 4 of wb}
+      end repeat
+      set iTermCount to count of idList
+    end if
+  end tell
+end try
+
+set totalWins to count of winRecords
+if totalWins = 0 then return "NO_WINDOWS"
+if totalWins = 1 then return "ONLY_ONE_WINDOW"
+
+set r to my firstScreenVisibleRectTopLeft()
+if (count of r) = 0 then return "NO_SCREENS"
+set availLeft to (item 1 of r) + mLeft
+set availTop to (item 2 of r) + mTop
+set availRight to (item 3 of r) - mRight
+set availBottom to (item 4 of r) - mBottom
+set availW to availRight - availLeft
+set availH to availBottom - availTop
+if availW < 200 then set availW to 200
+if availH < 200 then set availH to 200
+
+set colCount to my colCountFor(totalWins)
+set rowCount to (totalWins div colCount)
+if (totalWins mod colCount) > 0 then set rowCount to rowCount + 1
+set cellW to ((availW - (gap * (colCount - 1))) div colCount)
+set cellH to ((availH - (gap * (rowCount - 1))) div rowCount)
+set ops to {}
+
+repeat with j from 1 to totalWins
+  set idx to j - 1
+  set rr to idx div colCount
+  set cc to idx mod colCount
+  set x1 to availLeft + (cc * (cellW + gap))
+  set y1 to availTop + (rr * (cellH + gap))
+  set x2 to x1 + cellW
+  set y2 to y1 + cellH
+  set rec to item j of winRecords
+  set curX1 to item 3 of rec
+  set curY1 to item 4 of rec
+  set curX2 to item 5 of rec
+  set curY2 to item 6 of rec
+  if not (curX1 is x1 and curY1 is y1 and curX2 is x2 and curY2 is y2) then
+    set end of ops to {item 2 of rec, x1, y1, x2, y2}
+  end if
+end repeat
+
+if (count of ops) > 0 then
+  tell application "iTerm2"
+    repeat with op in ops
+      try
+        set bounds of window id (item 1 of op) to {item 2 of op, item 3 of op, item 4 of op, item 5 of op}
+      end try
+    end repeat
+  end tell
+end if
+
+if debugMode is "1" then return "OK,iterm=" & iTermCount & ",terminal=0,ghostty=0,mode=iterm_fast"
+return "OK,iterm=" & iTermCount & ",terminal=0,ghostty=0,mode=iterm_fast"
+APPLESCRIPT
+)
+fi
+
+if [[ "$TILE_MODE" == "terminal_fast" ]]; then
+result=$(osascript <<APPLESCRIPT
+use framework "AppKit"
+
+on colCountFor(n)
+  if n is 1 then return 1
+  if n is 2 then return 2
+  if n is 3 then return 3
+  if n is 4 then return 2
+  if n is 5 then return 3
+  if n is 6 then return 3
+  if n is 7 then return 4
+  if n is 8 then return 4
+  if n is 9 then return 3
+  if n is 10 then return 4
+
+  set c to 1
+  repeat while ((c * c) < n)
+    set c to c + 1
+  end repeat
+  return c
+end colCountFor
+
+on firstScreenVisibleRectTopLeft()
+  set screenList to current application's NSScreen's screens()
+  if (count of screenList) = 0 then return {}
+
+  set maxY to -999999
+  repeat with s in screenList
+    set f to s's frame() as list
+    set o to item 1 of f
+    set z to item 2 of f
+    set yTopCandidate to (item 2 of o) + (item 2 of z)
+    if yTopCandidate > maxY then set maxY to yTopCandidate
+  end repeat
+
+  set s to item 1 of screenList
+  set vf to s's visibleFrame() as list
+  set vo to item 1 of vf
+  set vz to item 2 of vf
+  set leftPos to (item 1 of vo) as integer
+  set widthPos to (item 1 of vz) as integer
+  set heightPos to (item 2 of vz) as integer
+  set topPos to (maxY - ((item 2 of vo) + (item 2 of vz))) as integer
+  set rightPos to leftPos + widthPos
+  set bottomPos to topPos + heightPos
+  return {leftPos, topPos, rightPos, bottomPos}
+end firstScreenVisibleRectTopLeft
+
+set gap to ${GAP}
+set mTop to ${M_TOP}
+set mRight to ${M_RIGHT}
+set mBottom to ${M_BOTTOM}
+set mLeft to ${M_LEFT}
+set debugMode to "${DEBUG_MODE}"
+
+set winRecords to {}
+set terminalCount to 0
+
+try
+  tell application "Terminal"
+    if it is running then
+      set idList to id of every window
+      set bdList to bounds of every window
+      repeat with i from 1 to (count of idList)
+        set wb to item i of bdList
+        set end of winRecords to {"Terminal", item i of idList, item 1 of wb, item 2 of wb, item 3 of wb, item 4 of wb}
+      end repeat
+      set terminalCount to count of idList
+    end if
+  end tell
+end try
+
+set totalWins to count of winRecords
+if totalWins = 0 then return "NO_WINDOWS"
+if totalWins = 1 then return "ONLY_ONE_WINDOW"
+
+set r to my firstScreenVisibleRectTopLeft()
+if (count of r) = 0 then return "NO_SCREENS"
+set availLeft to (item 1 of r) + mLeft
+set availTop to (item 2 of r) + mTop
+set availRight to (item 3 of r) - mRight
+set availBottom to (item 4 of r) - mBottom
+set availW to availRight - availLeft
+set availH to availBottom - availTop
+if availW < 200 then set availW to 200
+if availH < 200 then set availH to 200
+
+set colCount to my colCountFor(totalWins)
+set rowCount to (totalWins div colCount)
+if (totalWins mod colCount) > 0 then set rowCount to rowCount + 1
+set cellW to ((availW - (gap * (colCount - 1))) div colCount)
+set cellH to ((availH - (gap * (rowCount - 1))) div rowCount)
+set ops to {}
+
+repeat with j from 1 to totalWins
+  set idx to j - 1
+  set rr to idx div colCount
+  set cc to idx mod colCount
+  set x1 to availLeft + (cc * (cellW + gap))
+  set y1 to availTop + (rr * (cellH + gap))
+  set x2 to x1 + cellW
+  set y2 to y1 + cellH
+  set rec to item j of winRecords
+  set curX1 to item 3 of rec
+  set curY1 to item 4 of rec
+  set curX2 to item 5 of rec
+  set curY2 to item 6 of rec
+  if not (curX1 is x1 and curY1 is y1 and curX2 is x2 and curY2 is y2) then
+    set end of ops to {item 2 of rec, x1, y1, x2, y2}
+  end if
+end repeat
+
+if (count of ops) > 0 then
+  tell application "Terminal"
+    repeat with op in ops
+      try
+        set bounds of window id (item 1 of op) to {item 2 of op, item 3 of op, item 4 of op, item 5 of op}
+      end try
+    end repeat
+  end tell
+end if
+
+if debugMode is "1" then return "OK,iterm=0,terminal=" & terminalCount & ",ghostty=0,mode=terminal_fast"
+return "OK,iterm=0,terminal=" & terminalCount & ",ghostty=0,mode=terminal_fast"
+APPLESCRIPT
+)
+fi
+
+# Fallback: if a fast mode finds no windows, retry with full multi-terminal mode.
+if [[ "$TILE_MODE" != "iterm_fast" && "$TILE_MODE" != "terminal_fast" ]] || [[ "$result" == "NO_WINDOWS" ]]; then
+# Always probe Ghostty directly. Process prechecks are not reliable when
+# multiple Ghostty instances exist or the app is not registered consistently.
+CHECK_GHOSTTY=1
+GHOSTTY_HELPER_PATH="$(resolve_local_helper ghostty-window-helper 2>/dev/null || true)"
+if [[ "$TILE_SCOPE_VALUE" == "current" && "$INVOKING_TERMINAL_APP" != "Ghostty" && -n "$INVOKING_TERMINAL_APP" ]]; then
+  CHECK_GHOSTTY=0
+fi
+
+result=$(osascript <<APPLESCRIPT
+use framework "AppKit"
+use scripting additions
+
+on getVisibleRectsTopLeft()
+  set screenList to current application's NSScreen's screens()
+
+  set maxY to -999999
+  repeat with s in screenList
+    set f to s's frame() as list
+    set o to item 1 of f
+    set z to item 2 of f
+    set yTopCandidate to (item 2 of o) + (item 2 of z)
+    if yTopCandidate > maxY then set maxY to yTopCandidate
+  end repeat
+
+  set rects to {}
+  repeat with s in screenList
+    set vf to s's visibleFrame() as list
+    set vo to item 1 of vf
+    set vz to item 2 of vf
+
+    set leftPos to (item 1 of vo) as integer
+    set widthPos to (item 1 of vz) as integer
+    set heightPos to (item 2 of vz) as integer
+    set topPos to (maxY - ((item 2 of vo) + (item 2 of vz))) as integer
+    set rightPos to leftPos + widthPos
+    set bottomPos to topPos + heightPos
+
+    set end of rects to {leftPos, topPos, rightPos, bottomPos}
+  end repeat
+  return rects
+end getVisibleRectsTopLeft
+
+on nearestScreenIndex(px, py, rects)
+  set countRects to count of rects
+
+  repeat with i from 1 to countRects
+    set r to item i of rects
+    set l to item 1 of r
+    set t to item 2 of r
+    set rr to item 3 of r
+    set b to item 4 of r
+    if px is greater than or equal to l and px is less than rr and py is greater than or equal to t and py is less than b then return i
+  end repeat
+
+  set bestIdx to 1
+  set bestDist to 999999999
+  repeat with i from 1 to countRects
+    set r to item i of rects
+    set cx to ((item 1 of r) + (item 3 of r)) / 2
+    set cy to ((item 2 of r) + (item 4 of r)) / 2
+    set dx to (px - cx)
+    set dy to (py - cy)
+    set d2 to (dx * dx) + (dy * dy)
+    if d2 < bestDist then
+      set bestDist to d2
+      set bestIdx to i
+    end if
+  end repeat
+  return bestIdx
+end nearestScreenIndex
+
+on colCountFor(n)
+  if n is 1 then return 1
+  if n is 2 then return 2
+  if n is 3 then return 3
+  if n is 4 then return 2
+  if n is 5 then return 3
+  if n is 6 then return 3
+  if n is 7 then return 4
+  if n is 8 then return 4
+  if n is 9 then return 3
+  if n is 10 then return 4
+
+  set c to 1
+  repeat while ((c * c) < n)
+    set c to c + 1
+  end repeat
+  return c
+end colCountFor
+
+on zoneConfigForLayout(layoutName)
+  if layoutName is "term-left-half" then return {"left", 2}
+  if layoutName is "term-left-third" then return {"left", 3}
+  if layoutName is "term-left-quarter" then return {"left", 4}
+  if layoutName is "term-right-half" then return {"right", 2}
+  if layoutName is "term-right-third" then return {"right", 3}
+  if layoutName is "term-right-quarter" then return {"right", 4}
+  return {"", 0}
+end zoneConfigForLayout
+
+on normalizedTerminalAppName(rawName)
+  if rawName is missing value then return ""
+  set nameText to rawName as string
+  if nameText is "" then return ""
+  if nameText is "iTerm2" or nameText is "iTerm.app" or nameText is "com.googlecode.iterm2" then return "iTerm2"
+  if nameText is "Terminal" or nameText is "Apple_Terminal" or nameText is "com.apple.Terminal" then return "Terminal"
+  if nameText is "Ghostty" or nameText is "ghostty" or nameText is "com.mitchellh.ghostty" then return "Ghostty"
+  return ""
+end normalizedTerminalAppName
+
+on targetTerminalAppForScope(tileScope, invokingTerminalApp)
+  if tileScope is not "current" then return ""
+
+  set targetTerminalApp to my normalizedTerminalAppName(invokingTerminalApp)
+  if targetTerminalApp is not "" then return targetTerminalApp
+
+  try
+    tell application "System Events"
+      set frontProcList to (every application process whose frontmost is true)
+      if (count of frontProcList) > 0 then
+        set frontProc to item 1 of frontProcList
+        set targetTerminalApp to my normalizedTerminalAppName(name of frontProc)
+        if targetTerminalApp is not "" then return targetTerminalApp
+        try
+          set targetTerminalApp to my normalizedTerminalAppName(bundle identifier of frontProc)
+          if targetTerminalApp is not "" then return targetTerminalApp
+        end try
+      end if
+    end tell
+  end try
+
+  return ""
+end targetTerminalAppForScope
+
+on zoneColumnCountsFor(n)
+  if n < 1 then return {}
+
+  set maxRowsPerColumn to 4
+  set colCount to (n div maxRowsPerColumn)
+  if (n mod maxRowsPerColumn) > 0 then set colCount to colCount + 1
+
+  set baseCount to (n div colCount)
+  set remainderCount to (n mod colCount)
+  set counts to {}
+
+  repeat with colIdx from 1 to colCount
+    if colIdx <= remainderCount then
+      set end of counts to (baseCount + 1)
+    else
+      set end of counts to baseCount
+    end if
+  end repeat
+
+  return counts
+end zoneColumnCountsFor
+
+on maxValueOfList(numList)
+  if (count of numList) = 0 then return 0
+
+  set bestValue to item 1 of numList
+  repeat with i from 2 to (count of numList)
+    set currentValue to item i of numList
+    if currentValue > bestValue then set bestValue to currentValue
+  end repeat
+  return bestValue
+end maxValueOfList
+
+on absValue(n)
+  if n < 0 then return -n
+  return n
+end absValue
+
+on shouldSwapRecordIndices(leftRecIndex, rightRecIndex, recordList, useColumnOrder, useRightToLeft)
+  set leftRec to item leftRecIndex of recordList
+  set rightRec to item rightRecIndex of recordList
+  set leftX to item 3 of leftRec
+  set leftY to item 4 of leftRec
+  set rightX to item 3 of rightRec
+  set rightY to item 4 of rightRec
+  set laneTolerance to 48
+
+  if useColumnOrder then
+    if my absValue(leftX - rightX) > laneTolerance then
+      if useRightToLeft then
+        return leftX < rightX
+      else
+        return leftX > rightX
+      end if
+    end if
+    if my absValue(leftY - rightY) > laneTolerance then return leftY > rightY
+    if useRightToLeft then
+      return leftX < rightX
+    else
+      return leftX > rightX
+    end if
+  end if
+
+  if my absValue(leftY - rightY) > laneTolerance then return leftY > rightY
+  if my absValue(leftX - rightX) > laneTolerance then return leftX > rightX
+  return leftRecIndex > rightRecIndex
+end shouldSwapRecordIndices
+
+on sortRecordIndices(indexList, recordList, useColumnOrder, useRightToLeft)
+  set ordered to indexList
+  set itemCount to count of ordered
+  if itemCount < 2 then return ordered
+
+  repeat with i from 1 to (itemCount - 1)
+    repeat with j from (i + 1) to itemCount
+      set leftRecIndex to item i of ordered
+      set rightRecIndex to item j of ordered
+      if my shouldSwapRecordIndices(leftRecIndex, rightRecIndex, recordList, useColumnOrder, useRightToLeft) then
+        set item i of ordered to rightRecIndex
+        set item j of ordered to leftRecIndex
+      end if
+    end repeat
+  end repeat
+
+  return ordered
+end sortRecordIndices
+
+using terms from application "System Events"
+  on ghosttyWindowForKeyInList(keyText, ghosttyWindowList)
+    set targetAx to ""
+    set fallbackIndex to 0
+    set AppleScript's text item delimiters to "|"
+    set keyParts to text items of (keyText as string)
+    set AppleScript's text item delimiters to ""
+
+    if (count of keyParts) >= 1 then set targetAx to item 1 of keyParts
+    if (count of keyParts) >= 2 then
+      try
+        set fallbackIndex to (item 2 of keyParts) as integer
+      end try
+    end if
+
+    if targetAx is not "" then
+      repeat with currentWindow in ghosttyWindowList
+        try
+          tell currentWindow
+            set currentAx to (value of attribute "AXWindowNumber") as string
+          end tell
+          if currentAx is targetAx then return currentWindow
+        end try
+      end repeat
+    end if
+
+    if fallbackIndex > 0 and fallbackIndex <= (count of ghosttyWindowList) then
+      return item fallbackIndex of ghosttyWindowList
+    end if
+
+    return missing value
+  end ghosttyWindowForKeyInList
+end using terms from
+
+set gap to ${GAP}
+set mTop to ${M_TOP}
+set mRight to ${M_RIGHT}
+set mBottom to ${M_BOTTOM}
+set mLeft to ${M_LEFT}
+set debugMode to "${DEBUG_MODE}"
+set checkGhostty to ${CHECK_GHOSTTY}
+set tileZoneLayout to "${TILE_ZONE_LAYOUT}"
+set ghosttyHelperPath to "${GHOSTTY_HELPER_PATH}"
+set tileScope to "${TILE_SCOPE_VALUE}"
+set invokingTerminalApp to "${INVOKING_TERMINAL_APP}"
+set advancedMode to false
+if tileZoneLayout is not "" then set advancedMode to true
+set zoneCfg to my zoneConfigForLayout(tileZoneLayout)
+set zoneSide to item 1 of zoneCfg
+set zoneDivisor to item 2 of zoneCfg
+set targetTerminalApp to my targetTerminalAppForScope(tileScope, invokingTerminalApp)
+set includeIterm to (targetTerminalApp is "" or targetTerminalApp is "iTerm2")
+set includeTerminal to (targetTerminalApp is "" or targetTerminalApp is "Terminal")
+set includeGhostty to (targetTerminalApp is "" or targetTerminalApp is "Ghostty")
+
+set ghosttyRunning to false
+set ghosttyNeedsAX to false
+set ghosttyMoveFailed to false
+set ghosttyProcessName to ""
+set winRecords to {}
+set iTermCount to 0
+set terminalCount to 0
+set ghosttyCount to 0
+
+-- iTerm2 windows (native AppleScript)
+if includeIterm then
+  try
+    tell application "iTerm2"
+      if it is running then
+        set idList to id of every window
+        set bdList to bounds of every window
+        repeat with i from 1 to (count of idList)
+          set wb to item i of bdList
+          set end of winRecords to {"iTerm2", item i of idList, item 1 of wb, item 2 of wb, item 3 of wb, item 4 of wb}
+        end repeat
+        set iTermCount to count of idList
+      end if
+    end tell
+  end try
+end if
+
+-- Terminal windows (native AppleScript)
+if includeTerminal then
+  try
+    tell application "Terminal"
+      if it is running then
+        set idList to id of every window
+        set bdList to bounds of every window
+        repeat with i from 1 to (count of idList)
+          set wb to item i of bdList
+          set end of winRecords to {"Terminal", item i of idList, item 1 of wb, item 2 of wb, item 3 of wb, item 4 of wb}
+        end repeat
+        set terminalCount to count of idList
+      end if
+    end tell
+  end try
+end if
+
+-- Ghostty windows (System Events / Accessibility)
+if includeGhostty and checkGhostty is 1 then
+  if ghosttyHelperPath is not "" then
+    set ghosttyRunning to true
+    try
+      set ghosttyListCommand to (quoted form of ghosttyHelperPath) & " list"
+      set ghosttyRowsText to do shell script ghosttyListCommand
+      if ghosttyRowsText is not "" then
+        set ghosttyRows to paragraphs of ghosttyRowsText
+        repeat with rowText in ghosttyRows
+          set AppleScript's text item delimiters to tab
+          set rowParts to text items of (rowText as string)
+          set AppleScript's text item delimiters to ""
+          if (count of rowParts) is 5 then
+            set winKey to item 1 of rowParts
+            set leftPos to (item 2 of rowParts) as integer
+            set topPos to (item 3 of rowParts) as integer
+            set rightPos to (item 4 of rowParts) as integer
+            set bottomPos to (item 5 of rowParts) as integer
+            set end of winRecords to {"Ghostty", winKey, leftPos, topPos, rightPos, bottomPos}
+          end if
+        end repeat
+      end if
+      set ghosttyCount to count of ghosttyRows
+      set ghosttyProcessName to "ghostty-helper"
+    on error errMsg
+      if errMsg contains "accessibility" then
+        set ghosttyNeedsAX to true
+      end if
+    end try
+  else
+    try
+      tell application "System Events"
+        set ghosttyProc to missing value
+        set ghosttyProcList to (every process whose bundle identifier is "com.mitchellh.ghostty")
+        if (count of ghosttyProcList) > 0 then
+          set ghosttyProc to item 1 of ghosttyProcList
+        else if (exists process "Ghostty") then
+          set ghosttyProc to process "Ghostty"
+        else if (exists process "ghostty") then
+          set ghosttyProc to process "ghostty"
+        end if
+
+        if ghosttyProc is not missing value then
+          set ghosttyRunning to true
+          set ghosttyProcessName to name of ghosttyProc
+        end if
+      end tell
+    on error
+      set ghosttyRunning to false
+      set ghosttyNeedsAX to true
+    end try
+  end if
+end if
+
+if ghosttyRunning and ghosttyHelperPath is "" then
+  try
+    tell application "System Events"
+      tell process ghosttyProcessName
+        set gw to windows
+        set ghosttyCount to count of gw
+        repeat with i from 1 to (count of gw)
+          set w to item i of gw
+          set ghosttyWindowNumber to ""
+          try
+            tell w
+              set ghosttyWindowNumber to (value of attribute "AXWindowNumber") as string
+            end tell
+          end try
+          set p to position of w
+          set s to size of w
+          set leftPos to item 1 of p
+          set topPos to item 2 of p
+          set rightPos to leftPos + (item 1 of s)
+          set bottomPos to topPos + (item 2 of s)
+          set end of winRecords to {"Ghostty", ghosttyWindowNumber & "|" & (i as string), leftPos, topPos, rightPos, bottomPos}
+        end repeat
+      end tell
+    end tell
+  on error
+    set ghosttyNeedsAX to true
+  end try
+end if
+
+set totalWins to count of winRecords
+if totalWins = 0 then return "NO_WINDOWS"
+if totalWins = 1 then
+  if not advancedMode then
+    if ghosttyNeedsAX then
+      return "ONLY_ONE_WINDOW,GHOSTTY_NEEDS_AX"
+    else
+      return "ONLY_ONE_WINDOW"
+    end if
+  end if
+end if
+
+set screenRects to my getVisibleRectsTopLeft()
+set screenCount to count of screenRects
+if screenCount = 0 then return "NO_SCREENS"
+
+set groups to {}
+repeat with i from 1 to screenCount
+  set end of groups to {}
+end repeat
+
+repeat with i from 1 to totalWins
+  set rec to item i of winRecords
+  set cx to ((item 3 of rec) + (item 5 of rec)) / 2
+  set cy to ((item 4 of rec) + (item 6 of rec)) / 2
+  set sidx to my nearestScreenIndex(cx, cy, screenRects)
+  set item sidx of groups to ((item sidx of groups) & i)
+end repeat
+
+repeat with sidx from 1 to screenCount
+  set ids to item sidx of groups
+  set n to count of ids
+  if n > 0 then
+    if advancedMode then
+      set ids to my sortRecordIndices(ids, winRecords, true, zoneSide is "right")
+    else
+      set ids to my sortRecordIndices(ids, winRecords, false, false)
+    end if
+
+    set r to item sidx of screenRects
+    set availLeft to (item 1 of r) + mLeft
+    set availTop to (item 2 of r) + mTop
+    set availRight to (item 3 of r) - mRight
+    set availBottom to (item 4 of r) - mBottom
+
+    set availW to availRight - availLeft
+    set availH to availBottom - availTop
+    if availW < 200 then set availW to 200
+    if availH < 200 then set availH to 200
+
+    set zoneLeft to availLeft
+    set zoneTop to availTop
+    set zoneRight to availRight
+    set zoneBottom to availBottom
+    if advancedMode and zoneDivisor > 0 then
+      set zoneWidth to availW div zoneDivisor
+      if zoneSide is "left" then
+        set zoneRight to availLeft + zoneWidth
+      else if zoneSide is "right" then
+        set zoneLeft to availRight - zoneWidth
+      end if
+    end if
+
+    set zoneW to zoneRight - zoneLeft
+    set zoneH to zoneBottom - zoneTop
+
+    if advancedMode then
+      set zoneColumnCounts to my zoneColumnCountsFor(n)
+      set colCount to count of zoneColumnCounts
+      set maxZoneRows to my maxValueOfList(zoneColumnCounts)
+    else
+      set colCount to my colCountFor(n)
+      set rowCount to (n div colCount)
+      if (n mod colCount) > 0 then set rowCount to rowCount + 1
+    end if
+
+    set cellW to ((zoneW - (gap * (colCount - 1))) div colCount)
+    set iTermOps to {}
+    set terminalOps to {}
+    set ghosttyOps to {}
+
+    if advancedMode then
+      set cellH to ((zoneH - (gap * (maxZoneRows - 1))) div maxZoneRows)
+      set recPos to 1
+      repeat with logicalCol from 1 to colCount
+        set colRows to item logicalCol of zoneColumnCounts
+        set visualCol to logicalCol - 1
+        if zoneSide is "right" then set visualCol to colCount - logicalCol
+
+        set x1 to zoneLeft + (visualCol * (cellW + gap))
+        set x2 to x1 + cellW
+        if visualCol is (colCount - 1) then set x2 to zoneRight
+
+        repeat with rowIdx from 1 to colRows
+          set y1 to zoneTop + ((rowIdx - 1) * (cellH + gap))
+          set y2 to y1 + cellH
+          if rowIdx is maxZoneRows then set y2 to zoneBottom
+
+          set recIndex to item recPos of ids
+          set rec to item recIndex of winRecords
+          set appName to item 1 of rec
+          set winKey to item 2 of rec
+          if appName is "iTerm2" then
+            set end of iTermOps to {winKey, x1, y1, x2, y2}
+          else if appName is "Terminal" then
+            set end of terminalOps to {winKey, x1, y1, x2, y2}
+          else if appName is "Ghostty" then
+            set end of ghosttyOps to {winKey, x1, y1, x2, y2}
+          end if
+
+          set recPos to recPos + 1
+        end repeat
+      end repeat
+    else
+      set cellH to ((zoneH - (gap * (rowCount - 1))) div rowCount)
+      repeat with j from 1 to n
+        set idx to j - 1
+        set rr to idx div colCount
+        set cc to idx mod colCount
+        set x1 to zoneLeft + (cc * (cellW + gap))
+        set y1 to zoneTop + (rr * (cellH + gap))
+        set x2 to x1 + cellW
+        set y2 to y1 + cellH
+        if cc is (colCount - 1) then set x2 to zoneRight
+        if rr is (rowCount - 1) then set y2 to zoneBottom
+
+        set recIndex to item j of ids
+        set rec to item recIndex of winRecords
+        set appName to item 1 of rec
+        set winKey to item 2 of rec
+        if appName is "iTerm2" then
+          set end of iTermOps to {winKey, x1, y1, x2, y2}
+        else if appName is "Terminal" then
+          set end of terminalOps to {winKey, x1, y1, x2, y2}
+        else if appName is "Ghostty" then
+          set end of ghosttyOps to {winKey, x1, y1, x2, y2}
+        end if
+      end repeat
+    end if
+
+    if (count of iTermOps) > 0 then
+      tell application "iTerm2"
+        repeat with op in iTermOps
+          try
+            set bounds of window id (item 1 of op) to {item 2 of op, item 3 of op, item 4 of op, item 5 of op}
+          end try
+        end repeat
+      end tell
+    end if
+
+    if (count of terminalOps) > 0 then
+      tell application "Terminal"
+        repeat with op in terminalOps
+          try
+            set bounds of window id (item 1 of op) to {item 2 of op, item 3 of op, item 4 of op, item 5 of op}
+          end try
+        end repeat
+      end tell
+    end if
+
+    if (count of ghosttyOps) > 0 then
+      try
+        if ghosttyHelperPath is not "" then
+          set payloadText to ""
+          repeat with op in ghosttyOps
+            set payloadLine to ((item 1 of op) as string) & tab & ((item 2 of op) as string) & tab & ((item 3 of op) as string) & tab & ((item 4 of op) as string) & tab & ((item 5 of op) as string)
+            if payloadText is "" then
+              set payloadText to payloadLine
+            else
+              set payloadText to payloadText & linefeed & payloadLine
+            end if
+          end repeat
+          if payloadText is not "" then
+            set ghosttyMoveCommand to "printf %s " & quoted form of payloadText & " | " & quoted form of ghosttyHelperPath & " move"
+            do shell script ghosttyMoveCommand
+          end if
+        else
+          tell application "System Events"
+            tell process ghosttyProcessName
+              repeat with op in ghosttyOps
+                set gx1 to item 2 of op
+                set gy1 to item 3 of op
+                set gx2 to item 4 of op
+                set gy2 to item 5 of op
+                set ghosttyWindowRef to my ghosttyWindowForKeyInList(item 1 of op, windows)
+                if ghosttyWindowRef is not missing value then
+                  set position of ghosttyWindowRef to {gx1, gy1}
+                  set size of ghosttyWindowRef to {gx2 - gx1, gy2 - gy1}
+                end if
+              end repeat
+            end tell
+          end tell
+        end if
+      on error
+        set ghosttyNeedsAX to true
+        set ghosttyMoveFailed to true
+      end try
+    end if
+  end if
+end repeat
+
+if debugMode is "1" then
+  return "OK,iterm=" & iTermCount & ",terminal=" & terminalCount & ",ghostty=" & ghosttyCount & ",ghosttyProcess=" & ghosttyProcessName & ",ghosttyRunning=" & ghosttyRunning & ",ghosttyNeedsAX=" & ghosttyNeedsAX & ",ghosttyMoveFailed=" & ghosttyMoveFailed & ",zoneLayout=" & tileZoneLayout & ",scope=" & tileScope & ",target=" & targetTerminalApp
+end if
+
+if ghosttyNeedsAX then
+  return "OK,GHOSTTY_NEEDS_AX,iterm=" & iTermCount & ",terminal=" & terminalCount & ",ghostty=" & ghosttyCount & ",ghosttyRunning=" & ghosttyRunning & ",ghosttyMoveFailed=" & ghosttyMoveFailed & ",zoneLayout=" & tileZoneLayout & ",scope=" & tileScope & ",target=" & targetTerminalApp
+else
+  return "OK,iterm=" & iTermCount & ",terminal=" & terminalCount & ",ghostty=" & ghosttyCount & ",ghosttyRunning=" & ghosttyRunning & ",ghosttyMoveFailed=" & ghosttyMoveFailed & ",zoneLayout=" & tileZoneLayout & ",scope=" & tileScope & ",target=" & targetTerminalApp
+end if
+APPLESCRIPT
+)
+fi
+
+if [[ "$result" == *"ONLY_ONE_WINDOW"* ]]; then
+  echo "当前只检测到 1 个终端窗口，无法平铺。"
+fi
+
+if [[ "$result" == *"NO_WINDOWS"* ]]; then
+  echo "未检测到 iTerm2 / Terminal / Ghostty 窗口。"
+fi
+
+if [[ "$result" == *"GHOSTTY_NEEDS_AX"* ]]; then
+  echo "Ghostty 需要开启辅助功能权限后才能参与分屏：系统设置 -> 隐私与安全性 -> 辅助功能。"
+fi
+
+if [[ "${DEBUG_MODE}" == "1" && "$result" == *"ghosttyRunning=true"* && "$result" == *"ghostty=0"* ]]; then
+  echo "检测到 Ghostty 进程，但没有可用窗口（可能未打开 Ghostty 窗口，或当前版本未暴露窗口给辅助功能）。"
+fi
+
+if [[ "$result" == *"ghosttyMoveFailed=true"* ]]; then
+  echo "检测到 Ghostty 窗口，但无法调整位置/尺寸。请检查“Ghostty”和当前终端对辅助功能的授权，然后重试。"
+fi
+
+if [[ "${DEBUG_MODE}" == "1" ]]; then
+  echo "$result"
+fi

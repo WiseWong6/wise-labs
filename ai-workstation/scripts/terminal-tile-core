@@ -1,0 +1,43 @@
+#!/usr/bin/env swift
+
+import Foundation
+
+func tileCoreStderr(_ text: String) {
+  FileHandle.standardError.write(Data((text + "\n").utf8))
+}
+
+@main
+struct TerminalTileCoreMain {
+  static func main() {
+    do {
+      let args = Array(CommandLine.arguments.dropFirst())
+      if args.count > 1 {
+        throw TileCoreError.invalidInput("tile 只支持一个可选参数。")
+      }
+
+      if let first = args.first, first == "-h" || first == "--help" {
+        print(tileUsageText())
+        return
+      }
+
+      let result = try executeTile(
+        options: TileExecutionOptions(
+          zoneArgument: args.first,
+          environment: ProcessInfo.processInfo.environment
+        )
+      )
+      if let message = result.message {
+        print(message)
+      }
+      if let debugMessage = result.debugMessage {
+        print(debugMessage)
+      }
+    } catch let error as TileCoreError {
+      tileCoreStderr(error.description)
+      exit(1)
+    } catch {
+      tileCoreStderr(String(describing: error))
+      exit(1)
+    }
+  }
+}

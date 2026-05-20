@@ -1,0 +1,333 @@
+#!/usr/bin/env swift
+
+import AppKit
+import ApplicationServices
+import CoreGraphics
+import Foundation
+
+struct WindowRecord {
+  let key: String
+  let element: AXUIElement
+  let x: Int
+  let y: Int
+  let width: Int
+  let height: Int
+  let pid: pid_t
+  let sourceIndex: Int
+}
+
+enum HelperError: Error, CustomStringConvertible {
+  case ghosttyNotRunning
+  case accessibilityDenied
+  case windowsUnavailable
+  case invalidInput(String)
+  case moveFailed(String)
+
+  var description: String {
+    switch self {
+    case .ghosttyNotRunning:
+      return "Ghostty is not running."
+    case .accessibilityDenied:
+      return "Ghostty accessibility access is not available."
+    case .windowsUnavailable:
+      return "Ghostty windows are unavailable."
+    case .invalidInput(let message):
+      return message
+    case .moveFailed(let message):
+      return message
+    }
+  }
+}
+
+func stderr(_ text: String) {
+  FileHandle.standardError.write(Data((text + "\n").utf8))
+}
+
+func collectAppKitGhosttyPIDs() -> Set<pid_t> {
+  var pids: Set<pid_t> = []
+
+  for app in NSRunningApplication.runningApplications(withBundleIdentifier: "com.mitchellh.ghostty") {
+    pids.insert(app.processIdentifier)
+  }
+
+  for app in NSWorkspace.shared.runningApplications {
+    let localizedName = app.localizedName?.lowercased() ?? ""
+    let bundleIdentifier = app.bundleIdentifier?.lowercased() ?? ""
+    let bundlePath = app.bundleURL?.path.lowercased() ?? ""
+    let executablePath = app.executableURL?.path.lowercased() ?? ""
+    let matchesGhostty =
+      localizedName.contains("ghostty") ||
+      bundleIdentifier.contains("ghostty") ||
+      bundlePath.contains("ghostty") ||
+      executablePath.contains("ghostty")
+    if matchesGhostty {
+      pids.insert(app.processIdentifier)
+    }
+  }
+
+  return pids
+}
+
+func collectCGWindowGhosttyPIDs() -> Set<pid_t> {
+  var pids: Set<pid_t> = []
+  let options: CGWindowListOption = [.optionAll]
+  guard let infos = CGWindowListCopyWindowInfo(options, CGWindowID(0)) as? [[String: Any]] else {
+    return pids
+  }
+
+  for info in infos {
+    let owner = (info[kCGWindowOwnerName as String] as? String ?? "").lowercased()
+    guard owner.contains("ghostty") else {
+      continue
+    }
+    if let pid = info[kCGWindowOwnerPID as String] as? pid_t {
+      pids.insert(pid)
+    } else if let pidNumber = info[kCGWindowOwnerPID as String] as? NSNumber {
+      pids.insert(pid_t(pidNumber.intValue))
+    }
+  }
+
+  return pids
+}
+
+func collectProcessGhosttyPIDs() -> Set<pid_t> {
+  let process = Process()
+  process.executableURL = URL(fileURLWithPath: "/usr/bin/pgrep")
+  process.arguments = ["-x", "ghostty"]
+
+  let pipe = Pipe()
+  process.standardOutput = pipe
+  process.standardError = Pipe()
+
+  do {
+    try process.run()
+  } catch {
+    return []
+  }
+
+  process.waitUntilExit()
+  guard process.terminationStatus == 0 else {
+    return []
+  }
+
+  let data = pipe.fileHandleForReading.readDataToEndOfFile()
+  let text = String(decoding: data, as: UTF8.self)
+  let lines = text
+    .split(whereSeparator: \.isNewline)
+    .compactMap { Int32($0.trimmingCharacters(in: .whitespaces)) }
+
+  return Set(lines)
+}
+
+func getGhosttyPIDs() -> [pid_t] {
+  let allPIDs =
+    collectAppKitGhosttyPIDs()
+    .union(collectCGWindowGhosttyPIDs())
+    .union(collectProcessGhosttyPIDs())
+  return Array(allPIDs).sorted()
+}
+
+func copyAXValue(_ element: AXUIElement, attribute: String) -> AXValue? {
+  var rawValue: CFTypeRef?
+  let error = AXUIElementCopyAttributeValue(element, attribute as CFString, &rawValue)
+  guard error == .success, let rawValue else {
+    return nil
+  }
+  guard CFGetTypeID(rawValue) == AXValueGetTypeID() else {
+    return nil
+  }
+  let axValue = rawValue as! AXValue
+  return axValue
+}
+
+func getCGPoint(_ element: AXUIElement, attribute: String) -> CGPoint? {
+  guard let axValue = copyAXValue(element, attribute: attribute) else {
+    return nil
+  }
+  var value = CGPoint.zero
+  guard AXValueGetType(axValue) == .cgPoint else {
+    return nil
+  }
+  return AXValueGetValue(axValue, .cgPoint, &value) ? value : nil
+}
+
+func getCGSize(_ element: AXUIElement, attribute: String) -> CGSize? {
+  guard let axValue = copyAXValue(element, attribute: attribute) else {
+    return nil
+  }
+  var value = CGSize.zero
+  guard AXValueGetType(axValue) == .cgSize else {
+    return nil
+  }
+  return AXValueGetValue(axValue, .cgSize, &value) ? value : nil
+}
+
+func getWindowNumber(_ element: AXUIElement) -> Int? {
+  var rawValue: CFTypeRef?
+  let error = AXUIElementCopyAttributeValue(element, "AXWindowNumber" as CFString, &rawValue)
+  guard error == .success, let rawValue else {
+    return nil
+  }
+  if CFGetTypeID(rawValue) == CFNumberGetTypeID() {
+    return rawValue as? Int
+  }
+  if let number = rawValue as? NSNumber {
+    return number.intValue
+  }
+  return nil
+}
+
+func setCGPoint(_ element: AXUIElement, attribute: String, value: CGPoint) -> AXError {
+  var mutableValue = value
+  guard let axValue = AXValueCreate(.cgPoint, &mutableValue) else {
+    return .failure
+  }
+  return AXUIElementSetAttributeValue(element, attribute as CFString, axValue)
+}
+
+func setCGSize(_ element: AXUIElement, attribute: String, value: CGSize) -> AXError {
+  var mutableValue = value
+  guard let axValue = AXValueCreate(.cgSize, &mutableValue) else {
+    return .failure
+  }
+  return AXUIElementSetAttributeValue(element, attribute as CFString, axValue)
+}
+
+func shouldSwap(_ left: WindowRecord, _ right: WindowRecord) -> Bool {
+  let laneTolerance = 48
+  if abs(left.y - right.y) > laneTolerance {
+    return left.y > right.y
+  }
+  if abs(left.x - right.x) > laneTolerance {
+    return left.x > right.x
+  }
+  return left.sourceIndex > right.sourceIndex
+}
+
+func loadWindowRecords() throws -> [WindowRecord] {
+  guard AXIsProcessTrusted() else {
+    throw HelperError.accessibilityDenied
+  }
+
+  let pids = getGhosttyPIDs()
+  guard !pids.isEmpty else {
+    throw HelperError.ghosttyNotRunning
+  }
+
+  var records: [WindowRecord] = []
+  for pid in pids {
+    let appElement = AXUIElementCreateApplication(pid)
+    var rawWindows: CFTypeRef?
+    let copyError = AXUIElementCopyAttributeValue(appElement, kAXWindowsAttribute as CFString, &rawWindows)
+    guard copyError == .success else {
+      continue
+    }
+
+    let windowList = rawWindows as? [AXUIElement] ?? []
+    for (sourceIndex, window) in windowList.enumerated() {
+      guard
+        let position = getCGPoint(window, attribute: kAXPositionAttribute),
+        let size = getCGSize(window, attribute: kAXSizeAttribute)
+      else {
+        continue
+      }
+
+      let windowNumber = getWindowNumber(window)
+      let key = windowNumber.map { "\(pid):\($0)" } ?? "\(pid):idx:\(sourceIndex + 1)"
+
+      records.append(
+        WindowRecord(
+          key: key,
+          element: window,
+          x: Int(position.x.rounded()),
+          y: Int(position.y.rounded()),
+          width: Int(size.width.rounded()),
+          height: Int(size.height.rounded()),
+          pid: pid,
+          sourceIndex: sourceIndex + 1
+        )
+      )
+    }
+  }
+
+  guard !records.isEmpty else {
+    throw HelperError.windowsUnavailable
+  }
+
+  records.sort(by: shouldSwap)
+  return records
+}
+
+func handleList() throws {
+  let records = try loadWindowRecords()
+  let output = records.map { record in
+    "\(record.key)\t\(record.x)\t\(record.y)\t\(record.x + record.width)\t\(record.y + record.height)"
+  }.joined(separator: "\n")
+  print(output)
+}
+
+func handleMove() throws {
+  let records = try loadWindowRecords()
+  var operations: [(key: String, x1: Int, y1: Int, x2: Int, y2: Int)] = []
+
+  while let line = readLine() {
+    let trimmed = line.trimmingCharacters(in: .whitespacesAndNewlines)
+    if trimmed.isEmpty {
+      continue
+    }
+
+    let parts = trimmed.split(separator: "\t", omittingEmptySubsequences: false)
+    guard parts.count == 5 else {
+      throw HelperError.invalidInput("Invalid move payload: \(trimmed)")
+    }
+
+    guard
+      parts[0].isEmpty == false,
+      let x1 = Int(parts[1]),
+      let y1 = Int(parts[2]),
+      let x2 = Int(parts[3]),
+      let y2 = Int(parts[4])
+    else {
+      throw HelperError.invalidInput("Invalid move payload: \(trimmed)")
+    }
+
+    let key = String(parts[0])
+
+    operations.append((key, x1, y1, x2, y2))
+  }
+
+  let recordMap = Dictionary(uniqueKeysWithValues: records.map { ($0.key, $0) })
+
+  for operation in operations {
+    guard let record = recordMap[operation.key] else {
+      continue
+    }
+
+    let position = CGPoint(x: operation.x1, y: operation.y1)
+    let size = CGSize(width: max(operation.x2 - operation.x1, 1), height: max(operation.y2 - operation.y1, 1))
+
+    let positionResult = setCGPoint(record.element, attribute: kAXPositionAttribute, value: position)
+    let sizeResult = setCGSize(record.element, attribute: kAXSizeAttribute, value: size)
+    if positionResult != .success || sizeResult != .success {
+      throw HelperError.moveFailed("Failed to move Ghostty window \(operation.key): pos=\(positionResult.rawValue) size=\(sizeResult.rawValue)")
+    }
+  }
+}
+
+do {
+  let command = CommandLine.arguments.dropFirst().first ?? "list"
+  switch command {
+  case "list":
+    try handleList()
+  case "move":
+    try handleMove()
+  default:
+    throw HelperError.invalidInput("Usage: ghostty-window-helper [list|move]")
+  }
+} catch let error as HelperError {
+  stderr(error.description)
+  exit(1)
+} catch {
+  stderr(String(describing: error))
+  exit(1)
+}

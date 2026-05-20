@@ -1,0 +1,171 @@
+.header-subtitle {
+  margin-top: 0.2rem;
+  font-size: 0.78rem;
+  color: #d6d3d1;
+  opacity: 0.82;
+}
+
+.header-status-group {
+  display: flex;
+  align-items: center;
+  gap: 0.75rem;
+}
+
+.runtime-pill {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  min-width: 6.5rem;
+  padding: 0.42rem 0.85rem;
+  border-radius: 999px;
+  border: 1px solid rgba(255, 255, 255, 0.14);
+  background: rgba(15, 23, 42, 0.55);
+  color: #e7e5e4;
+  font-size: 0.76rem;
+  font-weight: 700;
+  letter-spacing: 0.08em;
+}
+
+.runtime-pill[data-mode="demo"] {
+  background: rgba(245, 158, 11, 0.14);
+  color: #fde68a;
+  border-color: rgba(245, 158, 11, 0.24);
+}
+
+.runtime-pill[data-mode="live"] {
+  background: rgba(16, 185, 129, 0.14);
+  color: #86efac;
+  border-color: rgba(16, 185, 129, 0.24);
+}
+
+.stage-legend {
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: center;
+  gap: 0.75rem;
+  width: 100%;
+  margin-bottom: 0.75rem;
+}
+
+.legend-chip {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  padding: 0.35rem 0.7rem;
+  border-radius: 999px;
+  font-size: 0.72rem;
+  font-weight: 700;
+  letter-spacing: 0.05em;
+  border: 1px solid rgba(255, 255, 255, 0.12);
+  background: rgba(17, 24, 39, 0.48);
+  color: #f5f5f4;
+}
+
+.legend-chip-main {
+  border-color: rgba(16, 185, 129, 0.28);
+  color: #86efac;
+}
+
+.legend-chip-worker {
+  border-color: rgba(96, 165, 250, 0.28);
+  color: #bfdbfe;
+}
+
+.legend-chip-subagent {
+  border-color: rgba(245, 158, 11, 0.32);
+  color: #fde68a;
+}
+
+.agents-cluster.dynamic-layout {
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: center;
+  align-items: flex-start;
+  gap: 2rem 2.4rem;
+  width: 100%;
+  padding: 0 1rem 1rem;
+}
+
+.dynamic-layout .agent-station {
+  min-width: 140px;
+}
+
+.dynamic-layout .station-main {
+  flex: 0 0 100%;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+}
+
+.dynamic-layout .station-main .station-label {
+  background: rgba(16, 185, 129, 0.2);
+  border-color: rgba(16, 185, 129, 0.3);
+  color: #d1fae5;
+}
+
+.dynamic-layout .station-worker .station-label {
+  background: rgba(96, 165, 250, 0.16);
+  border-color: rgba(96, 165, 250, 0.24);
+}
+
+.dynamic-layout .station-subagent {
+  animation: stage-arrive 220ms ease-out;
+}
+
+.dynamic-layout .station-subagent .station-label {
+  background: rgba(245, 158, 11, 0.15);
+  border-color: rgba(245, 158, 11, 0.28);
+  color: #fde68a;
+}
+
+.dynamic-layout .station-subagent .bubble-inner {
+  border-color: rgba(245, 158, 11, 0.38);
+  box-shadow: 0 10px 40px rgba(245, 158, 11, 0.16);
+}
+
+.station-meta {
+  max-width: 180px;
+  margin-top: 0.45rem;
+  font-size: 0.7rem;
+  line-height: 1.4;
+  text-align: center;
+  color: #d6d3d1;
+  opacity: 0.8;
+}
+
+@keyframes stage-arrive {
+  from {
+    opacity: 0;
+    transform: translateY(10px) scale(0.96);
+  }
+
+  to {
+    opacity: 1;
+    transform: translateY(0) scale(1);
+  }
+}
+
+@media (max-width: 900px) {
+  .header {
+    flex-direction: column;
+    gap: 1rem;
+  }
+
+  .header-status-group {
+    width: 100%;
+    justify-content: center;
+  }
+
+  .agents-cluster.dynamic-layout {
+    gap: 2.75rem;
+    padding-bottom: 2rem;
+  }
+
+  .dynamic-layout .agent-station {
+    min-width: 120px;
+  }
+
+  .stage-legend {
+    gap: 0.55rem;
+  }
+}

@@ -1,0 +1,399 @@
+#!/bin/zsh
+
+set -euo pipefail
+
+REPO_ROOT="${0:A:h:h}"
+BIN_DIR="${TILE_INSTALL_BIN_DIR:-$HOME/.local/bin}"
+APP_DIR="${TILE_INSTALL_APP_DIR:-$HOME/Applications}"
+HOTKEY_APP_BUNDLE_NAME="Terminal Tile Hotkeys.app"
+HOTKEY_APP_EXECUTABLE_NAME="Terminal Tile Hotkeys"
+HOTKEY_APP_BUNDLE_ID="ai.wise.TerminalTileHotkeys"
+CLAUDE_DIR="${CLAUDE_COMMANDS_DIR:-$HOME/.claude/commands}"
+CODEX_DIR="${CODEX_PROMPTS_DIR:-$HOME/.codex/prompts}"
+OPENCLAW_SKILLS_DIR="${OPENCLAW_SKILLS_DIR:-$HOME/.openclaw/workspace/skills}"
+OPENCLAW_SKILL_NAMES=(tile zl2 zl3 zl4 zr2 zr3 zr4)
+SWIFTC_CMD=""
+
+command_body() {
+  local mode="$1"
+  local cmd="${BIN_DIR}/tile"
+  local description="$2"
+
+  cat <<EOF
+Immediately run the local command \`${cmd}${mode:+ ${mode}}\`.
+
+Rules:
+- Execute it now with Bash. Do not ask follow-up questions.
+- Do not explain the tool or propose alternatives.
+- If it succeeds, reply with one short line only.
+- If \`${cmd}\` is missing, tell the user to run \`scripts/install-agent-commands\`.
+EOF
+}
+
+install_bin_scripts() {
+  mkdir -p "$BIN_DIR"
+
+  cleanup_legacy_hotkey_runtime
+  install_tile_core
+  install_hotkey_app
+
+  local name
+  for name in \
+    terminal-tile-all \
+    terminal-tile-hotkey \
+    terminal-tile-zone-picker \
+    tile \
+    zl2 zl3 zl4 zr2 zr3 zr4; do
+    install -m 0755 "${REPO_ROOT}/scripts/${name}" "${BIN_DIR}/${name}"
+    echo "OK bin: ${BIN_DIR}/${name}"
+  done
+
+  install_ghostty_helper
+}
+
+cleanup_legacy_hotkey_runtime() {
+  rm -f "${BIN_DIR}/terminal-tile-hotkey-daemon" 2>/dev/null || true
+  rm -f "${BIN_DIR}/terminal-tile-hotkey-helper" 2>/dev/null || true
+}
+
+resolve_swiftc() {
+  if [[ -n "$SWIFTC_CMD" ]]; then
+    printf '%s\n' "$SWIFTC_CMD"
+    return 0
+  fi
+
+  if command -v swiftc >/dev/null 2>&1; then
+    SWIFTC_CMD="$(command -v swiftc)"
+  elif command -v xcrun >/dev/null 2>&1; then
+    SWIFTC_CMD="$(xcrun --find swiftc 2>/dev/null || true)"
+  fi
+
+  if [[ -z "$SWIFTC_CMD" ]]; then
+    return 1
+  fi
+
+  printf '%s\n' "$SWIFTC_CMD"
+}
+
+compile_swift_binary() {
+  local target_path="$1"
+  shift
+
+  local swiftc_cmd
+  swiftc_cmd="$(resolve_swiftc 2>/dev/null || true)"
+  if [[ -z "$swiftc_cmd" ]]; then
+    return 1
+  fi
+
+  local tmp_dir
+  tmp_dir="$(mktemp -d "${TMPDIR:-/tmp}/terminal-tile-swift.XXXXXX")"
+  local -a compile_sources=()
+  local source_path target_source index=0
+
+  for source_path in "$@"; do
+    (( index += 1 ))
+    target_source="${tmp_dir}/${index}.swift"
+    if head -n 1 "$source_path" | grep -q '^#!'; then
+      tail -n +2 "$source_path" > "$target_source"
+    else
+      cp "$source_path" "$target_source"
+    fi
+    compile_sources+=("$target_source")
+  done
+
+  if "$swiftc_cmd" -O "${compile_sources[@]}" -o "$target_path"; then
+    chmod 0755 "$target_path"
+    rm -rf "$tmp_dir"
+    return 0
+  fi
+
+  rm -rf "$tmp_dir"
+  return 1
+}
+
+install_tile_core() {
+  local target_path="${BIN_DIR}/terminal-tile-core"
+  if ! resolve_swiftc >/dev/null 2>&1; then
+    echo "ERROR: 需要 swiftc 来编译 terminal-tile-core。" >&2
+    return 1
+  fi
+
+  if compile_swift_binary \
+    "$target_path" \
+    "${REPO_ROOT}/scripts/terminal-tile-engine.swift" \
+    "${REPO_ROOT}/scripts/terminal-tile-core"; then
+    echo "OK bin: ${target_path} (compiled)"
+    return 0
+  fi
+
+  echo "ERROR: swiftc 编译 terminal-tile-core 失败。" >&2
+  return 1
+}
+
+install_hotkey_app() {
+  local bundle_path="${APP_DIR}/${HOTKEY_APP_BUNDLE_NAME}"
+  local contents_dir="${bundle_path}/Contents"
+  local macos_dir="${contents_dir}/MacOS"
+  local executable_path="${macos_dir}/${HOTKEY_APP_EXECUTABLE_NAME}"
+
+  if ! resolve_swiftc >/dev/null 2>&1; then
+    echo "ERROR: 需要 swiftc 来编译 Terminal Tile Hotkeys.app。" >&2
+    return 1
+  fi
+
+  rm -rf "$bundle_path"
+  mkdir -p "$macos_dir"
+
+  if ! compile_swift_binary \
+    "$executable_path" \
+    "${REPO_ROOT}/scripts/terminal-tile-engine.swift" \
+    "${REPO_ROOT}/scripts/terminal-tile-hotkey-app"; then
+    echo "ERROR: swiftc 编译 Terminal Tile Hotkeys.app 失败。" >&2
+    return 1
+  fi
+
+  cat > "${contents_dir}/Info.plist" <<EOF
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE plist PUBLIC "-//Apple//DTD PLIST 1.0//EN" "http://www.apple.com/DTDs/PropertyList-1.0.dtd">
+<plist version="1.0">
+<dict>
+  <key>CFBundleDevelopmentRegion</key>
+  <string>en</string>
+  <key>CFBundleExecutable</key>
+  <string>${HOTKEY_APP_EXECUTABLE_NAME}</string>
+  <key>CFBundleIdentifier</key>
+  <string>${HOTKEY_APP_BUNDLE_ID}</string>
+  <key>CFBundleInfoDictionaryVersion</key>
+  <string>6.0</string>
+  <key>CFBundleName</key>
+  <string>Terminal Tile Hotkeys</string>
+  <key>CFBundlePackageType</key>
+  <string>APPL</string>
+  <key>CFBundleShortVersionString</key>
+  <string>1.0</string>
+  <key>CFBundleVersion</key>
+  <string>1</string>
+  <key>LSUIElement</key>
+  <true/>
+</dict>
+</plist>
+EOF
+
+  if [[ -x /usr/bin/codesign ]]; then
+    /usr/bin/codesign --force --deep --sign - "$bundle_path" >/dev/null 2>&1 || true
+  fi
+
+  echo "OK app: ${bundle_path}"
+}
+
+install_ghostty_helper() {
+  local source_path="${REPO_ROOT}/scripts/ghostty-window-helper"
+  local target_path="${BIN_DIR}/ghostty-window-helper"
+  local swiftc_cmd=""
+  local compile_source=""
+  local cleanup_source=0
+
+  if command -v swiftc >/dev/null 2>&1; then
+    swiftc_cmd="$(command -v swiftc)"
+  elif command -v xcrun >/dev/null 2>&1; then
+    swiftc_cmd="$(xcrun --find swiftc 2>/dev/null || true)"
+  fi
+
+  if [[ -n "$swiftc_cmd" ]]; then
+    compile_source="$source_path"
+    if head -n 1 "$source_path" | grep -q '^#!'; then
+      compile_source="$(mktemp "${TMPDIR:-/tmp}/ghostty-window-helper.XXXXXX.swift")"
+      cleanup_source=1
+      tail -n +2 "$source_path" > "$compile_source"
+    fi
+
+    if "$swiftc_cmd" -O "$compile_source" -o "$target_path"; then
+      chmod 0755 "$target_path"
+      if (( cleanup_source == 1 )); then
+        rm -f "$compile_source"
+      fi
+      echo "OK bin: ${target_path} (compiled)"
+      return 0
+    fi
+    if (( cleanup_source == 1 )); then
+      rm -f "$compile_source"
+    fi
+    echo "WARN: swiftc 编译 ghostty-window-helper 失败，回退为脚本安装。" >&2
+  fi
+
+  install -m 0755 "$source_path" "$target_path"
+  echo "OK bin: ${target_path}"
+}
+
+install_claude_commands() {
+  mkdir -p "$CLAUDE_DIR"
+
+  local name mode description target
+  for entry in \
+    "tile||Tile terminal windows immediately" \
+    "zl2|zl2|Run zl2 immediately (左边分屏 2 分之 1)" \
+    "zl3|zl3|Run zl3 immediately (左边分屏 3 分之 1)" \
+    "zl4|zl4|Run zl4 immediately (左边分屏 4 分之 1)" \
+    "zr2|zr2|Run zr2 immediately (右边分屏 2 分之 1)" \
+    "zr3|zr3|Run zr3 immediately (右边分屏 3 分之 1)" \
+    "zr4|zr4|Run zr4 immediately (右边分屏 4 分之 1)"; do
+    name="${entry%%|*}"
+    local rest="${entry#*|}"
+    mode="${rest%%|*}"
+    description="${rest#*|}"
+    target="${CLAUDE_DIR}/${name}.md"
+
+    cat > "$target" <<EOF
+---
+description: ${description}
+---
+
+$(command_body "$mode" "$description")
+EOF
+    echo "OK claude: ${target}"
+  done
+}
+
+install_codex_prompts() {
+  mkdir -p "$CODEX_DIR"
+
+  local name mode description target
+  for entry in \
+    "tile||Tile terminal windows immediately" \
+    "zl2|zl2|Run zl2 immediately (左边分屏 2 分之 1)" \
+    "zl3|zl3|Run zl3 immediately (左边分屏 3 分之 1)" \
+    "zl4|zl4|Run zl4 immediately (左边分屏 4 分之 1)" \
+    "zr2|zr2|Run zr2 immediately (右边分屏 2 分之 1)" \
+    "zr3|zr3|Run zr3 immediately (右边分屏 3 分之 1)" \
+    "zr4|zr4|Run zr4 immediately (右边分屏 4 分之 1)"; do
+    name="${entry%%|*}"
+    local rest="${entry#*|}"
+    mode="${rest%%|*}"
+    description="${rest#*|}"
+    target="${CODEX_DIR}/${name}.md"
+
+    cat > "$target" <<EOF
+# ${name}
+
+${description}
+
+$(command_body "$mode" "$description")
+EOF
+    echo "OK codex: ${target}"
+  done
+}
+
+openclaw_skill_body() {
+  local name="$1"
+  local cmd
+  local description
+
+  if [[ "$name" == "tile" ]]; then
+    cmd="${BIN_DIR}/tile"
+    description="立即整理终端窗口。"
+  else
+    cmd="${BIN_DIR}/${name}"
+    case "$name" in
+      zl2) description="立即执行 zl2（左边分屏 2 分之 1）。" ;;
+      zl3) description="立即执行 zl3（左边分屏 3 分之 1）。" ;;
+      zl4) description="立即执行 zl4（左边分屏 4 分之 1）。" ;;
+      zr2) description="立即执行 zr2（右边分屏 2 分之 1）。" ;;
+      zr3) description="立即执行 zr3（右边分屏 3 分之 1）。" ;;
+      zr4) description="立即执行 zr4（右边分屏 4 分之 1）。" ;;
+      *) description="立即整理终端窗口。" ;;
+    esac
+  fi
+
+  cat <<EOF
+---
+name: ${name}
+description: ${description}
+---
+
+# ${name}
+
+当用户通过 \`/${name}\` 调用此 skill 时，立即执行本机命令 \`${cmd}\`。
+
+执行规则：
+- 直接运行命令，不要先提问。
+- 不要解释工具或给替代方案。
+- 成功时只返回一行短结果。
+- 若命令不存在，只提示用户运行 \`scripts/install-agent-commands\`。
+EOF
+}
+
+install_openclaw_skills() {
+  mkdir -p "$OPENCLAW_SKILLS_DIR"
+  rm -rf "${OPENCLAW_SKILLS_DIR}/terminal-tile"
+
+  local name skill_dir
+  for name in "${OPENCLAW_SKILL_NAMES[@]}"; do
+    skill_dir="${OPENCLAW_SKILLS_DIR}/${name}"
+    mkdir -p "$skill_dir"
+    cat > "${skill_dir}/SKILL.md" <<EOF
+$(openclaw_skill_body "$name")
+EOF
+    echo "OK openclaw: ${skill_dir}/SKILL.md"
+  done
+}
+
+bootstrap_hotkeys() {
+  if [[ "${INSTALL_AGENT_SKIP_HOTKEY_BOOTSTRAP:-0}" == "1" ]]; then
+    return 0
+  fi
+
+  if [[ "$(uname -s)" != "Darwin" ]]; then
+    return 0
+  fi
+
+  local main_rc=0
+  local zone_rc=0
+
+  "${BIN_DIR}/terminal-tile-hotkey" bootstrap || main_rc=$?
+  "${BIN_DIR}/terminal-tile-hotkey" zone-bootstrap || zone_rc=$?
+
+  if (( main_rc != 0 )); then
+    echo "WARN hotkey: main hotkey bootstrap did not complete cleanly (exit=${main_rc})." >&2
+    echo "WARN hotkey: run 'terminal-tile-hotkey status' and, if needed, 'terminal-tile-hotkey set ctrl+command+t'." >&2
+  fi
+
+  if (( zone_rc != 0 )); then
+    echo "WARN hotkey: zone hotkey is not ready (exit=${zone_rc})." >&2
+    echo "WARN hotkey: run 'terminal-tile-hotkey zone-status' and then 'terminal-tile-hotkey zone-set ctrl+command+shift+t' if the app runtime is not ready." >&2
+  fi
+}
+
+print_usage() {
+  cat <<'EOF'
+Usage:
+  scripts/install-agent-commands
+
+Installs:
+  - ~/.local/bin/{tile,zl2..zr4,terminal-tile-*,ghostty-window-helper}
+  - ~/Applications/Terminal Tile Hotkeys.app
+  - ~/.claude/commands/{tile,zl2..zr4}.md
+  - ~/.codex/prompts/{tile,zl2..zr4}.md
+  - ~/.openclaw/workspace/skills/{tile,zl2..zr4}
+EOF
+}
+
+if (( $# > 0 )); then
+  case "$1" in
+    -h|--help)
+      print_usage
+      exit 0
+      ;;
+    *)
+      print_usage >&2
+      exit 2
+      ;;
+  esac
+fi
+
+install_bin_scripts
+install_claude_commands
+install_codex_prompts
+install_openclaw_skills
+bootstrap_hotkeys
+
+echo "安装完成。"

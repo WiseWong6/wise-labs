@@ -1,0 +1,77 @@
+#!/bin/zsh
+
+set -u
+
+resolve_local_helper() {
+  local helper_name="$1"
+  local candidate=""
+  local script_dir="${0:A:h}"
+
+  candidate="$HOME/.local/bin/${helper_name}"
+  if [[ -x "$candidate" ]]; then
+    echo "$candidate"
+    return 0
+  fi
+
+  if [[ -x "${script_dir}/${helper_name}" ]]; then
+    echo "${script_dir}/${helper_name}"
+    return 0
+  fi
+
+  if command -v "$helper_name" >/dev/null 2>&1; then
+    command -v "$helper_name"
+    return 0
+  fi
+
+  return 1
+}
+
+HOTKEY_HELPER_PATH="$(resolve_local_helper terminal-tile-hotkey-helper 2>/dev/null || true)"
+
+if [[ -n "$HOTKEY_HELPER_PATH" ]]; then
+  choice="$("$HOTKEY_HELPER_PATH" pick-zone 2>/dev/null || true)"
+else
+  front_bundle_id="$(osascript -e 'id of app (path to frontmost application as text)' 2>/dev/null || true)"
+
+  case "$front_bundle_id" in
+    com.googlecode.iterm2|com.apple.Terminal|com.mitchellh.ghostty)
+      ;;
+    *)
+      exit 0
+      ;;
+  esac
+
+  choice="$(
+    osascript <<'APPLESCRIPT' 2>/dev/null
+set zoneChoices to {"zl2 - 左边分屏 2 分之 1", "zl3 - 左边分屏 3 分之 1", "zl4 - 左边分屏 4 分之 1", "zr2 - 右边分屏 2 分之 1", "zr3 - 右边分屏 3 分之 1", "zr4 - 右边分屏 4 分之 1"}
+set picked to choose from list zoneChoices with prompt "选择终端分区布局" with title "Terminal Tile Zone" OK button name "执行" cancel button name "取消"
+if picked is false then
+  return ""
+end if
+return item 1 of picked
+APPLESCRIPT
+  )"
+fi
+
+if [[ -z "$choice" ]]; then
+  exit 0
+fi
+
+choice="${choice%% *}"
+
+SCRIPT_DIR="${0:A:h}"
+
+if [[ -x "$SCRIPT_DIR/tile" ]]; then
+  TILE_SKIP_HOTKEY_BOOTSTRAP=1 exec "$SCRIPT_DIR/tile" "$choice"
+fi
+
+if [[ -x "$HOME/.local/bin/tile" ]]; then
+  TILE_SKIP_HOTKEY_BOOTSTRAP=1 exec "$HOME/.local/bin/tile" "$choice"
+fi
+
+if command -v tile >/dev/null 2>&1; then
+  TILE_SKIP_HOTKEY_BOOTSTRAP=1 exec "$(command -v tile)" "$choice"
+fi
+
+echo "tile 未找到，请先安装到 ~/.local/bin/tile。" >&2
+exit 1

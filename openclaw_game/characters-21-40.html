@@ -1,0 +1,2332 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>开源CSS角色 #21-40 - MIT许可证</title>
+  <style>
+    * { margin: 0; padding: 0; box-sizing: border-box; }
+    body {
+      font-family: 'Microsoft YaHei', sans-serif;
+      background: linear-gradient(135deg, #1a1a2e 0%, #16213e 50%, #0f3460 100%);
+      min-height: 100vh;
+      padding: 20px;
+      color: #fff;
+    }
+    .header { text-align: center; margin-bottom: 30px; }
+    .header h1 {
+      font-size: 2.5rem;
+      background: linear-gradient(90deg, #e94560, #ff6b6b, #feca57);
+      -webkit-background-clip: text;
+      -webkit-text-fill-color: transparent;
+      margin-bottom: 10px;
+    }
+    .license {
+      background: rgba(255,255,255,0.1);
+      padding: 10px 20px;
+      border-radius: 20px;
+      display: inline-block;
+      font-size: 0.9rem;
+      color: #aaa;
+    }
+    .characters-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+      gap: 20px;
+      max-width: 1600px;
+      margin: 0 auto;
+    }
+    .character-card {
+      background: rgba(255,255,255,0.05);
+      border-radius: 16px;
+      padding: 20px;
+      border: 1px solid rgba(255,255,255,0.1);
+      transition: transform 0.3s, box-shadow 0.3s;
+    }
+    .character-card:hover {
+      transform: translateY(-5px);
+      box-shadow: 0 10px 30px rgba(0,0,0,0.3);
+    }
+    .char-title {
+      font-size: 1.1rem;
+      margin-bottom: 15px;
+      color: #feca57;
+      text-align: center;
+    }
+    .actions-row {
+      display: flex;
+      justify-content: space-around;
+      flex-wrap: wrap;
+      gap: 15px;
+    }
+    .action-box { text-align: center; }
+    .action-label {
+      display: block;
+      font-size: 0.75rem;
+      color: #aaa;
+      margin-top: 8px;
+    }
+    .char {
+      position: relative;
+      width: 96px;
+      height: 120px;
+      image-rendering: pixelated;
+    }
+
+    /* ==================== 角色 #21: 忍者 ==================== */
+    .char21-thinking .char21-body {
+      position: absolute;
+      left: 20px;
+      top: 10px;
+      width: 4px;
+      height: 4px;
+      background: transparent;
+      box-shadow: 
+        8px 0 #2c3e50, 12px 0 #2c3e50, 16px 0 #2c3e50,
+        4px 4px #e74c3c, 8px 4px #2c3e50, 12px 4px #2c3e50, 16px 4px #2c3e50, 20px 4px #e74c3c,
+        0px 8px #2c3e50, 4px 8px #2c3e50, 8px 8px #fff, 12px 8px #fff, 16px 8px #2c3e50, 20px 8px #2c3e50, 24px 8px #2c3e50,
+        0px 12px #2c3e50, 4px 12px #2c3e50, 8px 12px #2c3e50, 12px 12px #2c3e50, 16px 12px #2c3e50, 20px 12px #2c3e50, 24px 12px #2c3e50,
+        0px 16px #2c3e50, 4px 16px #2c3e50, 8px 16px #2c3e50, 12px 16px #2c3e50, 16px 16px #2c3e50, 20px 16px #2c3e50, 24px 16px #2c3e50,
+        4px 20px #2c3e50, 8px 20px #e74c3c, 12px 20px #e74c3c, 16px 20px #e74c3c, 20px 20px #2c3e50,
+        4px 24px #2c3e50, 8px 24px #2c3e50, 12px 24px #2c3e50, 16px 24px #2c3e50, 20px 24px #2c3e50,
+        8px 28px #2c3e50, 12px 28px #2c3e50, 16px 28px #2c3e50,
+        4px 32px #2c3e50, 8px 32px #2c3e50, 16px 32px #2c3e50, 20px 32px #2c3e50;
+      animation: char21-bounce 1s ease-in-out infinite;
+    }
+    .char21-thinking .char21-bubble { position: absolute; left: 55px; top: 5px; width: 4px; height: 4px; background: transparent; box-shadow: 0 0 #e74c3c, 4px 0 #e74c3c, -4px 4px #e74c3c, 0 4px #e74c3c, 4px 4px #e74c3c, 8px 4px #e74c3c, 0 8px #e74c3c, 4px 8px #e74c3c; animation: char21-bubble 2s ease-in-out infinite; }
+    @keyframes char21-bounce { 0%, 100% { transform: translateY(0); } 50% { transform: translateY(-4px); } }
+    @keyframes char21-bubble { 0%, 100% { opacity: 0.4; } 50% { opacity: 0.9; } }
+
+    .char21-sleeping .char21-body {
+      position: absolute;
+      left: 20px;
+      top: 15px;
+      width: 4px;
+      height: 4px;
+      background: transparent;
+      box-shadow: 
+        8px 0 #1a252f, 12px 0 #1a252f, 16px 0 #1a252f,
+        4px 4px #c0392b, 8px 4px #1a252f, 12px 4px #1a252f, 16px 4px #1a252f, 20px 4px #c0392b,
+        0px 8px #1a252f, 4px 8px #1a252f, 8px 8px #bdc3c7, 12px 8px #bdc3c7, 16px 8px #1a252f, 20px 8px #1a252f, 24px 8px #1a252f,
+        0px 12px #1a252f, 4px 12px #1a252f, 8px 12px #1a252f, 12px 12px #1a252f, 16px 12px #1a252f, 20px 12px #1a252f, 24px 12px #1a252f,
+        0px 16px #1a252f, 4px 16px #1a252f, 8px 16px #1a252f, 12px 16px #1a252f, 16px 16px #1a252f, 20px 16px #1a252f, 24px 16px #1a252f,
+        4px 20px #1a252f, 8px 20px #c0392b, 12px 20px #c0392b, 16px 20px #c0392b, 20px 20px #1a252f,
+        4px 24px #1a252f, 8px 24px #1a252f, 12px 24px #1a252f, 16px 24px #1a252f, 20px 24px #1a252f,
+        8px 28px #1a252f, 12px 28px #1a252f, 16px 28px #1a252f,
+        4px 32px #1a252f, 8px 32px #1a252f, 16px 32px #1a252f, 20px 32px #1a252f;
+      animation: char21-sleep 2s ease-in-out infinite;
+    }
+    .char21-sleeping .char21-zzz { position: absolute; left: 55px; top: 5px; font-size: 12px; color: #e74c3c; animation: char21-zzz 2s ease-in-out infinite; }
+    @keyframes char21-sleep { 0%, 100% { transform: scale(1); } 50% { transform: scale(0.95); } }
+    @keyframes char21-zzz { 0%, 100% { opacity: 0; } 50% { opacity: 0.8; } }
+
+    .char21-listening .char21-body {
+      position: absolute;
+      left: 20px;
+      top: 10px;
+      width: 4px;
+      height: 4px;
+      background: transparent;
+      box-shadow: 
+        8px 0 #2c3e50, 12px 0 #2c3e50, 16px 0 #2c3e50,
+        4px 4px #e74c3c, 8px 4px #2c3e50, 12px 4px #2c3e50, 16px 4px #2c3e50, 20px 4px #e74c3c,
+        0px 8px #2c3e50, 4px 8px #2c3e50, 8px 8px #fff, 12px 8px #fff, 16px 8px #2c3e50, 20px 8px #2c3e50, 24px 8px #2c3e50,
+        0px 12px #2c3e50, 4px 12px #2c3e50, 8px 12px #2c3e50, 12px 12px #2c3e50, 16px 12px #2c3e50, 20px 12px #2c3e50, 24px 12px #2c3e50,
+        0px 16px #2c3e50, 4px 16px #2c3e50, 8px 16px #2c3e50, 12px 16px #2c3e50, 16px 16px #2c3e50, 20px 16px #2c3e50, 24px 16px #2c3e50,
+        4px 20px #2c3e50, 8px 20px #e74c3c, 12px 20px #e74c3c, 16px 20px #e74c3c, 20px 20px #2c3e50,
+        4px 24px #2c3e50, 8px 24px #2c3e50, 12px 24px #2c3e50, 16px 24px #2c3e50, 20px 24px #2c3e50,
+        8px 28px #2c3e50, 12px 28px #2c3e50, 16px 28px #2c3e50,
+        4px 32px #2c3e50, 8px 32px #2c3e50, 16px 32px #2c3e50, 20px 32px #2c3e50;
+      animation: char21-tilt 1s ease-in-out infinite alternate;
+    }
+    @keyframes char21-tilt { 0% { transform: rotate(-10deg); } 100% { transform: rotate(10deg); } }
+
+    .char21-speaking .char21-body {
+      position: absolute;
+      left: 20px;
+      top: 10px;
+      width: 4px;
+      height: 4px;
+      background: transparent;
+      box-shadow: 
+        8px 0 #2c3e50, 12px 0 #2c3e50, 16px 0 #2c3e50,
+        4px 4px #e74c3c, 8px 4px #2c3e50, 12px 4px #2c3e50, 16px 4px #2c3e50, 20px 4px #e74c3c,
+        0px 8px #2c3e50, 4px 8px #2c3e50, 8px 8px #e74c3c, 12px 8px #e74c3c, 16px 8px #2c3e50, 20px 8px #2c3e50, 24px 8px #2c3e50,
+        0px 12px #2c3e50, 4px 12px #2c3e50, 8px 12px #2c3e50, 12px 12px #2c3e50, 16px 12px #2c3e50, 20px 12px #2c3e50, 24px 12px #2c3e50,
+        0px 16px #2c3e50, 4px 16px #2c3e50, 8px 16px #2c3e50, 12px 16px #2c3e50, 16px 16px #2c3e50, 20px 16px #2c3e50, 24px 16px #2c3e50,
+        4px 20px #2c3e50, 8px 20px #e74c3c, 12px 20px #e74c3c, 16px 20px #e74c3c, 20px 20px #2c3e50,
+        4px 24px #2c3e50, 8px 24px #2c3e50, 12px 24px #2c3e50, 16px 24px #2c3e50, 20px 24px #2c3e50,
+        8px 28px #2c3e50, 12px 28px #2c3e50, 16px 28px #2c3e50,
+        4px 32px #2c3e50, 8px 32px #2c3e50, 16px 32px #2c3e50, 20px 32px #2c3e50;
+      animation: char21-strike 0.4s ease-in-out infinite;
+    }
+    @keyframes char21-strike { 0%, 100% { transform: translateY(0); } 50% { transform: translateY(-5px); } }
+
+    /* ==================== 角色 #22: 武士 ==================== */
+    .char22-thinking .char22-body {
+      position: absolute;
+      left: 20px;
+      top: 10px;
+      width: 4px;
+      height: 4px;
+      background: transparent;
+      box-shadow: 
+        8px 0 #c0392b, 12px 0 #c0392b, 16px 0 #c0392b,
+        4px 4px #c0392b, 8px 4px #f1c40f, 12px 4px #f1c40f, 16px 4px #f1c40f, 20px 4px #c0392b,
+        0px 8px #c0392b, 4px 8px #c0392b, 8px 8px #000, 12px 8px #000, 16px 8px #000, 20px 8px #c0392b, 24px 8px #c0392b,
+        0px 12px #c0392b, 4px 12px #c0392b, 8px 12px #c0392b, 12px 12px #c0392b, 16px 12px #c0392b, 20px 12px #c0392b, 24px 12px #c0392b,
+        0px 16px #c0392b, 4px 16px #c0392b, 8px 16px #c0392b, 12px 16px #c0392b, 16px 16px #c0392b, 20px 16px #c0392b, 24px 16px #c0392b,
+        4px 20px #c0392b, 8px 20px #c0392b, 12px 20px #f1c40f, 16px 20px #c0392b, 20px 20px #c0392b,
+        4px 24px #c0392b, 8px 24px #c0392b, 12px 24px #c0392b, 16px 24px #c0392b, 20px 24px #c0392b,
+        8px 28px #c0392b, 12px 28px #c0392b, 16px 28px #c0392b,
+        4px 32px #c0392b, 8px 32px #c0392b, 16px 32px #c0392b, 20px 32px #c0392b;
+      animation: char22-think 1.5s ease-in-out infinite;
+    }
+    .char22-thinking .char22-bubble { position: absolute; left: 55px; top: 5px; width: 4px; height: 4px; background: transparent; box-shadow: 0 0 #f1c40f, 4px 0 #f1c40f, -4px 4px #f1c40f, 0 4px #f1c40f, 4px 4px #f1c40f, 8px 4px #f1c40f, 0 8px #f1c40f, 4px 8px #f1c40f; animation: char22-bubble 2s ease-in-out infinite; }
+    @keyframes char22-think { 0%, 100% { transform: translateY(0); } 50% { transform: translateY(-3px); } }
+    @keyframes char22-bubble { 0%, 100% { opacity: 0.4; } 50% { opacity: 0.9; } }
+
+    .char22-sleeping .char22-body {
+      position: absolute;
+      left: 20px;
+      top: 15px;
+      width: 4px;
+      height: 4px;
+      background: transparent;
+      box-shadow: 
+        8px 0 #922b21, 12px 0 #922b21, 16px 0 #922b21,
+        4px 4px #922b21, 8px 4px #b7950b, 12px 4px #b7950b, 16px 4px #b7950b, 20px 4px #922b21,
+        0px 8px #922b21, 4px 8px #922b21, 8px 8px #7f8c8d, 12px 8px #7f8c8d, 16px 8px #7f8c8d, 20px 8px #922b21, 24px 8px #922b21,
+        0px 12px #922b21, 4px 12px #922b21, 8px 12px #922b21, 12px 12px #922b21, 16px 12px #922b21, 20px 12px #922b21, 24px 12px #922b21,
+        0px 16px #922b21, 4px 16px #922b21, 8px 16px #922b21, 12px 16px #922b21, 16px 16px #922b21, 20px 16px #922b21, 24px 16px #922b21,
+        4px 20px #922b21, 8px 20px #922b21, 12px 20px #b7950b, 16px 20px #922b21, 20px 20px #922b21,
+        4px 24px #922b21, 8px 24px #922b21, 12px 24px #922b21, 16px 24px #922b21, 20px 24px #922b21,
+        8px 28px #922b21, 12px 28px #922b21, 16px 28px #922b21,
+        4px 32px #922b21, 8px 32px #922b21, 16px 32px #922b21, 20px 32px #922b21;
+      animation: char22-sleep 2s ease-in-out infinite;
+    }
+    .char22-sleeping .char22-zzz { position: absolute; left: 55px; top: 5px; font-size: 12px; color: #f1c40f; animation: char22-zzz 2s ease-in-out infinite; }
+    @keyframes char22-sleep { 0%, 100% { transform: scale(1); } 50% { transform: scale(0.97); } }
+    @keyframes char22-zzz { 0%, 100% { opacity: 0; } 50% { opacity: 0.8; } }
+
+    .char22-listening .char22-body {
+      position: absolute;
+      left: 20px;
+      top: 10px;
+      width: 4px;
+      height: 4px;
+      background: transparent;
+      box-shadow: 
+        8px 0 #c0392b, 12px 0 #c0392b, 16px 0 #c0392b,
+        4px 4px #c0392b, 8px 4px #f1c40f, 12px 4px #f1c40f, 16px 4px #f1c40f, 20px 4px #c0392b,
+        0px 8px #c0392b, 4px 8px #c0392b, 8px 8px #000, 12px 8px #000, 16px 8px #000, 20px 8px #c0392b, 24px 8px #c0392b,
+        0px 12px #c0392b, 4px 12px #c0392b, 8px 12px #c0392b, 12px 12px #c0392b, 16px 12px #c0392b, 20px 12px #c0392b, 24px 12px #c0392b,
+        0px 16px #c0392b, 4px 16px #c0392b, 8px 16px #c0392b, 12px 16px #c0392b, 16px 16px #c0392b, 20px 16px #c0392b, 24px 16px #c0392b,
+        4px 20px #c0392b, 8px 20px #c0392b, 12px 20px #f1c40f, 16px 20px #c0392b, 20px 20px #c0392b,
+        4px 24px #c0392b, 8px 24px #c0392b, 12px 24px #c0392b, 16px 24px #c0392b, 20px 24px #c0392b,
+        8px 28px #c0392b, 12px 28px #c0392b, 16px 28px #c0392b,
+        4px 32px #c0392b, 8px 32px #c0392b, 16px 32px #c0392b, 20px 32px #c0392b;
+      animation: char22-tilt 1s ease-in-out infinite alternate;
+    }
+    @keyframes char22-tilt { 0% { transform: rotate(-8deg); } 100% { transform: rotate(8deg); } }
+
+    .char22-speaking .char22-body {
+      position: absolute;
+      left: 20px;
+      top: 10px;
+      width: 4px;
+      height: 4px;
+      background: transparent;
+      box-shadow: 
+        8px 0 #c0392b, 12px 0 #c0392b, 16px 0 #c0392b,
+        4px 4px #c0392b, 8px 4px #f1c40f, 12px 4px #f1c40f, 16px 4px #f1c40f, 20px 4px #c0392b,
+        0px 8px #c0392b, 4px 8px #c0392b, 8px 8px #000, 12px 8px #000, 16px 8px #000, 20px 8px #c0392b, 24px 8px #c0392b,
+        0px 12px #c0392b, 4px 12px #c0392b, 8px 12px #c0392b, 12px 12px #c0392b, 16px 12px #c0392b, 20px 12px #c0392b, 24px 12px #c0392b,
+        0px 16px #c0392b, 4px 16px #c0392b, 8px 16px #c0392b, 12px 16px #c0392b, 16px 16px #c0392b, 20px 16px #c0392b, 24px 16px #c0392b,
+        4px 20px #c0392b, 8px 20px #c0392b, 12px 20px #f1c40f, 16px 20px #c0392b, 20px 20px #c0392b,
+        4px 24px #c0392b, 8px 24px #c0392b, 12px 24px #c0392b, 16px 24px #c0392b, 20px 24px #c0392b,
+        8px 28px #c0392b, 12px 28px #c0392b, 16px 28px #c0392b,
+        4px 32px #c0392b, 8px 32px #c0392b, 16px 32px #c0392b, 20px 32px #c0392b;
+      animation: char22-speak 0.5s ease-in-out infinite;
+    }
+    @keyframes char22-speak { 0%, 100% { transform: translateY(0); } 50% { transform: translateY(-4px); } }
+
+    /* ==================== 角色 #23: 精灵射手 ==================== */
+    .char23-thinking .char23-body {
+      position: absolute;
+      left: 20px;
+      top: 5px;
+      width: 4px;
+      height: 4px;
+      background: transparent;
+      box-shadow: 
+        0px 4px #27ae60, 4px 4px #27ae60, 24px 4px #27ae60, 28px 4px #27ae60,
+        0px 8px #27ae60, 4px 8px #2ecc71, 24px 8px #2ecc71, 28px 8px #27ae60,
+        8px 8px #27ae60, 12px 8px #27ae60, 16px 8px #27ae60,
+        8px 12px #27ae60, 12px 12px #2ecc71, 16px 12px #27ae60,
+        4px 16px #27ae60, 8px 16px #27ae60, 12px 16px #000, 16px 16px #000, 20px 16px #27ae60,
+        4px 20px #27ae60, 8px 20px #2ecc71, 12px 20px #2ecc71, 16px 20px #2ecc71, 20px 20px #27ae60,
+        4px 24px #27ae60, 8px 24px #2ecc71, 12px 24px #2ecc71, 16px 24px #2ecc71, 20px 24px #27ae60,
+        0px 28px #8e44ad, 4px 28px #27ae60, 8px 28px #27ae60, 12px 28px #2ecc71, 16px 28px #27ae60, 20px 28px #27ae60, 24px 28px #8e44ad,
+        4px 32px #27ae60, 8px 32px #27ae60, 12px 32px #27ae60, 16px 32px #27ae60, 20px 32px #27ae60,
+        8px 36px #27ae60, 12px 36px #27ae60, 16px 36px #27ae60;
+      animation: char23-think 1.5s ease-in-out infinite;
+    }
+    .char23-thinking .char23-bubble { position: absolute; left: 55px; top: 5px; width: 4px; height: 4px; background: transparent; box-shadow: 0 0 #27ae60, 4px 0 #27ae60, -4px 4px #27ae60, 0 4px #27ae60, 4px 4px #27ae60, 8px 4px #27ae60, 0 8px #27ae60, 4px 8px #27ae60; animation: char23-bubble 2s ease-in-out infinite; }
+    @keyframes char23-think { 0%, 100% { transform: translateY(0); } 50% { transform: translateY(-4px); } }
+    @keyframes char23-bubble { 0%, 100% { opacity: 0.4; } 50% { opacity: 0.9; } }
+
+    .char23-sleeping .char23-body {
+      position: absolute;
+      left: 20px;
+      top: 10px;
+      width: 4px;
+      height: 4px;
+      background: transparent;
+      box-shadow: 
+        0px 4px #1e8449, 4px 4px #1e8449, 24px 4px #1e8449, 28px 4px #1e8449,
+        0px 8px #1e8449, 4px 8px #27ae60, 24px 8px #27ae60, 28px 8px #1e8449,
+        8px 8px #1e8449, 12px 8px #1e8449, 16px 8px #1e8449,
+        8px 12px #1e8449, 12px 12px #27ae60, 16px 12px #1e8449,
+        4px 16px #1e8449, 8px 16px #1e8449, 12px 16px #7f8c8d, 16px 16px #7f8c8d, 20px 16px #1e8449,
+        4px 20px #1e8449, 8px 20px #27ae60, 12px 20px #27ae60, 16px 20px #27ae60, 20px 20px #1e8449,
+        4px 24px #1e8449, 8px 24px #27ae60, 12px 24px #27ae60, 16px 24px #27ae60, 20px 24px #1e8449,
+        0px 28px #7d3c98, 4px 28px #1e8449, 8px 28px #1e8449, 12px 28px #27ae60, 16px 28px #1e8449, 20px 28px #1e8449, 24px 28px #7d3c98,
+        4px 32px #1e8449, 8px 32px #1e8449, 12px 32px #1e8449, 16px 32px #1e8449, 20px 32px #1e8449,
+        8px 36px #1e8449, 12px 36px #1e8449, 16px 36px #1e8449;
+      animation: char23-sleep 2s ease-in-out infinite;
+    }
+    .char23-sleeping .char23-zzz { position: absolute; left: 55px; top: 5px; font-size: 12px; color: #27ae60; animation: char23-zzz 2s ease-in-out infinite; }
+    @keyframes char23-sleep { 0%, 100% { transform: scale(1); } 50% { transform: scale(0.97); } }
+    @keyframes char23-zzz { 0%, 100% { opacity: 0; } 50% { opacity: 0.8; } }
+
+    .char23-listening .char23-body {
+      position: absolute;
+      left: 20px;
+      top: 5px;
+      width: 4px;
+      height: 4px;
+      background: transparent;
+      box-shadow: 
+        0px 4px #27ae60, 4px 4px #27ae60, 24px 4px #27ae60, 28px 4px #27ae60,
+        0px 8px #27ae60, 4px 8px #2ecc71, 24px 8px #2ecc71, 28px 8px #27ae60,
+        8px 8px #27ae60, 12px 8px #27ae60, 16px 8px #27ae60,
+        8px 12px #27ae60, 12px 12px #2ecc71, 16px 12px #27ae60,
+        4px 16px #27ae60, 8px 16px #27ae60, 12px 16px #000, 16px 16px #000, 20px 16px #27ae60,
+        4px 20px #27ae60, 8px 20px #2ecc71, 12px 20px #2ecc71, 16px 20px #2ecc71, 20px 20px #27ae60,
+        4px 24px #27ae60, 8px 24px #2ecc71, 12px 24px #2ecc71, 16px 24px #2ecc71, 20px 24px #27ae60,
+        0px 28px #8e44ad, 4px 28px #27ae60, 8px 28px #27ae60, 12px 28px #2ecc71, 16px 28px #27ae60, 20px 28px #27ae60, 24px 28px #8e44ad,
+        4px 32px #27ae60, 8px 32px #27ae60, 12px 32px #27ae60, 16px 32px #27ae60, 20px 32px #27ae60,
+        8px 36px #27ae60, 12px 36px #27ae60, 16px 36px #27ae60;
+      animation: char23-tilt 1s ease-in-out infinite alternate;
+    }
+    @keyframes char23-tilt { 0% { transform: rotate(-8deg); } 100% { transform: rotate(8deg); } }
+
+    .char23-speaking .char23-body {
+      position: absolute;
+      left: 20px;
+      top: 5px;
+      width: 4px;
+      height: 4px;
+      background: transparent;
+      box-shadow: 
+        0px 4px #27ae60, 4px 4px #27ae60, 24px 4px #27ae60, 28px 4px #27ae60,
+        0px 8px #27ae60, 4px 8px #2ecc71, 24px 8px #2ecc71, 28px 8px #27ae60,
+        8px 8px #27ae60, 12px 8px #27ae60, 16px 8px #27ae60,
+        8px 12px #27ae60, 12px 12px #2ecc71, 16px 12px #27ae60,
+        4px 16px #27ae60, 8px 16px #27ae60, 12px 16px #000, 16px 16px #000, 20px 16px #27ae60,
+        4px 20px #27ae60, 8px 20px #2ecc71, 12px 20px #2ecc71, 16px 20px #2ecc71, 20px 20px #27ae60,
+        4px 24px #27ae60, 8px 24px #2ecc71, 12px 24px #2ecc71, 16px 24px #2ecc71, 20px 24px #27ae60,
+        0px 28px #8e44ad, 4px 28px #27ae60, 8px 28px #27ae60, 12px 28px #2ecc71, 16px 28px #27ae60, 20px 28px #27ae60, 24px 28px #8e44ad,
+        4px 32px #27ae60, 8px 32px #27ae60, 12px 32px #27ae60, 16px 32px #27ae60, 20px 32px #27ae60,
+        8px 36px #27ae60, 12px 36px #27ae60, 16px 36px #27ae60;
+      animation: char23-speak 0.5s ease-in-out infinite;
+    }
+    @keyframes char23-speak { 0%, 100% { transform: translateY(0); } 50% { transform: translateY(-4px); } }
+
+    /* ==================== 角色 #24: 矮人战士 ==================== */
+    .char24-thinking .char24-body {
+      position: absolute;
+      left: 20px;
+      top: 10px;
+      width: 4px;
+      height: 4px;
+      background: transparent;
+      box-shadow: 
+        4px 0 #8e44ad, 8px 0 #8e44ad, 12px 0 #8e44ad, 16px 0 #8e44ad, 20px 0 #8e44ad,
+        4px 4px #8e44ad, 8px 4px #e67e22, 12px 4px #e67e22, 16px 4px #e67e22, 20px 4px #8e44ad,
+        4px 8px #e67e22, 8px 8px #d35400, 12px 8px #d35400, 16px 8px #d35400, 20px 8px #e67e22,
+        0px 12px #95a5a6, 4px 12px #95a5a6, 8px 12px #000, 12px 12px #000, 16px 12px #95a5a6, 20px 12px #95a5a6, 24px 12px #95a5a6,
+        0px 16px #95a5a6, 4px 16px #95a5a6, 8px 16px #7f8c8d, 12px 16px #7f8c8d, 16px 16px #95a5a6, 20px 16px #95a5a6, 24px 16px #95a5a6,
+        0px 20px #95a5a6, 4px 20px #95a5a6, 8px 20px #7f8c8d, 12px 20px #7f8c8d, 16px 20px #95a5a6, 20px 20px #95a5a6, 24px 20px #95a5a6,
+        0px 24px #7f8c8d, 4px 24px #95a5a6, 8px 24px #95a5a6, 12px 24px #95a5a6, 16px 24px #95a5a6, 20px 24px #95a5a6, 24px 24px #7f8c8d,
+        0px 28px #7f8c8d, 4px 28px #7f8c8d, 8px 28px #7f8c8d, 20px 28px #7f8c8d, 24px 28px #7f8c8d,
+        0px 32px #5d4037, 4px 32px #5d4037, 20px 32px #5d4037, 24px 32px #5d4037;
+      animation: char24-think 1.5s ease-in-out infinite;
+    }
+    .char24-thinking .char24-bubble { position: absolute; left: 55px; top: 5px; width: 4px; height: 4px; background: transparent; box-shadow: 0 0 #e67e22, 4px 0 #e67e22, -4px 4px #e67e22, 0 4px #e67e22, 4px 4px #e67e22, 8px 4px #e67e22, 0 8px #e67e22, 4px 8px #e67e22; animation: char24-bubble 2s ease-in-out infinite; }
+    @keyframes char24-think { 0%, 100% { transform: translateY(0); } 50% { transform: translateY(-3px); } }
+    @keyframes char24-bubble { 0%, 100% { opacity: 0.4; } 50% { opacity: 0.9; } }
+
+    .char24-sleeping .char24-body {
+      position: absolute;
+      left: 20px;
+      top: 15px;
+      width: 4px;
+      height: 4px;
+      background: transparent;
+      box-shadow: 
+        4px 0 #7d3c98, 8px 0 #7d3c98, 12px 0 #7d3c98, 16px 0 #7d3c98, 20px 0 #7d3c98,
+        4px 4px #7d3c98, 8px 4px #a04000, 12px 4px #a04000, 16px 4px #a04000, 20px 4px #7d3c98,
+        4px 8px #a04000, 8px 8px #a04000, 12px 8px #a04000, 16px 8px #a04000, 20px 8px #a04000,
+        0px 12px #7f8c8d, 4px 12px #7f8c8d, 8px 12px #5f6a6a, 12px 12px #5f6a6a, 16px 12px #7f8c8d, 20px 12px #7f8c8d, 24px 12px #7f8c8d,
+        0px 16px #7f8c8d, 4px 16px #7f8c8d, 8px 16px #5f6a6a, 12px 16px #5f6a6a, 16px 16px #7f8c8d, 20px 16px #7f8c8d, 24px 16px #7f8c8d,
+        0px 20px #7f8c8d, 4px 20px #7f8c8d, 8px 20px #5f6a6a, 12px 20px #5f6a6a, 16px 20px #7f8c8d, 20px 20px #7f8c8d, 24px 20px #7f8c8d,
+        0px 24px #5f6a6a, 4px 24px #7f8c8d, 8px 24px #7f8c8d, 12px 24px #7f8c8d, 16px 24px #7f8c8d, 20px 24px #7f8c8d, 24px 24px #5f6a6a,
+        0px 28px #5f6a6a, 4px 28px #5f6a6a, 8px 28px #5f6a6a, 20px 28px #5f6a6a, 24px 28px #5f6a6a,
+        0px 32px #4e342e, 4px 32px #4e342e, 20px 32px #4e342e, 24px 32px #4e342e;
+      animation: char24-sleep 2s ease-in-out infinite;
+    }
+    .char24-sleeping .char24-zzz { position: absolute; left: 55px; top: 5px; font-size: 12px; color: #e67e22; animation: char24-zzz 2s ease-in-out infinite; }
+    @keyframes char24-sleep { 0%, 100% { transform: scale(1); } 50% { transform: scale(0.97); } }
+    @keyframes char24-zzz { 0%, 100% { opacity: 0; } 50% { opacity: 0.8; } }
+
+    .char24-listening .char24-body {
+      position: absolute;
+      left: 20px;
+      top: 10px;
+      width: 4px;
+      height: 4px;
+      background: transparent;
+      box-shadow: 
+        4px 0 #8e44ad, 8px 0 #8e44ad, 12px 0 #8e44ad, 16px 0 #8e44ad, 20px 0 #8e44ad,
+        4px 4px #8e44ad, 8px 4px #e67e22, 12px 4px #e67e22, 16px 4px #e67e22, 20px 4px #8e44ad,
+        4px 8px #e67e22, 8px 8px #d35400, 12px 8px #d35400, 16px 8px #d35400, 20px 8px #e67e22,
+        0px 12px #95a5a6, 4px 12px #95a5a6, 8px 12px #000, 12px 12px #000, 16px 12px #95a5a6, 20px 12px #95a5a6, 24px 12px #95a5a6,
+        0px 16px #95a5a6, 4px 16px #95a5a6, 8px 16px #7f8c8d, 12px 16px #7f8c8d, 16px 16px #95a5a6, 20px 16px #95a5a6, 24px 16px #95a5a6,
+        0px 20px #95a5a6, 4px 20px #95a5a6, 8px 20px #7f8c8d, 12px 20px #7f8c8d, 16px 20px #95a5a6, 20px 20px #95a5a6, 24px 20px #95a5a6,
+        0px 24px #7f8c8d, 4px 24px #95a5a6, 8px 24px #95a5a6, 12px 24px #95a5a6, 16px 24px #95a5a6, 20px 24px #95a5a6, 24px 24px #7f8c8d,
+        0px 28px #7f8c8d, 4px 28px #7f8c8d, 8px 28px #7f8c8d, 20px 28px #7f8c8d, 24px 28px #7f8c8d,
+        0px 32px #5d4037, 4px 32px #5d4037, 20px 32px #5d4037, 24px 32px #5d4037;
+      animation: char24-tilt 1s ease-in-out infinite alternate;
+    }
+    @keyframes char24-tilt { 0% { transform: rotate(-8deg); } 100% { transform: rotate(8deg); } }
+
+    .char24-speaking .char24-body {
+      position: absolute;
+      left: 20px;
+      top: 10px;
+      width: 4px;
+      height: 4px;
+      background: transparent;
+      box-shadow: 
+        4px 0 #8e44ad, 8px 0 #8e44ad, 12px 0 #8e44ad, 16px 0 #8e44ad, 20px 0 #8e44ad,
+        4px 4px #8e44ad, 8px 4px #e67e22, 12px 4px #e67e22, 16px 4px #e67e22, 20px 4px #8e44ad,
+        4px 8px #e67e22, 8px 8px #d35400, 12px 8px #d35400, 16px 8px #d35400, 20px 8px #e67e22,
+        0px 12px #95a5a6, 4px 12px #95a5a6, 8px 12px #000, 12px 12px #000, 16px 12px #95a5a6, 20px 12px #95a5a6, 24px 12px #95a5a6,
+        0px 16px #95a5a6, 4px 16px #95a5a6, 8px 16px #7f8c8d, 12px 16px #7f8c8d, 16px 16px #95a5a6, 20px 16px #95a5a6, 24px 16px #95a5a6,
+        0px 20px #95a5a6, 4px 20px #95a5a6, 8px 20px #7f8c8d, 12px 20px #7f8c8d, 16px 20px #95a5a6, 20px 20px #95a5a6, 24px 20px #95a5a6,
+        0px 24px #7f8c8d, 4px 24px #95a5a6, 8px 24px #95a5a6, 12px 24px #95a5a6, 16px 24px #95a5a6, 20px 24px #95a5a6, 24px 24px #7f8c8d,
+        0px 28px #7f8c8d, 4px 28px #7f8c8d, 8px 28px #7f8c8d, 20px 28px #7f8c8d, 24px 28px #7f8c8d,
+        0px 32px #5d4037, 4px 32px #5d4037, 20px 32px #5d4037, 24px 32px #5d4037;
+      animation: char24-speak 0.5s ease-in-out infinite;
+    }
+    @keyframes char24-speak { 0%, 100% { transform: translateY(0); } 50% { transform: translateY(-4px); } }
+
+    /* ==================== 角色 #25: 兽人狂战士 ==================== */
+    .char25-thinking .char25-body {
+      position: absolute;
+      left: 20px;
+      top: 10px;
+      width: 4px;
+      height: 4px;
+      background: transparent;
+      box-shadow: 
+        8px 0 #27ae60, 12px 0 #27ae60, 16px 0 #27ae60,
+        4px 4px #27ae60, 8px 4px #2ecc71, 12px 4px #2ecc71, 16px 4px #2ecc71, 20px 4px #27ae60,
+        4px 8px #2ecc71, 8px 8px #e74c3c, 12px 8px #000, 16px 8px #e74c3c, 20px 8px #2ecc71,
+        0px 12px #27ae60, 4px 12px #2ecc71, 8px 12px #2ecc71, 12px 12px #2ecc71, 16px 12px #2ecc71, 20px 12px #2ecc71, 24px 12px #27ae60,
+        0px 16px #27ae60, 4px 16px #2ecc71, 8px 16px #e74c3c, 12px 16px #e74c3c, 16px 16px #e74c3c, 20px 16px #2ecc71, 24px 16px #27ae60,
+        0px 20px #27ae60, 4px 20px #2ecc71, 8px 20px #2ecc71, 12px 20px #e74c3c, 16px 20px #2ecc71, 20px 20px #2ecc71, 24px 20px #27ae60,
+        0px 24px #27ae60, 4px 24px #2ecc71, 8px 24px #2ecc71, 12px 24px #2ecc71, 16px 24px #2ecc71, 20px 24px #2ecc71, 24px 24px #27ae60,
+        4px 28px #27ae60, 8px 28px #27ae60, 12px 28px #e74c3c, 16px 28px #27ae60, 20px 28px #27ae60,
+        4px 32px #5d4037, 8px 32px #5d4037, 12px 32px #5d4037, 16px 32px #5d4037, 20px 32px #5d4037;
+      animation: char25-think 1.5s ease-in-out infinite;
+    }
+    .char25-thinking .char25-bubble { position: absolute; left: 55px; top: 5px; width: 4px; height: 4px; background: transparent; box-shadow: 0 0 #e74c3c, 4px 0 #e74c3c, -4px 4px #e74c3c, 0 4px #e74c3c, 4px 4px #e74c3c, 8px 4px #e74c3c, 0 8px #e74c3c, 4px 8px #e74c3c; animation: char25-bubble 2s ease-in-out infinite; }
+    @keyframes char25-think { 0%, 100% { transform: translateY(0); } 50% { transform: translateY(-4px); } }
+    @keyframes char25-bubble { 0%, 100% { opacity: 0.4; } 50% { opacity: 0.9; } }
+
+    .char25-sleeping .char25-body {
+      position: absolute;
+      left: 20px;
+      top: 15px;
+      width: 4px;
+      height: 4px;
+      background: transparent;
+      box-shadow: 
+        8px 0 #1e8449, 12px 0 #1e8449, 16px 0 #1e8449,
+        4px 4px #1e8449, 8px 4px #27ae60, 12px 4px #27ae60, 16px 4px #27ae60, 20px 4px #1e8449,
+        4px 8px #27ae60, 8px 8px #c0392b, 12px 8px #7f8c8d, 16px 8px #c0392b, 20px 8px #27ae60,
+        0px 12px #1e8449, 4px 12px #27ae60, 8px 12px #27ae60, 12px 12px #27ae60, 16px 12px #27ae60, 20px 12px #27ae60, 24px 12px #1e8449,
+        0px 16px #1e8449, 4px 16px #27ae60, 8px 16px #c0392b, 12px 16px #c0392b, 16px 16px #c0392b, 20px 16px #27ae60, 24px 16px #1e8449,
+        0px 20px #1e8449, 4px 20px #27ae60, 8px 20px #27ae60, 12px 20px #c0392b, 16px 20px #27ae60, 20px 20px #27ae60, 24px 20px #1e8449,
+        0px 24px #1e8449, 4px 24px #27ae60, 8px 24px #27ae60, 12px 24px #27ae60, 16px 24px #27ae60, 20px 24px #27ae60, 24px 24px #1e8449,
+        4px 28px #1e8449, 8px 28px #1e8449, 12px 28px #c0392b, 16px 28px #1e8449, 20px 28px #1e8449,
+        4px 32px #4e342e, 8px 32px #4e342e, 12px 32px #4e342e, 16px 32px #4e342e, 20px 32px #4e342e;
+      animation: char25-sleep 2s ease-in-out infinite;
+    }
+    .char25-sleeping .char25-zzz { position: absolute; left: 55px; top: 5px; font-size: 12px; color: #e74c3c; animation: char25-zzz 2s ease-in-out infinite; }
+    @keyframes char25-sleep { 0%, 100% { transform: scale(1); } 50% { transform: scale(0.97); } }
+    @keyframes char25-zzz { 0%, 100% { opacity: 0; } 50% { opacity: 0.8; } }
+
+    .char25-listening .char25-body {
+      position: absolute;
+      left: 20px;
+      top: 10px;
+      width: 4px;
+      height: 4px;
+      background: transparent;
+      box-shadow: 
+        8px 0 #27ae60, 12px 0 #27ae60, 16px 0 #27ae60,
+        4px 4px #27ae60, 8px 4px #2ecc71, 12px 4px #2ecc71, 16px 4px #2ecc71, 20px 4px #27ae60,
+        4px 8px #2ecc71, 8px 8px #e74c3c, 12px 8px #000, 16px 8px #e74c3c, 20px 8px #2ecc71,
+        0px 12px #27ae60, 4px 12px #2ecc71, 8px 12px #2ecc71, 12px 12px #2ecc71, 16px 12px #2ecc71, 20px 12px #2ecc71, 24px 12px #27ae60,
+        0px 16px #27ae60, 4px 16px #2ecc71, 8px 16px #e74c3c, 12px 16px #e74c3c, 16px 16px #e74c3c, 20px 16px #2ecc71, 24px 16px #27ae60,
+        0px 20px #27ae60, 4px 20px #2ecc71, 8px 20px #2ecc71, 12px 20px #e74c3c, 16px 20px #2ecc71, 20px 20px #2ecc71, 24px 20px #27ae60,
+        0px 24px #27ae60, 4px 24px #2ecc71, 8px 24px #2ecc71, 12px 24px #2ecc71, 16px 24px #2ecc71, 20px 24px #2ecc71, 24px 24px #27ae60,
+        4px 28px #27ae60, 8px 28px #27ae60, 12px 28px #e74c3c, 16px 28px #27ae60, 20px 28px #27ae60,
+        4px 32px #5d4037, 8px 32px #5d4037, 12px 32px #5d4037, 16px 32px #5d4037, 20px 32px #5d4037;
+      animation: char25-tilt 1s ease-in-out infinite alternate;
+    }
+    @keyframes char25-tilt { 0% { transform: rotate(-8deg); } 100% { transform: rotate(8deg); } }
+
+    .char25-speaking .char25-body {
+      position: absolute;
+      left: 20px;
+      top: 10px;
+      width: 4px;
+      height: 4px;
+      background: transparent;
+      box-shadow: 
+        8px 0 #27ae60, 12px 0 #27ae60, 16px 0 #27ae60,
+        4px 4px #27ae60, 8px 4px #2ecc71, 12px 4px #2ecc71, 16px 4px #2ecc71, 20px 4px #27ae60,
+        4px 8px #2ecc71, 8px 8px #e74c3c, 12px 8px #000, 16px 8px #e74c3c, 20px 8px #2ecc71,
+        0px 12px #27ae60, 4px 12px #2ecc71, 8px 12px #2ecc71, 12px 12px #2ecc71, 16px 12px #2ecc71, 20px 12px #2ecc71, 24px 12px #27ae60,
+        0px 16px #27ae60, 4px 16px #2ecc71, 8px 16px #e74c3c, 12px 16px #e74c3c, 16px 16px #e74c3c, 20px 16px #2ecc71, 24px 16px #27ae60,
+        0px 20px #27ae60, 4px 20px #2ecc71, 8px 20px #2ecc71, 12px 20px #c0392b, 16px 20px #2ecc71, 20px 20px #2ecc71, 24px 20px #27ae60,
+        0px 24px #27ae60, 4px 24px #2ecc71, 8px 24px #2ecc71, 12px 24px #2ecc71, 16px 24px #2ecc71, 20px 24px #2ecc71, 24px 24px #27ae60,
+        4px 28px #27ae60, 8px 28px #27ae60, 12px 28px #e74c3c, 16px 28px #27ae60, 20px 28px #27ae60,
+        4px 32px #5d4037, 8px 32px #5d4037, 12px 32px #5d4037, 16px 32px #5d4037, 20px 32px #5d4037;
+      animation: char25-roar 0.4s ease-in-out infinite;
+    }
+    @keyframes char25-roar { 0%, 100% { transform: translateY(0) scale(1); } 50% { transform: translateY(-5px) scale(1.05); } }
+
+    /* ==================== 角色 #26: 龙族后裔 ==================== */
+    .char26-thinking .char26-body {
+      position: absolute;
+      left: 20px;
+      top: 5px;
+      width: 4px;
+      height: 4px;
+      background: transparent;
+      box-shadow: 
+        12px 0 #e74c3c, 16px 0 #e74c3c,
+        8px 4px #e74c3c, 12px 4px #c0392b, 16px 4px #c0392b, 20px 4px #e74c3c,
+        8px 8px #e74c3c, 12px 8px #f1c40f, 16px 8px #000, 20px 8px #e74c3c,
+        4px 12px #e74c3c, 8px 12px #e74c3c, 12px 12px #e74c3c, 16px 12px #e74c3c, 20px 12px #e74c3c, 24px 12px #e74c3c,
+        0px 16px #e74c3c, 4px 16px #e74c3c, 8px 16px #e74c3c, 12px 16px #f1c40f, 16px 16px #e74c3c, 20px 16px #e74c3c, 24px 16px #e74c3c, 28px 16px #e74c3c,
+        0px 20px #e74c3c, 4px 20px #e74c3c, 8px 20px #e74c3c, 12px 20px #e74c3c, 16px 20px #e74c3c, 20px 20px #e74c3c, 24px 20px #e74c3c, 28px 20px #e74c3c,
+        0px 24px #e74c3c, 4px 24px #c0392b, 8px 24px #e74c3c, 12px 24px #e74c3c, 16px 24px #e74c3c, 20px 24px #e74c3c, 24px 24px #c0392b, 28px 24px #e74c3c,
+        4px 28px #c0392b, 8px 28px #c0392b, 12px 28px #c0392b, 16px 28px #c0392b, 20px 28px #c0392b, 24px 28px #c0392b,
+        8px 32px #f1c40f, 12px 32px #f1c40f, 16px 32px #f1c40f, 20px 32px #f1c40f;
+      animation: char26-think 2s ease-in-out infinite;
+    }
+    .char26-thinking .char26-bubble { position: absolute; left: 55px; top: 5px; width: 4px; height: 4px; background: transparent; box-shadow: 0 0 #f1c40f, 4px 0 #f1c40f, -4px 4px #f1c40f, 0 4px #f1c40f, 4px 4px #f1c40f, 8px 4px #f1c40f, 0 8px #f1c40f, 4px 8px #f1c40f; animation: char26-bubble 2s ease-in-out infinite; }
+    @keyframes char26-think { 0%, 100% { transform: translateY(0); } 50% { transform: translateY(-4px); } }
+    @keyframes char26-bubble { 0%, 100% { opacity: 0.4; } 50% { opacity: 0.9; } }
+
+    .char26-sleeping .char26-body {
+      position: absolute;
+      left: 20px;
+      top: 10px;
+      width: 4px;
+      height: 4px;
+      background: transparent;
+      box-shadow: 
+        12px 0 #c0392b, 16px 0 #c0392b,
+        8px 4px #c0392b, 12px 4px #922b21, 16px 4px #922b21, 20px 4px #c0392b,
+        8px 8px #c0392b, 12px 8px #b7950b, 16px 8px #7f8c8d, 20px 8px #c0392b,
+        4px 12px #c0392b, 8px 12px #c0392b, 12px 12px #c0392b, 16px 12px #c0392b, 20px 12px #c0392b, 24px 12px #c0392b,
+        0px 16px #c0392b, 4px 16px #c0392b, 8px 16px #c0392b, 12px 16px #b7950b, 16px 16px #c0392b, 20px 16px #c0392b, 24px 16px #c0392b, 28px 16px #c0392b,
+        0px 20px #c0392b, 4px 20px #c0392b, 8px 20px #c0392b, 12px 20px #c0392b, 16px 20px #c0392b, 20px 20px #c0392b, 24px 20px #c0392b, 28px 20px #c0392b,
+        0px 24px #c0392b, 4px 24px #922b21, 8px 24px #c0392b, 12px 24px #c0392b, 16px 24px #c0392b, 20px 24px #c0392b, 24px 24px #922b21, 28px 24px #c0392b,
+        4px 28px #922b21, 8px 28px #922b21, 12px 28px #922b21, 16px 28px #922b21, 20px 28px #922b21, 24px 28px #922b21,
+        8px 32px #b7950b, 12px 32px #b7950b, 16px 32px #b7950b, 20px 32px #b7950b;
+      animation: char26-sleep 2s ease-in-out infinite;
+    }
+    .char26-sleeping .char26-zzz { position: absolute; left: 55px; top: 5px; font-size: 12px; color: #f1c40f; animation: char26-zzz 2s ease-in-out infinite; }
+    @keyframes char26-sleep { 0%, 100% { transform: scale(1); } 50% { transform: scale(0.97); } }
+    @keyframes char26-zzz { 0%, 100% { opacity: 0; } 50% { opacity: 0.8; } }
+
+    .char26-listening .char26-body {
+      position: absolute;
+      left: 20px;
+      top: 5px;
+      width: 4px;
+      height: 4px;
+      background: transparent;
+      box-shadow: 
+        12px 0 #e74c3c, 16px 0 #e74c3c,
+        8px 4px #e74c3c, 12px 4px #c0392b, 16px 4px #c0392b, 20px 4px #e74c3c,
+        8px 8px #e74c3c, 12px 8px #f1c40f, 16px 8px #000, 20px 8px #e74c3c,
+        4px 12px #e74c3c, 8px 12px #e74c3c, 12px 12px #e74c3c, 16px 12px #e74c3c, 20px 12px #e74c3c, 24px 12px #e74c3c,
+        0px 16px #e74c3c, 4px 16px #e74c3c, 8px 16px #e74c3c, 12px 16px #f1c40f, 16px 16px #e74c3c, 20px 16px #e74c3c, 24px 16px #e74c3c, 28px 16px #e74c3c,
+        0px 20px #e74c3c, 4px 20px #e74c3c, 8px 20px #e74c3c, 12px 20px #e74c3c, 16px 20px #e74c3c, 20px 20px #e74c3c, 24px 20px #e74c3c, 28px 20px #e74c3c,
+        0px 24px #e74c3c, 4px 24px #c0392b, 8px 24px #e74c3c, 12px 24px #e74c3c, 16px 24px #e74c3c, 20px 24px #e74c3c, 24px 24px #c0392b, 28px 24px #e74c3c,
+        4px 28px #c0392b, 8px 28px #c0392b, 12px 28px #c0392b, 16px 28px #c0392b, 20px 28px #c0392b, 24px 28px #c0392b,
+        8px 32px #f1c40f, 12px 32px #f1c40f, 16px 32px #f1c40f, 20px 32px #f1c40f;
+      animation: char26-tilt 1s ease-in-out infinite alternate;
+    }
+    @keyframes char26-tilt { 0% { transform: rotate(-8deg); } 100% { transform: rotate(8deg); } }
+
+    .char26-speaking .char26-body {
+      position: absolute;
+      left: 20px;
+      top: 5px;
+      width: 4px;
+      height: 4px;
+      background: transparent;
+      box-shadow: 
+        12px 0 #e74c3c, 16px 0 #e74c3c,
+        8px 4px #e74c3c, 12px 4px #c0392b, 16px 4px #c0392b, 20px 4px #e74c3c,
+        8px 8px #e74c3c, 12px 8px #f1c40f, 16px 8px #000, 20px 8px #e74c3c,
+        4px 12px #e74c3c, 8px 12px #e74c3c, 12px 12px #e74c3c, 16px 12px #e74c3c, 20px 12px #e74c3c, 24px 12px #e74c3c,
+        0px 16px #e74c3c, 4px 16px #e74c3c, 8px 16px #e74c3c, 12px 16px #f1c40f, 16px 16px #e74c3c, 20px 16px #e74c3c, 24px 16px #e74c3c, 28px 16px #e74c3c,
+        0px 20px #e74c3c, 4px 20px #e74c3c, 8px 20px #e74c3c, 12px 20px #e74c3c, 16px 20px #e74c3c, 20px 20px #e74c3c, 24px 20px #e74c3c, 28px 20px #e74c3c,
+        0px 24px #e74c3c, 4px 24px #c0392b, 8px 24px #e74c3c, 12px 24px #e74c3c, 16px 24px #e74c3c, 20px 24px #e74c3c, 24px 24px #c0392b, 28px 24px #e74c3c,
+        4px 28px #c0392b, 8px 28px #c0392b, 12px 28px #c0392b, 16px 28px #c0392b, 20px 28px #c0392b, 24px 28px #c0392b,
+        8px 32px #f39c12, 12px 32px #f39c12, 16px 32px #f39c12, 20px 32px #f39c12;
+      animation: char26-roar 0.4s ease-in-out infinite;
+    }
+    @keyframes char26-roar { 0%, 100% { transform: translateY(0) scale(1); } 50% { transform: translateY(-5px) scale(1.05); } }
+
+
+    /* ==================== 角色 #27: 光明牧师 ==================== */
+    .char27-thinking .char27-body {
+      position: absolute;
+      left: 20px;
+      top: 10px;
+      width: 4px;
+      height: 4px;
+      background: transparent;
+      box-shadow: 
+        8px 0 #f1c40f, 12px 0 #f1c40f, 16px 0 #f1c40f,
+        4px 4px #f1c40f, 8px 4px #fff, 12px 4px #fff, 16px 4px #fff, 20px 4px #f1c40f,
+        0px 8px #f1c40f, 4px 8px #fff, 8px 8px #000, 12px 8px #000, 16px 8px #fff, 20px 8px #fff, 24px 8px #f1c40f,
+        0px 12px #f1c40f, 4px 12px #fff, 8px 12px #fff, 12px 12px #fff, 16px 12px #fff, 20px 12px #fff, 24px 12px #f1c40f,
+        0px 16px #f1c40f, 4px 16px #f1c40f, 8px 16px #fff, 12px 16px #fff, 16px 16px #fff, 20px 16px #f1c40f, 24px 16px #f1c40f,
+        4px 20px #f1c40f, 8px 20px #f1c40f, 12px 20px #f1c40f, 16px 20px #f1c40f, 20px 20px #f1c40f,
+        4px 24px #fff, 8px 24px #fff, 12px 24px #fff, 16px 24px #fff, 20px 24px #fff,
+        4px 28px #fff, 8px 28px #fff, 12px 28px #fff, 16px 28px #fff, 20px 28px #fff,
+        8px 32px #f1c40f, 12px 32px #f1c40f, 16px 32px #f1c40f;
+      animation: char27-think 2s ease-in-out infinite;
+    }
+    .char27-thinking .char27-bubble { position: absolute; left: 55px; top: 5px; width: 4px; height: 4px; background: transparent; box-shadow: 0 0 #f1c40f, 4px 0 #f1c40f, -4px 4px #f1c40f, 0 4px #f1c40f, 4px 4px #f1c40f, 8px 4px #f1c40f, 0 8px #f1c40f, 4px 8px #f1c40f; animation: char27-bubble 2s ease-in-out infinite; }
+    @keyframes char27-think { 0%, 100% { transform: translateY(0); } 50% { transform: translateY(-4px); } }
+    @keyframes char27-bubble { 0%, 100% { opacity: 0.4; } 50% { opacity: 0.9; } }
+
+    .char27-sleeping .char27-body {
+      position: absolute;
+      left: 20px;
+      top: 15px;
+      width: 4px;
+      height: 4px;
+      background: transparent;
+      box-shadow: 
+        8px 0 #b7950b, 12px 0 #b7950b, 16px 0 #b7950b,
+        4px 4px #b7950b, 8px 4px #bdc3c7, 12px 4px #bdc3c7, 16px 4px #bdc3c7, 20px 4px #b7950b,
+        0px 8px #b7950b, 4px 8px #bdc3c7, 8px 8px #7f8c8d, 12px 8px #7f8c8d, 16px 8px #bdc3c7, 20px 8px #bdc3c7, 24px 8px #b7950b,
+        0px 12px #b7950b, 4px 12px #bdc3c7, 8px 12px #bdc3c7, 12px 12px #bdc3c7, 16px 12px #bdc3c7, 20px 12px #bdc3c7, 24px 12px #b7950b,
+        0px 16px #b7950b, 4px 16px #b7950b, 8px 16px #bdc3c7, 12px 16px #bdc3c7, 16px 16px #bdc3c7, 20px 16px #b7950b, 24px 16px #b7950b,
+        4px 20px #b7950b, 8px 20px #b7950b, 12px 20px #b7950b, 16px 20px #b7950b, 20px 20px #b7950b,
+        4px 24px #bdc3c7, 8px 24px #bdc3c7, 12px 24px #bdc3c7, 16px 24px #bdc3c7, 20px 24px #bdc3c7,
+        4px 28px #bdc3c7, 8px 28px #bdc3c7, 12px 28px #bdc3c7, 16px 28px #bdc3c7, 20px 28px #bdc3c7,
+        8px 32px #b7950b, 12px 32px #b7950b, 16px 32px #b7950b;
+      animation: char27-sleep 2s ease-in-out infinite;
+    }
+    .char27-sleeping .char27-zzz { position: absolute; left: 55px; top: 5px; font-size: 12px; color: #f1c40f; animation: char27-zzz 2s ease-in-out infinite; }
+    @keyframes char27-sleep { 0%, 100% { transform: scale(1); } 50% { transform: scale(0.97); } }
+    @keyframes char27-zzz { 0%, 100% { opacity: 0; } 50% { opacity: 0.8; } }
+
+    .char27-listening .char27-body {
+      position: absolute;
+      left: 20px;
+      top: 10px;
+      width: 4px;
+      height: 4px;
+      background: transparent;
+      box-shadow: 
+        8px 0 #f1c40f, 12px 0 #f1c40f, 16px 0 #f1c40f,
+        4px 4px #f1c40f, 8px 4px #fff, 12px 4px #fff, 16px 4px #fff, 20px 4px #f1c40f,
+        0px 8px #f1c40f, 4px 8px #fff, 8px 8px #000, 12px 8px #000, 16px 8px #fff, 20px 8px #fff, 24px 8px #f1c40f,
+        0px 12px #f1c40f, 4px 12px #fff, 8px 12px #fff, 12px 12px #fff, 16px 12px #fff, 20px 12px #fff, 24px 12px #f1c40f,
+        0px 16px #f1c40f, 4px 16px #f1c40f, 8px 16px #fff, 12px 16px #fff, 16px 16px #fff, 20px 16px #f1c40f, 24px 16px #f1c40f,
+        4px 20px #f1c40f, 8px 20px #f1c40f, 12px 20px #f1c40f, 16px 20px #f1c40f, 20px 20px #f1c40f,
+        4px 24px #fff, 8px 24px #fff, 12px 24px #fff, 16px 24px #fff, 20px 24px #fff,
+        4px 28px #fff, 8px 28px #fff, 12px 28px #fff, 16px 28px #fff, 20px 28px #fff,
+        8px 32px #f1c40f, 12px 32px #f1c40f, 16px 32px #f1c40f;
+      animation: char27-tilt 1s ease-in-out infinite alternate;
+    }
+    @keyframes char27-tilt { 0% { transform: rotate(-8deg); } 100% { transform: rotate(8deg); } }
+
+    .char27-speaking .char27-body {
+      position: absolute;
+      left: 20px;
+      top: 10px;
+      width: 4px;
+      height: 4px;
+      background: transparent;
+      box-shadow: 
+        8px 0 #f1c40f, 12px 0 #f1c40f, 16px 0 #f1c40f,
+        4px 4px #f1c40f, 8px 4px #fff, 12px 4px #fff, 16px 4px #fff, 20px 4px #f1c40f,
+        0px 8px #f1c40f, 4px 8px #fff, 8px 8px #000, 12px 8px #000, 16px 8px #fff, 20px 8px #fff, 24px 8px #f1c40f,
+        0px 12px #f1c40f, 4px 12px #fff, 8px 12px #fff, 12px 12px #fff, 16px 12px #fff, 20px 12px #fff, 24px 12px #f1c40f,
+        0px 16px #f1c40f, 4px 16px #f1c40f, 8px 16px #fff, 12px 16px #fff, 16px 16px #fff, 20px 16px #f1c40f, 24px 16px #f1c40f,
+        4px 20px #f1c40f, 8px 20px #f1c40f, 12px 20px #f1c40f, 16px 20px #f1c40f, 20px 20px #f1c40f,
+        4px 24px #fff, 8px 24px #fff, 12px 24px #fff, 16px 24px #fff, 20px 24px #fff,
+        4px 28px #fff, 8px 28px #fff, 12px 28px #fff, 16px 28px #fff, 20px 28px #fff,
+        8px 32px #f1c40f, 12px 32px #f1c40f, 16px 32px #f1c40f;
+      animation: char27-glow 0.5s ease-in-out infinite;
+    }
+    @keyframes char27-glow { 0%, 100% { filter: brightness(1); transform: translateY(0); } 50% { filter: brightness(1.3); transform: translateY(-4px); } }
+
+    /* ==================== 角色 #28: 暗影刺客 ==================== */
+    .char28-thinking .char28-body {
+      position: absolute;
+      left: 20px;
+      top: 10px;
+      width: 4px;
+      height: 4px;
+      background: transparent;
+      box-shadow: 
+        8px 0 #8e44ad, 12px 0 #8e44ad, 16px 0 #8e44ad,
+        4px 4px #8e44ad, 8px 4px #9b59b6, 12px 4px #9b59b6, 16px 4px #9b59b6, 20px 4px #8e44ad,
+        0px 8px #8e44ad, 4px 8px #9b59b6, 8px 8px #fff, 12px 8px #fff, 16px 8px #9b59b6, 20px 8px #9b59b6, 24px 8px #8e44ad,
+        0px 12px #8e44ad, 4px 12px #9b59b6, 8px 12px #9b59b6, 12px 12px #9b59b6, 16px 12px #9b59b6, 20px 12px #9b59b6, 24px 12px #8e44ad,
+        0px 16px #8e44ad, 4px 16px #8e44ad, 8px 16px #9b59b6, 12px 16px #9b59b6, 16px 16px #9b59b6, 20px 16px #8e44ad, 24px 16px #8e44ad,
+        4px 20px #8e44ad, 8px 20px #8e44ad, 12px 20px #8e44ad, 16px 20px #8e44ad, 20px 20px #8e44ad,
+        4px 24px #8e44ad, 8px 24px #8e44ad, 12px 24px #8e44ad, 16px 24px #8e44ad, 20px 24px #8e44ad,
+        8px 28px #8e44ad, 12px 28px #8e44ad, 16px 28px #8e44ad,
+        4px 32px #8e44ad, 8px 32px #8e44ad, 16px 32px #8e44ad, 20px 32px #8e44ad;
+      animation: char28-think 1.5s ease-in-out infinite;
+    }
+    .char28-thinking .char28-bubble { position: absolute; left: 55px; top: 5px; width: 4px; height: 4px; background: transparent; box-shadow: 0 0 #9b59b6, 4px 0 #9b59b6, -4px 4px #9b59b6, 0 4px #9b59b6, 4px 4px #9b59b6, 8px 4px #9b59b6, 0 8px #9b59b6, 4px 8px #9b59b6; animation: char28-bubble 2s ease-in-out infinite; }
+    @keyframes char28-think { 0%, 100% { transform: translateY(0); } 50% { transform: translateY(-4px); } }
+    @keyframes char28-bubble { 0%, 100% { opacity: 0.4; } 50% { opacity: 0.9; } }
+
+    .char28-sleeping .char28-body {
+      position: absolute;
+      left: 20px;
+      top: 15px;
+      width: 4px;
+      height: 4px;
+      background: transparent;
+      box-shadow: 
+        8px 0 #7d3c98, 12px 0 #7d3c98, 16px 0 #7d3c98,
+        4px 4px #7d3c98, 8px 4px #7d3c98, 12px 4px #7d3c98, 16px 4px #7d3c98, 20px 4px #7d3c98,
+        0px 8px #7d3c98, 4px 8px #7d3c98, 8px 8px #7f8c8d, 12px 8px #7f8c8d, 16px 8px #7d3c98, 20px 8px #7d3c98, 24px 8px #7d3c98,
+        0px 12px #7d3c98, 4px 12px #7d3c98, 8px 12px #7d3c98, 12px 12px #7d3c98, 16px 12px #7d3c98, 20px 12px #7d3c98, 24px 12px #7d3c98,
+        0px 16px #7d3c98, 4px 16px #7d3c98, 8px 16px #7d3c98, 12px 16px #7d3c98, 16px 16px #7d3c98, 20px 16px #7d3c98, 24px 16px #7d3c98,
+        4px 20px #7d3c98, 8px 20px #7d3c98, 12px 20px #7d3c98, 16px 20px #7d3c98, 20px 20px #7d3c98,
+        4px 24px #7d3c98, 8px 24px #7d3c98, 12px 24px #7d3c98, 16px 24px #7d3c98, 20px 24px #7d3c98,
+        8px 28px #7d3c98, 12px 28px #7d3c98, 16px 28px #7d3c98,
+        4px 32px #7d3c98, 8px 32px #7d3c98, 16px 32px #7d3c98, 20px 32px #7d3c98;
+      animation: char28-sleep 2s ease-in-out infinite;
+    }
+    .char28-sleeping .char28-zzz { position: absolute; left: 55px; top: 5px; font-size: 12px; color: #9b59b6; animation: char28-zzz 2s ease-in-out infinite; }
+    @keyframes char28-sleep { 0%, 100% { transform: scale(1); } 50% { transform: scale(0.95); } }
+    @keyframes char28-zzz { 0%, 100% { opacity: 0; } 50% { opacity: 0.8; } }
+
+    .char28-listening .char28-body {
+      position: absolute;
+      left: 20px;
+      top: 10px;
+      width: 4px;
+      height: 4px;
+      background: transparent;
+      box-shadow: 
+        8px 0 #8e44ad, 12px 0 #8e44ad, 16px 0 #8e44ad,
+        4px 4px #8e44ad, 8px 4px #9b59b6, 12px 4px #9b59b6, 16px 4px #9b59b6, 20px 4px #8e44ad,
+        0px 8px #8e44ad, 4px 8px #9b59b6, 8px 8px #fff, 12px 8px #fff, 16px 8px #9b59b6, 20px 8px #9b59b6, 24px 8px #8e44ad,
+        0px 12px #8e44ad, 4px 12px #9b59b6, 8px 12px #9b59b6, 12px 12px #9b59b6, 16px 12px #9b59b6, 20px 12px #9b59b6, 24px 12px #8e44ad,
+        0px 16px #8e44ad, 4px 16px #8e44ad, 8px 16px #9b59b6, 12px 16px #9b59b6, 16px 16px #9b59b6, 20px 16px #8e44ad, 24px 16px #8e44ad,
+        4px 20px #8e44ad, 8px 20px #8e44ad, 12px 20px #8e44ad, 16px 20px #8e44ad, 20px 20px #8e44ad,
+        4px 24px #8e44ad, 8px 24px #8e44ad, 12px 24px #8e44ad, 16px 24px #8e44ad, 20px 24px #8e44ad,
+        8px 28px #8e44ad, 12px 28px #8e44ad, 16px 28px #8e44ad,
+        4px 32px #8e44ad, 8px 32px #8e44ad, 16px 32px #8e44ad, 20px 32px #8e44ad;
+      animation: char28-tilt 1s ease-in-out infinite alternate;
+    }
+    @keyframes char28-tilt { 0% { transform: rotate(-10deg); } 100% { transform: rotate(10deg); } }
+
+    .char28-speaking .char28-body {
+      position: absolute;
+      left: 20px;
+      top: 10px;
+      width: 4px;
+      height: 4px;
+      background: transparent;
+      box-shadow: 
+        8px 0 #8e44ad, 12px 0 #8e44ad, 16px 0 #8e44ad,
+        4px 4px #8e44ad, 8px 4px #9b59b6, 12px 4px #9b59b6, 16px 4px #9b59b6, 20px 4px #8e44ad,
+        0px 8px #8e44ad, 4px 8px #9b59b6, 8px 8px #fff, 12px 8px #fff, 16px 8px #9b59b6, 20px 8px #9b59b6, 24px 8px #8e44ad,
+        0px 12px #8e44ad, 4px 12px #9b59b6, 8px 12px #9b59b6, 12px 12px #9b59b6, 16px 12px #9b59b6, 20px 12px #9b59b6, 24px 12px #8e44ad,
+        0px 16px #8e44ad, 4px 16px #8e44ad, 8px 16px #9b59b6, 12px 16px #9b59b6, 16px 16px #9b59b6, 20px 16px #8e44ad, 24px 16px #8e44ad,
+        4px 20px #8e44ad, 8px 20px #8e44ad, 12px 20px #8e44ad, 16px 20px #8e44ad, 20px 20px #8e44ad,
+        4px 24px #8e44ad, 8px 24px #8e44ad, 12px 24px #8e44ad, 16px 24px #8e44ad, 20px 24px #8e44ad,
+        8px 28px #8e44ad, 12px 28px #8e44ad, 16px 28px #8e44ad,
+        4px 32px #8e44ad, 8px 32px #8e44ad, 16px 32px #8e44ad, 20px 32px #8e44ad;
+      animation: char28-strike 0.4s ease-in-out infinite;
+    }
+    @keyframes char28-strike { 0%, 100% { transform: translateY(0); } 50% { transform: translateY(-5px); } }
+
+    /* ==================== 角色 #29: 吟游诗人 ==================== */
+    .char29-thinking .char29-body {
+      position: absolute;
+      left: 20px;
+      top: 10px;
+      width: 4px;
+      height: 4px;
+      background: transparent;
+      box-shadow: 
+        8px 0 #e74c3c, 12px 0 #e74c3c, 16px 0 #e74c3c,
+        4px 4px #f1c40f, 8px 4px #e74c3c, 12px 4px #e74c3c, 16px 4px #e74c3c, 20px 4px #f1c40f,
+        0px 8px #3498db, 4px 8px #f1c40f, 8px 8px #000, 12px 8px #000, 16px 8px #f1c40f, 20px 8px #f1c40f, 24px 8px #3498db,
+        0px 12px #3498db, 4px 12px #f1c40f, 8px 12px #f1c40f, 12px 12px #f1c40f, 16px 12px #f1c40f, 20px 12px #f1c40f, 24px 12px #3498db,
+        0px 16px #3498db, 4px 16px #3498db, 8px 16px #f1c40f, 12px 16px #f1c40f, 16px 16px #f1c40f, 20px 16px #3498db, 24px 16px #3498db,
+        4px 20px #9b59b6, 8px 20px #9b59b6, 12px 20px #9b59b6, 16px 20px #9b59b6, 20px 20px #9b59b6,
+        4px 24px #9b59b6, 8px 24px #9b59b6, 12px 24px #9b59b6, 16px 24px #9b59b6, 20px 24px #9b59b6,
+        4px 28px #2c3e50, 8px 28px #2c3e50, 12px 28px #2c3e50, 16px 28px #2c3e50, 20px 28px #2c3e50,
+        8px 32px #2c3e50, 12px 32px #2c3e50, 16px 32px #2c3e50;
+      animation: char29-think 1.5s ease-in-out infinite;
+    }
+    .char29-thinking .char29-bubble { position: absolute; left: 55px; top: 5px; width: 4px; height: 4px; background: transparent; box-shadow: 0 0 #f1c40f, 4px 0 #f1c40f, -4px 4px #f1c40f, 0 4px #f1c40f, 4px 4px #f1c40f, 8px 4px #f1c40f, 0 8px #f1c40f, 4px 8px #f1c40f; animation: char29-bubble 2s ease-in-out infinite; }
+    @keyframes char29-think { 0%, 100% { transform: translateY(0); } 50% { transform: translateY(-4px); } }
+    @keyframes char29-bubble { 0%, 100% { opacity: 0.4; } 50% { opacity: 0.9; } }
+
+    .char29-sleeping .char29-body {
+      position: absolute;
+      left: 20px;
+      top: 15px;
+      width: 4px;
+      height: 4px;
+      background: transparent;
+      box-shadow: 
+        8px 0 #c0392b, 12px 0 #c0392b, 16px 0 #c0392b,
+        4px 4px #b7950b, 8px 4px #c0392b, 12px 4px #c0392b, 16px 4px #c0392b, 20px 4px #b7950b,
+        0px 8px #2980b9, 4px 8px #b7950b, 8px 8px #7f8c8d, 12px 8px #7f8c8d, 16px 8px #b7950b, 20px 8px #b7950b, 24px 8px #2980b9,
+        0px 12px #2980b9, 4px 12px #b7950b, 8px 12px #b7950b, 12px 12px #b7950b, 16px 12px #b7950b, 20px 12px #b7950b, 24px 12px #2980b9,
+        0px 16px #2980b9, 4px 16px #2980b9, 8px 16px #b7950b, 12px 16px #b7950b, 16px 16px #b7950b, 20px 16px #2980b9, 24px 16px #2980b9,
+        4px 20px #8e44ad, 8px 20px #8e44ad, 12px 20px #8e44ad, 16px 20px #8e44ad, 20px 20px #8e44ad,
+        4px 24px #8e44ad, 8px 24px #8e44ad, 12px 24px #8e44ad, 16px 24px #8e44ad, 20px 24px #8e44ad,
+        4px 28px #1a252f, 8px 28px #1a252f, 12px 28px #1a252f, 16px 28px #1a252f, 20px 28px #1a252f,
+        8px 32px #1a252f, 12px 32px #1a252f, 16px 32px #1a252f;
+      animation: char29-sleep 2s ease-in-out infinite;
+    }
+    .char29-sleeping .char29-zzz { position: absolute; left: 55px; top: 5px; font-size: 12px; color: #f1c40f; animation: char29-zzz 2s ease-in-out infinite; }
+    @keyframes char29-sleep { 0%, 100% { transform: scale(1); } 50% { transform: scale(0.97); } }
+    @keyframes char29-zzz { 0%, 100% { opacity: 0; } 50% { opacity: 0.8; } }
+
+    .char29-listening .char29-body {
+      position: absolute;
+      left: 20px;
+      top: 10px;
+      width: 4px;
+      height: 4px;
+      background: transparent;
+      box-shadow: 
+        8px 0 #e74c3c, 12px 0 #e74c3c, 16px 0 #e74c3c,
+        4px 4px #f1c40f, 8px 4px #e74c3c, 12px 4px #e74c3c, 16px 4px #e74c3c, 20px 4px #f1c40f,
+        0px 8px #3498db, 4px 8px #f1c40f, 8px 8px #000, 12px 8px #000, 16px 8px #f1c40f, 20px 8px #f1c40f, 24px 8px #3498db,
+        0px 12px #3498db, 4px 12px #f1c40f, 8px 12px #f1c40f, 12px 12px #f1c40f, 16px 12px #f1c40f, 20px 12px #f1c40f, 24px 12px #3498db,
+        0px 16px #3498db, 4px 16px #3498db, 8px 16px #f1c40f, 12px 16px #f1c40f, 16px 16px #f1c40f, 20px 16px #3498db, 24px 16px #3498db,
+        4px 20px #9b59b6, 8px 20px #9b59b6, 12px 20px #9b59b6, 16px 20px #9b59b6, 20px 20px #9b59b6,
+        4px 24px #9b59b6, 8px 24px #9b59b6, 12px 24px #9b59b6, 16px 24px #9b59b6, 20px 24px #9b59b6,
+        4px 28px #2c3e50, 8px 28px #2c3e50, 12px 28px #2c3e50, 16px 28px #2c3e50, 20px 28px #2c3e50,
+        8px 32px #2c3e50, 12px 32px #2c3e50, 16px 32px #2c3e50;
+      animation: char29-tilt 1s ease-in-out infinite alternate;
+    }
+    @keyframes char29-tilt { 0% { transform: rotate(-8deg); } 100% { transform: rotate(8deg); } }
+
+    .char29-speaking .char29-body {
+      position: absolute;
+      left: 20px;
+      top: 10px;
+      width: 4px;
+      height: 4px;
+      background: transparent;
+      box-shadow: 
+        8px 0 #e74c3c, 12px 0 #e74c3c, 16px 0 #e74c3c,
+        4px 4px #f1c40f, 8px 4px #e74c3c, 12px 4px #e74c3c, 16px 4px #e74c3c, 20px 4px #f1c40f,
+        0px 8px #3498db, 4px 8px #f1c40f, 8px 8px #e74c3c, 12px 8px #e74c3c, 16px 8px #f1c40f, 20px 8px #f1c40f, 24px 8px #3498db,
+        0px 12px #3498db, 4px 12px #f1c40f, 8px 12px #f1c40f, 12px 12px #f1c40f, 16px 12px #f1c40f, 20px 12px #f1c40f, 24px 12px #3498db,
+        0px 16px #3498db, 4px 16px #3498db, 8px 16px #f1c40f, 12px 16px #f1c40f, 16px 16px #f1c40f, 20px 16px #3498db, 24px 16px #3498db,
+        4px 20px #9b59b6, 8px 20px #9b59b6, 12px 20px #9b59b6, 16px 20px #9b59b6, 20px 20px #9b59b6,
+        4px 24px #9b59b6, 8px 24px #9b59b6, 12px 24px #9b59b6, 16px 24px #9b59b6, 20px 24px #9b59b6,
+        4px 28px #2c3e50, 8px 28px #2c3e50, 12px 28px #2c3e50, 16px 28px #2c3e50, 20px 28px #2c3e50,
+        8px 32px #2c3e50, 12px 32px #2c3e50, 16px 32px #2c3e50;
+      animation: char29-sing 0.5s ease-in-out infinite;
+    }
+    @keyframes char29-sing { 0%, 100% { transform: translateY(0); } 50% { transform: translateY(-4px); } }
+
+    /* ==================== 角色 #30: 德鲁伊 ==================== */
+    .char30-thinking .char30-body {
+      position: absolute;
+      left: 20px;
+      top: 5px;
+      width: 4px;
+      height: 4px;
+      background: transparent;
+      box-shadow: 
+        8px 0 #27ae60, 12px 0 #e67e22, 16px 0 #27ae60,
+        4px 4px #27ae60, 8px 4px #27ae60, 12px 4px #27ae60, 16px 4px #27ae60, 20px 4px #27ae60,
+        0px 8px #27ae60, 4px 8px #2ecc71, 8px 8px #000, 12px 8px #000, 16px 8px #2ecc71, 20px 8px #2ecc71, 24px 8px #27ae60,
+        0px 12px #27ae60, 4px 12px #2ecc71, 8px 12px #2ecc71, 12px 12px #2ecc71, 16px 12px #2ecc71, 20px 12px #2ecc71, 24px 12px #27ae60,
+        0px 16px #27ae60, 4px 16px #27ae60, 8px 16px #2ecc71, 12px 16px #2ecc71, 16px 16px #2ecc71, 20px 16px #27ae60, 24px 16px #27ae60,
+        4px 20px #27ae60, 8px 20px #27ae60, 12px 20px #795548, 16px 20px #27ae60, 20px 20px #27ae60,
+        4px 24px #795548, 8px 24px #795548, 12px 24px #795548, 16px 24px #795548, 20px 24px #795548,
+        8px 28px #795548, 12px 28px #795548, 16px 28px #795548,
+        8px 32px #5d4037, 12px 32px #5d4037, 16px 32px #5d4037;
+      animation: char30-think 2s ease-in-out infinite;
+    }
+    .char30-thinking .char30-bubble { position: absolute; left: 55px; top: 5px; width: 4px; height: 4px; background: transparent; box-shadow: 0 0 #27ae60, 4px 0 #27ae60, -4px 4px #27ae60, 0 4px #27ae60, 4px 4px #27ae60, 8px 4px #27ae60, 0 8px #27ae60, 4px 8px #27ae60; animation: char30-bubble 2s ease-in-out infinite; }
+    @keyframes char30-think { 0%, 100% { transform: translateY(0); } 50% { transform: translateY(-4px); } }
+    @keyframes char30-bubble { 0%, 100% { opacity: 0.4; } 50% { opacity: 0.9; } }
+
+    .char30-sleeping .char30-body {
+      position: absolute;
+      left: 20px;
+      top: 10px;
+      width: 4px;
+      height: 4px;
+      background: transparent;
+      box-shadow: 
+        8px 0 #1e8449, 12px 0 #a04000, 16px 0 #1e8449,
+        4px 4px #1e8449, 8px 4px #1e8449, 12px 4px #1e8449, 16px 4px #1e8449, 20px 4px #1e8449,
+        0px 8px #1e8449, 4px 8px #27ae60, 8px 8px #7f8c8d, 12px 8px #7f8c8d, 16px 8px #27ae60, 20px 8px #27ae60, 24px 8px #1e8449,
+        0px 12px #1e8449, 4px 12px #27ae60, 8px 12px #27ae60, 12px 12px #27ae60, 16px 12px #27ae60, 20px 12px #27ae60, 24px 12px #1e8449,
+        0px 16px #1e8449, 4px 16px #1e8449, 8px 16px #27ae60, 12px 16px #27ae60, 16px 16px #27ae60, 20px 16px #1e8449, 24px 16px #1e8449,
+        4px 20px #1e8449, 8px 20px #1e8449, 12px 20px #5d4037, 16px 20px #1e8449, 20px 20px #1e8449,
+        4px 24px #5d4037, 8px 24px #5d4037, 12px 24px #5d4037, 16px 24px #5d4037, 20px 24px #5d4037,
+        8px 28px #5d4037, 12px 28px #5d4037, 16px 28px #5d4037,
+        8px 32px #4e342e, 12px 32px #4e342e, 16px 32px #4e342e;
+      animation: char30-sleep 2s ease-in-out infinite;
+    }
+    .char30-sleeping .char30-zzz { position: absolute; left: 55px; top: 5px; font-size: 12px; color: #27ae60; animation: char30-zzz 2s ease-in-out infinite; }
+    @keyframes char30-sleep { 0%, 100% { transform: scale(1); } 50% { transform: scale(0.97); } }
+    @keyframes char30-zzz { 0%, 100% { opacity: 0; } 50% { opacity: 0.8; } }
+
+    .char30-listening .char30-body {
+      position: absolute;
+      left: 20px;
+      top: 5px;
+      width: 4px;
+      height: 4px;
+      background: transparent;
+      box-shadow: 
+        8px 0 #27ae60, 12px 0 #e67e22, 16px 0 #27ae60,
+        4px 4px #27ae60, 8px 4px #27ae60, 12px 4px #27ae60, 16px 4px #27ae60, 20px 4px #27ae60,
+        0px 8px #27ae60, 4px 8px #2ecc71, 8px 8px #000, 12px 8px #000, 16px 8px #2ecc71, 20px 8px #2ecc71, 24px 8px #27ae60,
+        0px 12px #27ae60, 4px 12px #2ecc71, 8px 12px #2ecc71, 12px 12px #2ecc71, 16px 12px #2ecc71, 20px 12px #2ecc71, 24px 12px #27ae60,
+        0px 16px #27ae60, 4px 16px #27ae60, 8px 16px #2ecc71, 12px 16px #2ecc71, 16px 16px #2ecc71, 20px 16px #27ae60, 24px 16px #27ae60,
+        4px 20px #27ae60, 8px 20px #27ae60, 12px 20px #795548, 16px 20px #27ae60, 20px 20px #27ae60,
+        4px 24px #795548, 8px 24px #795548, 12px 24px #795548, 16px 24px #795548, 20px 24px #795548,
+        8px 28px #795548, 12px 28px #795548, 16px 28px #795548,
+        8px 32px #5d4037, 12px 32px #5d4037, 16px 32px #5d4037;
+      animation: char30-tilt 1s ease-in-out infinite alternate;
+    }
+    @keyframes char30-tilt { 0% { transform: rotate(-8deg); } 100% { transform: rotate(8deg); } }
+
+    .char30-speaking .char30-body {
+      position: absolute;
+      left: 20px;
+      top: 5px;
+      width: 4px;
+      height: 4px;
+      background: transparent;
+      box-shadow: 
+        8px 0 #27ae60, 12px 0 #e67e22, 16px 0 #27ae60,
+        4px 4px #27ae60, 8px 4px #27ae60, 12px 4px #27ae60, 16px 4px #27ae60, 20px 4px #27ae60,
+        0px 8px #27ae60, 4px 8px #2ecc71, 8px 8px #e67e22, 12px 8px #e67e22, 16px 8px #2ecc71, 20px 8px #2ecc71, 24px 8px #27ae60,
+        0px 12px #27ae60, 4px 12px #2ecc71, 8px 12px #2ecc71, 12px 12px #2ecc71, 16px 12px #2ecc71, 20px 12px #2ecc71, 24px 12px #27ae60,
+        0px 16px #27ae60, 4px 16px #27ae60, 8px 16px #2ecc71, 12px 16px #2ecc71, 16px 16px #2ecc71, 20px 16px #27ae60, 24px 16px #27ae60,
+        4px 20px #27ae60, 8px 20px #27ae60, 12px 20px #795548, 16px 20px #27ae60, 20px 20px #27ae60,
+        4px 24px #795548, 8px 24px #795548, 12px 24px #795548, 16px 24px #795548, 20px 24px #795548,
+        8px 28px #795548, 12px 28px #795548, 16px 28px #795548,
+        8px 32px #5d4037, 12px 32px #5d4037, 16px 32px #5d4037;
+      animation: char30-speak 0.5s ease-in-out infinite;
+    }
+    @keyframes char30-speak { 0%, 100% { transform: translateY(0); } 50% { transform: translateY(-4px); } }
+
+
+    /* ==================== 角色 #31: 圣骑士 ==================== */
+    .char31-thinking .char31-body {
+      position: absolute;
+      left: 20px;
+      top: 10px;
+      width: 4px;
+      height: 4px;
+      background: transparent;
+      box-shadow: 
+        8px 0 #95a5a6, 12px 0 #f1c40f, 16px 0 #95a5a6,
+        4px 4px #95a5a6, 8px 4px #95a5a6, 12px 4px #95a5a6, 16px 4px #95a5a6, 20px 4px #95a5a6,
+        0px 8px #95a5a6, 4px 8px #3498db, 8px 8px #000, 12px 8px #000, 16px 8px #3498db, 20px 8px #3498db, 24px 8px #95a5a6,
+        0px 12px #95a5a6, 4px 12px #3498db, 8px 12px #3498db, 12px 12px #3498db, 16px 12px #3498db, 20px 12px #3498db, 24px 12px #95a5a6,
+        0px 16px #95a5a6, 4px 16px #95a5a6, 8px 16px #3498db, 12px 16px #3498db, 16px 16px #3498db, 20px 16px #95a5a6, 24px 16px #95a5a6,
+        4px 20px #95a5a6, 8px 20px #95a5a6, 12px 20px #f1c40f, 16px 20px #95a5a6, 20px 20px #95a5a6,
+        4px 24px #95a5a6, 8px 24px #95a5a6, 12px 24px #95a5a6, 16px 24px #95a5a6, 20px 24px #95a5a6,
+        4px 28px #7f8c8d, 8px 28px #7f8c8d, 12px 28px #7f8c8d, 16px 28px #7f8c8d, 20px 28px #7f8c8d,
+        8px 32px #7f8c8d, 12px 32px #7f8c8d, 16px 32px #7f8c8d;
+      animation: char31-think 2s ease-in-out infinite;
+    }
+    .char31-thinking .char31-bubble { position: absolute; left: 55px; top: 5px; width: 4px; height: 4px; background: transparent; box-shadow: 0 0 #f1c40f, 4px 0 #f1c40f, -4px 4px #f1c40f, 0 4px #f1c40f, 4px 4px #f1c40f, 8px 4px #f1c40f, 0 8px #f1c40f, 4px 8px #f1c40f; animation: char31-bubble 2s ease-in-out infinite; }
+    @keyframes char31-think { 0%, 100% { transform: translateY(0); } 50% { transform: translateY(-3px); } }
+    @keyframes char31-bubble { 0%, 100% { opacity: 0.4; } 50% { opacity: 0.9; } }
+
+    .char31-sleeping .char31-body {
+      position: absolute;
+      left: 20px;
+      top: 15px;
+      width: 4px;
+      height: 4px;
+      background: transparent;
+      box-shadow: 
+        8px 0 #7f8c8d, 12px 0 #b7950b, 16px 0 #7f8c8d,
+        4px 4px #7f8c8d, 8px 4px #7f8c8d, 12px 4px #7f8c8d, 16px 4px #7f8c8d, 20px 4px #7f8c8d,
+        0px 8px #7f8c8d, 4px 8px #2980b9, 8px 8px #5f6a6a, 12px 8px #5f6a6a, 16px 8px #2980b9, 20px 8px #2980b9, 24px 8px #7f8c8d,
+        0px 12px #7f8c8d, 4px 12px #2980b9, 8px 12px #2980b9, 12px 12px #2980b9, 16px 12px #2980b9, 20px 12px #2980b9, 24px 12px #7f8c8d,
+        0px 16px #7f8c8d, 4px 16px #7f8c8d, 8px 16px #2980b9, 12px 16px #2980b9, 16px 16px #2980b9, 20px 16px #7f8c8d, 24px 16px #7f8c8d,
+        4px 20px #7f8c8d, 8px 20px #7f8c8d, 12px 20px #b7950b, 16px 20px #7f8c8d, 20px 20px #7f8c8d,
+        4px 24px #7f8c8d, 8px 24px #7f8c8d, 12px 24px #7f8c8d, 16px 24px #7f8c8d, 20px 24px #7f8c8d,
+        4px 28px #5f6a6a, 8px 28px #5f6a6a, 12px 28px #5f6a6a, 16px 28px #5f6a6a, 20px 28px #5f6a6a,
+        8px 32px #5f6a6a, 12px 32px #5f6a6a, 16px 32px #5f6a6a;
+      animation: char31-sleep 2s ease-in-out infinite;
+    }
+    .char31-sleeping .char31-zzz { position: absolute; left: 55px; top: 5px; font-size: 12px; color: #f1c40f; animation: char31-zzz 2s ease-in-out infinite; }
+    @keyframes char31-sleep { 0%, 100% { transform: scale(1); } 50% { transform: scale(0.97); } }
+    @keyframes char31-zzz { 0%, 100% { opacity: 0; } 50% { opacity: 0.8; } }
+
+    .char31-listening .char31-body {
+      position: absolute;
+      left: 20px;
+      top: 10px;
+      width: 4px;
+      height: 4px;
+      background: transparent;
+      box-shadow: 
+        8px 0 #95a5a6, 12px 0 #f1c40f, 16px 0 #95a5a6,
+        4px 4px #95a5a6, 8px 4px #95a5a6, 12px 4px #95a5a6, 16px 4px #95a5a6, 20px 4px #95a5a6,
+        0px 8px #95a5a6, 4px 8px #3498db, 8px 8px #000, 12px 8px #000, 16px 8px #3498db, 20px 8px #3498db, 24px 8px #95a5a6,
+        0px 12px #95a5a6, 4px 12px #3498db, 8px 12px #3498db, 12px 12px #3498db, 16px 12px #3498db, 20px 12px #3498db, 24px 12px #95a5a6,
+        0px 16px #95a5a6, 4px 16px #95a5a6, 8px 16px #3498db, 12px 16px #3498db, 16px 16px #3498db, 20px 16px #95a5a6, 24px 16px #95a5a6,
+        4px 20px #95a5a6, 8px 20px #95a5a6, 12px 20px #f1c40f, 16px 20px #95a5a6, 20px 20px #95a5a6,
+        4px 24px #95a5a6, 8px 24px #95a5a6, 12px 24px #95a5a6, 16px 24px #95a5a6, 20px 24px #95a5a6,
+        4px 28px #7f8c8d, 8px 28px #7f8c8d, 12px 28px #7f8c8d, 16px 28px #7f8c8d, 20px 28px #7f8c8d,
+        8px 32px #7f8c8d, 12px 32px #7f8c8d, 16px 32px #7f8c8d;
+      animation: char31-tilt 1s ease-in-out infinite alternate;
+    }
+    @keyframes char31-tilt { 0% { transform: rotate(-6deg); } 100% { transform: rotate(6deg); } }
+
+    .char31-speaking .char31-body {
+      position: absolute;
+      left: 20px;
+      top: 10px;
+      width: 4px;
+      height: 4px;
+      background: transparent;
+      box-shadow: 
+        8px 0 #95a5a6, 12px 0 #f1c40f, 16px 0 #95a5a6,
+        4px 4px #95a5a6, 8px 4px #95a5a6, 12px 4px #95a5a6, 16px 4px #95a5a6, 20px 4px #95a5a6,
+        0px 8px #95a5a6, 4px 8px #3498db, 8px 8px #f1c40f, 12px 8px #f1c40f, 16px 8px #3498db, 20px 8px #3498db, 24px 8px #95a5a6,
+        0px 12px #95a5a6, 4px 12px #3498db, 8px 12px #3498db, 12px 12px #3498db, 16px 12px #3498db, 20px 12px #3498db, 24px 12px #95a5a6,
+        0px 16px #95a5a6, 4px 16px #95a5a6, 8px 16px #3498db, 12px 16px #3498db, 16px 16px #3498db, 20px 16px #95a5a6, 24px 16px #95a5a6,
+        4px 20px #95a5a6, 8px 20px #95a5a6, 12px 20px #f1c40f, 16px 20px #95a5a6, 20px 20px #95a5a6,
+        4px 24px #95a5a6, 8px 24px #95a5a6, 12px 24px #95a5a6, 16px 24px #95a5a6, 20px 24px #95a5a6,
+        4px 28px #7f8c8d, 8px 28px #7f8c8d, 12px 28px #7f8c8d, 16px 28px #7f8c8d, 20px 28px #7f8c8d,
+        8px 32px #7f8c8d, 12px 32px #7f8c8d, 16px 32px #7f8c8d;
+      animation: char31-speak 0.5s ease-in-out infinite;
+    }
+    @keyframes char31-speak { 0%, 100% { transform: translateY(0); filter: brightness(1); } 50% { transform: translateY(-4px); filter: brightness(1.2); } }
+
+    /* ==================== 角色 #32: 邪术士 ==================== */
+    .char32-thinking .char32-body {
+      position: absolute;
+      left: 20px;
+      top: 5px;
+      width: 4px;
+      height: 4px;
+      background: transparent;
+      box-shadow: 
+        12px 0 #8e44ad,
+        8px 4px #8e44ad, 12px 4px #8e44ad, 16px 4px #8e44ad,
+        4px 8px #8e44ad, 8px 8px #9b59b6, 12px 8px #e74c3c, 16px 8px #9b59b6, 20px 8px #8e44ad,
+        0px 12px #2c3e50, 4px 12px #2c3e50, 8px 12px #2c3e50, 12px 12px #2c3e50, 16px 12px #2c3e50, 20px 12px #2c3e50, 24px 12px #2c3e50,
+        0px 16px #2c3e50, 4px 16px #000, 8px 16px #2c3e50, 12px 16px #2c3e50, 16px 16px #2c3e50, 20px 16px #000, 24px 16px #2c3e50,
+        0px 20px #2c3e50, 4px 20px #2c3e50, 8px 20px #2c3e50, 12px 20px #8e44ad, 16px 20px #2c3e50, 20px 20px #2c3e50, 24px 20px #2c3e50,
+        4px 24px #8e44ad, 8px 24px #8e44ad, 12px 24px #8e44ad, 16px 24px #8e44ad, 20px 24px #8e44ad,
+        4px 28px #8e44ad, 8px 28px #8e44ad, 12px 28px #8e44ad, 16px 28px #8e44ad, 20px 28px #8e44ad,
+        8px 32px #8e44ad, 12px 32px #8e44ad, 16px 32px #8e44ad;
+      animation: char32-think 2s ease-in-out infinite;
+    }
+    .char32-thinking .char32-bubble { position: absolute; left: 55px; top: 5px; width: 4px; height: 4px; background: transparent; box-shadow: 0 0 #e74c3c, 4px 0 #e74c3c, -4px 4px #e74c3c, 0 4px #e74c3c, 4px 4px #e74c3c, 8px 4px #e74c3c, 0 8px #e74c3c, 4px 8px #e74c3c; animation: char32-bubble 2s ease-in-out infinite; }
+    @keyframes char32-think { 0%, 100% { transform: translateY(0); } 50% { transform: translateY(-4px); } }
+    @keyframes char32-bubble { 0%, 100% { opacity: 0.4; } 50% { opacity: 0.9; } }
+
+    .char32-sleeping .char32-body {
+      position: absolute;
+      left: 20px;
+      top: 10px;
+      width: 4px;
+      height: 4px;
+      background: transparent;
+      box-shadow: 
+        12px 0 #7d3c98,
+        8px 4px #7d3c98, 12px 4px #7d3c98, 16px 4px #7d3c98,
+        4px 8px #7d3c98, 8px 8px #7d3c98, 12px 8px #c0392b, 16px 8px #7d3c98, 20px 8px #7d3c98,
+        0px 12px #1a252f, 4px 12px #1a252f, 8px 12px #1a252f, 12px 12px #1a252f, 16px 12px #1a252f, 20px 12px #1a252f, 24px 12px #1a252f,
+        0px 16px #1a252f, 4px 16px #5f6a6a, 8px 16px #1a252f, 12px 16px #1a252f, 16px 16px #1a252f, 20px 16px #5f6a6a, 24px 16px #1a252f,
+        0px 20px #1a252f, 4px 20px #1a252f, 8px 20px #1a252f, 12px 20px #7d3c98, 16px 20px #1a252f, 20px 20px #1a252f, 24px 20px #1a252f,
+        4px 24px #7d3c98, 8px 24px #7d3c98, 12px 24px #7d3c98, 16px 24px #7d3c98, 20px 24px #7d3c98,
+        4px 28px #7d3c98, 8px 28px #7d3c98, 12px 28px #7d3c98, 16px 28px #7d3c98, 20px 28px #7d3c98,
+        8px 32px #7d3c98, 12px 32px #7d3c98, 16px 32px #7d3c98;
+      animation: char32-sleep 2s ease-in-out infinite;
+    }
+    .char32-sleeping .char32-zzz { position: absolute; left: 55px; top: 5px; font-size: 12px; color: #8e44ad; animation: char32-zzz 2s ease-in-out infinite; }
+    @keyframes char32-sleep { 0%, 100% { transform: scale(1); } 50% { transform: scale(0.97); } }
+    @keyframes char32-zzz { 0%, 100% { opacity: 0; } 50% { opacity: 0.8; } }
+
+    .char32-listening .char32-body {
+      position: absolute;
+      left: 20px;
+      top: 5px;
+      width: 4px;
+      height: 4px;
+      background: transparent;
+      box-shadow: 
+        12px 0 #8e44ad,
+        8px 4px #8e44ad, 12px 4px #8e44ad, 16px 4px #8e44ad,
+        4px 8px #8e44ad, 8px 8px #9b59b6, 12px 8px #e74c3c, 16px 8px #9b59b6, 20px 8px #8e44ad,
+        0px 12px #2c3e50, 4px 12px #2c3e50, 8px 12px #2c3e50, 12px 12px #2c3e50, 16px 12px #2c3e50, 20px 12px #2c3e50, 24px 12px #2c3e50,
+        0px 16px #2c3e50, 4px 16px #000, 8px 16px #2c3e50, 12px 16px #2c3e50, 16px 16px #2c3e50, 20px 16px #000, 24px 16px #2c3e50,
+        0px 20px #2c3e50, 4px 20px #2c3e50, 8px 20px #2c3e50, 12px 20px #8e44ad, 16px 20px #2c3e50, 20px 20px #2c3e50, 24px 20px #2c3e50,
+        4px 24px #8e44ad, 8px 24px #8e44ad, 12px 24px #8e44ad, 16px 24px #8e44ad, 20px 24px #8e44ad,
+        4px 28px #8e44ad, 8px 28px #8e44ad, 12px 28px #8e44ad, 16px 28px #8e44ad, 20px 28px #8e44ad,
+        8px 32px #8e44ad, 12px 32px #8e44ad, 16px 32px #8e44ad;
+      animation: char32-tilt 1s ease-in-out infinite alternate;
+    }
+    @keyframes char32-tilt { 0% { transform: rotate(-8deg); } 100% { transform: rotate(8deg); } }
+
+    .char32-speaking .char32-body {
+      position: absolute;
+      left: 20px;
+      top: 5px;
+      width: 4px;
+      height: 4px;
+      background: transparent;
+      box-shadow: 
+        12px 0 #8e44ad,
+        8px 4px #8e44ad, 12px 4px #8e44ad, 16px 4px #8e44ad,
+        4px 8px #8e44ad, 8px 8px #9b59b6, 12px 8px #e74c3c, 16px 8px #9b59b6, 20px 8px #8e44ad,
+        0px 12px #2c3e50, 4px 12px #2c3e50, 8px 12px #2c3e50, 12px 12px #2c3e50, 16px 12px #2c3e50, 20px 12px #2c3e50, 24px 12px #2c3e50,
+        0px 16px #2c3e50, 4px 16px #e74c3c, 8px 16px #2c3e50, 12px 16px #2c3e50, 16px 16px #2c3e50, 20px 16px #e74c3c, 24px 16px #2c3e50,
+        0px 20px #2c3e50, 4px 20px #2c3e50, 8px 20px #2c3e50, 12px 20px #8e44ad, 16px 20px #2c3e50, 20px 20px #2c3e50, 24px 20px #2c3e50,
+        4px 24px #8e44ad, 8px 24px #8e44ad, 12px 24px #8e44ad, 16px 24px #8e44ad, 20px 24px #8e44ad,
+        4px 28px #8e44ad, 8px 28px #8e44ad, 12px 28px #8e44ad, 16px 28px #8e44ad, 20px 28px #8e44ad,
+        8px 32px #8e44ad, 12px 32px #8e44ad, 16px 32px #8e44ad;
+      animation: char32-cast 0.5s ease-in-out infinite;
+    }
+    @keyframes char32-cast { 0%, 100% { transform: translateY(0); filter: brightness(1); } 50% { transform: translateY(-6px); filter: brightness(1.3); } }
+
+    /* ==================== 角色 #33: 游侠 ==================== */
+    .char33-thinking .char33-body {
+      position: absolute;
+      left: 20px;
+      top: 10px;
+      width: 4px;
+      height: 4px;
+      background: transparent;
+      box-shadow: 
+        8px 0 #27ae60, 12px 0 #27ae60, 16px 0 #27ae60,
+        4px 4px #27ae60, 8px 4px #2ecc71, 12px 4px #2ecc71, 16px 4px #2ecc71, 20px 4px #27ae60,
+        0px 8px #e67e22, 4px 8px #27ae60, 8px 8px #000, 12px 8px #000, 16px 8px #2ecc71, 20px 8px #27ae60, 24px 8px #e67e22,
+        0px 12px #27ae60, 4px 12px #2ecc71, 8px 12px #2ecc71, 12px 12px #2ecc71, 16px 12px #2ecc71, 20px 12px #2ecc71, 24px 12px #27ae60,
+        0px 16px #27ae60, 4px 16px #27ae60, 8px 16px #2ecc71, 12px 16px #2ecc71, 16px 16px #2ecc71, 20px 16px #27ae60, 24px 16px #27ae60,
+        4px 20px #e67e22, 8px 20px #27ae60, 12px 20px #27ae60, 16px 20px #27ae60, 20px 20px #e67e22,
+        4px 24px #27ae60, 8px 24px #27ae60, 12px 24px #27ae60, 16px 24px #27ae60, 20px 24px #27ae60,
+        8px 28px #5d4037, 12px 28px #5d4037, 16px 28px #5d4037,
+        8px 32px #5d4037, 12px 32px #5d4037, 16px 32px #5d4037;
+      animation: char33-think 1.5s ease-in-out infinite;
+    }
+    .char33-thinking .char33-bubble { position: absolute; left: 55px; top: 5px; width: 4px; height: 4px; background: transparent; box-shadow: 0 0 #27ae60, 4px 0 #27ae60, -4px 4px #27ae60, 0 4px #27ae60, 4px 4px #27ae60, 8px 4px #27ae60, 0 8px #27ae60, 4px 8px #27ae60; animation: char33-bubble 2s ease-in-out infinite; }
+    @keyframes char33-think { 0%, 100% { transform: translateY(0); } 50% { transform: translateY(-4px); } }
+    @keyframes char33-bubble { 0%, 100% { opacity: 0.4; } 50% { opacity: 0.9; } }
+
+    .char33-sleeping .char33-body {
+      position: absolute;
+      left: 20px;
+      top: 15px;
+      width: 4px;
+      height: 4px;
+      background: transparent;
+      box-shadow: 
+        8px 0 #1e8449, 12px 0 #1e8449, 16px 0 #1e8449,
+        4px 4px #1e8449, 8px 4px #27ae60, 12px 4px #27ae60, 16px 4px #27ae60, 20px 4px #1e8449,
+        0px 8px #a04000, 4px 8px #1e8449, 8px 8px #7f8c8d, 12px 8px #7f8c8d, 16px 8px #27ae60, 20px 8px #1e8449, 24px 8px #a04000,
+        0px 12px #1e8449, 4px 12px #27ae60, 8px 12px #27ae60, 12px 12px #27ae60, 16px 12px #27ae60, 20px 12px #27ae60, 24px 12px #1e8449,
+        0px 16px #1e8449, 4px 16px #1e8449, 8px 16px #27ae60, 12px 16px #27ae60, 16px 16px #27ae60, 20px 16px #1e8449, 24px 16px #1e8449,
+        4px 20px #a04000, 8px 20px #1e8449, 12px 20px #1e8449, 16px 20px #1e8449, 20px 20px #a04000,
+        4px 24px #1e8449, 8px 24px #1e8449, 12px 24px #1e8449, 16px 24px #1e8449, 20px 24px #1e8449,
+        8px 28px #4e342e, 12px 28px #4e342e, 16px 28px #4e342e,
+        8px 32px #4e342e, 12px 32px #4e342e, 16px 32px #4e342e;
+      animation: char33-sleep 2s ease-in-out infinite;
+    }
+    .char33-sleeping .char33-zzz { position: absolute; left: 55px; top: 5px; font-size: 12px; color: #27ae60; animation: char33-zzz 2s ease-in-out infinite; }
+    @keyframes char33-sleep { 0%, 100% { transform: scale(1); } 50% { transform: scale(0.97); } }
+    @keyframes char33-zzz { 0%, 100% { opacity: 0; } 50% { opacity: 0.8; } }
+
+    .char33-listening .char33-body {
+      position: absolute;
+      left: 20px;
+      top: 10px;
+      width: 4px;
+      height: 4px;
+      background: transparent;
+      box-shadow: 
+        8px 0 #27ae60, 12px 0 #27ae60, 16px 0 #27ae60,
+        4px 4px #27ae60, 8px 4px #2ecc71, 12px 4px #2ecc71, 16px 4px #2ecc71, 20px 4px #27ae60,
+        0px 8px #e67e22, 4px 8px #27ae60, 8px 8px #000, 12px 8px #000, 16px 8px #2ecc71, 20px 8px #27ae60, 24px 8px #e67e22,
+        0px 12px #27ae60, 4px 12px #2ecc71, 8px 12px #2ecc71, 12px 12px #2ecc71, 16px 12px #2ecc71, 20px 12px #2ecc71, 24px 12px #27ae60,
+        0px 16px #27ae60, 4px 16px #27ae60, 8px 16px #2ecc71, 12px 16px #2ecc71, 16px 16px #2ecc71, 20px 16px #27ae60, 24px 16px #27ae60,
+        4px 20px #e67e22, 8px 20px #27ae60, 12px 20px #27ae60, 16px 20px #27ae60, 20px 20px #e67e22,
+        4px 24px #27ae60, 8px 24px #27ae60, 12px 24px #27ae60, 16px 24px #27ae60, 20px 24px #27ae60,
+        8px 28px #5d4037, 12px 28px #5d4037, 16px 28px #5d4037,
+        8px 32px #5d4037, 12px 32px #5d4037, 16px 32px #5d4037;
+      animation: char33-tilt 1s ease-in-out infinite alternate;
+    }
+    @keyframes char33-tilt { 0% { transform: rotate(-8deg); } 100% { transform: rotate(8deg); } }
+
+    .char33-speaking .char33-body {
+      position: absolute;
+      left: 20px;
+      top: 10px;
+      width: 4px;
+      height: 4px;
+      background: transparent;
+      box-shadow: 
+        8px 0 #27ae60, 12px 0 #27ae60, 16px 0 #27ae60,
+        4px 4px #27ae60, 8px 4px #2ecc71, 12px 4px #2ecc71, 16px 4px #2ecc71, 20px 4px #27ae60,
+        0px 8px #e67e22, 4px 8px #27ae60, 8px 8px #e67e22, 12px 8px #e67e22, 16px 8px #2ecc71, 20px 8px #27ae60, 24px 8px #e67e22,
+        0px 12px #27ae60, 4px 12px #2ecc71, 8px 12px #2ecc71, 12px 12px #2ecc71, 16px 12px #2ecc71, 20px 12px #2ecc71, 24px 12px #27ae60,
+        0px 16px #27ae60, 4px 16px #27ae60, 8px 16px #2ecc71, 12px 16px #2ecc71, 16px 16px #2ecc71, 20px 16px #27ae60, 24px 16px #27ae60,
+        4px 20px #e67e22, 8px 20px #27ae60, 12px 20px #27ae60, 16px 20px #27ae60, 20px 20px #e67e22,
+        4px 24px #27ae60, 8px 24px #27ae60, 12px 24px #27ae60, 16px 24px #27ae60, 20px 24px #27ae60,
+        8px 28px #5d4037, 12px 28px #5d4037, 16px 28px #5d4037,
+        8px 32px #5d4037, 12px 32px #5d4037, 16px 32px #5d4037;
+      animation: char33-speak 0.5s ease-in-out infinite;
+    }
+    @keyframes char33-speak { 0%, 100% { transform: translateY(0); } 50% { transform: translateY(-4px); } }
+
+    /* ==================== 角色 #34: 死灵法师 ==================== */
+    .char34-thinking .char34-body {
+      position: absolute;
+      left: 20px;
+      top: 10px;
+      width: 4px;
+      height: 4px;
+      background: transparent;
+      box-shadow: 
+        8px 0 #2c3e50, 12px 0 #2c3e50, 16px 0 #2c3e50,
+        4px 4px #2c3e50, 8px 4px #34495e, 12px 4px #34495e, 16px 4px #34495e, 20px 4px #2c3e50,
+        0px 8px #2c3e50, 4px 8px #ecf0f1, 8px 8px #000, 12px 8px #000, 16px 8px #34495e, 20px 8px #34495e, 24px 8px #2c3e50,
+        0px 12px #2c3e50, 4px 12px #34495e, 8px 12px #34495e, 12px 12px #34495e, 16px 12px #34495e, 20px 12px #34495e, 24px 12px #2c3e50,
+        0px 16px #2c3e50, 4px 16px #2c3e50, 8px 16px #34495e, 12px 16px #34495e, 16px 16px #34495e, 20px 16px #2c3e50, 24px 16px #2c3e50,
+        4px 20px #2c3e50, 8px 20px #ecf0f1, 12px 20px #ecf0f1, 16px 20px #ecf0f1, 20px 20px #2c3e50,
+        4px 24px #2c3e50, 8px 24px #2c3e50, 12px 24px #2c3e50, 16px 24px #2c3e50, 20px 24px #2c3e50,
+        8px 28px #2c3e50, 12px 28px #2c3e50, 16px 28px #2c3e50,
+        8px 32px #2c3e50, 12px 32px #2c3e50, 16px 32px #2c3e50;
+      animation: char34-think 2s ease-in-out infinite;
+    }
+    .char34-thinking .char34-bubble { position: absolute; left: 55px; top: 5px; width: 4px; height: 4px; background: transparent; box-shadow: 0 0 #ecf0f1, 4px 0 #ecf0f1, -4px 4px #ecf0f1, 0 4px #ecf0f1, 4px 4px #ecf0f1, 8px 4px #ecf0f1, 0 8px #ecf0f1, 4px 8px #ecf0f1; animation: char34-bubble 2s ease-in-out infinite; }
+    @keyframes char34-think { 0%, 100% { transform: translateY(0); } 50% { transform: translateY(-4px); } }
+    @keyframes char34-bubble { 0%, 100% { opacity: 0.4; } 50% { opacity: 0.9; } }
+
+    .char34-sleeping .char34-body {
+      position: absolute;
+      left: 20px;
+      top: 15px;
+      width: 4px;
+      height: 4px;
+      background: transparent;
+      box-shadow: 
+        8px 0 #1a252f, 12px 0 #1a252f, 16px 0 #1a252f,
+        4px 4px #1a252f, 8px 4px #2c3e50, 12px 4px #2c3e50, 16px 4px #2c3e50, 20px 4px #1a252f,
+        0px 8px #1a252f, 4px 8px #bdc3c7, 8px 8px #5f6a6a, 12px 8px #5f6a6a, 16px 8px #2c3e50, 20px 8px #2c3e50, 24px 8px #1a252f,
+        0px 12px #1a252f, 4px 12px #2c3e50, 8px 12px #2c3e50, 12px 12px #2c3e50, 16px 12px #2c3e50, 20px 12px #2c3e50, 24px 12px #1a252f,
+        0px 16px #1a252f, 4px 16px #1a252f, 8px 16px #2c3e50, 12px 16px #2c3e50, 16px 16px #2c3e50, 20px 16px #1a252f, 24px 16px #1a252f,
+        4px 20px #1a252f, 8px 20px #bdc3c7, 12px 20px #bdc3c7, 16px 20px #bdc3c7, 20px 20px #1a252f,
+        4px 24px #1a252f, 8px 24px #1a252f, 12px 24px #1a252f, 16px 24px #1a252f, 20px 24px #1a252f,
+        8px 28px #1a252f, 12px 28px #1a252f, 16px 28px #1a252f,
+        8px 32px #1a252f, 12px 32px #1a252f, 16px 32px #1a252f;
+      animation: char34-sleep 2s ease-in-out infinite;
+    }
+    .char34-sleeping .char34-zzz { position: absolute; left: 55px; top: 5px; font-size: 12px; color: #ecf0f1; animation: char34-zzz 2s ease-in-out infinite; }
+    @keyframes char34-sleep { 0%, 100% { transform: scale(1); } 50% { transform: scale(0.97); } }
+    @keyframes char34-zzz { 0%, 100% { opacity: 0; } 50% { opacity: 0.8; } }
+
+    .char34-listening .char34-body {
+      position: absolute;
+      left: 20px;
+      top: 10px;
+      width: 4px;
+      height: 4px;
+      background: transparent;
+      box-shadow: 
+        8px 0 #2c3e50, 12px 0 #2c3e50, 16px 0 #2c3e50,
+        4px 4px #2c3e50, 8px 4px #34495e, 12px 4px #34495e, 16px 4px #34495e, 20px 4px #2c3e50,
+        0px 8px #2c3e50, 4px 8px #ecf0f1, 8px 8px #000, 12px 8px #000, 16px 8px #34495e, 20px 8px #34495e, 24px 8px #2c3e50,
+        0px 12px #2c3e50, 4px 12px #34495e, 8px 12px #34495e, 12px 12px #34495e, 16px 12px #34495e, 20px 12px #34495e, 24px 12px #2c3e50,
+        0px 16px #2c3e50, 4px 16px #2c3e50, 8px 16px #34495e, 12px 16px #34495e, 16px 16px #34495e, 20px 16px #2c3e50, 24px 16px #2c3e50,
+        4px 20px #2c3e50, 8px 20px #ecf0f1, 12px 20px #ecf0f1, 16px 20px #ecf0f1, 20px 20px #2c3e50,
+        4px 24px #2c3e50, 8px 24px #2c3e50, 12px 24px #2c3e50, 16px 24px #2c3e50, 20px 24px #2c3e50,
+        8px 28px #2c3e50, 12px 28px #2c3e50, 16px 28px #2c3e50,
+        8px 32px #2c3e50, 12px 32px #2c3e50, 16px 32px #2c3e50;
+      animation: char34-tilt 1s ease-in-out infinite alternate;
+    }
+    @keyframes char34-tilt { 0% { transform: rotate(-8deg); } 100% { transform: rotate(8deg); } }
+
+    .char34-speaking .char34-body {
+      position: absolute;
+      left: 20px;
+      top: 10px;
+      width: 4px;
+      height: 4px;
+      background: transparent;
+      box-shadow: 
+        8px 0 #2c3e50, 12px 0 #2c3e50, 16px 0 #2c3e50,
+        4px 4px #2c3e50, 8px 4px #34495e, 12px 4px #34495e, 16px 4px #34495e, 20px 4px #2c3e50,
+        0px 8px #2c3e50, 4px 8px #e74c3c, 8px 8px #000, 12px 8px #000, 16px 8px #34495e, 20px 8px #34495e, 24px 8px #2c3e50,
+        0px 12px #2c3e50, 4px 12px #34495e, 8px 12px #34495e, 12px 12px #34495e, 16px 12px #34495e, 20px 12px #34495e, 24px 12px #2c3e50,
+        0px 16px #2c3e50, 4px 16px #2c3e50, 8px 16px #34495e, 12px 16px #34495e, 16px 16px #34495e, 20px 16px #2c3e50, 24px 16px #2c3e50,
+        4px 20px #2c3e50, 8px 20px #e74c3c, 12px 20px #e74c3c, 16px 20px #e74c3c, 20px 20px #2c3e50,
+        4px 24px #2c3e50, 8px 24px #2c3e50, 12px 24px #2c3e50, 16px 24px #2c3e50, 20px 24px #2c3e50,
+        8px 28px #2c3e50, 12px 28px #2c3e50, 16px 28px #2c3e50,
+        8px 32px #2c3e50, 12px 32px #2c3e50, 16px 32px #2c3e50;
+      animation: char34-cast 0.5s ease-in-out infinite;
+    }
+    @keyframes char34-cast { 0%, 100% { transform: translateY(0); filter: brightness(1); } 50% { transform: translateY(-6px); filter: brightness(1.3); } }
+
+
+    /* ==================== 角色 #35: 武僧 ==================== */
+    .char35-thinking .char35-body {
+      position: absolute;
+      left: 20px;
+      top: 10px;
+      width: 4px;
+      height: 4px;
+      background: transparent;
+      box-shadow: 
+        8px 0 #e67e22, 12px 0 #e67e22, 16px 0 #e67e22,
+        4px 4px #e67e22, 8px 4px #f39c12, 12px 4px #f39c12, 16px 4px #f39c12, 20px 4px #e67e22,
+        0px 8px #e67e22, 4px 8px #f39c12, 8px 8px #000, 12px 8px #000, 16px 8px #f39c12, 20px 8px #f39c12, 24px 8px #e67e22,
+        0px 12px #e67e22, 4px 12px #f39c12, 8px 12px #f39c12, 12px 12px #f39c12, 16px 12px #f39c12, 20px 12px #f39c12, 24px 12px #e67e22,
+        0px 16px #e67e22, 4px 16px #e67e22, 8px 16px #f39c12, 12px 16px #f39c12, 16px 16px #f39c12, 20px 16px #e67e22, 24px 16px #e67e22,
+        4px 20px #e67e22, 8px 20px #e67e22, 12px 20px #f39c12, 16px 20px #e67e22, 20px 20px #e67e22,
+        4px 24px #e67e22, 8px 24px #e67e22, 12px 24px #e67e22, 16px 24px #e67e22, 20px 24px #e67e22,
+        8px 28px #d35400, 12px 28px #d35400, 16px 28px #d35400,
+        4px 32px #d35400, 8px 32px #d35400, 16px 32px #d35400, 20px 32px #d35400;
+      animation: char35-think 1.5s ease-in-out infinite;
+    }
+    .char35-thinking .char35-bubble { position: absolute; left: 55px; top: 5px; width: 4px; height: 4px; background: transparent; box-shadow: 0 0 #f39c12, 4px 0 #f39c12, -4px 4px #f39c12, 0 4px #f39c12, 4px 4px #f39c12, 8px 4px #f39c12, 0 8px #f39c12, 4px 8px #f39c12; animation: char35-bubble 2s ease-in-out infinite; }
+    @keyframes char35-think { 0%, 100% { transform: translateY(0); } 50% { transform: translateY(-4px); } }
+    @keyframes char35-bubble { 0%, 100% { opacity: 0.4; } 50% { opacity: 0.9; } }
+
+    .char35-sleeping .char35-body {
+      position: absolute;
+      left: 20px;
+      top: 15px;
+      width: 4px;
+      height: 4px;
+      background: transparent;
+      box-shadow: 
+        8px 0 #a04000, 12px 0 #a04000, 16px 0 #a04000,
+        4px 4px #a04000, 8px 4px #e67e22, 12px 4px #e67e22, 16px 4px #e67e22, 20px 4px #a04000,
+        0px 8px #a04000, 4px 8px #e67e22, 8px 8px #7f8c8d, 12px 8px #7f8c8d, 16px 8px #e67e22, 20px 8px #e67e22, 24px 8px #a04000,
+        0px 12px #a04000, 4px 12px #e67e22, 8px 12px #e67e22, 12px 12px #e67e22, 16px 12px #e67e22, 20px 12px #e67e22, 24px 12px #a04000,
+        0px 16px #a04000, 4px 16px #a04000, 8px 16px #e67e22, 12px 16px #e67e22, 16px 16px #e67e22, 20px 16px #a04000, 24px 16px #a04000,
+        4px 20px #a04000, 8px 20px #a04000, 12px 20px #e67e22, 16px 20px #a04000, 20px 20px #a04000,
+        4px 24px #a04000, 8px 24px #a04000, 12px 24px #a04000, 16px 24px #a04000, 20px 24px #a04000,
+        8px 28px #a04000, 12px 28px #a04000, 16px 28px #a04000,
+        4px 32px #a04000, 8px 32px #a04000, 16px 32px #a04000, 20px 32px #a04000;
+      animation: char35-sleep 2s ease-in-out infinite;
+    }
+    .char35-sleeping .char35-zzz { position: absolute; left: 55px; top: 5px; font-size: 12px; color: #f39c12; animation: char35-zzz 2s ease-in-out infinite; }
+    @keyframes char35-sleep { 0%, 100% { transform: scale(1); } 50% { transform: scale(0.97); } }
+    @keyframes char35-zzz { 0%, 100% { opacity: 0; } 50% { opacity: 0.8; } }
+
+    .char35-listening .char35-body {
+      position: absolute;
+      left: 20px;
+      top: 10px;
+      width: 4px;
+      height: 4px;
+      background: transparent;
+      box-shadow: 
+        8px 0 #e67e22, 12px 0 #e67e22, 16px 0 #e67e22,
+        4px 4px #e67e22, 8px 4px #f39c12, 12px 4px #f39c12, 16px 4px #f39c12, 20px 4px #e67e22,
+        0px 8px #e67e22, 4px 8px #f39c12, 8px 8px #000, 12px 8px #000, 16px 8px #f39c12, 20px 8px #f39c12, 24px 8px #e67e22,
+        0px 12px #e67e22, 4px 12px #f39c12, 8px 12px #f39c12, 12px 12px #f39c12, 16px 12px #f39c12, 20px 12px #f39c12, 24px 12px #e67e22,
+        0px 16px #e67e22, 4px 16px #e67e22, 8px 16px #f39c12, 12px 16px #f39c12, 16px 16px #f39c12, 20px 16px #e67e22, 24px 16px #e67e22,
+        4px 20px #e67e22, 8px 20px #e67e22, 12px 20px #f39c12, 16px 20px #e67e22, 20px 20px #e67e22,
+        4px 24px #e67e22, 8px 24px #e67e22, 12px 24px #e67e22, 16px 24px #e67e22, 20px 24px #e67e22,
+        8px 28px #d35400, 12px 28px #d35400, 16px 28px #d35400,
+        4px 32px #d35400, 8px 32px #d35400, 16px 32px #d35400, 20px 32px #d35400;
+      animation: char35-tilt 1s ease-in-out infinite alternate;
+    }
+    @keyframes char35-tilt { 0% { transform: rotate(-8deg); } 100% { transform: rotate(8deg); } }
+
+    .char35-speaking .char35-body {
+      position: absolute;
+      left: 20px;
+      top: 10px;
+      width: 4px;
+      height: 4px;
+      background: transparent;
+      box-shadow: 
+        8px 0 #e67e22, 12px 0 #e67e22, 16px 0 #e67e22,
+        4px 4px #e67e22, 8px 4px #f39c12, 12px 4px #f39c12, 16px 4px #f39c12, 20px 4px #e67e22,
+        0px 8px #e67e22, 4px 8px #f39c12, 8px 8px #e74c3c, 12px 8px #e74c3c, 16px 8px #f39c12, 20px 8px #f39c12, 24px 8px #e67e22,
+        0px 12px #e67e22, 4px 12px #f39c12, 8px 12px #f39c12, 12px 12px #f39c12, 16px 12px #f39c12, 20px 12px #f39c12, 24px 12px #e67e22,
+        0px 16px #e67e22, 4px 16px #e67e22, 8px 16px #f39c12, 12px 16px #f39c12, 16px 16px #f39c12, 20px 16px #e67e22, 24px 16px #e67e22,
+        4px 20px #e67e22, 8px 20px #e67e22, 12px 20px #f39c12, 16px 20px #e67e22, 20px 20px #e67e22,
+        4px 24px #e67e22, 8px 24px #e67e22, 12px 24px #e67e22, 16px 24px #e67e22, 20px 24px #e67e22,
+        8px 28px #d35400, 12px 28px #d35400, 16px 28px #d35400,
+        4px 32px #d35400, 8px 32px #d35400, 16px 32px #d35400, 20px 32px #d35400;
+      animation: char35-strike 0.4s ease-in-out infinite;
+    }
+    @keyframes char35-strike { 0%, 100% { transform: translateY(0); } 50% { transform: translateY(-5px); } }
+
+    /* ==================== 角色 #36: 萨满 ==================== */
+    .char36-thinking .char36-body {
+      position: absolute;
+      left: 20px;
+      top: 5px;
+      width: 4px;
+      height: 4px;
+      background: transparent;
+      box-shadow: 
+        8px 0 #e67e22, 12px 0 #e67e22, 16px 0 #e67e22,
+        4px 4px #e67e22, 8px 4px #f39c12, 12px 4px #f39c12, 16px 4px #f39c12, 20px 4px #e67e22,
+        4px 8px #8e44ad, 8px 8px #000, 12px 8px #000, 16px 8px #8e44ad, 20px 8px #8e44ad,
+        0px 12px #27ae60, 4px 12px #27ae60, 8px 12px #2ecc71, 12px 12px #2ecc71, 16px 12px #2ecc71, 20px 12px #27ae60, 24px 12px #27ae60,
+        0px 16px #27ae60, 4px 16px #2ecc71, 8px 16px #2ecc71, 12px 16px #2ecc71, 16px 16px #2ecc71, 20px 16px #2ecc71, 24px 16px #27ae60,
+        0px 20px #27ae60, 4px 20px #27ae60, 8px 20px #2ecc71, 12px 20px #8e44ad, 16px 20px #2ecc71, 20px 20px #27ae60, 24px 20px #27ae60,
+        4px 24px #27ae60, 8px 24px #27ae60, 12px 24px #27ae60, 16px 24px #27ae60, 20px 24px #27ae60,
+        4px 28px #5d4037, 8px 28px #5d4037, 12px 28px #5d4037, 16px 28px #5d4037, 20px 28px #5d4037,
+        8px 32px #5d4037, 12px 32px #5d4037, 16px 32px #5d4037;
+      animation: char36-think 2s ease-in-out infinite;
+    }
+    .char36-thinking .char36-bubble { position: absolute; left: 55px; top: 5px; width: 4px; height: 4px; background: transparent; box-shadow: 0 0 #8e44ad, 4px 0 #8e44ad, -4px 4px #8e44ad, 0 4px #8e44ad, 4px 4px #8e44ad, 8px 4px #8e44ad, 0 8px #8e44ad, 4px 8px #8e44ad; animation: char36-bubble 2s ease-in-out infinite; }
+    @keyframes char36-think { 0%, 100% { transform: translateY(0); } 50% { transform: translateY(-4px); } }
+    @keyframes char36-bubble { 0%, 100% { opacity: 0.4; } 50% { opacity: 0.9; } }
+
+    .char36-sleeping .char36-body {
+      position: absolute;
+      left: 20px;
+      top: 10px;
+      width: 4px;
+      height: 4px;
+      background: transparent;
+      box-shadow: 
+        8px 0 #a04000, 12px 0 #a04000, 16px 0 #a04000,
+        4px 4px #a04000, 8px 4px #e67e22, 12px 4px #e67e22, 16px 4px #e67e22, 20px 4px #a04000,
+        4px 8px #7d3c98, 8px 8px #5f6a6a, 12px 8px #5f6a6a, 16px 8px #7d3c98, 20px 8px #7d3c98,
+        0px 12px #1e8449, 4px 12px #1e8449, 8px 12px #27ae60, 12px 12px #27ae60, 16px 12px #27ae60, 20px 12px #1e8449, 24px 12px #1e8449,
+        0px 16px #1e8449, 4px 16px #27ae60, 8px 16px #27ae60, 12px 16px #27ae60, 16px 16px #27ae60, 20px 16px #27ae60, 24px 16px #1e8449,
+        0px 20px #1e8449, 4px 20px #1e8449, 8px 20px #27ae60, 12px 20px #7d3c98, 16px 20px #27ae60, 20px 20px #1e8449, 24px 20px #1e8449,
+        4px 24px #1e8449, 8px 24px #1e8449, 12px 24px #1e8449, 16px 24px #1e8449, 20px 24px #1e8449,
+        4px 28px #4e342e, 8px 28px #4e342e, 12px 28px #4e342e, 16px 28px #4e342e, 20px 28px #4e342e,
+        8px 32px #4e342e, 12px 32px #4e342e, 16px 32px #4e342e;
+      animation: char36-sleep 2s ease-in-out infinite;
+    }
+    .char36-sleeping .char36-zzz { position: absolute; left: 55px; top: 5px; font-size: 12px; color: #8e44ad; animation: char36-zzz 2s ease-in-out infinite; }
+    @keyframes char36-sleep { 0%, 100% { transform: scale(1); } 50% { transform: scale(0.97); } }
+    @keyframes char36-zzz { 0%, 100% { opacity: 0; } 50% { opacity: 0.8; } }
+
+    .char36-listening .char36-body {
+      position: absolute;
+      left: 20px;
+      top: 5px;
+      width: 4px;
+      height: 4px;
+      background: transparent;
+      box-shadow: 
+        8px 0 #e67e22, 12px 0 #e67e22, 16px 0 #e67e22,
+        4px 4px #e67e22, 8px 4px #f39c12, 12px 4px #f39c12, 16px 4px #f39c12, 20px 4px #e67e22,
+        4px 8px #8e44ad, 8px 8px #000, 12px 8px #000, 16px 8px #8e44ad, 20px 8px #8e44ad,
+        0px 12px #27ae60, 4px 12px #27ae60, 8px 12px #2ecc71, 12px 12px #2ecc71, 16px 12px #2ecc71, 20px 12px #27ae60, 24px 12px #27ae60,
+        0px 16px #27ae60, 4px 16px #2ecc71, 8px 16px #2ecc71, 12px 16px #2ecc71, 16px 16px #2ecc71, 20px 16px #2ecc71, 24px 16px #27ae60,
+        0px 20px #27ae60, 4px 20px #27ae60, 8px 20px #2ecc71, 12px 20px #8e44ad, 16px 20px #2ecc71, 20px 20px #27ae60, 24px 20px #27ae60,
+        4px 24px #27ae60, 8px 24px #27ae60, 12px 24px #27ae60, 16px 24px #27ae60, 20px 24px #27ae60,
+        4px 28px #5d4037, 8px 28px #5d4037, 12px 28px #5d4037, 16px 28px #5d4037, 20px 28px #5d4037,
+        8px 32px #5d4037, 12px 32px #5d4037, 16px 32px #5d4037;
+      animation: char36-tilt 1s ease-in-out infinite alternate;
+    }
+    @keyframes char36-tilt { 0% { transform: rotate(-8deg); } 100% { transform: rotate(8deg); } }
+
+    .char36-speaking .char36-body {
+      position: absolute;
+      left: 20px;
+      top: 5px;
+      width: 4px;
+      height: 4px;
+      background: transparent;
+      box-shadow: 
+        8px 0 #e67e22, 12px 0 #e67e22, 16px 0 #e67e22,
+        4px 4px #e67e22, 8px 4px #f39c12, 12px 4px #f39c12, 16px 4px #f39c12, 20px 4px #e67e22,
+        4px 8px #8e44ad, 8px 8px #e74c3c, 12px 8px #e74c3c, 16px 8px #8e44ad, 20px 8px #8e44ad,
+        0px 12px #27ae60, 4px 12px #27ae60, 8px 12px #2ecc71, 12px 12px #2ecc71, 16px 12px #2ecc71, 20px 12px #27ae60, 24px 12px #27ae60,
+        0px 16px #27ae60, 4px 16px #2ecc71, 8px 16px #2ecc71, 12px 16px #2ecc71, 16px 16px #2ecc71, 20px 16px #2ecc71, 24px 16px #27ae60,
+        0px 20px #27ae60, 4px 20px #27ae60, 8px 20px #2ecc71, 12px 20px #8e44ad, 16px 20px #2ecc71, 20px 20px #27ae60, 24px 20px #27ae60,
+        4px 24px #27ae60, 8px 24px #27ae60, 12px 24px #27ae60, 16px 24px #27ae60, 20px 24px #27ae60,
+        4px 28px #5d4037, 8px 28px #5d4037, 12px 28px #5d4037, 16px 28px #5d4037, 20px 28px #5d4037,
+        8px 32px #5d4037, 12px 32px #5d4037, 16px 32px #5d4037;
+      animation: char36-cast 0.5s ease-in-out infinite;
+    }
+    @keyframes char36-cast { 0%, 100% { transform: translateY(0); filter: brightness(1); } 50% { transform: translateY(-5px); filter: brightness(1.2); } }
+
+    /* ==================== 角色 #37: 炼金术士 ==================== */
+    .char37-thinking .char37-body {
+      position: absolute;
+      left: 20px;
+      top: 10px;
+      width: 4px;
+      height: 4px;
+      background: transparent;
+      box-shadow: 
+        8px 0 #ecf0f1, 12px 0 #ecf0f1, 16px 0 #ecf0f1,
+        4px 4px #ecf0f1, 8px 4px #fff, 12px 4px #fff, 16px 4px #fff, 20px 4px #ecf0f1,
+        0px 8px #ecf0f1, 4px 8px #fff, 8px 8px #000, 12px 8px #000, 16px 8px #fff, 20px 8px #fff, 24px 8px #ecf0f1,
+        0px 12px #ecf0f1, 4px 12px #fff, 8px 12px #fff, 12px 12px #e74c3c, 16px 12px #fff, 20px 12px #fff, 24px 12px #ecf0f1,
+        0px 16px #e67e22, 4px 16px #ecf0f1, 8px 16px #fff, 12px 16px #fff, 16px 16px #fff, 20px 16px #ecf0f1, 24px 16px #e67e22,
+        4px 20px #e67e22, 8px 20px #e67e22, 12px 20px #ecf0f1, 16px 20px #e67e22, 20px 20px #e67e22,
+        4px 24px #2c3e50, 8px 24px #2c3e50, 12px 24px #2c3e50, 16px 24px #2c3e50, 20px 24px #2c3e50,
+        8px 28px #2c3e50, 12px 28px #2c3e50, 16px 28px #2c3e50,
+        8px 32px #2c3e50, 12px 32px #2c3e50, 16px 32px #2c3e50;
+      animation: char37-think 1.5s ease-in-out infinite;
+    }
+    .char37-thinking .char37-bubble { position: absolute; left: 55px; top: 5px; width: 4px; height: 4px; background: transparent; box-shadow: 0 0 #2ecc71, 4px 0 #2ecc71, -4px 4px #2ecc71, 0 4px #2ecc71, 4px 4px #2ecc71, 8px 4px #2ecc71, 0 8px #2ecc71, 4px 8px #2ecc71; animation: char37-bubble 2s ease-in-out infinite; }
+    @keyframes char37-think { 0%, 100% { transform: translateY(0); } 50% { transform: translateY(-4px); } }
+    @keyframes char37-bubble { 0%, 100% { opacity: 0.4; } 50% { opacity: 0.9; } }
+
+    .char37-sleeping .char37-body {
+      position: absolute;
+      left: 20px;
+      top: 15px;
+      width: 4px;
+      height: 4px;
+      background: transparent;
+      box-shadow: 
+        8px 0 #bdc3c7, 12px 0 #bdc3c7, 16px 0 #bdc3c7,
+        4px 4px #bdc3c7, 8px 4px #ecf0f1, 12px 4px #ecf0f1, 16px 4px #ecf0f1, 20px 4px #bdc3c7,
+        0px 8px #bdc3c7, 4px 8px #ecf0f1, 8px 8px #7f8c8d, 12px 8px #7f8c8d, 16px 8px #ecf0f1, 20px 8px #ecf0f1, 24px 8px #bdc3c7,
+        0px 12px #bdc3c7, 4px 12px #ecf0f1, 8px 12px #ecf0f1, 12px 12px #c0392b, 16px 12px #ecf0f1, 20px 12px #ecf0f1, 24px 12px #bdc3c7,
+        0px 16px #a04000, 4px 16px #bdc3c7, 8px 16px #ecf0f1, 12px 16px #ecf0f1, 16px 16px #ecf0f1, 20px 16px #bdc3c7, 24px 16px #a04000,
+        4px 20px #a04000, 8px 20px #a04000, 12px 20px #bdc3c7, 16px 20px #a04000, 20px 20px #a04000,
+        4px 24px #1a252f, 8px 24px #1a252f, 12px 24px #1a252f, 16px 24px #1a252f, 20px 24px #1a252f,
+        8px 28px #1a252f, 12px 28px #1a252f, 16px 28px #1a252f,
+        8px 32px #1a252f, 12px 32px #1a252f, 16px 32px #1a252f;
+      animation: char37-sleep 2s ease-in-out infinite;
+    }
+    .char37-sleeping .char37-zzz { position: absolute; left: 55px; top: 5px; font-size: 12px; color: #2ecc71; animation: char37-zzz 2s ease-in-out infinite; }
+    @keyframes char37-sleep { 0%, 100% { transform: scale(1); } 50% { transform: scale(0.97); } }
+    @keyframes char37-zzz { 0%, 100% { opacity: 0; } 50% { opacity: 0.8; } }
+
+    .char37-listening .char37-body {
+      position: absolute;
+      left: 20px;
+      top: 10px;
+      width: 4px;
+      height: 4px;
+      background: transparent;
+      box-shadow: 
+        8px 0 #ecf0f1, 12px 0 #ecf0f1, 16px 0 #ecf0f1,
+        4px 4px #ecf0f1, 8px 4px #fff, 12px 4px #fff, 16px 4px #fff, 20px 4px #ecf0f1,
+        0px 8px #ecf0f1, 4px 8px #fff, 8px 8px #000, 12px 8px #000, 16px 8px #fff, 20px 8px #fff, 24px 8px #ecf0f1,
+        0px 12px #ecf0f1, 4px 12px #fff, 8px 12px #fff, 12px 12px #e74c3c, 16px 12px #fff, 20px 12px #fff, 24px 12px #ecf0f1,
+        0px 16px #e67e22, 4px 16px #ecf0f1, 8px 16px #fff, 12px 16px #fff, 16px 16px #fff, 20px 16px #ecf0f1, 24px 16px #e67e22,
+        4px 20px #e67e22, 8px 20px #e67e22, 12px 20px #ecf0f1, 16px 20px #e67e22, 20px 20px #e67e22,
+        4px 24px #2c3e50, 8px 24px #2c3e50, 12px 24px #2c3e50, 16px 24px #2c3e50, 20px 24px #2c3e50,
+        8px 28px #2c3e50, 12px 28px #2c3e50, 16px 28px #2c3e50,
+        8px 32px #2c3e50, 12px 32px #2c3e50, 16px 32px #2c3e50;
+      animation: char37-tilt 1s ease-in-out infinite alternate;
+    }
+    @keyframes char37-tilt { 0% { transform: rotate(-8deg); } 100% { transform: rotate(8deg); } }
+
+    .char37-speaking .char37-body {
+      position: absolute;
+      left: 20px;
+      top: 10px;
+      width: 4px;
+      height: 4px;
+      background: transparent;
+      box-shadow: 
+        8px 0 #ecf0f1, 12px 0 #ecf0f1, 16px 0 #ecf0f1,
+        4px 4px #ecf0f1, 8px 4px #fff, 12px 4px #fff, 16px 4px #fff, 20px 4px #ecf0f1,
+        0px 8px #ecf0f1, 4px 8px #fff, 8px 8px #2ecc71, 12px 8px #2ecc71, 16px 8px #fff, 20px 8px #fff, 24px 8px #ecf0f1,
+        0px 12px #ecf0f1, 4px 12px #fff, 8px 12px #fff, 12px 12px #e74c3c, 16px 12px #fff, 20px 12px #fff, 24px 12px #ecf0f1,
+        0px 16px #e67e22, 4px 16px #ecf0f1, 8px 16px #fff, 12px 16px #fff, 16px 16px #fff, 20px 16px #ecf0f1, 24px 16px #e67e22,
+        4px 20px #e67e22, 8px 20px #e67e22, 12px 20px #ecf0f1, 16px 20px #e67e22, 20px 20px #e67e22,
+        4px 24px #2c3e50, 8px 24px #2c3e50, 12px 24px #2c3e50, 16px 24px #2c3e50, 20px 24px #2c3e50,
+        8px 28px #2c3e50, 12px 28px #2c3e50, 16px 28px #2c3e50,
+        8px 32px #2c3e50, 12px 32px #2c3e50, 16px 32px #2c3e50;
+      animation: char37-brew 0.5s ease-in-out infinite;
+    }
+    @keyframes char37-brew { 0%, 100% { transform: translateY(0); filter: brightness(1); } 50% { transform: translateY(-4px); filter: brightness(1.2); } }
+
+    /* ==================== 角色 #38: 狂战士 ==================== */
+    .char38-thinking .char38-body {
+      position: absolute;
+      left: 20px;
+      top: 10px;
+      width: 4px;
+      height: 4px;
+      background: transparent;
+      box-shadow: 
+        4px 0 #c0392b, 8px 0 #c0392b, 12px 0 #c0392b, 16px 0 #c0392b, 20px 0 #c0392b,
+        4px 4px #c0392b, 8px 4px #e74c3c, 12px 4px #e74c3c, 16px 4px #e74c3c, 20px 4px #c0392b,
+        0px 8px #c0392b, 4px 8px #e74c3c, 8px 8px #000, 12px 8px #000, 16px 8px #e74c3c, 20px 8px #e74c3c, 24px 8px #c0392b,
+        0px 12px #c0392b, 4px 12px #e74c3c, 8px 12px #e74c3c, 12px 12px #e74c3c, 16px 12px #e74c3c, 20px 12px #e74c3c, 24px 12px #c0392b,
+        0px 16px #c0392b, 4px 16px #c0392b, 8px 16px #e74c3c, 12px 16px #e74c3c, 16px 16px #e74c3c, 20px 16px #c0392b, 24px 16px #c0392b,
+        4px 20px #c0392b, 8px 20px #c0392b, 12px 20px #e74c3c, 16px 20px #c0392b, 20px 20px #c0392b,
+        4px 24px #c0392b, 8px 24px #c0392b, 12px 24px #c0392b, 16px 24px #c0392b, 20px 24px #c0392b,
+        4px 28px #c0392b, 8px 28px #c0392b, 12px 28px #c0392b, 16px 28px #c0392b, 20px 28px #c0392b,
+        8px 32px #c0392b, 12px 32px #c0392b, 16px 32px #c0392b;
+      animation: char38-think 1.5s ease-in-out infinite;
+    }
+    .char38-thinking .char38-bubble { position: absolute; left: 55px; top: 5px; width: 4px; height: 4px; background: transparent; box-shadow: 0 0 #e74c3c, 4px 0 #e74c3c, -4px 4px #e74c3c, 0 4px #e74c3c, 4px 4px #e74c3c, 8px 4px #e74c3c, 0 8px #e74c3c, 4px 8px #e74c3c; animation: char38-bubble 2s ease-in-out infinite; }
+    @keyframes char38-think { 0%, 100% { transform: translateY(0); } 50% { transform: translateY(-4px); } }
+    @keyframes char38-bubble { 0%, 100% { opacity: 0.4; } 50% { opacity: 0.9; } }
+
+    .char38-sleeping .char38-body {
+      position: absolute;
+      left: 20px;
+      top: 15px;
+      width: 4px;
+      height: 4px;
+      background: transparent;
+      box-shadow: 
+        4px 0 #922b21, 8px 0 #922b21, 12px 0 #922b21, 16px 0 #922b21, 20px 0 #922b21,
+        4px 4px #922b21, 8px 4px #c0392b, 12px 4px #c0392b, 16px 4px #c0392b, 20px 4px #922b21,
+        0px 8px #922b21, 4px 8px #c0392b, 8px 8px #7f8c8d, 12px 8px #7f8c8d, 16px 8px #c0392b, 20px 8px #c0392b, 24px 8px #922b21,
+        0px 12px #922b21, 4px 12px #c0392b, 8px 12px #c0392b, 12px 12px #c0392b, 16px 12px #c0392b, 20px 12px #c0392b, 24px 12px #922b21,
+        0px 16px #922b21, 4px 16px #922b21, 8px 16px #c0392b, 12px 16px #c0392b, 16px 16px #c0392b, 20px 16px #922b21, 24px 16px #922b21,
+        4px 20px #922b21, 8px 20px #922b21, 12px 20px #c0392b, 16px 20px #922b21, 20px 20px #922b21,
+        4px 24px #922b21, 8px 24px #922b21, 12px 24px #922b21, 16px 24px #922b21, 20px 24px #922b21,
+        4px 28px #922b21, 8px 28px #922b21, 12px 28px #922b21, 16px 28px #922b21, 20px 28px #922b21,
+        8px 32px #922b21, 12px 32px #922b21, 16px 32px #922b21;
+      animation: char38-sleep 2s ease-in-out infinite;
+    }
+    .char38-sleeping .char38-zzz { position: absolute; left: 55px; top: 5px; font-size: 12px; color: #e74c3c; animation: char38-zzz 2s ease-in-out infinite; }
+    @keyframes char38-sleep { 0%, 100% { transform: scale(1); } 50% { transform: scale(0.97); } }
+    @keyframes char38-zzz { 0%, 100% { opacity: 0; } 50% { opacity: 0.8; } }
+
+    .char38-listening .char38-body {
+      position: absolute;
+      left: 20px;
+      top: 10px;
+      width: 4px;
+      height: 4px;
+      background: transparent;
+      box-shadow: 
+        4px 0 #c0392b, 8px 0 #c0392b, 12px 0 #c0392b, 16px 0 #c0392b, 20px 0 #c0392b,
+        4px 4px #c0392b, 8px 4px #e74c3c, 12px 4px #e74c3c, 16px 4px #e74c3c, 20px 4px #c0392b,
+        0px 8px #c0392b, 4px 8px #e74c3c, 8px 8px #000, 12px 8px #000, 16px 8px #e74c3c, 20px 8px #e74c3c, 24px 8px #c0392b,
+        0px 12px #c0392b, 4px 12px #e74c3c, 8px 12px #e74c3c, 12px 12px #e74c3c, 16px 12px #e74c3c, 20px 12px #e74c3c, 24px 12px #c0392b,
+        0px 16px #c0392b, 4px 16px #c0392b, 8px 16px #e74c3c, 12px 16px #e74c3c, 16px 16px #e74c3c, 20px 16px #c0392b, 24px 16px #c0392b,
+        4px 20px #c0392b, 8px 20px #c0392b, 12px 20px #e74c3c, 16px 20px #c0392b, 20px 20px #c0392b,
+        4px 24px #c0392b, 8px 24px #c0392b, 12px 24px #c0392b, 16px 24px #c0392b, 20px 24px #c0392b,
+        4px 28px #c0392b, 8px 28px #c0392b, 12px 28px #c0392b, 16px 28px #c0392b, 20px 28px #c0392b,
+        8px 32px #c0392b, 12px 32px #c0392b, 16px 32px #c0392b;
+      animation: char38-tilt 1s ease-in-out infinite alternate;
+    }
+    @keyframes char38-tilt { 0% { transform: rotate(-10deg); } 100% { transform: rotate(10deg); } }
+
+    .char38-speaking .char38-body {
+      position: absolute;
+      left: 20px;
+      top: 10px;
+      width: 4px;
+      height: 4px;
+      background: transparent;
+      box-shadow: 
+        4px 0 #c0392b, 8px 0 #c0392b, 12px 0 #c0392b, 16px 0 #c0392b, 20px 0 #c0392b,
+        4px 4px #c0392b, 8px 4px #e74c3c, 12px 4px #e74c3c, 16px 4px #e74c3c, 20px 4px #c0392b,
+        0px 8px #c0392b, 4px 8px #e74c3c, 8px 8px #fff, 12px 8px #fff, 16px 8px #e74c3c, 20px 8px #e74c3c, 24px 8px #c0392b,
+        0px 12px #c0392b, 4px 12px #e74c3c, 8px 12px #e74c3c, 12px 12px #e74c3c, 16px 12px #e74c3c, 20px 12px #e74c3c, 24px 12px #c0392b,
+        0px 16px #c0392b, 4px 16px #c0392b, 8px 16px #e74c3c, 12px 16px #e74c3c, 16px 16px #e74c3c, 20px 16px #c0392b, 24px 16px #c0392b,
+        4px 20px #c0392b, 8px 20px #c0392b, 12px 20px #e74c3c, 16px 20px #c0392b, 20px 20px #c0392b,
+        4px 24px #c0392b, 8px 24px #c0392b, 12px 24px #c0392b, 16px 24px #c0392b, 20px 24px #c0392b,
+        4px 28px #c0392b, 8px 28px #c0392b, 12px 28px #c0392b, 16px 28px #c0392b, 20px 28px #c0392b,
+        8px 32px #c0392b, 12px 32px #c0392b, 16px 32px #c0392b;
+      animation: char38-roar 0.4s ease-in-out infinite;
+    }
+    @keyframes char38-roar { 0%, 100% { transform: translateY(0) scale(1); } 50% { transform: translateY(-5px) scale(1.05); } }
+
+    /* ==================== 角色 #39: 元素师 ==================== */
+    .char39-thinking .char39-body {
+      position: absolute;
+      left: 20px;
+      top: 10px;
+      width: 4px;
+      height: 4px;
+      background: transparent;
+      box-shadow: 
+        8px 0 #9b59b6, 12px 0 #9b59b6, 16px 0 #9b59b6,
+        4px 4px #9b59b6, 8px 4px #e74c3c, 12px 4px #f1c40f, 16px 4px #3498db, 20px 4px #9b59b6,
+        0px 8px #9b59b6, 4px 8px #27ae60, 8px 8px #000, 12px 8px #000, 16px 8px #27ae60, 20px 8px #27ae60, 24px 8px #9b59b6,
+        0px 12px #9b59b6, 4px 12px #27ae60, 8px 12px #e74c3c, 12px 12px #f1c40f, 16px 12px #3498db, 20px 12px #27ae60, 24px 12px #9b59b6,
+        0px 16px #9b59b6, 4px 16px #9b59b6, 8px 16px #27ae60, 12px 16px #27ae60, 16px 16px #27ae60, 20px 16px #9b59b6, 24px 16px #9b59b6,
+        4px 20px #9b59b6, 8px 20px #9b59b6, 12px 20px #9b59b6, 16px 20px #9b59b6, 20px 20px #9b59b6,
+        4px 24px #9b59b6, 8px 24px #9b59b6, 12px 24px #9b59b6, 16px 24px #9b59b6, 20px 24px #9b59b6,
+        8px 28px #8e44ad, 12px 28px #8e44ad, 16px 28px #8e44ad,
+        8px 32px #8e44ad, 12px 32px #8e44ad, 16px 32px #8e44ad;
+      animation: char39-think 2s ease-in-out infinite;
+    }
+    .char39-thinking .char39-bubble { position: absolute; left: 55px; top: 5px; width: 4px; height: 4px; background: transparent; box-shadow: 0 0 #9b59b6, 4px 0 #9b59b6, -4px 4px #9b59b6, 0 4px #9b59b6, 4px 4px #9b59b6, 8px 4px #9b59b6, 0 8px #9b59b6, 4px 8px #9b59b6; animation: char39-bubble 2s ease-in-out infinite; }
+    @keyframes char39-think { 0%, 100% { transform: translateY(0); } 50% { transform: translateY(-4px); } }
+    @keyframes char39-bubble { 0%, 100% { opacity: 0.4; } 50% { opacity: 0.9; } }
+
+    .char39-sleeping .char39-body {
+      position: absolute;
+      left: 20px;
+      top: 15px;
+      width: 4px;
+      height: 4px;
+      background: transparent;
+      box-shadow: 
+        8px 0 #7d3c98, 12px 0 #7d3c98, 16px 0 #7d3c98,
+        4px 4px #7d3c98, 8px 4px #c0392b, 12px 4px #b7950b, 16px 4px #2980b9, 20px 4px #7d3c98,
+        0px 8px #7d3c98, 4px 8px #1e8449, 8px 8px #5f6a6a, 12px 8px #5f6a6a, 16px 8px #1e8449, 20px 8px #1e8449, 24px 8px #7d3c98,
+        0px 12px #7d3c98, 4px 12px #1e8449, 8px 12px #c0392b, 12px 12px #b7950b, 16px 12px #2980b9, 20px 12px #1e8449, 24px 12px #7d3c98,
+        0px 16px #7d3c98, 4px 16px #7d3c98, 8px 16px #1e8449, 12px 16px #1e8449, 16px 16px #1e8449, 20px 16px #7d3c98, 24px 16px #7d3c98,
+        4px 20px #7d3c98, 8px 20px #7d3c98, 12px 20px #7d3c98, 16px 20px #7d3c98, 20px 20px #7d3c98,
+        4px 24px #7d3c98, 8px 24px #7d3c98, 12px 24px #7d3c98, 16px 24px #7d3c98, 20px 24px #7d3c98,
+        8px 28px #6c3483, 12px 28px #6c3483, 16px 28px #6c3483,
+        8px 32px #6c3483, 12px 32px #6c3483, 16px 32px #6c3483;
+      animation: char39-sleep 2s ease-in-out infinite;
+    }
+    .char39-sleeping .char39-zzz { position: absolute; left: 55px; top: 5px; font-size: 12px; color: #9b59b6; animation: char39-zzz 2s ease-in-out infinite; }
+    @keyframes char39-sleep { 0%, 100% { transform: scale(1); } 50% { transform: scale(0.97); } }
+    @keyframes char39-zzz { 0%, 100% { opacity: 0; } 50% { opacity: 0.8; } }
+
+    .char39-listening .char39-body {
+      position: absolute;
+      left: 20px;
+      top: 10px;
+      width: 4px;
+      height: 4px;
+      background: transparent;
+      box-shadow: 
+        8px 0 #9b59b6, 12px 0 #9b59b6, 16px 0 #9b59b6,
+        4px 4px #9b59b6, 8px 4px #e74c3c, 12px 4px #f1c40f, 16px 4px #3498db, 20px 4px #9b59b6,
+        0px 8px #9b59b6, 4px 8px #27ae60, 8px 8px #000, 12px 8px #000, 16px 8px #27ae60, 20px 8px #27ae60, 24px 8px #9b59b6,
+        0px 12px #9b59b6, 4px 12px #27ae60, 8px 12px #e74c3c, 12px 12px #f1c40f, 16px 12px #3498db, 20px 12px #27ae60, 24px 12px #9b59b6,
+        0px 16px #9b59b6, 4px 16px #9b59b6, 8px 16px #27ae60, 12px 16px #27ae60, 16px 16px #27ae60, 20px 16px #9b59b6, 24px 16px #9b59b6,
+        4px 20px #9b59b6, 8px 20px #9b59b6, 12px 20px #9b59b6, 16px 20px #9b59b6, 20px 20px #9b59b6,
+        4px 24px #9b59b6, 8px 24px #9b59b6, 12px 24px #9b59b6, 16px 24px #9b59b6, 20px 24px #9b59b6,
+        8px 28px #8e44ad, 12px 28px #8e44ad, 16px 28px #8e44ad,
+        8px 32px #8e44ad, 12px 32px #8e44ad, 16px 32px #8e44ad;
+      animation: char39-tilt 1s ease-in-out infinite alternate;
+    }
+    @keyframes char39-tilt { 0% { transform: rotate(-8deg); } 100% { transform: rotate(8deg); } }
+
+    .char39-speaking .char39-body {
+      position: absolute;
+      left: 20px;
+      top: 10px;
+      width: 4px;
+      height: 4px;
+      background: transparent;
+      box-shadow: 
+        8px 0 #9b59b6, 12px 0 #9b59b6, 16px 0 #9b59b6,
+        4px 4px #9b59b6, 8px 4px #e74c3c, 12px 4px #f1c40f, 16px 4px #3498db, 20px 4px #9b59b6,
+        0px 8px #9b59b6, 4px 8px #27ae60, 8px 8px #e74c3c, 12px 8px #f1c40f, 16px 8px #3498db, 20px 8px #27ae60, 24px 8px #9b59b6,
+        0px 12px #9b59b6, 4px 12px #27ae60, 8px 12px #e74c3c, 12px 12px #f1c40f, 16px 12px #3498db, 20px 12px #27ae60, 24px 12px #9b59b6,
+        0px 16px #9b59b6, 4px 16px #9b59b6, 8px 16px #27ae60, 12px 16px #27ae60, 16px 16px #27ae60, 20px 16px #9b59b6, 24px 16px #9b59b6,
+        4px 20px #9b59b6, 8px 20px #9b59b6, 12px 20px #9b59b6, 16px 20px #9b59b6, 20px 20px #9b59b6,
+        4px 24px #9b59b6, 8px 24px #9b59b6, 12px 24px #9b59b6, 16px 24px #9b59b6, 20px 24px #9b59b6,
+        8px 28px #8e44ad, 12px 28px #8e44ad, 16px 28px #8e44ad,
+        8px 32px #8e44ad, 12px 32px #8e44ad, 16px 32px #8e44ad;
+      animation: char39-cast 0.5s ease-in-out infinite;
+    }
+    @keyframes char39-cast { 0%, 100% { transform: translateY(0); filter: brightness(1); } 50% { transform: translateY(-5px); filter: brightness(1.3); } }
+
+    /* ==================== 角色 #40: 暗影刺客2 ==================== */
+    .char40-thinking .char40-body {
+      position: absolute;
+      left: 20px;
+      top: 10px;
+      width: 4px;
+      height: 4px;
+      background: transparent;
+      box-shadow: 
+        8px 0 #1a5276, 12px 0 #1a5276, 16px 0 #1a5276,
+        4px 4px #1a5276, 8px 4px #2980b9, 12px 4px #2980b9, 16px 4px #2980b9, 20px 4px #1a5276,
+        0px 8px #1a5276, 4px 8px #2980b9, 8px 8px #85c1e9, 12px 8px #85c1e9, 16px 8px #2980b9, 20px 8px #2980b9, 24px 8px #1a5276,
+        0px 12px #1a5276, 4px 12px #2980b9, 8px 12px #2980b9, 12px 12px #2980b9, 16px 12px #2980b9, 20px 12px #2980b9, 24px 12px #1a5276,
+        0px 16px #1a5276, 4px 16px #1a5276, 8px 16px #2980b9, 12px 16px #2980b9, 16px 16px #2980b9, 20px 16px #1a5276, 24px 16px #1a5276,
+        4px 20px #1a5276, 8px 20px #1a5276, 12px 20px #5dade2, 16px 20px #1a5276, 20px 20px #1a5276,
+        4px 24px #1a5276, 8px 24px #1a5276, 12px 24px #1a5276, 16px 24px #1a5276, 20px 24px #1a5276,
+        8px 28px #154360, 12px 28px #154360, 16px 28px #154360,
+        4px 32px #154360, 8px 32px #154360, 16px 32px #154360, 20px 32px #154360;
+      animation: char40-think 1.5s ease-in-out infinite;
+    }
+    .char40-thinking .char40-bubble { position: absolute; left: 55px; top: 5px; width: 4px; height: 4px; background: transparent; box-shadow: 0 0 #5dade2, 4px 0 #5dade2, -4px 4px #5dade2, 0 4px #5dade2, 4px 4px #5dade2, 8px 4px #5dade2, 0 8px #5dade2, 4px 8px #5dade2; animation: char40-bubble 2s ease-in-out infinite; }
+    @keyframes char40-think { 0%, 100% { transform: translateY(0); } 50% { transform: translateY(-4px); } }
+    @keyframes char40-bubble { 0%, 100% { opacity: 0.4; } 50% { opacity: 0.9; } }
+
+    .char40-sleeping .char40-body {
+      position: absolute;
+      left: 20px;
+      top: 15px;
+      width: 4px;
+      height: 4px;
+      background: transparent;
+      box-shadow: 
+        8px 0 #154360, 12px 0 #154360, 16px 0 #154360,
+        4px 4px #154360, 8px 4px #2471a3, 12px 4px #2471a3, 16px 4px #2471a3, 20px 4px #154360,
+        0px 8px #154360, 4px 8px #2471a3, 8px 8px #5f6a6a, 12px 8px #5f6a6a, 16px 8px #2471a3, 20px 8px #2471a3, 24px 8px #154360,
+        0px 12px #154360, 4px 12px #2471a3, 8px 12px #2471a3, 12px 12px #2471a3, 16px 12px #2471a3, 20px 12px #2471a3, 24px 12px #154360,
+        0px 16px #154360, 4px 16px #154360, 8px 16px #2471a3, 12px 16px #2471a3, 16px 16px #2471a3, 20px 16px #154360, 24px 16px #154360,
+        4px 20px #154360, 8px 20px #154360, 12px 20px #2e86c1, 16px 20px #154360, 20px 20px #154360,
+        4px 24px #154360, 8px 24px #154360, 12px 24px #154360, 16px 24px #154360, 20px 24px #154360,
+        8px 28px #1a252f, 12px 28px #1a252f, 16px 28px #1a252f,
+        4px 32px #1a252f, 8px 32px #1a252f, 16px 32px #1a252f, 20px 32px #1a252f;
+      animation: char40-sleep 2s ease-in-out infinite;
+    }
+    .char40-sleeping .char40-zzz { position: absolute; left: 55px; top: 5px; font-size: 12px; color: #5dade2; animation: char40-zzz 2s ease-in-out infinite; }
+    @keyframes char40-sleep { 0%, 100% { transform: scale(1); } 50% { transform: scale(0.95); } }
+    @keyframes char40-zzz { 0%, 100% { opacity: 0; } 50% { opacity: 0.8; } }
+
+    .char40-listening .char40-body {
+      position: absolute;
+      left: 20px;
+      top: 10px;
+      width: 4px;
+      height: 4px;
+      background: transparent;
+      box-shadow: 
+        8px 0 #1a5276, 12px 0 #1a5276, 16px 0 #1a5276,
+        4px 4px #1a5276, 8px 4px #2980b9, 12px 4px #2980b9, 16px 4px #2980b9, 20px 4px #1a5276,
+        0px 8px #1a5276, 4px 8px #2980b9, 8px 8px #85c1e9, 12px 8px #85c1e9, 16px 8px #2980b9, 20px 8px #2980b9, 24px 8px #1a5276,
+        0px 12px #1a5276, 4px 12px #2980b9, 8px 12px #2980b9, 12px 12px #2980b9, 16px 12px #2980b9, 20px 12px #2980b9, 24px 12px #1a5276,
+        0px 16px #1a5276, 4px 16px #1a5276, 8px 16px #2980b9, 12px 16px #2980b9, 16px 16px #2980b9, 20px 16px #1a5276, 24px 16px #1a5276,
+        4px 20px #1a5276, 8px 20px #1a5276, 12px 20px #5dade2, 16px 20px #1a5276, 20px 20px #1a5276,
+        4px 24px #1a5276, 8px 24px #1a5276, 12px 24px #1a5276, 16px 24px #1a5276, 20px 24px #1a5276,
+        8px 28px #154360, 12px 28px #154360, 16px 28px #154360,
+        4px 32px #154360, 8px 32px #154360, 16px 32px #154360, 20px 32px #154360;
+      animation: char40-tilt 1s ease-in-out infinite alternate;
+    }
+    @keyframes char40-tilt { 0% { transform: rotate(-10deg); } 100% { transform: rotate(10deg); } }
+
+    .char40-speaking .char40-body {
+      position: absolute;
+      left: 20px;
+      top: 10px;
+      width: 4px;
+      height: 4px;
+      background: transparent;
+      box-shadow: 
+        8px 0 #1a5276, 12px 0 #1a5276, 16px 0 #1a5276,
+        4px 4px #1a5276, 8px 4px #2980b9, 12px 4px #2980b9, 16px 4px #2980b9, 20px 4px #1a5276,
+        0px 8px #1a5276, 4px 8px #2980b9, 8px 8px #5dade2, 12px 8px #5dade2, 16px 8px #2980b9, 20px 8px #2980b9, 24px 8px #1a5276,
+        0px 12px #1a5276, 4px 12px #2980b9, 8px 12px #2980b9, 12px 12px #2980b9, 16px 12px #2980b9, 20px 12px #2980b9, 24px 12px #1a5276,
+        0px 16px #1a5276, 4px 16px #1a5276, 8px 16px #2980b9, 12px 16px #2980b9, 16px 16px #2980b9, 20px 16px #1a5276, 24px 16px #1a5276,
+        4px 20px #1a5276, 8px 20px #1a5276, 12px 20px #5dade2, 16px 20px #1a5276, 20px 20px #1a5276,
+        4px 24px #1a5276, 8px 24px #1a5276, 12px 24px #1a5276, 16px 24px #1a5276, 20px 24px #1a5276,
+        8px 28px #154360, 12px 28px #154360, 16px 28px #154360,
+        4px 32px #154360, 8px 32px #154360, 16px 32px #154360, 20px 32px #154360;
+      animation: char40-strike 0.4s ease-in-out infinite;
+    }
+    @keyframes char40-strike { 0%, 100% { transform: translateY(0); } 50% { transform: translateY(-5px); } }
+  </style>
+</head>
+<body>
+  <div class="header">
+    <h1>开源CSS像素角色 #21-40</h1>
+    <div class="license">MIT许可证 - 完全可商用</div>
+  </div>
+
+  <div class="characters-grid">
+    <!-- 角色 #21: 忍者 -->
+    <div class="character-card">
+      <div class="char-title">#21 忍者 Ninja</div>
+      <div class="actions-row">
+        <div class="action-box">
+          <div class="char char21-thinking"><div class="char21-body"></div><div class="char21-bubble"></div></div>
+          <span class="action-label">思考</span>
+        </div>
+        <div class="action-box">
+          <div class="char char21-sleeping"><div class="char21-body"></div><div class="char21-zzz">zZ</div></div>
+          <span class="action-label">睡觉</span>
+        </div>
+        <div class="action-box">
+          <div class="char char21-listening"><div class="char21-body"></div></div>
+          <span class="action-label">倾听</span>
+        </div>
+        <div class="action-box">
+          <div class="char char21-speaking"><div class="char21-body"></div></div>
+          <span class="action-label">说话</span>
+        </div>
+      </div>
+    </div>
+
+    <!-- 角色 #22: 武士 -->
+    <div class="character-card">
+      <div class="char-title">#22 武士 Samurai</div>
+      <div class="actions-row">
+        <div class="action-box">
+          <div class="char char22-thinking"><div class="char22-body"></div><div class="char22-bubble"></div></div>
+          <span class="action-label">思考</span>
+        </div>
+        <div class="action-box">
+          <div class="char char22-sleeping"><div class="char22-body"></div><div class="char22-zzz">zZ</div></div>
+          <span class="action-label">睡觉</span>
+        </div>
+        <div class="action-box">
+          <div class="char char22-listening"><div class="char22-body"></div></div>
+          <span class="action-label">倾听</span>
+        </div>
+        <div class="action-box">
+          <div class="char char22-speaking"><div class="char22-body"></div></div>
+          <span class="action-label">说话</span>
+        </div>
+      </div>
+    </div>
+
+    <!-- 角色 #23: 精灵射手 -->
+    <div class="character-card">
+      <div class="char-title">#23 精灵射手 Elf Archer</div>
+      <div class="actions-row">
+        <div class="action-box">
+          <div class="char char23-thinking"><div class="char23-body"></div><div class="char23-bubble"></div></div>
+          <span class="action-label">思考</span>
+        </div>
+        <div class="action-box">
+          <div class="char char23-sleeping"><div class="char23-body"></div><div class="char23-zzz">zZ</div></div>
+          <span class="action-label">睡觉</span>
+        </div>
+        <div class="action-box">
+          <div class="char char23-listening"><div class="char23-body"></div></div>
+          <span class="action-label">倾听</span>
+        </div>
+        <div class="action-box">
+          <div class="char char23-speaking"><div class="char23-body"></div></div>
+          <span class="action-label">说话</span>
+        </div>
+      </div>
+    </div>
+
+    <!-- 角色 #24: 矮人战士 -->
+    <div class="character-card">
+      <div class="char-title">#24 矮人战士 Dwarf Warrior</div>
+      <div class="actions-row">
+        <div class="action-box">
+          <div class="char char24-thinking"><div class="char24-body"></div><div class="char24-bubble"></div></div>
+          <span class="action-label">思考</span>
+        </div>
+        <div class="action-box">
+          <div class="char char24-sleeping"><div class="char24-body"></div><div class="char24-zzz">zZ</div></div>
+          <span class="action-label">睡觉</span>
+        </div>
+        <div class="action-box">
+          <div class="char char24-listening"><div class="char24-body"></div></div>
+          <span class="action-label">倾听</span>
+        </div>
+        <div class="action-box">
+          <div class="char char24-speaking"><div class="char24-body"></div></div>
+          <span class="action-label">说话</span>
+        </div>
+      </div>
+    </div>
+
+    <!-- 角色 #25: 兽人狂战士 -->
+    <div class="character-card">
+      <div class="char-title">#25 兽人狂战士 Orc Berserker</div>
+      <div class="actions-row">
+        <div class="action-box">
+          <div class="char char25-thinking"><div class="char25-body"></div><div class="char25-bubble"></div></div>
+          <span class="action-label">思考</span>
+        </div>
+        <div class="action-box">
+          <div class="char char25-sleeping"><div class="char25-body"></div><div class="char25-zzz">zZ</div></div>
+          <span class="action-label">睡觉</span>
+        </div>
+        <div class="action-box">
+          <div class="char char25-listening"><div class="char25-body"></div></div>
+          <span class="action-label">倾听</span>
+        </div>
+        <div class="action-box">
+          <div class="char char25-speaking"><div class="char25-body"></div></div>
+          <span class="action-label">说话</span>
+        </div>
+      </div>
+    </div>
+
+    <!-- 角色 #26: 龙族后裔 -->
+    <div class="character-card">
+      <div class="char-title">#26 龙族后裔 Dragonkin</div>
+      <div class="actions-row">
+        <div class="action-box">
+          <div class="char char26-thinking"><div class="char26-body"></div><div class="char26-bubble"></div></div>
+          <span class="action-label">思考</span>
+        </div>
+        <div class="action-box">
+          <div class="char char26-sleeping"><div class="char26-body"></div><div class="char26-zzz">zZ</div></div>
+          <span class="action-label">睡觉</span>
+        </div>
+        <div class="action-box">
+          <div class="char char26-listening"><div class="char26-body"></div></div>
+          <span class="action-label">倾听</span>
+        </div>
+        <div class="action-box">
+          <div class="char char26-speaking"><div class="char26-body"></div></div>
+          <span class="action-label">说话</span>
+        </div>
+      </div>
+    </div>
+
+    <!-- 角色 #27: 光明牧师 -->
+    <div class="character-card">
+      <div class="char-title">#27 光明牧师 Light Priest</div>
+      <div class="actions-row">
+        <div class="action-box">
+          <div class="char char27-thinking"><div class="char27-body"></div><div class="char27-bubble"></div></div>
+          <span class="action-label">思考</span>
+        </div>
+        <div class="action-box">
+          <div class="char char27-sleeping"><div class="char27-body"></div><div class="char27-zzz">zZ</div></div>
+          <span class="action-label">睡觉</span>
+        </div>
+        <div class="action-box">
+          <div class="char char27-listening"><div class="char27-body"></div></div>
+          <span class="action-label">倾听</span>
+        </div>
+        <div class="action-box">
+          <div class="char char27-speaking"><div class="char27-body"></div></div>
+          <span class="action-label">说话</span>
+        </div>
+      </div>
+    </div>
+
+    <!-- 角色 #28: 暗影刺客 -->
+    <div class="character-card">
+      <div class="char-title">#28 暗影刺客 Shadow Assassin</div>
+      <div class="actions-row">
+        <div class="action-box">
+          <div class="char char28-thinking"><div class="char28-body"></div><div class="char28-bubble"></div></div>
+          <span class="action-label">思考</span>
+        </div>
+        <div class="action-box">
+          <div class="char char28-sleeping"><div class="char28-body"></div><div class="char28-zzz">zZ</div></div>
+          <span class="action-label">睡觉</span>
+        </div>
+        <div class="action-box">
+          <div class="char char28-listening"><div class="char28-body"></div></div>
+          <span class="action-label">倾听</span>
+        </div>
+        <div class="action-box">
+          <div class="char char28-speaking"><div class="char28-body"></div></div>
+          <span class="action-label">说话</span>
+        </div>
+      </div>
+    </div>
+
+    <!-- 角色 #29: 吟游诗人 -->
+    <div class="character-card">
+      <div class="char-title">#29 吟游诗人 Bard</div>
+      <div class="actions-row">
+        <div class="action-box">
+          <div class="char char29-thinking"><div class="char29-body"></div><div class="char29-bubble"></div></div>
+          <span class="action-label">思考</span>
+        </div>
+        <div class="action-box">
+          <div class="char char29-sleeping"><div class="char29-body"></div><div class="char29-zzz">zZ</div></div>
+          <span class="action-label">睡觉</span>
+        </div>
+        <div class="action-box">
+          <div class="char char29-listening"><div class="char29-body"></div></div>
+          <span class="action-label">倾听</span>
+        </div>
+        <div class="action-box">
+          <div class="char char29-speaking"><div class="char29-body"></div></div>
+          <span class="action-label">说话</span>
+        </div>
+      </div>
+    </div>
+
+    <!-- 角色 #30: 德鲁伊 -->
+    <div class="character-card">
+      <div class="char-title">#30 德鲁伊 Druid</div>
+      <div class="actions-row">
+        <div class="action-box">
+          <div class="char char30-thinking"><div class="char30-body"></div><div class="char30-bubble"></div></div>
+          <span class="action-label">思考</span>
+        </div>
+        <div class="action-box">
+          <div class="char char30-sleeping"><div class="char30-body"></div><div class="char30-zzz">zZ</div></div>
+          <span class="action-label">睡觉</span>
+        </div>
+        <div class="action-box">
+          <div class="char char30-listening"><div class="char30-body"></div></div>
+          <span class="action-label">倾听</span>
+        </div>
+        <div class="action-box">
+          <div class="char char30-speaking"><div class="char30-body"></div></div>
+          <span class="action-label">说话</span>
+        </div>
+      </div>
+    </div>
+
+    <!-- 角色 #31: 圣骑士 -->
+    <div class="character-card">
+      <div class="char-title">#31 圣骑士 Paladin</div>
+      <div class="actions-row">
+        <div class="action-box">
+          <div class="char char31-thinking"><div class="char31-body"></div><div class="char31-bubble"></div></div>
+          <span class="action-label">思考</span>
+        </div>
+        <div class="action-box">
+          <div class="char char31-sleeping"><div class="char31-body"></div><div class="char31-zzz">zZ</div></div>
+          <span class="action-label">睡觉</span>
+        </div>
+        <div class="action-box">
+          <div class="char char31-listening"><div class="char31-body"></div></div>
+          <span class="action-label">倾听</span>
+        </div>
+        <div class="action-box">
+          <div class="char char31-speaking"><div class="char31-body"></div></div>
+          <span class="action-label">说话</span>
+        </div>
+      </div>
+    </div>
+
+    <!-- 角色 #32: 邪术士 -->
+    <div class="character-card">
+      <div class="char-title">#32 邪术士 Warlock</div>
+      <div class="actions-row">
+        <div class="action-box">
+          <div class="char char32-thinking"><div class="char32-body"></div><div class="char32-bubble"></div></div>
+          <span class="action-label">思考</span>
+        </div>
+        <div class="action-box">
+          <div class="char char32-sleeping"><div class="char32-body"></div><div class="char32-zzz">zZ</div></div>
+          <span class="action-label">睡觉</span>
+        </div>
+        <div class="action-box">
+          <div class="char char32-listening"><div class="char32-body"></div></div>
+          <span class="action-label">倾听</span>
+        </div>
+        <div class="action-box">
+          <div class="char char32-speaking"><div class="char32-body"></div></div>
+          <span class="action-label">说话</span>
+        </div>
+      </div>
+    </div>
+
+    <!-- 角色 #33: 游侠 -->
+    <div class="character-card">
+      <div class="char-title">#33 游侠 Ranger</div>
+      <div class="actions-row">
+        <div class="action-box">
+          <div class="char char33-thinking"><div class="char33-body"></div><div class="char33-bubble"></div></div>
+          <span class="action-label">思考</span>
+        </div>
+        <div class="action-box">
+          <div class="char char33-sleeping"><div class="char33-body"></div><div class="char33-zzz">zZ</div></div>
+          <span class="action-label">睡觉</span>
+        </div>
+        <div class="action-box">
+          <div class="char char33-listening"><div class="char33-body"></div></div>
+          <span class="action-label">倾听</span>
+        </div>
+        <div class="action-box">
+          <div class="char char33-speaking"><div class="char33-body"></div></div>
+          <span class="action-label">说话</span>
+        </div>
+      </div>
+    </div>
+
+    <!-- 角色 #34: 死灵法师 -->
+    <div class="character-card">
+      <div class="char-title">#34 死灵法师 Necromancer</div>
+      <div class="actions-row">
+        <div class="action-box">
+          <div class="char char34-thinking"><div class="char34-body"></div><div class="char34-bubble"></div></div>
+          <span class="action-label">思考</span>
+        </div>
+        <div class="action-box">
+          <div class="char char34-sleeping"><div class="char34-body"></div><div class="char34-zzz">zZ</div></div>
+          <span class="action-label">睡觉</span>
+        </div>
+        <div class="action-box">
+          <div class="char char34-listening"><div class="char34-body"></div></div>
+          <span class="action-label">倾听</span>
+        </div>
+        <div class="action-box">
+          <div class="char char34-speaking"><div class="char34-body"></div></div>
+          <span class="action-label">说话</span>
+        </div>
+      </div>
+    </div>
+
+    <!-- 角色 #35: 武僧 -->
+    <div class="character-card">
+      <div class="char-title">#35 武僧 Monk</div>
+      <div class="actions-row">
+        <div class="action-box">
+          <div class="char char35-thinking"><div class="char35-body"></div><div class="char35-bubble"></div></div>
+          <span class="action-label">思考</span>
+        </div>
+        <div class="action-box">
+          <div class="char char35-sleeping"><div class="char35-body"></div><div class="char35-zzz">zZ</div></div>
+          <span class="action-label">睡觉</span>
+        </div>
+        <div class="action-box">
+          <div class="char char35-listening"><div class="char35-body"></div></div>
+          <span class="action-label">倾听</span>
+        </div>
+        <div class="action-box">
+          <div class="char char35-speaking"><div class="char35-body"></div></div>
+          <span class="action-label">说话</span>
+        </div>
+      </div>
+    </div>
+
+    <!-- 角色 #36: 萨满 -->
+    <div class="character-card">
+      <div class="char-title">#36 萨满 Shaman</div>
+      <div class="actions-row">
+        <div class="action-box">
+          <div class="char char36-thinking"><div class="char36-body"></div><div class="char36-bubble"></div></div>
+          <span class="action-label">思考</span>
+        </div>
+        <div class="action-box">
+          <div class="char char36-sleeping"><div class="char36-body"></div><div class="char36-zzz">zZ</div></div>
+          <span class="action-label">睡觉</span>
+        </div>
+        <div class="action-box">
+          <div class="char char36-listening"><div class="char36-body"></div></div>
+          <span class="action-label">倾听</span>
+        </div>
+        <div class="action-box">
+          <div class="char char36-speaking"><div class="char36-body"></div></div>
+          <span class="action-label">说话</span>
+        </div>
+      </div>
+    </div>
+
+    <!-- 角色 #37: 炼金术士 -->
+    <div class="character-card">
+      <div class="char-title">#37 炼金术士 Alchemist</div>
+      <div class="actions-row">
+        <div class="action-box">
+          <div class="char char37-thinking"><div class="char37-body"></div><div class="char37-bubble"></div></div>
+          <span class="action-label">思考</span>
+        </div>
+        <div class="action-box">
+          <div class="char char37-sleeping"><div class="char37-body"></div><div class="char37-zzz">zZ</div></div>
+          <span class="action-label">睡觉</span>
+        </div>
+        <div class="action-box">
+          <div class="char char37-listening"><div class="char37-body"></div></div>
+          <span class="action-label">倾听</span>
+        </div>
+        <div class="action-box">
+          <div class="char char37-speaking"><div class="char37-body"></div></div>
+          <span class="action-label">说话</span>
+        </div>
+      </div>
+    </div>
+
+    <!-- 角色 #38: 狂战士 -->
+    <div class="character-card">
+      <div class="char-title">#38 狂战士 Berserker</div>
+      <div class="actions-row">
+        <div class="action-box">
+          <div class="char char38-thinking"><div class="char38-body"></div><div class="char38-bubble"></div></div>
+          <span class="action-label">思考</span>
+        </div>
+        <div class="action-box">
+          <div class="char char38-sleeping"><div class="char38-body"></div><div class="char38-zzz">zZ</div></div>
+          <span class="action-label">睡觉</span>
+        </div>
+        <div class="action-box">
+          <div class="char char38-listening"><div class="char38-body"></div></div>
+          <span class="action-label">倾听</span>
+        </div>
+        <div class="action-box">
+          <div class="char char38-speaking"><div class="char38-body"></div></div>
+          <span class="action-label">说话</span>
+        </div>
+      </div>
+    </div>
+
+    <!-- 角色 #39: 元素师 -->
+    <div class="character-card">
+      <div class="char-title">#39 元素师 Elementalist</div>
+      <div class="actions-row">
+        <div class="action-box">
+          <div class="char char39-thinking"><div class="char39-body"></div><div class="char39-bubble"></div></div>
+          <span class="action-label">思考</span>
+        </div>
+        <div class="action-box">
+          <div class="char char39-sleeping"><div class="char39-body"></div><div class="char39-zzz">zZ</div></div>
+          <span class="action-label">睡觉</span>
+        </div>
+        <div class="action-box">
+          <div class="char char39-listening"><div class="char39-body"></div></div>
+          <span class="action-label">倾听</span>
+        </div>
+        <div class="action-box">
+          <div class="char char39-speaking"><div class="char39-body"></div></div>
+          <span class="action-label">说话</span>
+        </div>
+      </div>
+    </div>
+
+    <!-- 角色 #40: 暗影刺客2 -->
+    <div class="character-card">
+      <div class="char-title">#40 暗影刺客2 Shadow Assassin 2</div>
+      <div class="actions-row">
+        <div class="action-box">
+          <div class="char char40-thinking"><div class="char40-body"></div><div class="char40-bubble"></div></div>
+          <span class="action-label">思考</span>
+        </div>
+        <div class="action-box">
+          <div class="char char40-sleeping"><div class="char40-body"></div><div class="char40-zzz">zZ</div></div>
+          <span class="action-label">睡觉</span>
+        </div>
+        <div class="action-box">
+          <div class="char char40-listening"><div class="char40-body"></div></div>
+          <span class="action-label">倾听</span>
+        </div>
+        <div class="action-box">
+          <div class="char char40-speaking"><div class="char40-body"></div></div>
+          <span class="action-label">说话</span>
+        </div>
+      </div>
+    </div>
+  </div>
+</body>
+</html>
