@@ -169,3 +169,15 @@ npm run build
   </p>
   <img src="./public/qrcode.jpg" alt="公众号歪斯二维码" width="220" />
 </div>
+
+---
+
+## Star History
+
+<a href="https://www.star-history.com/#WiseWong6/wise-labs&Date">
+  <picture>
+    <source media="(prefers-color-scheme: dark)" srcset="https://api.star-history.com/chart?repos=WiseWong6/wise-labs&type=date&theme=dark" />
+    <source media="(prefers-color-scheme: light)" srcset="https://api.star-history.com/chart?repos=WiseWong6/wise-labs&type=date" />
+    <img alt="Star History Chart" src="https://api.star-history.com/chart?repos=WiseWong6/wise-labs&type=date" />
+  </picture>
+</a>
