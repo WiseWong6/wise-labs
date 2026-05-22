@@ -5,14 +5,14 @@
 </p>
 
 <p align="center">
-  一系列提升 AI 开发效率的实验性工具 —— 从内容渲染到窗口管理，从复制导出到 Agent 可视化
+  一系列提升 AI 开发效率的实验性工具 —— 从窗口管理到 Agent 可视化
 </p>
 
 ---
 
 ## 这是什么
 
-Wise Labs 是一个面向 AI 时代开发者的工作台。它包含多个独立但互补的工具，覆盖内容渲染、终端管理和 Agent 调试等场景。
+Wise Labs 是一个面向 AI 时代开发者的工作台。它包含多个独立但互补的工具，覆盖终端管理和 Agent 调试等场景。
 
 每个项目都可以独立使用，组合起来则构成一套完整的 AI 开发辅助工具链。
 
@@ -24,13 +24,12 @@ Wise Labs 是一个面向 AI 时代开发者的工作台。它包含多个独立
 ┌──────────────────────────────────────────────────────────────┐
 │                        Wise Labs                             │
 ├─────────────┬─────────────┬──────────────────────────────────┤
-│  内容编辑   │  窗口管理    │           Agent 可视化            │
-├─────────────┼─────────────┼──────────────────────────────────┤
-│  mira-     │  ai-        │         openclaw_game            │
-│ open       │ workstation │                                  │
-├─────────────┴─────────────┴──────────────────────────────────┤
+│       窗口管理        │              Agent 可视化              │
+├───────────────────────┼──────────────────────────────────────┤
+│     ai-workstation    │            openclaw_game              │
+├───────────────────────┴──────────────────────────────────────┤
 │                        工具定位                               │
-│           写内容 → 整理窗口 → 看 Agent 运行                    │
+│              整理窗口 → 看 Agent 运行                         │
 └──────────────────────────────────────────────────────────────┘
 ```
 
@@ -52,24 +51,6 @@ Wise Labs 是一个面向 AI 时代开发者的工作台。它包含多个独立
 **Tech Stack:** Swift, AppleScript, Shell
 
 **[查看详情 →](./ai-workstation)**
-
----
-
-### 📝 [mira-open](./mira-open)
-
-> Mira Open —— Agent 生成之后，人类交付之前的基础预览工作台
-
-**核心功能**
-- 🔄 实时预览，600ms 防抖，自动识别混合内容
-- 🎯 支持 Markdown / Mermaid / JSON / HTML / 混合文档
-- 📊 Mermaid 支持懒渲染、独立缩放、SVG 下载和 PNG 下载
-- 📋 保留源码复制和格式化 JSON 复制
-- 🔒 完整 HTML 文档在 iframe 沙盒中渲染，并支持基础 HTML 导出
-- 🧭 公开验证版，不包含富文本复制、图片复制、截图复制、新窗口预览或高质量交付导出
-
-**Tech Stack:** React 19, Vite, Tailwind CSS v4 CLI, Mermaid, react-markdown, json5, react-syntax-highlighter, lucide-react
-
-**[查看详情 →](./mira-open)**
 
 ---
 
@@ -108,7 +89,7 @@ git clone https://github.com/WiseWong6/wise-labs.git
 cd wise-labs
 
 # 进入任意项目
-cd ai-workstation / mira-open / openclaw_game
+cd ai-workstation / openclaw_game
 
 # 安装依赖并运行
 npm install
@@ -127,7 +108,7 @@ npm run dev
 
 **AI 优先**
 
-所有工具都考虑 AI Agent 的使用场景。ai-workstation 支持 Agent 直接调用，mira-open 用于预览和审核 AI 生成的混合内容，openclaw_game 用于可视化 Agent 运行。
+所有工具都考虑 AI Agent 的使用场景。ai-workstation 支持 Agent 直接调用，openclaw_game 用于可视化 Agent 运行。
 
 **本地优先**
 
