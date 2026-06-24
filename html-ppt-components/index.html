@@ -1,0 +1,1148 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+  <meta charset="UTF-8">
+  <meta http-equiv="x-ua-compatible" content="ie=edge">
+  <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+  <meta name="description" content="HTML PPT组件图册，按流程、关系、对比、内容和数据可视化分类浏览，支持预览并复制 HTML 片段。">
+  <meta name="keywords" content="HTML PPT组件, PPT组件, 网页PPT, HTML幻灯片, AI生成PPT, Wise, 歪斯">
+  <meta name="author" content="Wise">
+  <title>HTML PPT组件</title>
+  <link rel="icon" href="data:,">
+  <style>
+    /* ===== Design System ===== */
+    :root {
+      --bg: #f4f3ee; --panel: #eeede6; --surface: #f4f3ee;
+      --card-bg: #ffffff;
+      --card-line: #e6e1d5;
+      --text: #1d1d18; --muted: #7a7568; --line: #d9d6cc;
+      --color-text-muted: var(--muted);
+      --accent: #002FA7; --accent-dim: rgba(0,47,167,0.08);
+      --thumb-w: 240px;
+      --radius: 12px;
+    }
+    * { box-sizing: border-box; margin: 0; padding: 0; }
+    html, body { min-height: 100%; }
+    body {
+      font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif;
+      background: var(--bg);
+      color: var(--text);
+      overflow-x: hidden;
+    }
+
+    /* ===== Shell ===== */
+    .shell {
+      max-width: 960px;
+      margin: 0 auto;
+      padding: 0 2rem;
+    }
+
+    /* ===== Page Header ===== */
+    .page-header {
+      margin-top: 2.5rem;
+      margin-bottom: 0.5rem;
+    }
+    .page-title {
+      font-family: Georgia, "Times New Roman", serif;
+      font-size: 2rem;
+      font-weight: 700;
+      letter-spacing: 0;
+      line-height: 1.1;
+    }
+    .page-subtitle {
+      color: var(--muted);
+      font-size: 0.95rem;
+      margin-top: 0.5rem;
+    }
+
+    /* ===== Filter Bar (tabs) ===== */
+    .filter-bar {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 0.5rem;
+      margin: 1rem 0 1.5rem;
+    }
+    .filter-btn {
+      display: inline-flex;
+      align-items: center;
+      gap: 0.35rem;
+      padding: 0.4rem 0.9rem;
+      border-radius: 12px;
+      border: 0.25px solid var(--line);
+      background: var(--card-bg);
+      font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif;
+      font-size: 0.9rem;
+      font-weight: 400;
+      color: var(--text);
+      cursor: pointer;
+      transition: background .15s, border-color .15s, color .15s;
+    }
+    .filter-btn:hover {
+      border-color: var(--accent);
+      background: var(--accent-dim);
+    }
+    .filter-btn.active {
+      background: var(--accent) !important;
+      color: #fff !important;
+      border-color: var(--accent) !important;
+    }
+    .filter-btn svg {
+      width: 14px;
+      height: 14px;
+      flex-shrink: 0;
+    }
+    .filter-btn .filter-count {
+      font-size: 0.75rem;
+      opacity: 0.6;
+    }
+
+    /* ===== Grid View ===== */
+    .grid-view { padding: 0; }
+    .pagination {
+      display: flex;
+      flex-wrap: wrap;
+      align-items: center;
+      gap: 0.5rem;
+      margin: 1.5rem 0;
+    }
+    .thumb-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fill, minmax(var(--thumb-w), 1fr));
+      gap: 1rem;
+    }
+    .thumb-card {
+      background: var(--card-bg);
+      border: 1px solid var(--card-line);
+      border-radius: var(--radius);
+      box-shadow: 0 2px 10px rgba(46, 44, 37, 0.06);
+      cursor: pointer;
+      transition: transform 0.15s, box-shadow 0.15s, border-color 0.15s;
+      overflow: hidden;
+      padding: 1.25rem;
+    }
+    .thumb-card:hover {
+      border-color: #cfc6b8;
+      transform: translateY(-2px);
+      box-shadow: 0 8px 24px rgba(46, 44, 37, 0.12);
+    }
+    .thumb-preview {
+      position: relative;
+      width: 100%;
+      aspect-ratio: 1 / 1;
+      overflow: hidden;
+      background: #fff;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+    }
+    .thumb-preview iframe {
+      width: 600px;
+      height: 600px;
+      border: none;
+      pointer-events: none;
+      transform-origin: center center;
+      flex-shrink: 0;
+    }
+    .thumb-label {
+      padding: 12px 0 0 0;
+      display: flex;
+      flex-direction: column;
+      gap: 2px;
+      border-top: 0.25px solid var(--line);
+    }
+    .thumb-name {
+      font-family: Georgia, "Times New Roman", serif;
+      font-size: 15px;
+      font-weight: 700;
+      color: #000;
+    }
+    /* ===== Detail View ===== */
+    .detail-view {
+      display: none;
+      padding: 28px 32px;
+      max-width: 960px;
+    }
+    .detail-view.active { display: block; }
+    .grid-view.hidden { display: none; }
+
+    .detail-back {
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      color: var(--muted);
+      cursor: pointer;
+      padding: 0;
+      border: none;
+      background: none;
+      flex-shrink: 0;
+      text-decoration: none;
+      transition: color 0.15s;
+    }
+    .detail-back:hover { color: var(--text); }
+    .detail-back svg { display: block; }
+
+    /* Back to Top */
+    #back-to-top {
+      position: fixed;
+      right: 1.5rem;
+      bottom: 1.5rem;
+      z-index: 100;
+      cursor: pointer;
+      background: var(--card-bg);
+      color: var(--text);
+      border: 0.25px solid var(--line);
+      border-radius: 12px;
+      width: 44px;
+      height: 44px;
+      padding: 0;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      box-shadow: 0 4px 16px rgba(0,0,0,0.1);
+      opacity: 0;
+      transform: translateY(10px);
+      transition: opacity .3s, transform .3s;
+      pointer-events: none;
+    }
+    #back-to-top.visible {
+      opacity: 1;
+      transform: translateY(0);
+      pointer-events: auto;
+    }
+    #back-to-top:hover {
+      transform: translateY(-2px);
+      box-shadow: 0 6px 20px rgba(0,0,0,0.15);
+    }
+    #back-to-top svg {
+      display: block;
+      width: 20px;
+      height: 20px;
+    }
+
+    .detail-header {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      margin-top: 2rem;
+      margin-bottom: 2rem;
+    }
+    .detail-title {
+      display: flex;
+      align-items: center;
+      gap: 0.5rem;
+      font-family: Georgia, "Times New Roman", serif;
+      font-size: 2rem;
+      font-weight: 700;
+      letter-spacing: 0;
+      line-height: 1.1;
+    }
+    .detail-group-tag {
+      font-size: 11px;
+      font-weight: 700;
+      letter-spacing: 0.15em;
+      text-transform: uppercase;
+      color: var(--accent);
+    }
+
+    .detail-preview {
+      position: relative;
+      width: 100%;
+      max-width: 700px;
+      aspect-ratio: 1 / 1;
+      overflow: hidden;
+      background: #fff;
+      margin-bottom: 24px;
+      border: 1px solid var(--line);
+      border-radius: var(--radius);
+      display: flex;
+      justify-content: center;
+      align-items: center;
+    }
+    .detail-preview iframe {
+      width: 700px;
+      height: 700px;
+      border: none;
+      pointer-events: none;
+      transform-origin: center center;
+      flex-shrink: 0;
+    }
+
+    .detail-desc {
+      color: var(--muted);
+      font-size: 14px;
+      line-height: 1.7;
+      margin-bottom: 16px;
+    }
+    .detail-source {
+      max-width: 700px;
+      margin: -8px 0 20px;
+      padding: 10px 12px;
+      border: 1px solid rgba(217,94,0,0.22);
+      background: var(--accent-dim);
+      color: var(--muted);
+      font-size: 13px;
+      line-height: 1.6;
+    }
+    .detail-source a {
+      color: var(--accent);
+      text-decoration: none;
+      border-bottom: 1px solid rgba(217,94,0,0.35);
+    }
+    .detail-source a:hover {
+      border-bottom-color: var(--accent);
+    }
+    .tag-list {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 8px;
+      margin-bottom: 28px;
+    }
+    .tag {
+      padding: 5px 10px;
+      border: 1px solid var(--line);
+      font-size: 11px;
+      letter-spacing: 0.06em;
+      color: var(--muted);
+    }
+    .tag.accent {
+      border-color: rgba(217,94,0,0.4);
+      color: var(--accent);
+      background: var(--accent-dim);
+    }
+
+    /* Code Tabs */
+    .code-tabs {
+      display: flex;
+      max-width: 700px;
+      border: 1px solid var(--line);
+      border-radius: var(--radius) var(--radius) 0 0;
+      overflow: hidden;
+      margin-bottom: 0;
+    }
+    .code-tab {
+      padding: 10px 20px;
+      background: transparent;
+      border: none;
+      color: var(--muted);
+      font-size: 12px;
+      font-weight: 700;
+      letter-spacing: 0.15em;
+      text-transform: uppercase;
+      cursor: pointer;
+      font-family: inherit;
+      border-bottom: 2px solid transparent;
+    }
+    .code-tab.active {
+      color: var(--accent);
+      border-bottom-color: var(--accent);
+    }
+    .code-panel {
+      display: none;
+      position: relative;
+      max-width: 700px;
+      background: #fff;
+      border: 1px solid var(--line);
+      border-top: none;
+      border-radius: 0 0 var(--radius) var(--radius);
+      overflow: hidden;
+    }
+    .code-panel.active { display: block; }
+    .code-panel pre {
+      margin: 0;
+      padding: 16px 18px;
+      padding-right: 80px;
+      overflow-x: auto;
+      color: var(--text);
+      font-size: 12px;
+      line-height: 1.65;
+      font-family: ui-monospace, SFMono-Regular, Menlo, Consolas, monospace;
+      white-space: pre-wrap;
+      word-break: break-word;
+      outline: none;
+    }
+    .code-panel pre:focus-visible {
+      box-shadow: inset 0 0 0 2px var(--accent, #6366f1);
+    }
+    .copy-btn {
+      position: absolute;
+      top: 10px;
+      right: 10px;
+      padding: 5px 12px;
+      background: var(--surface);
+      border: 1px solid var(--line);
+      color: var(--muted);
+      font-size: 11px;
+      cursor: pointer;
+      font-family: inherit;
+      letter-spacing: 0.05em;
+    }
+    .copy-btn:hover { color: var(--text); border-color: var(--accent); }
+    .copy-btn.copied { color: var(--accent); border-color: var(--accent); }
+
+    /* Detail Navigation (prev/next) */
+    .detail-nav {
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      max-width: 700px;
+      gap: 1rem;
+      margin: 2rem 0 1rem;
+    }
+    .detail-nav-btn {
+      display: inline-flex;
+      align-items: center;
+      gap: 0.35rem;
+      padding: 0.2rem 0.15rem;
+      border: 0;
+      background: transparent;
+      color: var(--muted);
+      text-decoration: none;
+      font-size: 0.9rem;
+      font-weight: 500;
+      cursor: pointer;
+      font-family: inherit;
+      transition: color 0.15s;
+    }
+    .detail-nav-btn:hover {
+      color: var(--accent);
+      text-decoration: underline;
+      text-underline-offset: 0.18em;
+    }
+    .detail-nav-spacer { width: 0; }
+
+    /* ===== Empty State ===== */
+    .empty-state {
+      text-align: center;
+      padding: 80px 40px;
+      color: var(--muted);
+      font-size: 15px;
+    }
+
+    /* ===== Scrollbar ===== */
+    ::-webkit-scrollbar { width: 6px; }
+    ::-webkit-scrollbar-track { background: transparent; }
+    ::-webkit-scrollbar-thumb { background: var(--line); }
+    ::-webkit-scrollbar-thumb:hover { background: var(--muted); }
+
+    /* ===== Responsive ===== */
+    @media (max-width: 900px) {
+      .shell { grid-template-columns: 1fr; }
+      .sidebar { display: none; }
+    }
+  </style>
+</head>
+<body>
+  <div class="shell">
+    <div class="page-header">
+      <h1 class="page-title">HTML PPT组件</h1>
+      <p class="page-subtitle">面向 AI 生成网页 PPT 的组件图册，按场景分类浏览并复制 HTML 片段。</p>
+    </div>
+    <nav class="filter-bar" id="filterBar"></nav>
+    <div id="gridView" class="grid-view"></div>
+    <nav class="pagination" id="pagination"></nav>
+    <div id="detailView" class="detail-view"></div>
+
+    <button id="back-to-top" type="button" aria-label="回到顶部">
+      <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M12 19V5"/><path d="m5 12 7-7 7 7"/></svg>
+    </button>
+  </div>
+
+  <script src="./catalog-data.js"></script>
+  <script>
+    // ===== Data =====
+    const DATA = window.SWISS_CATALOG_DATA;
+    const COMPONENT_CSS = DATA.componentCss;
+    const entries = DATA.entries;
+
+    // Category order — derived from groupLabel of first occurrence
+    const GROUP_ORDER = ['内容/排版', '对比/评估', '流程/时序', '结构/关系', '数据/图表'];
+    const CAT_ORDER = GROUP_ORDER.filter(g => entries.some(e => e.groupLabel === g));
+
+
+    // ===== State =====
+    const state = {
+      activeGroup: null,
+      layout: null,    // entry num for detail view
+      lastGridScrollTop: 0,
+      lastGridCardKey: null,
+      detailOpenedFromGrid: false,
+      restoreGridScrollTop: 0,
+      restoreGridCardKey: null,
+      pendingGridRestore: false,
+      page: 1
+    };
+
+    // ===== DOM refs =====
+    const filterBarEl = document.getElementById('filterBar');
+    const gridViewEl = document.getElementById('gridView');
+    const detailViewEl = document.getElementById('detailView');
+    const paginationEl = document.getElementById('pagination');
+    const PAGE_SIZE = 9;
+
+    // ===== Helpers =====
+    function esc(s) {
+      return String(s).replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;').replace(/"/g,'&quot;');
+    }
+
+    function getCardKey(entry) {
+      return `${entry.name}::${entry.variant || 'default'}`;
+    }
+
+    function getCurrentCardKey() {
+      if (!state.layout) return null;
+      const entry = entries.find(e => e.num === state.layout);
+      return entry ? getCardKey(entry) : null;
+    }
+
+    function getPageScrollTop() {
+      return window.scrollY || document.documentElement.scrollTop || 0;
+    }
+
+    function setPageScrollTop(top) {
+      window.scrollTo({ top: Math.max(0, top), behavior: 'auto' });
+    }
+
+    const WRAPPED_FLOW_CSS = `
+    .swiss-card .process-chain[data-type="wrap"] {
+      display: grid;
+      grid-template-columns: repeat(3, 1fr);
+      grid-template-rows: repeat(2, auto);
+      grid-template-areas:
+        "s1 s2 s3"
+        "s6 s5 s4";
+      gap: 24px 32px;
+      position: relative;
+      padding: 10px 20px;
+      overflow: visible;
+    }
+    .swiss-card .process-chain[data-type="wrap"] .step {
+      position: relative;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      padding: 16px 12px;
+      background: rgba(217,94,0,0.08);
+      border: 2px solid #d95e00;
+      border-radius: 8px;
+      font-size: 13px;
+      font-weight: 600;
+      text-align: center;
+    }
+    .swiss-card .process-chain[data-type="wrap"] .arrow {
+      display: none;
+    }
+    .swiss-card .process-chain[data-type="wrap"] .step:nth-child(1) { grid-area: s1; }
+    .swiss-card .process-chain[data-type="wrap"] .step:nth-child(3) { grid-area: s2; }
+    .swiss-card .process-chain[data-type="wrap"] .step:nth-child(5) { grid-area: s3; }
+    .swiss-card .process-chain[data-type="wrap"] .step:nth-child(7) { grid-area: s4; }
+    .swiss-card .process-chain[data-type="wrap"] .step:nth-child(9) { grid-area: s5; }
+    .swiss-card .process-chain[data-type="wrap"] .step:nth-child(11) { grid-area: s6; }
+    .swiss-card .process-chain[data-type="wrap"] .step:nth-child(1)::after,
+    .swiss-card .process-chain[data-type="wrap"] .step:nth-child(3)::after {
+      content: '→';
+      position: absolute;
+      right: -26px;
+      top: 50%;
+      transform: translateY(-50%);
+      color: #d95e00;
+      font-size: 16px;
+      font-weight: 700;
+    }
+    .swiss-card .process-chain[data-type="wrap"] .step:nth-child(5)::after {
+      content: '↓';
+      position: absolute;
+      left: 50%;
+      bottom: -26px;
+      transform: translateX(-50%);
+      color: #d95e00;
+      font-size: 16px;
+      font-weight: 700;
+    }
+    .swiss-card .process-chain[data-type="wrap"] .step:nth-child(7)::after,
+    .swiss-card .process-chain[data-type="wrap"] .step:nth-child(9)::after {
+      content: '←';
+      position: absolute;
+      left: -26px;
+      top: 50%;
+      transform: translateY(-50%);
+      color: #d95e00;
+      font-size: 16px;
+      font-weight: 700;
+      z-index: 2;
+    }
+    .swiss-card .process-chain[data-type="wrap"] .step:nth-child(11)::before {
+      content: '↑';
+      position: absolute;
+      left: 50%;
+      top: -26px;
+      transform: translateX(-50%);
+      color: #d95e00;
+      font-size: 16px;
+      font-weight: 700;
+      z-index: 2;
+    }`;
+
+    // ===== Preview Doc Builder =====
+    function buildPreviewDoc(snippet) {
+      return `<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+  <meta charset="UTF-8">
+    <style>
+    :root {
+      --bg: #fdf9ee;
+      --surface: #f4f3ee;
+    }
+    * { box-sizing: border-box; margin: 0; padding: 0; }
+    body {
+      font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif;
+      background: #fff;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      min-height: 100vh;
+      padding: 16px;
+    }
+    .component-shell {
+      width: 100%;
+      max-width: 480px;
+      padding: 16px;
+      background: #fff;
+    }
+    .swiss-card { width: 100% !important; min-height: auto !important; box-shadow: none !important; }
+    .swiss-card__content { min-height: auto !important; padding: 20px 0 !important; }
+    .swiss-card--cover .swiss-card__content { padding: 24px 0 !important; }
+    ${COMPONENT_CSS}
+    ${WRAPPED_FLOW_CSS}
+  </style>
+</head>
+<body>
+  <div class="component-shell">
+    ${snippet}
+  </div>
+</body>
+</html>`;
+    }
+
+    function buildSourceDoc(entry, previewDoc) {
+      if (!entry.copyHtml) return previewDoc;
+      if (entry.variant === 'wrapped' && entry.copyHtml.includes('</style>')) {
+        return entry.copyHtml.replace('</style>', `${WRAPPED_FLOW_CSS}\n</style>`);
+      }
+      return entry.copyHtml;
+    }
+
+    // ===== Mind Map Connector Sync =====
+    const SVG_NS = 'http://www.w3.org/2000/svg';
+
+    function getElementScale(el) {
+      const transform = getComputedStyle(el).transform;
+      if (!transform || transform === 'none') return 1;
+      const matrixMatch = transform.match(/matrix\(([^)]+)\)/);
+      if (matrixMatch) {
+        const values = matrixMatch[1].split(',').map(v => Number.parseFloat(v.trim()));
+        if (values.length >= 2) return Math.hypot(values[0], values[1]) || 1;
+      }
+      return 1;
+    }
+
+    function toLocalRect(el, containerRect, scale) {
+      const rect = el.getBoundingClientRect();
+      const left = (rect.left - containerRect.left) / scale;
+      const top = (rect.top - containerRect.top) / scale;
+      const width = rect.width / scale;
+      const height = rect.height / scale;
+      return { left, top, width, height, right: left + width, bottom: top + height, centerX: left + width / 2, centerY: top + height / 2 };
+    }
+
+    function createSvgOverlay(doc, mm, width, height) {
+      let overlay = mm.querySelector(':scope > .mind-map-overlay');
+      if (!overlay) {
+        overlay = doc.createElementNS(SVG_NS, 'svg');
+        overlay.setAttribute('class', 'mind-map-overlay');
+        overlay.setAttribute('aria-hidden', 'true');
+        mm.appendChild(overlay);
+      }
+      overlay.replaceChildren();
+      overlay.setAttribute('viewBox', `0 0 ${width} ${height}`);
+      return overlay;
+    }
+
+    function syncIframeMindMap(iframe) {
+      const run = () => {
+        if (!iframe.isConnected) return;
+        const doc = iframe.contentDocument;
+        if (!doc || doc.readyState !== 'complete') { requestAnimationFrame(run); return; }
+        syncMindMapConnectors(doc);
+      };
+      requestAnimationFrame(run);
+    }
+
+    function appendLine(svg, x1, y1, x2, y2) {
+      if (![x1, y1, x2, y2].every(Number.isFinite)) return;
+      const line = svg.ownerDocument.createElementNS(SVG_NS, 'line');
+      line.setAttribute('class', 'mind-map-line');
+      line.setAttribute('x1', String(x1));
+      line.setAttribute('y1', String(y1));
+      line.setAttribute('x2', String(x2));
+      line.setAttribute('y2', String(y2));
+      svg.appendChild(line);
+    }
+
+    function syncMindMapConnectors(doc) {
+      if (!doc) return;
+      doc.querySelectorAll('.mind-map').forEach(mm => {
+        const mmRect = mm.getBoundingClientRect();
+        if (!mmRect.width || !mmRect.height) return;
+        const scale = getElementScale(mm);
+        const width = mmRect.width / scale;
+        const height = mmRect.height / scale;
+        const svg = createSvgOverlay(doc, mm, width, height);
+        const rootNode = mm.querySelector(':scope > .root-node');
+        const branches = mm.querySelector('.branches');
+        if (!rootNode || !branches) return;
+
+        const branchNodes = Array.from(branches.querySelectorAll(':scope > .branch'))
+          .map(branch => {
+            const node = branch.querySelector(':scope > .node');
+            return node ? { branch, node, nodeRect: toLocalRect(node, mmRect, scale) } : null;
+          })
+          .filter(Boolean);
+        if (!branchNodes.length) return;
+
+        const rootRect = toLocalRect(rootNode, mmRect, scale);
+        const branchesRect = toLocalRect(branches, mmRect, scale);
+
+        if (mm.dataset.type === 'vertical') {
+          const branchGap = 24;
+          const branchLeft = Math.min(...branchNodes.map(item => item.nodeRect.left));
+          const spineX = Math.max(rootRect.right + 20, branchLeft - branchGap);
+          const spineTop = Math.min(...branchNodes.map(item => item.nodeRect.centerY));
+          const spineBottom = Math.max(...branchNodes.map(item => item.nodeRect.centerY));
+          appendLine(svg, rootRect.right, rootRect.centerY, spineX, rootRect.centerY);
+          appendLine(svg, spineX, spineTop, spineX, spineBottom);
+          branchNodes.forEach(({ branch, nodeRect }) => {
+            appendLine(svg, spineX, nodeRect.centerY, nodeRect.left, nodeRect.centerY);
+            const subBranches = branch.querySelector(':scope > .sub-branches');
+            if (!subBranches) return;
+            const subNodes = Array.from(subBranches.querySelectorAll(':scope > .sub-node'))
+              .map(subNode => toLocalRect(subNode, mmRect, scale));
+            if (!subNodes.length) return;
+            const subGap = 24;
+            const subLeft = Math.min(...subNodes.map(sub => sub.left));
+            const subSpineX = Math.max(nodeRect.right + 18, subLeft - subGap);
+            const subSpineTop = Math.min(nodeRect.centerY, ...subNodes.map(sub => sub.centerY));
+            const subSpineBottom = Math.max(nodeRect.centerY, ...subNodes.map(sub => sub.centerY));
+            appendLine(svg, nodeRect.right, nodeRect.centerY, subSpineX, nodeRect.centerY);
+            appendLine(svg, subSpineX, subSpineTop, subSpineX, subSpineBottom);
+            subNodes.forEach(subNodeRect => {
+              appendLine(svg, subSpineX, subNodeRect.centerY, subNodeRect.left, subNodeRect.centerY);
+            });
+          });
+          return;
+        }
+
+        const firstNodeRect = branchNodes[0].nodeRect;
+        const lastNodeRect = branchNodes[branchNodes.length - 1].nodeRect;
+        const spineY = branchesRect.top;
+        appendLine(svg, rootRect.centerX, rootRect.bottom, rootRect.centerX, spineY);
+        appendLine(svg, firstNodeRect.centerX, spineY, lastNodeRect.centerX, spineY);
+        branchNodes.forEach(({ nodeRect }) => {
+          appendLine(svg, nodeRect.centerX, spineY, nodeRect.centerX, nodeRect.top);
+        });
+      });
+    }
+
+    // ===== Filtering =====
+    // Unique entries — one card per entry (entry = layout + variant combo)
+    function getUniqueEntries() {
+      return entries;
+    }
+
+    function matchesFilter(entry) {
+      return true;
+    }
+
+    // ===== Icon System =====
+    function makeIcon(size, paths) {
+      return `<svg width="${size}" height="${size}" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">${paths}</svg>`;
+    }
+    // 7 visually distinct icons — one per group
+    const ICON_PATHS = {
+      '流程/时序': '<line x1="6" y1="3" x2="6" y2="15"/><circle cx="18" cy="6" r="3"/><circle cx="6" cy="18" r="3"/><path d="M18 9a9 9 0 01-9 9"/>',
+      '关系/结构': '<circle cx="12" cy="5" r="3"/><circle cx="5" cy="19" r="3"/><circle cx="19" cy="19" r="3"/><line x1="12" y1="8" x2="5" y2="16"/><line x1="12" y1="8" x2="19" y2="16"/>',
+      '对比/评估': '<rect x="3" y="3" width="7" height="18" rx="1"/><rect x="14" y="3" width="7" height="18" rx="1"/>',
+      '内容/排版': '<rect x="8" y="8" width="13" height="13" rx="2"/><path d="M5 15H4a2 2 0 01-2-2V4a2 2 0 012-2h9a2 2 0 012 2v1"/>',
+      '数据/可视化': '<line x1="18" y1="20" x2="18" y2="10"/><line x1="12" y1="20" x2="12" y2="4"/><line x1="6" y1="20" x2="6" y2="14"/>',
+    };
+    const DEFAULT_ICON_PATH = '<rect x="8" y="8" width="13" height="13" rx="2"/><path d="M5 15H4a2 2 0 01-2-2V4a2 2 0 012-2h9a2 2 0 012 2v1"/>';
+
+    function renderFilterBar() {
+      const groups = {};
+      entries.forEach(e => { groups[e.groupLabel] = (groups[e.groupLabel] || 0) + 1; });
+
+      let html = '';
+      const totalCount = entries.length;
+      html += `<button class="filter-btn${!state.activeGroup ? ' active' : ''}" data-filter="">
+        全部 <span class="filter-count">${totalCount}</span></button>`;
+
+      CAT_ORDER.forEach(cat => {
+        if (!groups[cat]) return;
+        const icon = makeIcon(14, ICON_PATHS[cat] || DEFAULT_ICON_PATH);
+        html += `<button class="filter-btn${state.activeGroup === cat ? ' active' : ''}" data-filter="${esc(cat)}">
+          ${icon}${esc(cat)} <span class="filter-count">${groups[cat]}</span></button>`;
+      });
+      filterBarEl.innerHTML = html;
+
+      filterBarEl.querySelectorAll('.filter-btn').forEach(btn => {
+        btn.addEventListener('click', () => {
+          state.activeGroup = btn.dataset.filter || null;
+          state.page = 1;
+          updateFilterHighlight();
+          window.scrollTo({ top: 0, behavior: 'smooth' });
+          renderGrid();
+        });
+      });
+    }
+
+    function updateFilterHighlight() {
+      filterBarEl.querySelectorAll('.filter-btn').forEach(btn => {
+        const isActive = btn.dataset.filter === (state.activeGroup || '');
+        btn.classList.toggle('active', isActive);
+      });
+    }
+
+    // ===== Grid View =====
+    function renderGrid() {
+      // Filter by active tab
+      let filtered = entries;
+      if (state.activeGroup) {
+        filtered = entries.filter(e => e.groupLabel === state.activeGroup);
+      }
+      if (filtered.length === 0) {
+        gridViewEl.innerHTML = '<div class="empty-state">没有匹配的布局。</div>';
+        paginationEl.style.display = 'none';
+        return;
+      }
+
+      // Pagination
+      const totalPages = Math.max(1, Math.ceil(filtered.length / PAGE_SIZE));
+      if (state.page > totalPages) state.page = totalPages;
+      const start = (state.page - 1) * PAGE_SIZE;
+      const pageItems = filtered.slice(start, start + PAGE_SIZE);
+
+      let html = '<div class="thumb-grid">';
+      pageItems.forEach(entry => {
+        const cardKey = getCardKey(entry);
+        const displayLabel = esc(entry.label);
+        html += `<div class="thumb-card" data-num="${entry.num}" data-card-key="${esc(cardKey)}">
+          <div class="thumb-preview" data-num="${entry.num}"></div>
+          <div class="thumb-label">
+            <span class="thumb-name">${displayLabel}</span>
+          </div>
+        </div>`;
+      });
+      html += '</div>';
+
+      gridViewEl.innerHTML = html;
+
+      // Render pagination
+      renderPagination(totalPages);
+
+      // Lazy-load iframes
+      requestAnimationFrame(() => {
+        gridViewEl.querySelectorAll('.thumb-preview[data-num]').forEach(el => {
+          const num = parseInt(el.dataset.num);
+          const entry = entries.find(e => e.num === num);
+          if (!entry) return;
+          const doc = buildPreviewDoc(entry.snippet);
+          const iframe = document.createElement('iframe');
+          iframe.loading = 'lazy';
+          iframe.addEventListener('load', () => { syncMindMapConnectors(iframe.contentDocument); });
+          iframe.srcdoc = doc;
+          const containerW = el.offsetWidth || 260;
+          const containerH = el.offsetHeight || 200;
+          const scale = Math.min(containerW / 600, containerH / 600);
+          iframe.style.transform = `scale(${scale})`;
+          el.appendChild(iframe);
+          syncIframeMindMap(iframe);
+        });
+      });
+
+      // Bind card clicks
+      gridViewEl.querySelectorAll('.thumb-card').forEach(card => {
+        card.addEventListener('click', () => {
+          const num = parseInt(card.dataset.num);
+          state.lastGridScrollTop = getPageScrollTop();
+          state.lastGridCardKey = card.dataset.cardKey;
+          state.detailOpenedFromGrid = true;
+          commitHistory('replace', createSnapshot('grid', { cardKey: card.dataset.cardKey, scrollTop: getPageScrollTop() }));
+          state.layout = num;
+          state.pendingGridRestore = false;
+          commitHistory('push', createSnapshot('detail', { cardKey: card.dataset.cardKey, fromGrid: true }));
+          render();
+        });
+      });
+    }
+
+    function renderPagination(totalPages) {
+      if (totalPages <= 1) {
+        paginationEl.style.display = 'none';
+        return;
+      }
+      paginationEl.style.display = 'flex';
+      let html = `<button class="filter-btn" data-page="prev" ${state.page <= 1 ? 'disabled' : ''}>上一页</button>`;
+      for (let p = 1; p <= totalPages; p++) {
+        html += `<button class="filter-btn${p === state.page ? ' active' : ''}" data-page="${p}">${p}</button>`;
+      }
+      html += `<button class="filter-btn" data-page="next" ${state.page >= totalPages ? 'disabled' : ''}>下一页</button>`;
+      paginationEl.innerHTML = html;
+
+      paginationEl.querySelectorAll('.filter-btn').forEach(btn => {
+        btn.addEventListener('click', () => {
+          const p = btn.dataset.page;
+          if (p === 'prev' && state.page > 1) state.page--;
+          else if (p === 'next' && state.page < totalPages) state.page++;
+          else if (p !== 'prev' && p !== 'next') state.page = parseInt(p);
+          else return;
+          window.scrollTo({ top: 0, behavior: 'smooth' });
+          renderGrid();
+        });
+      });
+    }
+
+    // ===== Detail View =====
+    function renderDetail() {
+      const entry = entries.find(e => e.num === state.layout);
+      if (!entry) {
+        state.layout = null;
+        commitHistory('replace', createSnapshot('grid'));
+        render();
+        return;
+      }
+
+      const previewDoc = buildPreviewDoc(entry.snippet);
+      const sourceDoc = buildSourceDoc(entry, previewDoc);
+
+      // Compute prev/next within current group filter
+      const filtered = state.activeGroup
+        ? entries.filter(e => e.groupLabel === state.activeGroup)
+        : entries;
+      const currentIdx = filtered.findIndex(e => e.num === state.layout);
+      const prevEntry = currentIdx > 0 ? filtered[currentIdx - 1] : null;
+      const nextEntry = currentIdx < filtered.length - 1 ? filtered[currentIdx + 1] : null;
+      const prevHtml = prevEntry
+        ? `<button class="detail-nav-btn" data-nav="prev" data-num="${prevEntry.num}">&lt; 上一个</button>`
+        : `<span class="detail-nav-spacer"></span>`;
+      const nextHtml = nextEntry
+        ? `<button class="detail-nav-btn" data-nav="next" data-num="${nextEntry.num}">下一个 &gt;</button>`
+        : `<span class="detail-nav-spacer"></span>`;
+      const navHtml = `<nav class="detail-nav">${prevHtml}${nextHtml}</nav>`;
+      const sourceHtml = entry.source && entry.source.url
+        ? `<div class="detail-source">参考来源：<a href="${esc(entry.source.url)}" target="_blank" rel="noopener noreferrer">${esc(entry.source.name || entry.source.label || '参考来源')}</a></div>`
+        : '';
+
+      detailViewEl.innerHTML = `
+        <div class="detail-header">
+          <h2 class="detail-title"><button class="detail-back" id="backBtn" title="返回" aria-label="返回目录"><svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M19 12H5M12 19l-7-7 7-7"/></svg></button>${esc(entry.label)}</h2>
+        </div>
+        <div class="detail-preview" id="detailPreviewBox"></div>
+        ${sourceHtml}
+        <div class="code-tabs">
+          <button class="code-tab active" data-tab="html">HTML</button>
+        </div>
+        <div class="code-panel active" data-panel="html">
+          <button class="copy-btn" data-copy="html">复制</button>
+          <pre id="htmlSourcePre" tabindex="0">${esc(sourceDoc)}</pre>
+        </div>
+        ${navHtml}`;
+
+      // Insert detail iframe
+      const previewBox = document.getElementById('detailPreviewBox');
+      const iframe = document.createElement('iframe');
+      iframe.addEventListener('load', () => { syncMindMapConnectors(iframe.contentDocument); });
+      iframe.srcdoc = previewDoc;
+      const containerW = previewBox.offsetWidth || 700;
+      const containerH = previewBox.offsetHeight || 480;
+      const scale = Math.min(containerW / 700, containerH / 700);
+      iframe.style.transform = `scale(${scale})`;
+      previewBox.appendChild(iframe);
+      syncIframeMindMap(iframe);
+
+      // Back button
+      document.getElementById('backBtn').addEventListener('click', () => {
+        if (state.detailOpenedFromGrid) {
+          const fallback = createSnapshot('grid', {
+            cardKey: state.lastGridCardKey || getCurrentCardKey(),
+            scrollTop: state.lastGridScrollTop
+          });
+          applySnapshot(fallback);
+          state.detailOpenedFromGrid = false;
+          commitHistory('replace', fallback);
+          render();
+          return;
+        }
+        const fallback = { view: 'grid', search: state.search, layout: null, cardKey: getCurrentCardKey(), scrollTop: 0, fromGrid: false };
+        applySnapshot(fallback);
+        state.detailOpenedFromGrid = false;
+        commitHistory('replace', fallback);
+        render();
+      });
+
+      // Copy buttons
+      detailViewEl.querySelectorAll('.copy-btn').forEach(btn => {
+        btn.addEventListener('click', () => {
+          navigator.clipboard.writeText(sourceDoc).then(() => {
+            btn.textContent = '已复制';
+            btn.classList.add('copied');
+            setTimeout(() => { btn.textContent = '复制'; btn.classList.remove('copied'); }, 1500);
+          });
+        });
+      });
+
+      // Detail navigation (prev/next)
+      detailViewEl.querySelectorAll('.detail-nav-btn').forEach(btn => {
+        btn.addEventListener('click', () => {
+          const num = parseInt(btn.dataset.num);
+          state.lastGridScrollTop = getPageScrollTop();
+          state.lastGridCardKey = getCurrentCardKey();
+          state.detailOpenedFromGrid = true;
+          commitHistory('replace', createSnapshot('detail', { cardKey: getCurrentCardKey(), fromGrid: true }));
+          state.layout = num;
+          state.pendingGridRestore = false;
+          commitHistory('push', createSnapshot('detail', { cardKey: getCardKey(entries.find(e => e.num === num)), fromGrid: true }));
+          render();
+        });
+      });
+
+      renderFilterBar();
+    }
+
+    // ===== History Router =====
+    function buildHash(snapshot) {
+      if (snapshot.view === 'detail' && snapshot.layout) return '#/layout/' + encodeURIComponent(snapshot.layout);
+      return '#/';
+    }
+
+    function createSnapshot(view, overrides = {}) {
+      return Object.assign({ view, search: state.search, layout: view === 'detail' ? state.layout : null, cardKey: view === 'detail' ? getCurrentCardKey() : null, scrollTop: 0, fromGrid: false }, overrides);
+    }
+
+    function commitHistory(mode, snapshot) {
+      history[mode + 'State'](snapshot, '', buildHash(snapshot));
+    }
+
+    function applySnapshot(snapshot) {
+      state.search = '';
+      state.layout = snapshot.view === 'detail' ? (snapshot.layout || null) : null;
+      state.restoreGridCardKey = snapshot.view === 'grid' ? (snapshot.cardKey || null) : null;
+      state.restoreGridScrollTop = snapshot.view === 'grid' && Number.isFinite(snapshot.scrollTop) ? snapshot.scrollTop : 0;
+      state.pendingGridRestore = snapshot.view === 'grid' && !!(snapshot.cardKey || snapshot.scrollTop > 0);
+    }
+
+    function findGridCardByKey(cardKey) {
+      if (!cardKey) return null;
+      return Array.from(gridViewEl.querySelectorAll('.thumb-card')).find(card => card.dataset.cardKey === cardKey) || null;
+    }
+
+    function snapshotFromHash() {
+      const h = location.hash || '#/';
+      const hashBody = h.replace('#/', '');
+      if (!hashBody) return { view: 'grid', search: '', layout: null, cardKey: null, scrollTop: 0, fromGrid: false };
+      const parts = hashBody.split('/');
+      if (parts[0] === 'layout' && parts[1]) {
+        const num = parseInt(decodeURIComponent(parts[1]));
+        const entry = entries.find(e => e.num === num);
+        if (entry) {
+          return { view: 'detail', search: '', layout: num, cardKey: getCardKey(entry), scrollTop: 0, fromGrid: false };
+        }
+      }
+      return { view: 'grid', search: '', layout: null, cardKey: null, scrollTop: 0, fromGrid: false };
+    }
+
+    function getActiveSnapshot(fallbackState) {
+      if (fallbackState && (fallbackState.view === 'grid' || fallbackState.view === 'detail')) return fallbackState;
+      return snapshotFromHash();
+    }
+
+    // ===== Main Render =====
+    function render() {
+      if (state.layout) {
+        // Detail view: hide grid, filter bar, header
+        gridViewEl.classList.add('hidden');
+        detailViewEl.classList.add('active');
+        filterBarEl.style.display = 'none';
+        document.querySelector('.page-header').style.display = 'none';
+        paginationEl.style.display = 'none';
+        renderDetail();
+        setPageScrollTop(0);
+      } else {
+        gridViewEl.classList.remove('hidden');
+        detailViewEl.classList.remove('active');
+        detailViewEl.innerHTML = '';
+        filterBarEl.style.display = '';
+        document.querySelector('.page-header').style.display = '';
+        paginationEl.style.display = '';
+        renderFilterBar();
+        renderGrid();
+        if (state.pendingGridRestore) {
+          requestAnimationFrame(() => {
+            const targetCard = findGridCardByKey(state.restoreGridCardKey);
+            if (targetCard) {
+              targetCard.scrollIntoView({ block: 'center' });
+            } else if (state.restoreGridScrollTop > 0) {
+              setPageScrollTop(state.restoreGridScrollTop);
+            } else {
+              setPageScrollTop(0);
+            }
+            state.pendingGridRestore = false;
+            state.restoreGridCardKey = null;
+            state.restoreGridScrollTop = 0;
+          });
+        }
+      }
+    }
+
+    window.addEventListener('popstate', event => {
+      const snapshot = getActiveSnapshot(event.state);
+      applySnapshot(snapshot);
+      state.detailOpenedFromGrid = false;
+      render();
+    });
+
+    document.addEventListener('keydown', e => {
+      if (e.key === 'Escape' && state.layout) {
+        const backBtn = document.getElementById('backBtn');
+        if (backBtn) backBtn.click();
+      }
+      if ((e.metaKey || e.ctrlKey) && e.key === 'a') {
+        const pre = e.target.closest('.code-panel pre');
+        if (pre) {
+          e.preventDefault();
+          const range = document.createRange();
+          range.selectNodeContents(pre);
+          const sel = window.getSelection();
+          sel.removeAllRanges();
+          sel.addRange(range);
+        }
+      }
+    });
+
+    // Back to top button
+    const backToTopBtn = document.getElementById('back-to-top');
+    backToTopBtn.addEventListener('click', () => {
+      window.scrollTo({ top: 0, behavior: 'smooth' });
+    });
+    window.addEventListener('scroll', () => {
+      backToTopBtn.classList.toggle('visible', window.scrollY > 300);
+    }, { passive: true });
+
+    // ===== Init =====
+    const initialSnapshot = snapshotFromHash();
+    applySnapshot(initialSnapshot);
+    state.detailOpenedFromGrid = false;
+    commitHistory('replace', initialSnapshot);
+    render();
+  </script>
+</body>
+</html>
