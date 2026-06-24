@@ -24,12 +24,12 @@ Wise Labs 是一个面向 AI 时代开发者的工作台。它包含多个独立
 ┌──────────────────────────────────────────────────────────────┐
 │                        Wise Labs                             │
 ├─────────────┬─────────────┬──────────────────────────────────┤
-│       窗口管理        │              Agent 可视化              │
-├───────────────────────┼──────────────────────────────────────┤
-│     ai-workstation    │            openclaw_game              │
-├───────────────────────┴──────────────────────────────────────┤
+│     窗口管理     │      Agent 可视化      │     组件图册      │
+├──────────────────┼────────────────────────┼───────────────────┤
+│  ai-workstation  │     openclaw_game      │ html-ppt-components │
+├──────────────────┴────────────────────────┴───────────────────┤
 │                        工具定位                               │
-│              整理窗口 → 看 Agent 运行                         │
+│          整理窗口 → 看 Agent 运行 → 复用 PPT 组件              │
 └──────────────────────────────────────────────────────────────┘
 ```
 
@@ -71,6 +71,23 @@ Wise Labs 是一个面向 AI 时代开发者的工作台。它包含多个独立
 
 ---
 
+### 🧩 [html-ppt-components](./html-ppt-components)
+
+> HTML PPT组件 —— 面向 AI 生成 PPT / 文档网页的零依赖静态组件图册
+
+**核心功能**
+- 🧭 按内容、对比、流程、结构和数据分类浏览组件
+- 🖼️ 支持组件预览和详情页查看
+- 📋 支持复制可复用的 HTML 源码
+- 🔗 保留 ECharts 雷达图/金字塔参考来源链接
+- ⚡ 零依赖静态页面，无需构建流程
+
+**Tech Stack:** HTML, CSS, Vanilla JS
+
+**[查看详情 →](./html-ppt-components)**
+
+---
+
 ### 📦 wise-labs (本仓库)
 
 > 工具集的入口与导航 —— 你正在这里
@@ -88,15 +105,17 @@ Wise Labs 是一个面向 AI 时代开发者的工作台。它包含多个独立
 git clone https://github.com/WiseWong6/wise-labs.git
 cd wise-labs
 
-# 进入任意项目
-cd ai-workstation / openclaw_game
+# 静态项目：直接用本地 HTTP 服务打开
+python3 -m http.server 8080
+# 打开 http://127.0.0.1:8080/html-ppt-components/
 
-# 安装依赖并运行
+# Node 项目：进入对应目录后安装依赖并运行
+cd openclaw_game
 npm install
 npm run dev
 ```
 
-每个子目录都有自己的 README，包含详细的安装和使用说明。
+不同子项目的运行方式不同。静态项目可以直接用 Python HTTP server 打开；Node 项目需要进入对应目录安装依赖。每个子目录都有自己的 README，包含详细的安装和使用说明。
 
 ---
 
@@ -133,11 +152,11 @@ npm run dev
 
 ## Star History
 
-<a href="https://www.star-history.com/#WiseWong6/wise-labs&Date">
+<a href="https://www.star-history.com/#wisewong6/wise-labs&Date">
   <picture>
-    <source media="(prefers-color-scheme: dark)" srcset="https://api.star-history.com/chart?repos=WiseWong6/wise-labs&type=date&theme=dark" />
-    <source media="(prefers-color-scheme: light)" srcset="https://api.star-history.com/chart?repos=WiseWong6/wise-labs&type=date" />
-    <img alt="Star History Chart" src="https://api.star-history.com/chart?repos=WiseWong6/wise-labs&type=date" />
+    <source media="(prefers-color-scheme: dark)" srcset="https://api.star-history.com/chart?repos=wisewong6%2Fwise-labs&amp;type=Date&amp;theme=dark" />
+    <source media="(prefers-color-scheme: light)" srcset="https://api.star-history.com/chart?repos=wisewong6%2Fwise-labs&amp;type=Date" />
+    <img alt="Star History Chart" src="https://api.star-history.com/chart?repos=wisewong6%2Fwise-labs&amp;type=Date" />
   </picture>
 </a>
 
