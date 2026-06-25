@@ -81,6 +81,68 @@
       color: var(--text);
       background: var(--accent-dim);
     }
+    .offsite-modal {
+      position: fixed;
+      inset: 0;
+      z-index: 1000;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      padding: clamp(1rem, 4vw, 3rem);
+      background: rgba(29,29,24,0.62);
+      opacity: 0;
+      transition: opacity 0.18s ease;
+    }
+    .offsite-modal[hidden] { display: none; }
+    .offsite-modal.is-open { opacity: 1; }
+    .offsite-modal-panel {
+      width: min(420px, 90%);
+      padding: 1.5rem;
+      border: 0.25px solid var(--line);
+      border-radius: var(--radius);
+      background: var(--card-bg);
+      box-shadow: 0 24px 80px rgba(0,0,0,0.24);
+      transform: translateY(12px) scale(0.98);
+      transition: transform 0.18s ease;
+    }
+    .offsite-modal.is-open .offsite-modal-panel {
+      transform: translateY(0) scale(1);
+    }
+    .offsite-modal-title {
+      margin: 0 0 0.5rem;
+      font-size: 1.1rem;
+      font-weight: 700;
+      color: var(--text);
+    }
+    .offsite-modal-text {
+      margin: 0 0 1.25rem;
+      color: var(--muted);
+      font-size: 0.95rem;
+      line-height: 1.5;
+    }
+    .offsite-modal-actions {
+      display: flex;
+      gap: 0.5rem;
+      justify-content: flex-end;
+    }
+    .offsite-btn {
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      min-height: 36px;
+      padding: 0.45rem 0.9rem;
+      border: 0.25px solid var(--accent);
+      border-radius: 10px;
+      background: var(--accent);
+      color: #fff;
+      font: inherit;
+      cursor: pointer;
+    }
+    .offsite-btn.secondary {
+      border-color: var(--line);
+      background: var(--card-bg);
+      color: var(--text);
+    }
 
     /* ===== Filter Bar (tabs) ===== */
     .filter-controls {
@@ -570,6 +632,10 @@
           <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M9 19c-5 1.5-5-2.5-7-3m14 6v-3.87a3.37 3.37 0 0 0-.94-2.61c3.14-.35 6.44-1.54 6.44-7A5.44 5.44 0 0 0 20 4.77 5.07 5.07 0 0 0 19.91 1S18.73.65 16 2.48a13.38 13.38 0 0 0-7 0C6.27.65 5.09 1 5.09 1A5.07 5.07 0 0 0 5 4.77a5.44 5.44 0 0 0-1.5 3.78c0 5.42 3.3 6.61 6.44 7A3.37 3.37 0 0 0 9 18.13V22"></path></svg>
           源代码
         </a>
+        <a class="meta-pill" href="https://github.com/WiseWong6/wise-skills/tree/master/ppt-component-atlas" target="_blank" rel="noopener noreferrer" data-skill-offsite-link>
+          <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M12 3 4 7l8 4 8-4-8-4Z"/><path d="M4 11l8 4 8-4"/><path d="M4 15l8 4 8-4"/></svg>
+          Skill
+        </a>
       </div>
     </div>
     <div class="filter-controls" id="filterControls">
@@ -596,6 +662,7 @@
     const DATA = window.SWISS_CATALOG_DATA;
     const SOURCE_HAN_SANS = '"Wise Han Sans SC"';
     const SOURCE_HAN_SERIF = '"Wise Han Serif SC"';
+    const MODAL_TRANSITION_MS = 180;
     function isSerifFontDeclaration(declaration) {
       const primaryFamily = (declaration.match(/font-family\s*:\s*([^,;]+)/i)?.[1] || '')
         .replace(/["']/g, '')
@@ -966,6 +1033,70 @@
       link.click();
       link.remove();
       window.setTimeout(() => { URL.revokeObjectURL(url); }, 1000);
+    }
+
+    function initSkillOffsiteConfirm() {
+      const skillLink = document.querySelector('[data-skill-offsite-link]');
+      if (!skillLink) return;
+
+      const modal = document.createElement('div');
+      modal.className = 'offsite-modal';
+      modal.setAttribute('role', 'dialog');
+      modal.setAttribute('aria-modal', 'true');
+      modal.setAttribute('aria-label', '离站确认');
+      modal.hidden = true;
+      modal.innerHTML = `
+        <div class="offsite-modal-panel">
+          <h3 class="offsite-modal-title">即将离开本站</h3>
+          <p class="offsite-modal-text">你即将前往 GitHub 查看「HTML PPT组件图册」Skill，是否继续访问？</p>
+          <div class="offsite-modal-actions">
+            <button class="offsite-btn secondary" type="button" data-offsite-cancel>取消</button>
+            <button class="offsite-btn" type="button" data-offsite-confirm>继续访问</button>
+          </div>
+        </div>
+      `;
+      document.body.appendChild(modal);
+
+      const confirmBtn = modal.querySelector('[data-offsite-confirm]');
+
+      function openModal() {
+        modal.hidden = false;
+        requestAnimationFrame(() => {
+          modal.classList.add('is-open');
+          if (confirmBtn) confirmBtn.focus({ preventScroll: true });
+        });
+      }
+
+      function closeModal() {
+        modal.classList.remove('is-open');
+        setTimeout(() => {
+          modal.hidden = true;
+        }, MODAL_TRANSITION_MS);
+      }
+
+      skillLink.addEventListener('click', event => {
+        event.preventDefault();
+        openModal();
+      });
+
+      modal.addEventListener('click', event => {
+        if (event.target === modal || event.target.closest('[data-offsite-cancel]')) {
+          closeModal();
+          return;
+        }
+        if (event.target.closest('[data-offsite-confirm]')) {
+          window.open(skillLink.href, '_blank', 'noopener,noreferrer');
+          closeModal();
+        }
+      });
+
+      document.addEventListener('keydown', event => {
+        if (event.key === 'Escape' && !modal.hidden) {
+          event.preventDefault();
+          event.stopPropagation();
+          closeModal();
+        }
+      }, true);
     }
 
     // ===== Mind Map Connector Sync =====
@@ -1563,6 +1694,7 @@
     applySnapshot(initialSnapshot);
     state.detailOpenedFromGrid = false;
     commitHistory('replace', initialSnapshot);
+    initSkillOffsiteConfirm();
     render();
   </script>
 </body>
