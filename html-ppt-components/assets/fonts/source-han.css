@@ -1,0 +1,37 @@
+/*
+ * Source Han fonts for wisewong.com.
+ * Source files are official Source Han Sans SC / Source Han Serif SC OTF fonts,
+ * subset for the site's current character set and renamed for OFL compliance.
+ */
+
+@font-face {
+  font-family: "Wise Han Sans SC";
+  font-style: normal;
+  font-display: swap;
+  font-weight: 200 500;
+  src: url("./source-han/files/WiseHanSansSC-Regular.woff2") format("woff2");
+}
+
+@font-face {
+  font-family: "Wise Han Sans SC";
+  font-style: normal;
+  font-display: swap;
+  font-weight: 600 900;
+  src: url("./source-han/files/WiseHanSansSC-Bold.woff2") format("woff2");
+}
+
+@font-face {
+  font-family: "Wise Han Serif SC";
+  font-style: normal;
+  font-display: swap;
+  font-weight: 200 500;
+  src: url("./source-han/files/WiseHanSerifSC-Regular.woff2") format("woff2");
+}
+
+@font-face {
+  font-family: "Wise Han Serif SC";
+  font-style: normal;
+  font-display: swap;
+  font-weight: 600 900;
+  src: url("./source-han/files/WiseHanSerifSC-Bold.woff2") format("woff2");
+}
