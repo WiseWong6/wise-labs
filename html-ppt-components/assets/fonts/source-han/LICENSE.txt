@@ -1,0 +1,17 @@
+Wise Han Sans SC and Wise Han Serif SC are site-specific subset webfonts
+derived from Source Han Sans SC and Source Han Serif SC, which are distributed
+under the SIL Open Font License, Version 1.1.
+
+Source Han Sans:
+https://github.com/adobe-fonts/source-han-sans
+
+Source Han Serif:
+https://github.com/adobe-fonts/source-han-serif
+
+The reserved font name is "Source". Because these webfonts are subset for the
+site's current character set, their family names are changed to Wise Han Sans SC
+and Wise Han Serif SC.
+
+See the canonical license text:
+https://github.com/adobe-fonts/source-han-sans/blob/master/LICENSE.txt
+https://github.com/adobe-fonts/source-han-serif/blob/master/LICENSE.txt

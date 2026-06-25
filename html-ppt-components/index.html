@@ -9,6 +9,7 @@
   <meta name="author" content="Wise">
   <title>HTML PPT组件</title>
   <link rel="icon" href="data:,">
+  <link rel="stylesheet" href="./assets/fonts/source-han.css?v=1">
   <style>
     /* ===== Design System ===== */
     :root {
@@ -20,11 +21,13 @@
       --accent: #002FA7; --accent-dim: rgba(0,47,167,0.08);
       --thumb-w: 240px;
       --radius: 12px;
+      --detail-panel-body-h: min(58vh, 520px);
     }
     * { box-sizing: border-box; margin: 0; padding: 0; }
     html, body { min-height: 100%; }
     body {
-      font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif;
+      font-family: "Wise Han Sans SC";
+      font-weight: 300;
       background: var(--bg);
       color: var(--text);
       overflow-x: hidden;
@@ -32,7 +35,7 @@
 
     /* ===== Shell ===== */
     .shell {
-      max-width: 960px;
+      max-width: 1240px;
       margin: 0 auto;
       padding: 0 2rem;
     }
@@ -43,9 +46,9 @@
       margin-bottom: 0.5rem;
     }
     .page-title {
-      font-family: Georgia, "Times New Roman", serif;
+      font-family: "Wise Han Serif SC";
       font-size: 2rem;
-      font-weight: 700;
+      font-weight: 300;
       letter-spacing: 0;
       line-height: 1.1;
     }
@@ -54,13 +57,47 @@
       font-size: 0.95rem;
       margin-top: 0.5rem;
     }
+    .project-meta {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 0.5rem;
+      margin: 0.75rem 0 1.5rem;
+      align-items: center;
+    }
+    .meta-pill {
+      display: inline-flex;
+      align-items: center;
+      gap: 0.35rem;
+      padding: 0.25rem 0.75rem;
+      border-radius: 9999px;
+      border: 0.25px solid var(--line);
+      font-size: 0.85rem;
+      color: var(--muted);
+      text-decoration: none;
+      transition: border-color .15s, color .15s, background .15s;
+    }
+    .meta-pill:hover {
+      border-color: var(--accent);
+      color: var(--text);
+      background: var(--accent-dim);
+    }
 
     /* ===== Filter Bar (tabs) ===== */
+    .filter-controls {
+      display: inline-flex;
+      flex-direction: column;
+      align-items: stretch;
+      width: fit-content;
+      max-width: 100%;
+      gap: 0.75rem;
+      margin: 1rem 0 1.5rem;
+    }
     .filter-bar {
       display: flex;
       flex-wrap: wrap;
       gap: 0.5rem;
-      margin: 1rem 0 1.5rem;
+      margin: 0;
+      width: 100%;
     }
     .filter-btn {
       display: inline-flex;
@@ -70,9 +107,9 @@
       border-radius: 12px;
       border: 0.25px solid var(--line);
       background: var(--card-bg);
-      font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif;
+      font-family: "Wise Han Sans SC";
       font-size: 0.9rem;
-      font-weight: 400;
+      font-weight: 300;
       color: var(--text);
       cursor: pointer;
       transition: background .15s, border-color .15s, color .15s;
@@ -95,6 +132,48 @@
       font-size: 0.75rem;
       opacity: 0.6;
     }
+    .search-bar {
+      width: 100%;
+      margin: 0;
+    }
+    .search-input-wrap {
+      position: relative;
+      display: flex;
+      align-items: center;
+    }
+    .search-input-wrap svg {
+      position: absolute;
+      left: 14px;
+      width: 16px;
+      height: 16px;
+      color: rgba(29,29,24,0.48);
+      pointer-events: none;
+    }
+    .component-search {
+      width: 100%;
+      height: 36px;
+      min-height: 36px;
+      padding: 0 0.9rem 0 2.5rem;
+      border: 0.25px solid rgba(29,29,24,0.16);
+      border-radius: 12px;
+      background: var(--panel);
+      color: var(--text);
+      font-family: "Wise Han Sans SC";
+      font-weight: 300;
+      font-size: 0.9rem;
+      outline: none;
+      transition: background .15s, border-color .15s, box-shadow .15s;
+    }
+    .component-search::placeholder { color: rgba(29,29,24,0.44); }
+    .component-search:hover {
+      background: #eceae2;
+      border-color: rgba(29,29,24,0.24);
+    }
+    .component-search:focus {
+      background: var(--surface);
+      border-color: rgba(0,47,167,0.45);
+      box-shadow: 0 0 0 3px rgba(0,47,167,0.06);
+    }
 
     /* ===== Grid View ===== */
     .grid-view { padding: 0; }
@@ -107,7 +186,7 @@
     }
     .thumb-grid {
       display: grid;
-      grid-template-columns: repeat(auto-fill, minmax(var(--thumb-w), 1fr));
+      grid-template-columns: repeat(4, minmax(0, 1fr));
       gap: 1rem;
     }
     .thumb-card {
@@ -151,15 +230,15 @@
       border-top: 0.25px solid var(--line);
     }
     .thumb-name {
-      font-family: Georgia, "Times New Roman", serif;
+      font-family: "Wise Han Serif SC";
       font-size: 15px;
-      font-weight: 700;
+      font-weight: 300;
       color: #000;
     }
     /* ===== Detail View ===== */
     .detail-view {
       display: none;
-      padding: 28px 32px;
+      padding: 2.5rem 0 28px;
       max-width: 960px;
     }
     .detail-view.active { display: block; }
@@ -223,48 +302,24 @@
       display: flex;
       justify-content: space-between;
       align-items: center;
-      margin-top: 2rem;
       margin-bottom: 2rem;
     }
     .detail-title {
       display: flex;
       align-items: center;
       gap: 0.5rem;
-      font-family: Georgia, "Times New Roman", serif;
+      font-family: "Wise Han Serif SC";
       font-size: 2rem;
-      font-weight: 700;
+      font-weight: 300;
       letter-spacing: 0;
       line-height: 1.1;
     }
     .detail-group-tag {
       font-size: 11px;
-      font-weight: 700;
+      font-weight: 300;
       letter-spacing: 0.15em;
       text-transform: uppercase;
       color: var(--accent);
-    }
-
-    .detail-preview {
-      position: relative;
-      width: 100%;
-      max-width: 700px;
-      aspect-ratio: 1 / 1;
-      overflow: hidden;
-      background: #fff;
-      margin-bottom: 24px;
-      border: 1px solid var(--line);
-      border-radius: var(--radius);
-      display: flex;
-      justify-content: center;
-      align-items: center;
-    }
-    .detail-preview iframe {
-      width: 700px;
-      height: 700px;
-      border: none;
-      pointer-events: none;
-      transform-origin: center center;
-      flex-shrink: 0;
     }
 
     .detail-desc {
@@ -276,9 +331,9 @@
     .detail-source {
       max-width: 700px;
       margin: -8px 0 20px;
-      padding: 10px 12px;
-      border: 1px solid rgba(217,94,0,0.22);
-      background: var(--accent-dim);
+      padding: 0;
+      border: 0;
+      background: transparent;
       color: var(--muted);
       font-size: 13px;
       line-height: 1.6;
@@ -286,7 +341,7 @@
     .detail-source a {
       color: var(--accent);
       text-decoration: none;
-      border-bottom: 1px solid rgba(217,94,0,0.35);
+      border-bottom: 1px solid rgba(0,47,167,0.28);
     }
     .detail-source a:hover {
       border-bottom-color: var(--accent);
@@ -310,74 +365,139 @@
       background: var(--accent-dim);
     }
 
-    /* Code Tabs */
-    .code-tabs {
-      display: flex;
+    /* Detail Panel */
+    .detail-panel {
       max-width: 700px;
+      background: #fff;
       border: 1px solid var(--line);
-      border-radius: var(--radius) var(--radius) 0 0;
+      border-radius: var(--radius);
       overflow: hidden;
-      margin-bottom: 0;
+      margin-bottom: 24px;
     }
-    .code-tab {
-      padding: 10px 20px;
+    .detail-panel-header {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      min-height: 44px;
+      border-bottom: 1px solid var(--line);
+      background: var(--surface);
+    }
+    .view-tabs {
+      display: flex;
+      align-items: center;
+    }
+    .view-tab {
+      display: inline-flex;
+      align-items: center;
+      gap: 0.35rem;
+      min-height: 44px;
+      padding: 0 18px;
       background: transparent;
       border: none;
       color: var(--muted);
       font-size: 12px;
-      font-weight: 700;
-      letter-spacing: 0.15em;
-      text-transform: uppercase;
+      font-weight: 300;
+      letter-spacing: 0.08em;
       cursor: pointer;
       font-family: inherit;
       border-bottom: 2px solid transparent;
     }
-    .code-tab.active {
+    .view-tab svg {
+      width: 14px;
+      height: 14px;
+      flex-shrink: 0;
+    }
+    .view-tab.active {
       color: var(--accent);
       border-bottom-color: var(--accent);
     }
-    .code-panel {
+    .detail-panel-body {
       display: none;
       position: relative;
-      max-width: 700px;
       background: #fff;
-      border: 1px solid var(--line);
-      border-top: none;
-      border-radius: 0 0 var(--radius) var(--radius);
       overflow: hidden;
+      height: var(--detail-panel-body-h);
     }
-    .code-panel.active { display: block; }
-    .code-panel pre {
+    .detail-panel-body.active { display: block; }
+    .detail-preview {
+      position: relative;
+      width: 100%;
+      height: 100%;
+      overflow: hidden;
+      background: #fff;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+    }
+    .detail-preview iframe {
+      width: 700px;
+      height: 700px;
+      border: none;
+      pointer-events: none;
+      transform-origin: center center;
+      flex-shrink: 0;
+    }
+    .source-panel pre {
       margin: 0;
       padding: 16px 18px;
-      padding-right: 80px;
+      height: 100%;
+      overflow: auto;
       overflow-x: auto;
       color: var(--text);
       font-size: 12px;
       line-height: 1.65;
-      font-family: ui-monospace, SFMono-Regular, Menlo, Consolas, monospace;
+      font-family: "Wise Han Sans SC";
+      font-weight: 300;
       white-space: pre-wrap;
       word-break: break-word;
       outline: none;
     }
-    .code-panel pre:focus-visible {
+    .source-panel pre:focus-visible {
       box-shadow: inset 0 0 0 2px var(--accent, #6366f1);
     }
-    .copy-btn {
-      position: absolute;
-      top: 10px;
-      right: 10px;
-      padding: 5px 12px;
-      background: var(--surface);
-      border: 1px solid var(--line);
+    .code-actions {
+      display: flex;
+      align-items: center;
+      gap: 0.25rem;
+      padding-right: 10px;
+    }
+    .copy-btn,
+    .download-btn {
+      display: inline-flex;
+      align-items: center;
+      gap: 0.35rem;
+      min-height: 34px;
+      padding: 0 8px;
+      background: transparent;
+      border: 0;
       color: var(--muted);
       font-size: 11px;
       cursor: pointer;
       font-family: inherit;
+      font-weight: 300;
       letter-spacing: 0.05em;
+      outline: none;
+      transition: color .15s;
     }
-    .copy-btn:hover { color: var(--text); border-color: var(--accent); }
-    .copy-btn.copied { color: var(--accent); border-color: var(--accent); }
+    .copy-btn svg,
+    .download-btn svg {
+      width: 14px;
+      height: 14px;
+      flex-shrink: 0;
+    }
+    .copy-btn:hover,
+    .copy-btn:focus-visible,
+    .copy-btn:active,
+    .copy-btn.copied,
+    .download-btn:hover,
+    .download-btn:focus-visible,
+    .download-btn:active,
+    .download-btn.downloaded {
+      color: var(--accent);
+      font-weight: 300;
+      background: transparent;
+      box-shadow: none;
+    }
 
     /* Detail Navigation (prev/next) */
     .detail-nav {
@@ -398,7 +518,7 @@
       color: var(--muted);
       text-decoration: none;
       font-size: 0.9rem;
-      font-weight: 500;
+      font-weight: 300;
       cursor: pointer;
       font-family: inherit;
       transition: color 0.15s;
@@ -418,13 +538,17 @@
       font-size: 15px;
     }
 
-    /* ===== Scrollbar ===== */
-    ::-webkit-scrollbar { width: 6px; }
-    ::-webkit-scrollbar-track { background: transparent; }
-    ::-webkit-scrollbar-thumb { background: var(--line); }
-    ::-webkit-scrollbar-thumb:hover { background: var(--muted); }
-
     /* ===== Responsive ===== */
+    @media (max-width: 1120px) {
+      .thumb-grid { grid-template-columns: repeat(3, minmax(0, 1fr)); }
+    }
+    @media (max-width: 820px) {
+      .thumb-grid { grid-template-columns: repeat(2, minmax(0, 1fr)); }
+    }
+    @media (max-width: 560px) {
+      .shell { padding: 0 1rem; }
+      .thumb-grid { grid-template-columns: 1fr; }
+    }
     @media (max-width: 900px) {
       .shell { grid-template-columns: 1fr; }
       .sidebar { display: none; }
@@ -434,10 +558,24 @@
 <body>
   <div class="shell">
     <div class="page-header">
-      <h1 class="page-title">HTML PPT组件</h1>
+      <h1 class="page-title" style="display:flex;align-items:center;gap:0.5rem;"><a id="back-link" href="../" title="返回" style="display:inline-flex;color:var(--color-text-muted);text-decoration:none;"><svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M19 12H5M12 19l-7-7 7-7"/></svg></a>HTML PPT组件</h1>
       <p class="page-subtitle">面向 AI 生成网页 PPT 的组件图册，按场景分类浏览并复制 HTML 片段。</p>
+      <div class="project-meta">
+        <a class="meta-pill" href="https://github.com/WiseWong6/wise-labs" target="_blank" rel="noopener noreferrer">
+          <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M9 19c-5 1.5-5-2.5-7-3m14 6v-3.87a3.37 3.37 0 0 0-.94-2.61c3.14-.35 6.44-1.54 6.44-7A5.44 5.44 0 0 0 20 4.77 5.07 5.07 0 0 0 19.91 1S18.73.65 16 2.48a13.38 13.38 0 0 0-7 0C6.27.65 5.09 1 5.09 1A5.07 5.07 0 0 0 5 4.77a5.44 5.44 0 0 0-1.5 3.78c0 5.42 3.3 6.61 6.44 7A3.37 3.37 0 0 0 9 18.13V22"></path></svg>
+          源代码
+        </a>
+      </div>
     </div>
-    <nav class="filter-bar" id="filterBar"></nav>
+    <div class="filter-controls" id="filterControls">
+      <nav class="filter-bar" id="filterBar"></nav>
+      <div class="search-bar" id="searchBar">
+        <label class="search-input-wrap" for="componentSearch">
+          <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><circle cx="11" cy="11" r="8"/><path d="m21 21-4.35-4.35"/></svg>
+          <input class="component-search" id="componentSearch" type="search" placeholder="搜索组件名称、英文名或分类" autocomplete="off" spellcheck="false">
+        </label>
+      </div>
+    </div>
     <div id="gridView" class="grid-view"></div>
     <nav class="pagination" id="pagination"></nav>
     <div id="detailView" class="detail-view"></div>
@@ -451,7 +589,31 @@
   <script>
     // ===== Data =====
     const DATA = window.SWISS_CATALOG_DATA;
-    const COMPONENT_CSS = DATA.componentCss;
+    const SOURCE_HAN_SANS = '"Wise Han Sans SC"';
+    const SOURCE_HAN_SERIF = '"Wise Han Serif SC"';
+    const FONT_WEIGHT_DECLARATION_RE = /font-weight\s*:\s*(bold|bolder|normal|lighter|[1-9]00)(\s*!important)?/gi;
+    function isSerifFontDeclaration(declaration) {
+      const primaryFamily = (declaration.match(/font-family\s*:\s*([^,;]+)/i)?.[1] || '')
+        .replace(/["']/g, '')
+        .trim();
+      return /^(?:Noto Serif SC|Wise Han Serif SC|Songti SC|SimSun|serif)$/i.test(primaryFamily);
+    }
+    function normalizeComponentFonts(css) {
+      return String(css || '')
+        .replace(/font-family\s*:\s*[^;]+;/gi, declaration => (
+          isSerifFontDeclaration(declaration)
+            ? `font-family: ${SOURCE_HAN_SERIF} !important;`
+            : `font-family: ${SOURCE_HAN_SANS} !important;`
+        ))
+        .replace(FONT_WEIGHT_DECLARATION_RE, (declaration, value, important = '') => {
+          const numericWeight = Number.parseInt(value, 10);
+          const wasBold = /^(?:bold|bolder)$/i.test(value) || (Number.isFinite(numericWeight) && numericWeight >= 600);
+          return wasBold
+            ? `font-family: ${SOURCE_HAN_SERIF} !important; font-weight: 300${important}`
+            : `font-weight: 300${important}`;
+        });
+    }
+    const COMPONENT_CSS = normalizeComponentFonts(DATA.componentCss);
     const entries = DATA.entries;
 
     // Category order — derived from groupLabel of first occurrence
@@ -462,6 +624,7 @@
     // ===== State =====
     const state = {
       activeGroup: null,
+      search: '',
       layout: null,    // entry num for detail view
       lastGridScrollTop: 0,
       lastGridCardKey: null,
@@ -473,11 +636,37 @@
     };
 
     // ===== DOM refs =====
+    const filterControlsEl = document.getElementById('filterControls');
     const filterBarEl = document.getElementById('filterBar');
+    const searchBarEl = document.getElementById('searchBar');
+    const componentSearchEl = document.getElementById('componentSearch');
     const gridViewEl = document.getElementById('gridView');
     const detailViewEl = document.getElementById('detailView');
     const paginationEl = document.getElementById('pagination');
-    const PAGE_SIZE = 9;
+    const PAGE_SIZE = 12;
+
+    function requestParentClose() {
+      if (window.parent === window) return false;
+      try {
+        if (typeof window.parent.closeTab === 'function') {
+          window.parent.closeTab();
+          return true;
+        }
+      } catch (err) {}
+      try {
+        window.parent.postMessage({ type: 'close-tab' }, '*');
+        return true;
+      } catch (err) {}
+      return false;
+    }
+
+    const backLink = document.getElementById('back-link');
+    if (backLink) {
+      backLink.addEventListener('click', (event) => {
+        if (!requestParentClose()) return;
+        event.preventDefault();
+      });
+    }
 
     // ===== Helpers =====
     function esc(s) {
@@ -494,6 +683,30 @@
       return entry ? getCardKey(entry) : null;
     }
 
+    function getSourceLabel(source) {
+      if (!source) return '';
+      return [source.name, source.label].filter(Boolean).join(' ');
+    }
+
+    function normalizeSearchText(value) {
+      return String(value || '')
+        .toLowerCase()
+        .replace(/[\s_-]+/g, '')
+        .trim();
+    }
+
+    function getSearchCorpus(entry) {
+      return [
+        entry.label,
+        entry.name,
+        entry.variant,
+        entry.group,
+        entry.groupLabel,
+        entry.description,
+        getSourceLabel(entry.source)
+      ].filter(Boolean).join(' ');
+    }
+
     function getPageScrollTop() {
       return window.scrollY || document.documentElement.scrollTop || 0;
     }
@@ -502,7 +715,7 @@
       window.scrollTo({ top: Math.max(0, top), behavior: 'auto' });
     }
 
-    const WRAPPED_FLOW_CSS = `
+    const WRAPPED_FLOW_CSS = normalizeComponentFonts(`
     .swiss-card .process-chain[data-type="wrap"] {
       display: grid;
       grid-template-columns: repeat(3, 1fr);
@@ -525,7 +738,7 @@
       border: 2px solid #d95e00;
       border-radius: 8px;
       font-size: 13px;
-      font-weight: 600;
+      font-weight: 300;
       text-align: center;
     }
     .swiss-card .process-chain[data-type="wrap"] .arrow {
@@ -546,7 +759,7 @@
       transform: translateY(-50%);
       color: #d95e00;
       font-size: 16px;
-      font-weight: 700;
+      font-weight: 300;
     }
     .swiss-card .process-chain[data-type="wrap"] .step:nth-child(5)::after {
       content: '↓';
@@ -556,7 +769,7 @@
       transform: translateX(-50%);
       color: #d95e00;
       font-size: 16px;
-      font-weight: 700;
+      font-weight: 300;
     }
     .swiss-card .process-chain[data-type="wrap"] .step:nth-child(7)::after,
     .swiss-card .process-chain[data-type="wrap"] .step:nth-child(9)::after {
@@ -567,7 +780,7 @@
       transform: translateY(-50%);
       color: #d95e00;
       font-size: 16px;
-      font-weight: 700;
+      font-weight: 300;
       z-index: 2;
     }
     .swiss-card .process-chain[data-type="wrap"] .step:nth-child(11)::before {
@@ -578,16 +791,17 @@
       transform: translateX(-50%);
       color: #d95e00;
       font-size: 16px;
-      font-weight: 700;
+      font-weight: 300;
       z-index: 2;
-    }`;
+    }`);
 
     // ===== Preview Doc Builder =====
-    function buildPreviewDoc(snippet) {
+    function buildPreviewDoc(snippet, mode = 'thumb') {
       return `<!DOCTYPE html>
 <html lang="zh-CN">
 <head>
   <meta charset="UTF-8">
+  <link rel="stylesheet" href="./assets/fonts/source-han.css?v=1">
     <style>
     :root {
       --bg: #fdf9ee;
@@ -595,7 +809,8 @@
     }
     * { box-sizing: border-box; margin: 0; padding: 0; }
     body {
-      font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif;
+      font-family: "Wise Han Sans SC";
+      font-weight: 300;
       background: #fff;
       display: flex;
       justify-content: center;
@@ -608,15 +823,51 @@
       max-width: 480px;
       padding: 16px;
       background: #fff;
+      font-family: "Wise Han Sans SC";
+      font-weight: 300;
     }
     .swiss-card { width: 100% !important; min-height: auto !important; box-shadow: none !important; }
+    .swiss-card, .swiss-card * { font-weight: 300 !important; }
+    .swiss-card :is(h1, h2, h3, h4, h5, h6, strong, b, th) {
+      font-family: "Wise Han Serif SC" !important;
+      font-weight: 300 !important;
+    }
     .swiss-card__content { min-height: auto !important; padding: 20px 0 !important; }
     .swiss-card--cover .swiss-card__content { padding: 24px 0 !important; }
+    body[data-preview-mode="detail"] {
+      padding: 0 24px;
+      overflow: hidden;
+    }
+    body[data-preview-mode="detail"] .component-shell {
+      max-width: min(86vw, 640px);
+      padding: 0;
+      overflow: visible;
+    }
+    body[data-preview-mode="detail"] .swiss-card,
+    body[data-preview-mode="detail"] .swiss-card__content {
+      overflow: visible !important;
+    }
+    body[data-preview-mode="detail"] .swiss-card__content {
+      padding: 12px 0 !important;
+    }
+    body[data-preview-mode="detail"] .swiss-card--cover .swiss-card__content {
+      padding: 16px 0 !important;
+    }
+    body[data-preview-mode="detail"] .swiss-card .venn {
+      margin: 0 auto !important;
+      transform: scale(1.38);
+      transform-origin: center center;
+    }
+    body[data-preview-mode="detail"] .swiss-card .venn-three {
+      margin: 0 auto !important;
+      transform: scale(1.55);
+      transform-origin: center center;
+    }
     ${COMPONENT_CSS}
     ${WRAPPED_FLOW_CSS}
   </style>
 </head>
-<body>
+<body data-preview-mode="${mode}">
   <div class="component-shell">
     ${snippet}
   </div>
@@ -625,11 +876,37 @@
     }
 
     function buildSourceDoc(entry, previewDoc) {
-      if (!entry.copyHtml) return previewDoc;
+      if (!entry.copyHtml) return normalizeComponentFonts(previewDoc);
       if (entry.variant === 'wrapped' && entry.copyHtml.includes('</style>')) {
-        return entry.copyHtml.replace('</style>', `${WRAPPED_FLOW_CSS}\n</style>`);
+        return normalizeComponentFonts(entry.copyHtml.replace('</style>', `${WRAPPED_FLOW_CSS}\n</style>`));
       }
-      return entry.copyHtml;
+      return normalizeComponentFonts(entry.copyHtml);
+    }
+
+    function sanitizeFilenamePart(value) {
+      return String(value || '')
+        .toLowerCase()
+        .replace(/[^a-z0-9\u4e00-\u9fa5-]+/g, '-')
+        .replace(/-+/g, '-')
+        .replace(/^-|-$/g, '');
+    }
+
+    function getDownloadFilename(entry) {
+      const name = sanitizeFilenamePart(entry.name) || 'component';
+      const suffix = sanitizeFilenamePart(entry.variant || entry.num) || String(entry.num);
+      return `html-ppt-${name}-${suffix}.html`;
+    }
+
+    function downloadSourceDoc(sourceDoc, filename) {
+      const blob = new Blob([sourceDoc], { type: 'text/html;charset=utf-8' });
+      const url = URL.createObjectURL(blob);
+      const link = document.createElement('a');
+      link.href = url;
+      link.download = filename;
+      document.body.appendChild(link);
+      link.click();
+      link.remove();
+      window.setTimeout(() => { URL.revokeObjectURL(url); }, 1000);
     }
 
     // ===== Mind Map Connector Sync =====
@@ -760,7 +1037,14 @@
     }
 
     function matchesFilter(entry) {
-      return true;
+      if (state.activeGroup && entry.groupLabel !== state.activeGroup) return false;
+      const query = normalizeSearchText(state.search);
+      if (!query) return true;
+      return normalizeSearchText(getSearchCorpus(entry)).includes(query);
+    }
+
+    function getFilteredEntries() {
+      return getUniqueEntries().filter(matchesFilter);
     }
 
     // ===== Icon System =====
@@ -814,13 +1098,9 @@
 
     // ===== Grid View =====
     function renderGrid() {
-      // Filter by active tab
-      let filtered = entries;
-      if (state.activeGroup) {
-        filtered = entries.filter(e => e.groupLabel === state.activeGroup);
-      }
+      const filtered = getFilteredEntries();
       if (filtered.length === 0) {
-        gridViewEl.innerHTML = '<div class="empty-state">没有匹配的布局。</div>';
+        gridViewEl.innerHTML = '<div class="empty-state">没有匹配的组件。</div>';
         paginationEl.style.display = 'none';
         return;
       }
@@ -921,13 +1201,11 @@
         return;
       }
 
-      const previewDoc = buildPreviewDoc(entry.snippet);
+      const previewDoc = buildPreviewDoc(entry.snippet, 'detail');
       const sourceDoc = buildSourceDoc(entry, previewDoc);
 
       // Compute prev/next within current group filter
-      const filtered = state.activeGroup
-        ? entries.filter(e => e.groupLabel === state.activeGroup)
-        : entries;
+      const filtered = getFilteredEntries();
       const currentIdx = filtered.findIndex(e => e.num === state.layout);
       const prevEntry = currentIdx > 0 ? filtered[currentIdx - 1] : null;
       const nextEntry = currentIdx < filtered.length - 1 ? filtered[currentIdx + 1] : null;
@@ -946,15 +1224,25 @@
         <div class="detail-header">
           <h2 class="detail-title"><button class="detail-back" id="backBtn" title="返回" aria-label="返回目录"><svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M19 12H5M12 19l-7-7 7-7"/></svg></button>${esc(entry.label)}</h2>
         </div>
-        <div class="detail-preview" id="detailPreviewBox"></div>
+        <div class="detail-panel">
+          <div class="detail-panel-header">
+            <div class="view-tabs" role="tablist" aria-label="组件详情视图">
+              <button class="view-tab active" type="button" data-view-tab="preview" role="tab" aria-selected="true" aria-controls="previewPanel"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><rect x="3" y="4" width="18" height="16" rx="2"/><path d="M8 12h8"/><path d="M12 8v8"/></svg><span>预览</span></button>
+              <button class="view-tab" type="button" data-view-tab="source" role="tab" aria-selected="false" aria-controls="sourcePanel"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="m16 18 6-6-6-6"/><path d="m8 6-6 6 6 6"/></svg><span>源码</span></button>
+            </div>
+            <div class="code-actions">
+              <button class="copy-btn" type="button" data-copy="html" aria-label="复制代码"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><rect x="9" y="9" width="13" height="13" rx="2"/><path d="M5 15H4a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h9a2 2 0 0 1 2 2v1"/></svg><span>复制代码</span></button>
+              <button class="download-btn" type="button" data-download="html" aria-label="下载文件"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M12 3v12"/><path d="m7 10 5 5 5-5"/><path d="M5 21h14"/></svg><span>下载文件</span></button>
+            </div>
+          </div>
+          <div class="detail-panel-body active" data-view-panel="preview" id="previewPanel" role="tabpanel">
+            <div class="detail-preview" id="detailPreviewBox"></div>
+          </div>
+          <div class="detail-panel-body source-panel" data-view-panel="source" id="sourcePanel" role="tabpanel" hidden>
+            <pre id="htmlSourcePre" tabindex="0">${esc(sourceDoc)}</pre>
+          </div>
+        </div>
         ${sourceHtml}
-        <div class="code-tabs">
-          <button class="code-tab active" data-tab="html">HTML</button>
-        </div>
-        <div class="code-panel active" data-panel="html">
-          <button class="copy-btn" data-copy="html">复制</button>
-          <pre id="htmlSourcePre" tabindex="0">${esc(sourceDoc)}</pre>
-        </div>
         ${navHtml}`;
 
       // Insert detail iframe
@@ -963,8 +1251,7 @@
       iframe.addEventListener('load', () => { syncMindMapConnectors(iframe.contentDocument); });
       iframe.srcdoc = previewDoc;
       const containerW = previewBox.offsetWidth || 700;
-      const containerH = previewBox.offsetHeight || 480;
-      const scale = Math.min(containerW / 700, containerH / 700);
+      const scale = Math.min(containerW / 700, 1);
       iframe.style.transform = `scale(${scale})`;
       previewBox.appendChild(iframe);
       syncIframeMindMap(iframe);
@@ -989,14 +1276,39 @@
         render();
       });
 
+      detailViewEl.querySelectorAll('.view-tab').forEach(btn => {
+        btn.addEventListener('click', () => {
+          const nextView = btn.dataset.viewTab;
+          detailViewEl.querySelectorAll('.view-tab').forEach(tab => {
+            const isActive = tab.dataset.viewTab === nextView;
+            tab.classList.toggle('active', isActive);
+            tab.setAttribute('aria-selected', String(isActive));
+          });
+          detailViewEl.querySelectorAll('.detail-panel-body').forEach(panel => {
+            const isActive = panel.dataset.viewPanel === nextView;
+            panel.classList.toggle('active', isActive);
+            panel.hidden = !isActive;
+          });
+        });
+      });
+
       // Copy buttons
       detailViewEl.querySelectorAll('.copy-btn').forEach(btn => {
         btn.addEventListener('click', () => {
           navigator.clipboard.writeText(sourceDoc).then(() => {
-            btn.textContent = '已复制';
+            btn.querySelector('span').textContent = '已复制';
             btn.classList.add('copied');
-            setTimeout(() => { btn.textContent = '复制'; btn.classList.remove('copied'); }, 1500);
+            setTimeout(() => { btn.querySelector('span').textContent = '复制代码'; btn.classList.remove('copied'); }, 1500);
           });
+        });
+      });
+
+      detailViewEl.querySelectorAll('.download-btn').forEach(btn => {
+        btn.addEventListener('click', () => {
+          downloadSourceDoc(sourceDoc, getDownloadFilename(entry));
+          btn.querySelector('span').textContent = '已下载';
+          btn.classList.add('downloaded');
+          setTimeout(() => { btn.querySelector('span').textContent = '下载文件'; btn.classList.remove('downloaded'); }, 1500);
         });
       });
 
@@ -1033,7 +1345,7 @@
     }
 
     function applySnapshot(snapshot) {
-      state.search = '';
+      state.search = snapshot.search || '';
       state.layout = snapshot.view === 'detail' ? (snapshot.layout || null) : null;
       state.restoreGridCardKey = snapshot.view === 'grid' ? (snapshot.cardKey || null) : null;
       state.restoreGridScrollTop = snapshot.view === 'grid' && Number.isFinite(snapshot.scrollTop) ? snapshot.scrollTop : 0;
@@ -1071,7 +1383,9 @@
         // Detail view: hide grid, filter bar, header
         gridViewEl.classList.add('hidden');
         detailViewEl.classList.add('active');
+        filterControlsEl.style.display = 'none';
         filterBarEl.style.display = 'none';
+        searchBarEl.style.display = 'none';
         document.querySelector('.page-header').style.display = 'none';
         paginationEl.style.display = 'none';
         renderDetail();
@@ -1080,7 +1394,10 @@
         gridViewEl.classList.remove('hidden');
         detailViewEl.classList.remove('active');
         detailViewEl.innerHTML = '';
+        filterControlsEl.style.display = '';
         filterBarEl.style.display = '';
+        searchBarEl.style.display = '';
+        componentSearchEl.value = state.search;
         document.querySelector('.page-header').style.display = '';
         paginationEl.style.display = '';
         renderFilterBar();
@@ -1110,13 +1427,19 @@
       render();
     });
 
+    componentSearchEl.addEventListener('input', () => {
+      state.search = componentSearchEl.value;
+      state.page = 1;
+      renderGrid();
+    });
+
     document.addEventListener('keydown', e => {
       if (e.key === 'Escape' && state.layout) {
         const backBtn = document.getElementById('backBtn');
         if (backBtn) backBtn.click();
       }
       if ((e.metaKey || e.ctrlKey) && e.key === 'a') {
-        const pre = e.target.closest('.code-panel pre');
+        const pre = e.target.closest('.source-panel pre');
         if (pre) {
           e.preventDefault();
           const range = document.createRange();
