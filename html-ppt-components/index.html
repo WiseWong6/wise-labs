@@ -27,7 +27,7 @@
     html, body { min-height: 100%; }
     body {
       font-family: "Wise Han Sans SC";
-      font-weight: 300;
+      font-weight: 400;
       background: var(--bg);
       color: var(--text);
       overflow-x: hidden;
@@ -48,7 +48,7 @@
     .page-title {
       font-family: "Wise Han Serif SC";
       font-size: 2rem;
-      font-weight: 300;
+      font-weight: 700;
       letter-spacing: 0;
       line-height: 1.1;
     }
@@ -109,7 +109,7 @@
       background: var(--card-bg);
       font-family: "Wise Han Sans SC";
       font-size: 0.9rem;
-      font-weight: 300;
+      font-weight: 400;
       color: var(--text);
       cursor: pointer;
       transition: background .15s, border-color .15s, color .15s;
@@ -159,7 +159,7 @@
       background: var(--panel);
       color: var(--text);
       font-family: "Wise Han Sans SC";
-      font-weight: 300;
+      font-weight: 400;
       font-size: 0.9rem;
       outline: none;
       transition: background .15s, border-color .15s, box-shadow .15s;
@@ -232,7 +232,7 @@
     .thumb-name {
       font-family: "Wise Han Serif SC";
       font-size: 15px;
-      font-weight: 300;
+      font-weight: 700;
       color: #000;
     }
     /* ===== Detail View ===== */
@@ -310,13 +310,13 @@
       gap: 0.5rem;
       font-family: "Wise Han Serif SC";
       font-size: 2rem;
-      font-weight: 300;
+      font-weight: 700;
       letter-spacing: 0;
       line-height: 1.1;
     }
     .detail-group-tag {
       font-size: 11px;
-      font-weight: 300;
+      font-weight: 700;
       letter-spacing: 0.15em;
       text-transform: uppercase;
       color: var(--accent);
@@ -396,7 +396,7 @@
       border: none;
       color: var(--muted);
       font-size: 12px;
-      font-weight: 300;
+      font-weight: 700;
       letter-spacing: 0.08em;
       cursor: pointer;
       font-family: inherit;
@@ -447,7 +447,7 @@
       font-size: 12px;
       line-height: 1.65;
       font-family: "Wise Han Sans SC";
-      font-weight: 300;
+      font-weight: 400;
       white-space: pre-wrap;
       word-break: break-word;
       outline: none;
@@ -474,7 +474,7 @@
       font-size: 11px;
       cursor: pointer;
       font-family: inherit;
-      font-weight: 300;
+      font-weight: 500;
       letter-spacing: 0.05em;
       outline: none;
       transition: color .15s;
@@ -494,7 +494,7 @@
     .download-btn:active,
     .download-btn.downloaded {
       color: var(--accent);
-      font-weight: 300;
+      font-weight: 700;
       background: transparent;
       box-shadow: none;
     }
@@ -518,7 +518,7 @@
       color: var(--muted);
       text-decoration: none;
       font-size: 0.9rem;
-      font-weight: 300;
+      font-weight: 500;
       cursor: pointer;
       font-family: inherit;
       transition: color 0.15s;
@@ -591,7 +591,6 @@
     const DATA = window.SWISS_CATALOG_DATA;
     const SOURCE_HAN_SANS = '"Wise Han Sans SC"';
     const SOURCE_HAN_SERIF = '"Wise Han Serif SC"';
-    const FONT_WEIGHT_DECLARATION_RE = /font-weight\s*:\s*(bold|bolder|normal|lighter|[1-9]00)(\s*!important)?/gi;
     function isSerifFontDeclaration(declaration) {
       const primaryFamily = (declaration.match(/font-family\s*:\s*([^,;]+)/i)?.[1] || '')
         .replace(/["']/g, '')
@@ -604,14 +603,7 @@
           isSerifFontDeclaration(declaration)
             ? `font-family: ${SOURCE_HAN_SERIF} !important;`
             : `font-family: ${SOURCE_HAN_SANS} !important;`
-        ))
-        .replace(FONT_WEIGHT_DECLARATION_RE, (declaration, value, important = '') => {
-          const numericWeight = Number.parseInt(value, 10);
-          const wasBold = /^(?:bold|bolder)$/i.test(value) || (Number.isFinite(numericWeight) && numericWeight >= 600);
-          return wasBold
-            ? `font-family: ${SOURCE_HAN_SERIF} !important; font-weight: 300${important}`
-            : `font-weight: 300${important}`;
-        });
+        ));
     }
     const COMPONENT_CSS = normalizeComponentFonts(DATA.componentCss);
     const entries = DATA.entries;
@@ -738,7 +730,7 @@
       border: 2px solid #d95e00;
       border-radius: 8px;
       font-size: 13px;
-      font-weight: 300;
+      font-weight: 600;
       text-align: center;
     }
     .swiss-card .process-chain[data-type="wrap"] .arrow {
@@ -759,7 +751,7 @@
       transform: translateY(-50%);
       color: #d95e00;
       font-size: 16px;
-      font-weight: 300;
+      font-weight: 700;
     }
     .swiss-card .process-chain[data-type="wrap"] .step:nth-child(5)::after {
       content: '↓';
@@ -769,7 +761,7 @@
       transform: translateX(-50%);
       color: #d95e00;
       font-size: 16px;
-      font-weight: 300;
+      font-weight: 700;
     }
     .swiss-card .process-chain[data-type="wrap"] .step:nth-child(7)::after,
     .swiss-card .process-chain[data-type="wrap"] .step:nth-child(9)::after {
@@ -780,7 +772,7 @@
       transform: translateY(-50%);
       color: #d95e00;
       font-size: 16px;
-      font-weight: 300;
+      font-weight: 700;
       z-index: 2;
     }
     .swiss-card .process-chain[data-type="wrap"] .step:nth-child(11)::before {
@@ -791,8 +783,24 @@
       transform: translateX(-50%);
       color: #d95e00;
       font-size: 16px;
-      font-weight: 300;
+      font-weight: 700;
       z-index: 2;
+    }`);
+
+    const COMPONENT_FONT_OVERRIDES = normalizeComponentFonts(`
+    .swiss-card .layout-grid.two-col p,
+    .swiss-card .before-after--verification p {
+      font-family: ${SOURCE_HAN_SANS} !important;
+      font-weight: 300 !important;
+    }
+    .swiss-card .arch-platform .ap-flat,
+    .swiss-card .arch-platform .ap-flat *,
+    .swiss-card .arch-platform .ap-grid-wrap,
+    .swiss-card .arch-platform .ap-grid-wrap *,
+    .swiss-card .arch-complex-v .av-content,
+    .swiss-card .arch-complex-v .av-content * {
+      font-family: ${SOURCE_HAN_SANS} !important;
+      font-weight: 300 !important;
     }`);
 
     // ===== Preview Doc Builder =====
@@ -810,7 +818,6 @@
     * { box-sizing: border-box; margin: 0; padding: 0; }
     body {
       font-family: "Wise Han Sans SC";
-      font-weight: 300;
       background: #fff;
       display: flex;
       justify-content: center;
@@ -824,14 +831,8 @@
       padding: 16px;
       background: #fff;
       font-family: "Wise Han Sans SC";
-      font-weight: 300;
     }
     .swiss-card { width: 100% !important; min-height: auto !important; box-shadow: none !important; }
-    .swiss-card, .swiss-card * { font-weight: 300 !important; }
-    .swiss-card :is(h1, h2, h3, h4, h5, h6, strong, b, th) {
-      font-family: "Wise Han Serif SC" !important;
-      font-weight: 300 !important;
-    }
     .swiss-card__content { min-height: auto !important; padding: 20px 0 !important; }
     .swiss-card--cover .swiss-card__content { padding: 24px 0 !important; }
     body[data-preview-mode="detail"] {
@@ -865,6 +866,7 @@
     }
     ${COMPONENT_CSS}
     ${WRAPPED_FLOW_CSS}
+    ${COMPONENT_FONT_OVERRIDES}
   </style>
 </head>
 <body data-preview-mode="${mode}">
@@ -875,12 +877,21 @@
 </html>`;
     }
 
+    function getSourceStyleOverrides(entry) {
+      return [
+        entry.variant === 'wrapped' ? WRAPPED_FLOW_CSS : '',
+        COMPONENT_FONT_OVERRIDES
+      ].filter(Boolean).join('\n');
+    }
+
+    function injectStyleOverrides(html, overrides) {
+      if (!overrides || !html.includes('</style>')) return html;
+      return html.replace('</style>', `${overrides}\n</style>`);
+    }
+
     function buildSourceDoc(entry, previewDoc) {
       if (!entry.copyHtml) return normalizeComponentFonts(previewDoc);
-      if (entry.variant === 'wrapped' && entry.copyHtml.includes('</style>')) {
-        return normalizeComponentFonts(entry.copyHtml.replace('</style>', `${WRAPPED_FLOW_CSS}\n</style>`));
-      }
-      return normalizeComponentFonts(entry.copyHtml);
+      return normalizeComponentFonts(injectStyleOverrides(entry.copyHtml, getSourceStyleOverrides(entry)));
     }
 
     function sanitizeFilenamePart(value) {
