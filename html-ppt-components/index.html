@@ -429,6 +429,11 @@
       justify-content: center;
       align-items: center;
     }
+    .detail-preview.detail-preview--scrollable {
+      overflow: auto;
+      align-items: flex-start;
+      padding: 28px 0;
+    }
     .detail-preview iframe {
       width: 700px;
       height: 700px;
@@ -608,6 +613,33 @@
     const COMPONENT_CSS = normalizeComponentFonts(DATA.componentCss);
     const entries = DATA.entries;
 
+    function slugComponentPart(value) {
+      return String(value || '')
+        .toLowerCase()
+        .trim()
+        .replace(/[^a-z0-9]+/g, '-')
+        .replace(/-+/g, '-')
+        .replace(/^-|-$/g, '');
+    }
+
+    function buildComponentId(entry) {
+      const parts = [
+        entry.group,
+        entry.name,
+        entry.variant || 'default'
+      ].map(slugComponentPart).filter(Boolean);
+      return parts.join('-') || `component-${entry.num}`;
+    }
+
+    const componentIdCounts = new Map();
+    entries.forEach(entry => {
+      const baseId = buildComponentId(entry);
+      const count = componentIdCounts.get(baseId) || 0;
+      componentIdCounts.set(baseId, count + 1);
+      entry.componentId = count > 0 ? `${baseId}-${entry.num}` : baseId;
+    });
+    const entriesByComponentId = new Map(entries.map(entry => [entry.componentId, entry]));
+
     // Category order — derived from groupLabel of first occurrence
     const GROUP_ORDER = ['内容/排版', '对比/评估', '流程/时序', '结构/关系', '数据/图表'];
     const CAT_ORDER = GROUP_ORDER.filter(g => entries.some(e => e.groupLabel === g));
@@ -673,6 +705,15 @@
       if (!state.layout) return null;
       const entry = entries.find(e => e.num === state.layout);
       return entry ? getCardKey(entry) : null;
+    }
+
+    function getComponentIdByLayout(layout) {
+      const entry = entries.find(e => e.num === layout);
+      return entry ? entry.componentId : null;
+    }
+
+    function getCurrentComponentId() {
+      return getComponentIdByLayout(state.layout);
     }
 
     function getSourceLabel(source) {
@@ -906,6 +947,13 @@
       const name = sanitizeFilenamePart(entry.name) || 'component';
       const suffix = sanitizeFilenamePart(entry.variant || entry.num) || String(entry.num);
       return `html-ppt-${name}-${suffix}.html`;
+    }
+
+    function getDetailPreviewFrame(entry) {
+      if (entry && entry.name === 'arch-platform-complex-v') {
+        return { width: 700, height: 700, scrollable: true };
+      }
+      return { width: 700, height: 700, scrollable: false };
     }
 
     function downloadSourceDoc(sourceDoc, filename) {
@@ -1170,7 +1218,7 @@
           commitHistory('replace', createSnapshot('grid', { cardKey: card.dataset.cardKey, scrollTop: getPageScrollTop() }));
           state.layout = num;
           state.pendingGridRestore = false;
-          commitHistory('push', createSnapshot('detail', { cardKey: card.dataset.cardKey, fromGrid: true }));
+          commitHistory('push', createSnapshot('detail', { cardKey: card.dataset.cardKey, componentId: getComponentIdByLayout(num), fromGrid: true }));
           render();
         });
       });
@@ -1261,10 +1309,15 @@
       const iframe = document.createElement('iframe');
       iframe.addEventListener('load', () => { syncMindMapConnectors(iframe.contentDocument); });
       iframe.srcdoc = previewDoc;
-      const containerW = previewBox.offsetWidth || 700;
-      const scale = Math.min(containerW / 700, 1);
+      const previewFrame = getDetailPreviewFrame(entry);
+      previewBox.classList.toggle('detail-preview--scrollable', previewFrame.scrollable);
+      iframe.style.width = `${previewFrame.width}px`;
+      iframe.style.height = `${previewFrame.height}px`;
+      const containerW = previewBox.offsetWidth || previewFrame.width;
+      const scale = Math.min(containerW / previewFrame.width, 1);
       iframe.style.transform = `scale(${scale})`;
       previewBox.appendChild(iframe);
+      previewBox.scrollTop = 0;
       syncIframeMindMap(iframe);
 
       // Back button
@@ -1333,7 +1386,7 @@
           commitHistory('replace', createSnapshot('detail', { cardKey: getCurrentCardKey(), fromGrid: true }));
           state.layout = num;
           state.pendingGridRestore = false;
-          commitHistory('push', createSnapshot('detail', { cardKey: getCardKey(entries.find(e => e.num === num)), fromGrid: true }));
+          commitHistory('push', createSnapshot('detail', { cardKey: getCardKey(entries.find(e => e.num === num)), componentId: getComponentIdByLayout(num), fromGrid: true }));
           render();
         });
       });
@@ -1343,16 +1396,42 @@
 
     // ===== History Router =====
     function buildHash(snapshot) {
-      if (snapshot.view === 'detail' && snapshot.layout) return '#/layout/' + encodeURIComponent(snapshot.layout);
+      if (snapshot.view === 'detail' && snapshot.layout) {
+        const componentId = snapshot.componentId || getComponentIdByLayout(snapshot.layout);
+        if (componentId) return '#/component/' + encodeURIComponent(componentId);
+        return '#/layout/' + encodeURIComponent(snapshot.layout);
+      }
       return '#/';
     }
 
     function createSnapshot(view, overrides = {}) {
-      return Object.assign({ view, search: state.search, layout: view === 'detail' ? state.layout : null, cardKey: view === 'detail' ? getCurrentCardKey() : null, scrollTop: 0, fromGrid: false }, overrides);
+      return Object.assign({
+        view,
+        search: state.search,
+        layout: view === 'detail' ? state.layout : null,
+        componentId: view === 'detail' ? getCurrentComponentId() : null,
+        cardKey: view === 'detail' ? getCurrentCardKey() : null,
+        scrollTop: 0,
+        fromGrid: false
+      }, overrides);
     }
 
     function commitHistory(mode, snapshot) {
       history[mode + 'State'](snapshot, '', buildHash(snapshot));
+      notifyParentRoute(snapshot);
+    }
+
+    function notifyParentRoute(snapshot) {
+      if (window.parent === window) return;
+      const component = snapshot.view === 'detail'
+        ? (snapshot.componentId || getComponentIdByLayout(snapshot.layout))
+        : null;
+      try {
+        window.parent.postMessage({
+          type: 'html-ppt-components-route',
+          component: component || ''
+        }, '*');
+      } catch (err) {}
     }
 
     function applySnapshot(snapshot) {
@@ -1373,11 +1452,18 @@
       const hashBody = h.replace('#/', '');
       if (!hashBody) return { view: 'grid', search: '', layout: null, cardKey: null, scrollTop: 0, fromGrid: false };
       const parts = hashBody.split('/');
+      if (parts[0] === 'component' && parts[1]) {
+        const componentId = decodeURIComponent(parts[1]);
+        const entry = entriesByComponentId.get(componentId);
+        if (entry) {
+          return { view: 'detail', search: '', layout: entry.num, componentId: entry.componentId, cardKey: getCardKey(entry), scrollTop: 0, fromGrid: false };
+        }
+      }
       if (parts[0] === 'layout' && parts[1]) {
         const num = parseInt(decodeURIComponent(parts[1]));
         const entry = entries.find(e => e.num === num);
         if (entry) {
-          return { view: 'detail', search: '', layout: num, cardKey: getCardKey(entry), scrollTop: 0, fromGrid: false };
+          return { view: 'detail', search: '', layout: num, componentId: entry.componentId, cardKey: getCardKey(entry), scrollTop: 0, fromGrid: false };
         }
       }
       return { view: 'grid', search: '', layout: null, cardKey: null, scrollTop: 0, fromGrid: false };
@@ -1436,6 +1522,7 @@
       applySnapshot(snapshot);
       state.detailOpenedFromGrid = false;
       render();
+      notifyParentRoute(snapshot);
     });
 
     componentSearchEl.addEventListener('input', () => {
