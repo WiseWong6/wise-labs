@@ -132,7 +132,9 @@ python3 -m http.server 8080
 
 ## Star History
 
-[![GitHub stars](https://img.shields.io/github/stars/WiseWong6/wise-labs?style=social)](https://github.com/WiseWong6/wise-labs)
+<a href="https://www.star-history.com/#WiseWong6/wise-labs&Date">
+  <img src="./assets/star-history.svg" alt="Wise Labs Star Snapshot" width="920" />
+</a>
 
 [View on Star History](https://www.star-history.com/#WiseWong6/wise-labs&Date)
 
