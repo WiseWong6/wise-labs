@@ -132,13 +132,9 @@ python3 -m http.server 8080
 
 ## Star History
 
-<a href="https://www.star-history.com/#wisewong6/wise-labs&Date">
-  <picture>
-    <source media="(prefers-color-scheme: dark)" srcset="https://api.star-history.com/chart?repos=wisewong6%2Fwise-labs&amp;type=Date&amp;theme=dark" />
-    <source media="(prefers-color-scheme: light)" srcset="https://api.star-history.com/chart?repos=wisewong6%2Fwise-labs&amp;type=Date" />
-    <img alt="Star History Chart" src="https://api.star-history.com/chart?repos=wisewong6%2Fwise-labs&amp;type=Date" />
-  </picture>
-</a>
+[![GitHub stars](https://img.shields.io/github/stars/WiseWong6/wise-labs?style=social)](https://github.com/WiseWong6/wise-labs)
+
+[View on Star History](https://www.star-history.com/#WiseWong6/wise-labs&Date)
 
 ---
 
