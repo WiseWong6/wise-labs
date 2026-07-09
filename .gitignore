@@ -30,7 +30,8 @@ website/
 tania-replica/
 
 # Local/dev directories not for GitHub
-.github/workflows/
+.github/workflows/*
+!.github/workflows/update-star-history.yml
 .playwright-mcp/
 .spec-workflow/
 page-*.yml
