@@ -234,17 +234,20 @@ function renderSvg({ meta, points, source, latestDate, latestStars }) {
   const sourceLabel = source === 'stargazers'
     ? 'Source: GitHub stargazer timestamps'
     : 'Source: GitHub repo count + observed daily snapshots';
+  const dateLabel = source === 'stargazers'
+    ? `latest star ${prettyDate(latestDate)}`
+    : `latest observation ${prettyDate(latestDate)}`;
 
   return `<svg width="${width}" height="${height}" viewBox="0 0 ${width} ${height}" fill="none" xmlns="http://www.w3.org/2000/svg" role="img" aria-labelledby="title desc">
   <title id="title">Wise Labs star history</title>
-  <desc id="desc">GitHub star history for ${escapeXml(meta.fullName)}, updated on ${escapeXml(prettyDate(latestDate))}. Current stars: ${latestStars}.</desc>
+  <desc id="desc">GitHub star history for ${escapeXml(meta.fullName)}. ${escapeXml(dateLabel)}. Current stars: ${latestStars}.</desc>
   <rect width="${width}" height="${height}" rx="16" fill="#0F172A"/>
   <rect x="1" y="1" width="${width - 2}" height="${height - 2}" rx="15" stroke="#334155" stroke-width="2"/>
   <circle cx="820" cy="76" r="84" fill="#2563EB" opacity="0.18"/>
   <circle cx="126" cy="332" r="96" fill="#14B8A6" opacity="0.14"/>
 
   <text x="48" y="64" fill="#F8FAFC" font-family="Inter, ui-sans-serif, system-ui, -apple-system, BlinkMacSystemFont, Segoe UI, sans-serif" font-size="30" font-weight="700">Wise Labs Star History</text>
-  <text x="48" y="94" fill="#94A3B8" font-family="Inter, ui-sans-serif, system-ui, -apple-system, BlinkMacSystemFont, Segoe UI, sans-serif" font-size="15">${escapeXml(meta.fullName)} - updated ${escapeXml(prettyDate(latestDate))}</text>
+  <text x="48" y="94" fill="#94A3B8" font-family="Inter, ui-sans-serif, system-ui, -apple-system, BlinkMacSystemFont, Segoe UI, sans-serif" font-size="15">${escapeXml(meta.fullName)} - ${escapeXml(dateLabel)}</text>
 
   <rect x="652" y="44" width="220" height="92" rx="12" fill="#111827" stroke="#334155"/>
   <text x="676" y="78" fill="#94A3B8" font-family="Inter, ui-sans-serif, system-ui, -apple-system, BlinkMacSystemFont, Segoe UI, sans-serif" font-size="14" font-weight="600">Current stars</text>
