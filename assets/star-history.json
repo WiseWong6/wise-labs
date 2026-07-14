@@ -1,13 +1,13 @@
 {
-  "generatedAt": "2026-07-09T05:20:18.730Z",
+  "generatedAt": "2026-07-14T04:18:18.917Z",
   "repo": "WiseWong6/wise-labs",
   "repoUrl": "https://github.com/WiseWong6/wise-labs",
   "createdAt": "2026-03-05T08:55:29Z",
   "latest": {
-    "date": "2026-07-03",
+    "date": "2026-07-09",
     "stars": 5
   },
-  "source": "stargazers",
+  "source": "repository-observations",
   "observations": [
     {
       "date": "2026-07-09",
@@ -20,23 +20,7 @@
       "stars": 0
     },
     {
-      "date": "2026-03-13",
-      "stars": 1
-    },
-    {
-      "date": "2026-03-16",
-      "stars": 2
-    },
-    {
-      "date": "2026-04-15",
-      "stars": 3
-    },
-    {
-      "date": "2026-04-27",
-      "stars": 4
-    },
-    {
-      "date": "2026-07-03",
+      "date": "2026-07-09",
       "stars": 5
     }
   ]
