@@ -1,0 +1,65 @@
+[
+  {
+    "key": "user-cost-list",
+    "label": "用户提供的人民币成本清单，待逐项最终确认",
+    "url": null,
+    "sourceType": "用户口径",
+    "checkedAt": "2026-07-16"
+  },
+  {
+    "key": "safe-usd-cny-2026-07-16",
+    "label": "国家外汇管理局：2026-07-16 人民币汇率中间价，100 美元 = 679.09 元人民币",
+    "url": "https://www.safe.gov.cn/AppStructured/hlw/RMBQuery.do?COLLCC=546877760",
+    "sourceType": "官方汇率",
+    "checkedAt": "2026-07-16"
+  },
+  {
+    "key": "article-historical-cost",
+    "label": "《一人公司闯关：从入门到放弃。》中的历史成本口径",
+    "url": null,
+    "sourceType": "用户口径",
+    "checkedAt": "2026-07-16"
+  },
+  {
+    "key": "samr-registration",
+    "label": "国家市场监督管理总局：公司登记管理实施办法",
+    "url": "https://www.samr.gov.cn/zw/zfxxgk/fdzdgknr/fgs/art/2024/art_6580c00811be45bfa304c1273b74e294.html",
+    "sourceType": "官方规则",
+    "checkedAt": "2026-07-16"
+  },
+  {
+    "key": "miit-internet-service",
+    "label": "工业和信息化部：互联网信息服务管理办法",
+    "url": "https://www.miit.gov.cn/zwgk/zcwj/flfg/art/2020/art_4c6a91eb93c34a6e8adc5852f9b56fd1.html",
+    "sourceType": "官方规则",
+    "checkedAt": "2026-07-16"
+  },
+  {
+    "key": "cac-generative-ai",
+    "label": "国家网信办：生成式人工智能服务管理暂行办法",
+    "url": "https://www.cac.gov.cn/2023-07/13/c_1690898327029107.htm",
+    "sourceType": "官方规则",
+    "checkedAt": "2026-07-16"
+  },
+  {
+    "key": "cac-ai-labeling",
+    "label": "国家网信办：人工智能生成合成内容标识办法",
+    "url": "https://www.cac.gov.cn/2025-03/14/c_1743654684782215.htm",
+    "sourceType": "官方规则",
+    "checkedAt": "2026-07-16"
+  },
+  {
+    "key": "official-check-needed",
+    "label": "需按地区、业务形态与最新规则补充官方来源",
+    "url": null,
+    "sourceType": "官方规则",
+    "checkedAt": "2026-07-16"
+  },
+  {
+    "key": "product-setting",
+    "label": "娱乐化产品设定，不代表现实成本或风险等级",
+    "url": null,
+    "sourceType": "产品设定",
+    "checkedAt": "2026-07-16"
+  }
+]

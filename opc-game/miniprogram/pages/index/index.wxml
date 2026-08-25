@@ -1,0 +1,108 @@
+<view class="page-shell">
+  <view class="topbar">
+    <text>OPC / SURVIVAL</text>
+    <view class="topbar-actions">
+      <text wx:if="{{screen === 'intro'}}">准备开始</text>
+      <text wx:elif="{{screen === 'challenge'}}">正在闯关</text>
+      <text wx:else>结果已结算</text>
+      <button
+        class="sound-toggle"
+        aria-label="{{audioEnabled ? '关闭配乐和音效' : '开启配乐和音效'}}"
+        bindtap="toggleSound"
+      >{{audioEnabled ? '♪ 声音 开' : '× 声音 关'}}</button>
+    </view>
+  </view>
+
+  <view wx:if="{{screen === 'intro'}}" class="intro">
+    <text class="eyebrow">一人公司生存模拟器 · 极简版</text>
+    <view class="hero-title">
+      <view>你想做一人公司。</view>
+      <view>它也想做你。</view>
+    </view>
+    <text class="lead">25 个问题，25 个场景。选择会改变现金、时间、待办、分数和最终称号。</text>
+    <view class="privacy-note">
+      <view class="privacy-dot"></view>
+      <text><text class="strong">零数据模式：</text>不登录、不联网提交、不使用本地存储。退出小程序后，所有答案立即消失。</text>
+    </view>
+    <button class="button primary wide" bindtap="start">开始承担</button>
+    <text class="fine-print">娱乐化个人经验，不构成法律、财税或安全建议。事实说明与题目原文分开呈现。</text>
+  </view>
+
+  <view wx:elif="{{screen === 'challenge'}}" class="challenge">
+    <view class="progress-row">
+      <text>第 {{question.number}} 题</text>
+      <text>{{progressText}}</text>
+    </view>
+    <view class="progress"><view class="progress-fill" style="width: {{progressPercent}}%;"></view></view>
+
+    <view class="ledger ledger-v2">
+      <view class="ledger-cell"><text>首年总投入</text><text class="ledger-value">{{ledgerFirstYearInvestment}}</text></view>
+      <view class="ledger-cell"><text>月均投入</text><text class="ledger-value">{{ledgerMonthlyAverage}}</text></view>
+      <view class="ledger-cell"><text>创始人工时</text><text class="ledger-value">{{ledgerTime}}</text></view>
+      <view class="ledger-cell"><text>关键路径</text><text class="ledger-value">{{ledgerPath}}</text></view>
+    </view>
+
+    <view class="question">
+      <text class="eyebrow muted">{{question.chapterId}} / {{question.visual.sceneId}}</text>
+      <view class="question-title">{{question.prompt}}</view>
+      <view wx:if="{{question.factNotes.length}}" class="fact-notes">
+        <text class="strong">事实说明（不改题目原文）</text>
+        <text wx:for="{{question.factNotes}}" wx:key="*this">— {{item}}</text>
+      </view>
+    </view>
+
+    <view class="actions">
+      <button
+        wx:for="{{question.options}}"
+        wx:key="id"
+        class="button {{item.outcome === 'exit' ? 'ghost' : 'primary'}} option-button"
+        disabled="{{busy}}"
+        data-option-id="{{item.id}}"
+        bindtap="choose"
+      >
+        <text class="option-key">{{index + 1}}</text>
+        <text>{{item.label}}</text>
+      </button>
+      <button wx:if="{{canGoBack}}" class="back-button" disabled="{{busy}}" bindtap="back">← 返回上一题重选</button>
+    </view>
+
+    <view wx:if="{{transitionVisible}}" class="pass-overlay">
+      <text class="pass-code">{{transitionExit ? 'EXIT' : 'OK'}}</text>
+      <text class="pass-receipt">{{transitionLabel}}</text>
+      <text class="pass-cost">{{transitionDetail}}</text>
+    </view>
+  </view>
+
+  <view wx:else class="result">
+    <text class="result-stamp">{{resultStamp}}</text>
+    <text class="result-meta">{{resultMeta}}</text>
+    <view class="result-title">{{resultTitle}}</view>
+    <text wx:if="{{resultConclusion}}" class="result-conclusion">{{resultConclusion}}</text>
+
+    <view class="financial-summary">
+      <view wx:for="{{financialSummaryRows}}" wx:key="label"><text>{{item.label}}</text><text class="financial-summary-value">{{item.value}}</text></view>
+    </view>
+    <view wx:if="{{badges.length}}" class="badges">
+      <text wx:for="{{badges}}" wx:key="id">{{item.label}}</text>
+    </view>
+    <view class="score-grid">
+      <view wx:for="{{scoreItems}}" wx:key="key"><text>{{item.label}}</text><text class="strong">{{item.value}}</text></view>
+    </view>
+    <view wx:if="{{projectionRows.length}}" class="business-projection">
+      <view wx:for="{{projectionRows}}" wx:key="label"><text>{{item.label}}</text><text class="strong">{{item.value}}</text></view>
+      <text class="projection-note">预计每月毛利（粗算）＝理论月收入 − 首年总投入 ÷ 12；未扣模型用量、支付手续费、税费、获客和流失。</text>
+    </view>
+    <view class="result-ledger-full">
+      <view wx:for="{{ledgerRows}}" wx:key="label"><text>{{item.label}}</text><text class="strong">{{item.value}}</text></view>
+    </view>
+    <view wx:if="{{todos.length}}" class="result-notice">
+      <text class="strong">接下来优先做</text>
+      <text wx:for="{{todos}}" wx:key="id">— {{item.label}}</text>
+    </view>
+    <view class="actions">
+      <button class="button primary" bindtap="back">← 返回上一题重选</button>
+      <button class="button ghost" bindtap="restart">重新开始并清零</button>
+    </view>
+    <text class="fine-print">首年总投入按已支付与首年承诺汇总；注册资本门槛、待报价和变动成本另列。现实要求请以主管部门和专业人士意见为准。</text>
+  </view>
+</view>

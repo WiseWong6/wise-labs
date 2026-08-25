@@ -1,0 +1,1026 @@
+body[data-theme="arcade"] {
+  --accent: #5eead4;
+  --accent-ink: #04211c;
+  --muted: rgba(235, 244, 242, .62);
+  color: #f2f8f6;
+  background: #060a0c;
+  font-family: ui-sans-serif, -apple-system, BlinkMacSystemFont, "Segoe UI", "PingFang SC", "Microsoft YaHei", sans-serif;
+}
+
+body[data-theme="arcade"] .shell {
+  display: block;
+  min-height: 100dvh;
+  padding: 0;
+}
+
+body[data-theme="arcade"] .identity,
+body[data-theme="arcade"] .mobile-brand {
+  display: none;
+}
+
+body[data-theme="arcade"] .game-card {
+  position: relative;
+  width: 100%;
+  height: 100dvh;
+  min-height: 480px;
+  padding: 0;
+  overflow: hidden;
+  border: 0;
+  background: #060a0c;
+}
+
+/* main.ts 每屏渲染后都会程序化聚焦 h1 做读屏定位，默认焦点框在深色场景上
+   是一个刺眼的蓝框。焦点仍保留，可视框移除。 */
+body[data-theme="arcade"] h1:focus {
+  outline: none;
+}
+
+body[data-theme="arcade"] .sound-toggle {
+  position: fixed;
+  top: max(14px, var(--safe-area-inset-top, env(safe-area-inset-top, 0px)));
+  right: 16px;
+  z-index: 60;
+  display: grid;
+  width: 44px;
+  min-width: 44px;
+  height: 44px;
+  min-height: 44px;
+  place-items: center;
+  padding: 0;
+  border: 1px solid rgba(255, 255, 255, .18);
+  border-radius: 50%;
+  color: #eaf6f3;
+  background: rgba(255, 255, 255, .08);
+  backdrop-filter: blur(14px);
+  -webkit-backdrop-filter: blur(14px);
+  box-shadow: 0 8px 26px rgba(0, 0, 0, .35);
+  font-size: 15px;
+}
+
+body[data-theme="arcade"] .sound-toggle > span:last-child { display: none; }
+body[data-theme="arcade"] .sound-toggle:hover { transform: none; background: rgba(255, 255, 255, .14); }
+body[data-theme="arcade"] .sound-toggle:focus-visible { outline: 2px solid #5eead4; outline-offset: 2px; }
+body[data-theme="arcade"] .sound-toggle[aria-pressed="false"] { color: rgba(235, 244, 242, .55); }
+
+/* 小红书宿主已经占用右上角。离线包把音乐控制移入题目卡片顶部，
+   避免覆盖宿主按钮，也避免右下角悬浮时挡住选项。 */
+body[data-theme="arcade"][data-platform="xhs-tool"] .sound-toggle {
+  position: static;
+  width: 36px;
+  min-width: 36px;
+  height: 36px;
+  min-height: 36px;
+  box-shadow: none;
+}
+
+body[data-theme="arcade"] .xhs-sound-row {
+  display: flex;
+  justify-content: flex-end;
+  min-height: 36px;
+  margin: 0 0 8px;
+}
+
+/* ---------- 全屏场景 ---------- */
+
+.arcade-layout {
+  position: absolute;
+  inset: 0;
+}
+
+.arcade-scene {
+  position: absolute;
+  inset: 0;
+  z-index: 0;
+  overflow: hidden;
+}
+
+.arcade-scene__frame {
+  position: absolute;
+  left: 50%;
+  top: 50%;
+  aspect-ratio: 3 / 2;
+  width: max(100%, 150svh);
+  overflow: hidden;
+  transform: translate(-50%, -50%);
+}
+
+.arcade-scene__frame > picture {
+  position: absolute;
+  inset: 0;
+  display: block;
+  overflow: hidden;
+}
+
+.arcade-scene__frame > picture > img {
+  position: absolute;
+  left: 0;
+  top: 0;
+  width: 200%;
+  height: 200%;
+  max-width: none;
+  object-fit: fill;
+}
+
+.arcade-scene--frame-action .arcade-scene__frame > picture > img { left: -100%; top: 0; }
+.arcade-scene--frame-resolved .arcade-scene__frame > picture > img { left: 0; top: -100%; }
+.arcade-scene--frame-quit .arcade-scene__frame > picture > img { left: -100%; top: -100%; }
+
+.arcade-scene--sequence .arcade-scene__frame > picture > img {
+  animation: arcade-storyboard-accept 800ms steps(1, end) both;
+}
+
+.arcade-scene--intro .arcade-scene__frame > picture > img {
+  animation: arcade-storyboard-intro 1600ms steps(1, end) both;
+}
+
+.arcade-scene__option-frames,
+.arcade-scene__option-frame {
+  position: absolute;
+  inset: 0;
+}
+
+.arcade-scene__option-frame {
+  display: block;
+  overflow: hidden;
+  pointer-events: none;
+}
+
+.arcade-scene__option-frame img {
+  position: absolute;
+  inset: 0;
+  width: 100%;
+  height: 100%;
+  max-width: none;
+  object-fit: fill;
+}
+
+.arcade-scene--sequence .arcade-scene__option-frame--action { animation: arcade-option-frame-action 800ms steps(1, end) both; }
+.arcade-scene--sequence .arcade-scene__option-frame--resolved { animation: arcade-option-frame-resolved 800ms steps(1, end) both; }
+
+/* 底部压暗渐变：题干与底部选项直接叠在场景图上，靠它保证可读性。 */
+.arcade-scene__shade {
+  position: absolute;
+  inset: 0;
+  pointer-events: none;
+  background:
+    linear-gradient(180deg, rgba(3, 7, 9, .42), rgba(3, 7, 9, 0) 22%),
+    linear-gradient(0deg, rgba(3, 6, 8, .95), rgba(3, 7, 9, .72) 34%, rgba(3, 7, 9, .18) 62%, rgba(3, 7, 9, 0) 78%);
+}
+
+/* ---------- 顶部 HUD ---------- */
+
+.arcade-top {
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
+  z-index: 20;
+  display: flex;
+  flex-wrap: wrap;
+  align-items: flex-start;
+  justify-content: space-between;
+  gap: 8px;
+  padding: max(14px, var(--safe-area-inset-top, env(safe-area-inset-top, 0px))) 76px 0 16px;
+  pointer-events: none;
+}
+
+.arcade-top > * { pointer-events: auto; }
+
+.arcade-hud {
+  display: flex;
+  gap: 8px;
+  margin: 0;
+}
+
+.arcade-hud__cell {
+  display: grid;
+  min-width: 96px;
+  gap: 3px;
+  padding: 8px 13px;
+  border: 1px solid rgba(255, 255, 255, .16);
+  border-radius: 14px;
+  background: rgba(255, 255, 255, .07);
+  backdrop-filter: blur(14px);
+  -webkit-backdrop-filter: blur(14px);
+}
+
+.arcade-hud dt {
+  color: rgba(235, 244, 242, .62);
+  font-size: 10px;
+  letter-spacing: .08em;
+}
+
+.arcade-hud dd {
+  margin: 0;
+  color: #fff;
+  font-size: 15px;
+  font-weight: 800;
+  font-variant-numeric: tabular-nums;
+  white-space: nowrap;
+}
+
+.arcade-hud__cell--changed {
+  animation: arcade-hud-flash 800ms ease both;
+}
+
+.arcade-progress {
+  display: grid;
+  min-width: 168px;
+  gap: 6px;
+  padding: 9px 13px;
+  border: 1px solid rgba(255, 255, 255, .16);
+  border-radius: 14px;
+  color: rgba(235, 244, 242, .75);
+  background: rgba(255, 255, 255, .07);
+  backdrop-filter: blur(14px);
+  -webkit-backdrop-filter: blur(14px);
+  font-size: 10px;
+  font-weight: 700;
+  letter-spacing: .04em;
+}
+
+.arcade-progress__track {
+  height: 4px;
+  overflow: hidden;
+  border-radius: 2px;
+  background: rgba(255, 255, 255, .14);
+}
+
+.arcade-progress__track i {
+  display: block;
+  height: 100%;
+  border-radius: 2px;
+  background: #5eead4;
+  transition: width 240ms ease;
+}
+
+/* ---------- 底部题干与选项抽屉 ---------- */
+
+.arcade-sheet {
+  position: absolute;
+  bottom: 0;
+  left: 50%;
+  z-index: 22;
+  width: min(680px, 100%);
+  max-height: calc(100% - 128px);
+  padding: 22px 22px max(18px, var(--safe-area-inset-bottom, env(safe-area-inset-bottom, 0px)));
+  overflow: auto;
+  transform: translateX(-50%);
+  scrollbar-width: none;
+}
+
+.arcade-sheet::-webkit-scrollbar { display: none; }
+
+.arcade-sheet__eyebrow {
+  margin: 0 0 8px;
+  color: #5eead4;
+  font-size: 11px;
+  font-weight: 800;
+  letter-spacing: .12em;
+  text-transform: uppercase;
+  text-shadow: 0 1px 10px rgba(0, 0, 0, .7);
+}
+
+.arcade-sheet h1 {
+  margin: 0 0 14px;
+  color: #fff;
+  font-size: clamp(20px, 2.4vw, 30px);
+  font-weight: 850;
+  line-height: 1.3;
+  letter-spacing: -.01em;
+  text-shadow: 0 2px 16px rgba(0, 0, 0, .75);
+  text-wrap: balance;
+}
+
+.arcade-sheet__lead {
+  margin: -4px 0 16px;
+  color: rgba(235, 244, 242, .78);
+  font-size: 13px;
+  line-height: 1.65;
+  text-shadow: 0 1px 10px rgba(0, 0, 0, .7);
+}
+
+.arcade-sheet__footer {
+  display: flex;
+  align-items: end;
+  justify-content: space-between;
+  gap: 16px;
+  margin-top: 14px;
+  color: rgba(235, 244, 242, .55);
+  font-size: 10px;
+  line-height: 1.5;
+}
+
+.arcade-sheet--intro h1 { font-size: clamp(34px, 5vw, 54px); line-height: 1.08; }
+
+.arcade-sheet__options {
+  display: grid;
+  gap: 8px;
+}
+
+.arcade-choice {
+  display: grid;
+  grid-template-columns: auto minmax(0, 1fr);
+  align-items: center;
+  gap: 12px;
+  min-height: 48px;
+  padding: 10px 14px;
+  border: 1px solid rgba(255, 255, 255, .16);
+  border-radius: 16px;
+  color: #f2f8f6;
+  background: rgba(255, 255, 255, .07);
+  backdrop-filter: blur(14px);
+  -webkit-backdrop-filter: blur(14px);
+  cursor: pointer;
+  font: inherit;
+  text-align: left;
+  transition: transform 140ms ease, background-color 140ms ease, border-color 140ms ease;
+}
+
+.arcade-choice:hover {
+  border-color: rgba(255, 255, 255, .3);
+  background: rgba(255, 255, 255, .12);
+  transform: translateY(-1px);
+}
+
+.arcade-choice:focus-visible {
+  outline: 2px solid #5eead4;
+  outline-offset: 2px;
+}
+
+.arcade-choice__index {
+  display: grid;
+  width: 26px;
+  height: 26px;
+  place-items: center;
+  border: 1px solid rgba(255, 255, 255, .3);
+  border-radius: 50%;
+  color: rgba(240, 250, 247, .85);
+  font-size: 12px;
+  font-weight: 800;
+}
+
+.arcade-choice strong {
+  font-size: 14px;
+  font-weight: 650;
+  line-height: 1.4;
+}
+
+.arcade-choice--selected {
+  border-color: #5eead4;
+  color: #052a24;
+  background: #5eead4;
+  box-shadow: 0 10px 34px rgba(94, 234, 212, .3);
+  animation: arcade-choice-pop 320ms cubic-bezier(.3, 1.6, .5, 1) both;
+}
+
+.arcade-choice--selected .arcade-choice__index {
+  border-color: rgba(4, 38, 32, .45);
+  color: #052a24;
+}
+
+.arcade-layout--frozen .arcade-choice:not(.arcade-choice--selected) {
+  opacity: .42;
+}
+
+body[data-theme="arcade"] .secondary-row {
+  color: rgba(235, 244, 242, .55);
+  font-size: 10px;
+  text-shadow: 0 1px 8px rgba(0, 0, 0, .7);
+}
+
+body[data-theme="arcade"] .text-button { color: #8ee3d2; }
+body[data-theme="arcade"] .edition-link { color: rgba(235, 244, 242, .8); }
+
+body[data-theme="arcade"] .button {
+  min-height: 50px;
+  border: 1px solid transparent;
+  border-radius: 14px;
+  color: #052a24;
+  background: #5eead4;
+  box-shadow: 0 12px 34px rgba(94, 234, 212, .28);
+  font-size: 15px;
+  font-weight: 800;
+}
+
+body[data-theme="arcade"] .button:hover { transform: translateY(-1px); }
+body[data-theme="arcade"] .button--ghost {
+  border-color: rgba(255, 255, 255, .22);
+  color: #e8f4f1;
+  background: rgba(255, 255, 255, .08);
+  box-shadow: none;
+}
+
+/* ---------- 选项反馈 toast ---------- */
+
+.arcade-toast {
+  position: absolute;
+  top: 46%;
+  left: 50%;
+  z-index: 40;
+  display: grid;
+  grid-template-columns: 96px minmax(0, 1fr);
+  align-items: center;
+  gap: 12px;
+  width: min(380px, calc(100% - 48px));
+  padding: 14px 18px 14px 12px;
+  border: 1px solid rgba(255, 255, 255, .2);
+  border-radius: 18px;
+  background: rgba(14, 22, 25, .62);
+  backdrop-filter: blur(18px);
+  -webkit-backdrop-filter: blur(18px);
+  box-shadow: 0 20px 56px rgba(0, 0, 0, .55);
+  transform: translate(-50%, -50%);
+  animation: arcade-toast-lifecycle var(--arcade-transition-duration, 800ms) ease both;
+}
+
+.arcade-toast__motion {
+  width: 96px;
+  height: 48px;
+  object-fit: contain;
+}
+
+.arcade-toast__copy {
+  display: grid;
+  min-width: 0;
+  gap: 3px;
+}
+
+.arcade-toast__copy small {
+  color: #5eead4;
+  font-size: 9px;
+  font-weight: 800;
+  letter-spacing: .14em;
+  text-transform: uppercase;
+}
+
+.arcade-toast__copy strong {
+  overflow: hidden;
+  color: #fff;
+  font-size: 17px;
+  font-weight: 800;
+  line-height: 1.2;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+
+.arcade-toast__copy > span {
+  color: rgba(230, 242, 239, .78);
+  font-size: 11px;
+  line-height: 1.4;
+}
+
+.arcade-toast--brand small { color: #c4b5fd; }
+.arcade-toast--success small { color: #86efac; }
+.arcade-toast--warning small { color: #fcd34d; }
+
+/* ---------- 全屏过场 ---------- */
+
+.arcade-pass {
+  position: absolute;
+  inset: 0;
+  z-index: 46;
+  display: grid;
+  place-items: center;
+  padding: 24px;
+  background: rgba(3, 7, 9, .58);
+  backdrop-filter: blur(6px);
+  -webkit-backdrop-filter: blur(6px);
+  animation: arcade-pass-lifecycle var(--arcade-transition-duration, 1440ms) ease both;
+}
+
+.arcade-pass__copy {
+  max-width: 640px;
+  text-align: center;
+  animation: arcade-pass-copy var(--arcade-transition-duration, 1440ms) ease both;
+}
+
+.arcade-pass__copy span {
+  color: #5eead4;
+  font-size: 11px;
+  font-weight: 800;
+  letter-spacing: .18em;
+}
+
+.arcade-pass__copy strong {
+  display: block;
+  margin: 12px 0;
+  color: #fff;
+  font-size: clamp(28px, 5.2vw, 52px);
+  font-weight: 900;
+  line-height: 1.2;
+  text-shadow: 0 4px 34px rgba(0, 0, 0, .8);
+  text-wrap: balance;
+}
+
+.arcade-pass__copy p {
+  margin: 0;
+  color: rgba(238, 246, 244, .92);
+  font-size: 15px;
+  font-weight: 650;
+  line-height: 1.5;
+}
+
+.arcade-pass__copy small {
+  display: block;
+  margin-top: 8px;
+  color: rgba(238, 246, 244, .62);
+  font-size: 12px;
+}
+
+.arcade-pass--quit .arcade-pass__copy strong { color: #fda4af; }
+
+/* ---------- 成本确认关 ---------- */
+
+.arcade-cost-board {
+  margin: 0 0 12px;
+  padding: 13px 14px;
+  border: 1px solid rgba(255, 255, 255, .18);
+  border-radius: 18px;
+  background: rgba(10, 16, 18, .6);
+  backdrop-filter: blur(16px);
+  -webkit-backdrop-filter: blur(16px);
+}
+
+.arcade-cost-board header {
+  display: flex;
+  align-items: baseline;
+  justify-content: space-between;
+  gap: 12px;
+  margin-bottom: 10px;
+}
+
+.arcade-cost-board header span {
+  color: #5eead4;
+  font-size: 9px;
+  font-weight: 800;
+  letter-spacing: .14em;
+}
+
+.arcade-cost-board header strong { color: #fff; font-size: 13px; }
+
+.arcade-cost-board__grid {
+  display: grid;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  gap: 6px;
+}
+
+.arcade-cost-board__grid div {
+  display: grid;
+  min-width: 0;
+  gap: 3px;
+  padding: 8px 10px;
+  border-radius: 12px;
+  background: rgba(255, 255, 255, .06);
+}
+
+.arcade-cost-board__grid span { color: rgba(235, 244, 242, .6); font-size: 9px; }
+.arcade-cost-board__grid strong { overflow: hidden; color: #fff; font-size: 13px; text-overflow: ellipsis; white-space: nowrap; }
+.arcade-cost-board__grid strong small { color: #fcd34d; font-size: 9px; }
+
+.arcade-cost-board__difference {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 12px;
+  margin: 8px 0 0;
+  padding: 8px 10px;
+  border-radius: 12px;
+  color: rgba(235, 244, 242, .7);
+  background: rgba(255, 255, 255, .06);
+  font-size: 10px;
+}
+
+.arcade-cost-board__difference strong { font-size: 14px; }
+.arcade-cost-board__difference--positive strong { color: #5eead4; }
+.arcade-cost-board__difference--negative strong { color: #fda4af; }
+
+.arcade-cost-check__note {
+  margin: 0 0 12px;
+  color: rgba(235, 244, 242, .55);
+  font-size: 10px;
+  line-height: 1.5;
+  text-shadow: 0 1px 8px rgba(0, 0, 0, .7);
+}
+
+/* ---------- 结算 ---------- */
+
+.arcade-result {
+  position: absolute;
+  top: 50%;
+  right: clamp(16px, 4vw, 56px);
+  z-index: 24;
+  width: min(440px, calc(100% - 32px));
+  max-height: calc(100% - 120px);
+  padding: 22px;
+  overflow: auto;
+  border: 1px solid rgba(255, 255, 255, .18);
+  border-radius: 20px;
+  color: #eef6f4;
+  background: rgba(10, 16, 18, .66);
+  backdrop-filter: blur(20px);
+  -webkit-backdrop-filter: blur(20px);
+  box-shadow: 0 26px 76px rgba(0, 0, 0, .58);
+  transform: translateY(-50%);
+  scrollbar-width: none;
+}
+
+.arcade-result::-webkit-scrollbar { display: none; }
+
+.arcade-result__hero {
+  display: grid;
+  align-items: center;
+  gap: 14px;
+}
+
+.arcade-result__identity { min-width: 0; }
+.arcade-result__identity .arcade-sheet__eyebrow { margin-bottom: 4px; text-shadow: none; }
+.arcade-result__identity h1 { margin: 0; color: #fff; font-size: clamp(20px, 2.4vw, 28px); line-height: 1.2; }
+
+.arcade-result__conclusion {
+  margin: 12px 0 0;
+  color: rgba(235, 244, 242, .78);
+  font-size: 12px;
+  line-height: 1.6;
+}
+
+.arcade-financial-summary {
+  display: grid;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  gap: 6px;
+  margin: 14px 0 0;
+}
+
+.arcade-financial-summary div {
+  display: grid;
+  min-width: 0;
+  gap: 4px;
+  padding: 10px 12px;
+  border-radius: 14px;
+  background: rgba(255, 255, 255, .06);
+}
+
+.arcade-financial-summary dt { color: rgba(235, 244, 242, .6); font-size: 9px; }
+.arcade-financial-summary dd { margin: 0; color: #5eead4; font-size: 17px; font-weight: 850; line-height: 1.2; overflow-wrap: anywhere; }
+.arcade-financial-summary__note { font-size: .7em; font-weight: 700; white-space: nowrap; }
+
+.arcade-badges {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 6px;
+  margin-top: 12px;
+}
+
+.arcade-badges span {
+  padding: 4px 10px;
+  border: 1px solid rgba(94, 234, 212, .4);
+  border-radius: 999px;
+  color: #5eead4;
+  background: rgba(94, 234, 212, .08);
+  font-size: 10px;
+  font-weight: 700;
+}
+
+.arcade-score-grid {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 6px;
+  margin-top: 14px;
+}
+
+.arcade-score-grid__item {
+  display: grid;
+  grid-template-columns: minmax(0, 1fr) auto;
+  gap: 4px 8px;
+  padding: 9px 10px;
+  border-radius: 12px;
+  color: rgba(235, 244, 242, .7);
+  background: rgba(255, 255, 255, .06);
+  font-size: 10px;
+}
+
+.arcade-score-grid__item strong { color: #fff; }
+
+.arcade-score-grid__item i {
+  grid-column: 1 / -1;
+  height: 4px;
+  overflow: hidden;
+  border-radius: 2px;
+  background: rgba(255, 255, 255, .12);
+}
+
+.arcade-score-grid__item i b {
+  display: block;
+  height: 100%;
+  border-radius: 2px;
+  background: #5eead4;
+}
+
+.arcade-result__actions {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 8px;
+  margin-top: 16px;
+}
+
+.arcade-result__actions .button { min-height: 44px; font-size: 13px; }
+.arcade-result__actions .text-button { grid-column: 1 / -1; justify-self: center; min-height: 26px; }
+
+/* ---------- 完整结算弹层 ---------- */
+
+.arcade-result-dialog {
+  width: min(680px, calc(100% - 24px));
+  max-height: calc(100dvh - 32px);
+  padding: 0;
+  overflow: hidden;
+  border: 0;
+  color: #eef6f4;
+  background: transparent;
+}
+
+.arcade-result-dialog::backdrop {
+  background: rgba(2, 5, 7, .72);
+  backdrop-filter: blur(4px);
+}
+
+.arcade-result-dialog__frame {
+  display: flex;
+  max-height: calc(100dvh - 32px);
+  flex-direction: column;
+  margin: 0;
+  border: 1px solid rgba(255, 255, 255, .18);
+  border-radius: 20px;
+  background: rgba(12, 18, 21, .92);
+  backdrop-filter: blur(20px);
+  -webkit-backdrop-filter: blur(20px);
+}
+
+.arcade-result-dialog__frame > header {
+  display: flex;
+  align-items: start;
+  justify-content: space-between;
+  gap: 16px;
+  padding: 16px 18px 12px;
+  border-bottom: 1px solid rgba(255, 255, 255, .12);
+}
+
+.arcade-result-dialog__frame h2 { margin: 4px 0 0; color: #fff; font-size: 20px; }
+
+.arcade-result-dialog__close {
+  flex: 0 0 auto;
+  width: 38px;
+  height: 38px;
+  border: 1px solid rgba(255, 255, 255, .22);
+  border-radius: 50%;
+  color: #e8f4f1;
+  background: rgba(255, 255, 255, .08);
+  cursor: pointer;
+  font-size: 20px;
+  line-height: 1;
+}
+
+.arcade-result-dialog__body { padding: 14px 18px 18px; overflow: auto; }
+.arcade-result-dialog__body h3 { margin: 0 0 8px; color: #5eead4; font-size: 12px; }
+
+.arcade-result-ledger {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 6px;
+  margin: 8px 0 0;
+}
+
+.arcade-result-ledger div {
+  display: grid;
+  min-width: 0;
+  gap: 3px;
+  padding: 8px 10px;
+  border-radius: 10px;
+  background: rgba(255, 255, 255, .06);
+}
+
+.arcade-result-ledger dt { color: rgba(235, 244, 242, .6); font-size: 9px; }
+.arcade-result-ledger dd { margin: 0; color: #fff; font-size: 12px; font-weight: 750; }
+
+.arcade-business-projection {
+  display: grid;
+  grid-template-columns: repeat(3, minmax(0, 1fr));
+  gap: 6px;
+  margin-top: 14px;
+  color: rgba(235, 244, 242, .65);
+  font-size: 9px;
+}
+
+.arcade-business-projection__metric {
+  display: grid;
+  min-width: 0;
+  gap: 3px;
+  padding: 8px 10px;
+  border-radius: 10px;
+  background: rgba(255, 255, 255, .06);
+}
+
+.arcade-business-projection__metric strong { color: #fff; font-size: 12px; }
+.arcade-business-projection__metric strong i { color: rgba(235, 244, 242, .55); font-size: 8px; font-style: normal; }
+.arcade-business-projection__metric--positive strong { color: #5eead4; }
+.arcade-business-projection__metric--negative strong { color: #fda4af; }
+.arcade-business-projection > small { grid-column: 1 / -1; padding: 4px 2px 0; line-height: 1.5; }
+
+.arcade-result-todos {
+  margin-top: 14px;
+  padding: 10px 12px;
+  border-left: 3px solid #5eead4;
+  border-radius: 8px;
+  background: rgba(94, 234, 212, .06);
+  font-size: 11px;
+  line-height: 1.6;
+}
+
+.arcade-result-todos ul { margin: 6px 0 0; padding-left: 18px; }
+
+.arcade-result-dialog__note {
+  margin: 12px 0 0;
+  color: rgba(235, 244, 242, .5);
+  font-size: 9px;
+  line-height: 1.5;
+}
+
+/* ---------- 动画 ---------- */
+
+@keyframes arcade-storyboard-accept {
+  0%, 47% { left: -100%; top: 0; }
+  48%, 100% { left: 0; top: -100%; }
+}
+
+@keyframes arcade-storyboard-intro {
+  0%, 24% { left: 0; top: 0; }
+  25%, 56% { left: -100%; top: 0; }
+  57%, 84% { left: 0; top: -100%; }
+  85%, 100% { left: -100%; top: -100%; }
+}
+
+@keyframes arcade-option-frame-action {
+  0%, 47% { opacity: 1; }
+  48%, 100% { opacity: 0; }
+}
+
+@keyframes arcade-option-frame-resolved {
+  0%, 47% { opacity: 0; }
+  48%, 100% { opacity: 1; }
+}
+
+@keyframes arcade-toast-lifecycle {
+  0% { opacity: 0; transform: translate(-50%, -42%) scale(.92); }
+  12%, 86% { opacity: 1; transform: translate(-50%, -50%) scale(1); }
+  100% { opacity: 0; transform: translate(-50%, -55%) scale(.98); }
+}
+
+@keyframes arcade-pass-lifecycle {
+  0% { opacity: 0; }
+  14%, 88% { opacity: 1; }
+  100% { opacity: 0; }
+}
+
+@keyframes arcade-pass-copy {
+  0%, 28% { opacity: 0; transform: translateY(18px) scale(.96); }
+  44%, 88% { opacity: 1; transform: none; }
+  100% { opacity: 0; transform: translateY(-10px); }
+}
+
+@keyframes arcade-hud-flash {
+  0%, 100% { box-shadow: none; }
+  20%, 65% { box-shadow: 0 0 0 2px #5eead4, 0 0 24px rgba(94, 234, 212, .35); }
+}
+
+@keyframes arcade-choice-pop {
+  0% { transform: scale(.97); }
+  60% { transform: scale(1.03); }
+  100% { transform: scale(1); }
+}
+
+/* ---------- 移动端 ---------- */
+
+@media (max-width: 600px) {
+  /* 移动端不再 cover 裁边(竖屏视口比母版窄,居中裁剪会把画面两侧的
+     角色/主体切掉)。整张 2:3 竖版母版按宽度完整顶对齐展示,底部由
+     抽屉和下缘渐变自然衔接;选项帧与底图用同一个盒子,保证过场对齐。 */
+  .arcade-scene__frame {
+    top: 0;
+    aspect-ratio: 2 / 3;
+    width: 100%;
+    transform: translateX(-50%);
+  }
+
+  .arcade-scene__frame::after {
+    content: "";
+    position: absolute;
+    right: 0;
+    bottom: 0;
+    left: 0;
+    z-index: 2;
+    height: 18%;
+    pointer-events: none;
+    background: linear-gradient(180deg, transparent, rgba(6, 8, 10, .55) 62%, rgba(6, 8, 10, .92));
+  }
+
+  .arcade-scene__option-frame {
+    inset: auto;
+    top: 0;
+    left: 50%;
+    width: 100%;
+    aspect-ratio: 2 / 3;
+    transform: translateX(-50%);
+  }
+
+  /* intro 母版只有桌面 3:2 横版:放大到 135% 宽、垂直居中在 HUD 与
+     底部抽屉之间,避免高屏手机上中部留出大段黑带。四帧角色位置都在
+     画面 28%–58% 区间,两侧各裁约 13% 不伤主体;四帧循环动画保留。 */
+  .arcade-scene--intro .arcade-scene__frame {
+    top: 42%;
+    aspect-ratio: 3 / 2;
+    width: 135%;
+    transform: translate(-50%, -50%);
+  }
+
+  .arcade-top {
+    gap: 6px;
+    padding: max(10px, var(--safe-area-inset-top, env(safe-area-inset-top, 0px))) 64px 0 10px;
+  }
+
+  .arcade-hud { flex: 1 1 100%; max-width: calc(100% - 0px); }
+  .arcade-hud__cell { flex: 1; min-width: 0; padding: 7px 9px; border-radius: 12px; }
+  .arcade-hud dt { font-size: 9px; }
+  .arcade-hud dd { font-size: clamp(11px, 3.4vw, 14px); }
+  .arcade-progress { flex: 1 1 100%; grid-template-columns: auto minmax(60px, 1fr); align-items: center; min-width: 0; padding: 7px 10px; }
+
+  .arcade-sheet {
+    width: 100%;
+    max-height: calc(100% - 118px);
+    padding: 18px 14px max(14px, var(--safe-area-inset-bottom, env(safe-area-inset-bottom, 0px)));
+    border-top: 1px solid rgba(255, 255, 255, .14);
+    border-radius: 22px 22px 0 0;
+    background: rgba(8, 12, 14, .68);
+    backdrop-filter: blur(20px) saturate(1.1);
+    -webkit-backdrop-filter: blur(20px) saturate(1.1);
+  }
+
+  .arcade-sheet__eyebrow { margin-bottom: 7px; text-shadow: none; }
+  .arcade-sheet h1 { margin-bottom: 13px; font-size: clamp(17px, 4.8vw, 22px); text-shadow: none; }
+  .arcade-sheet--intro h1 { font-size: clamp(30px, 9.4vw, 40px); }
+  .arcade-sheet__lead { font-size: 12px; text-shadow: none; }
+  .arcade-sheet__options { gap: 9px; }
+  .arcade-choice { min-height: 52px; padding: 11px 13px; border-radius: 14px; gap: 10px; }
+  .arcade-choice__index { width: 24px; height: 24px; font-size: 11px; }
+  .arcade-choice strong { font-size: 13px; line-height: 1.4; }
+  .arcade-sheet .secondary-row { margin-top: 12px; }
+
+  .arcade-toast { grid-template-columns: 72px minmax(0, 1fr); padding: 10px 14px 10px 8px; }
+  .arcade-toast__motion { width: 72px; height: 38px; }
+  .arcade-toast__copy strong { font-size: 15px; }
+
+  .arcade-result {
+    top: auto;
+    right: 8px;
+    bottom: max(8px, var(--safe-area-inset-bottom, env(safe-area-inset-bottom, 0px)));
+    left: 8px;
+    width: auto;
+    max-height: 76%;
+    padding: 16px;
+    transform: none;
+  }
+
+  .arcade-result__hero { gap: 12px; }
+
+  .arcade-business-projection { grid-template-columns: 1fr 1fr; }
+}
+
+@media (max-width: 380px) {
+  .arcade-choice { min-height: 46px; padding: 9px 11px; }
+  .arcade-choice strong { font-size: 12px; }
+  .arcade-sheet h1 { font-size: clamp(16px, 4.6vw, 19px); }
+}
+
+/* 触屏设备没有键盘，“键盘：1～N 选择”提示纯属噪音。 */
+@media (pointer: coarse) {
+  body[data-theme="arcade"] .secondary-row span { display: none; }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  body[data-theme="arcade"] .arcade-scene--intro .arcade-scene__frame > picture > img {
+    left: -100%;
+    top: -100%;
+    animation: none !important;
+  }
+  body[data-theme="arcade"] .arcade-scene--sequence .arcade-scene__frame > picture > img {
+    left: 0;
+    top: -100%;
+    animation: none !important;
+  }
+  body[data-theme="arcade"] .arcade-scene__option-frame--action { display: none; animation: none !important; }
+  body[data-theme="arcade"] .arcade-scene__option-frame--resolved { opacity: 1; animation: none !important; }
+  body[data-theme="arcade"] .arcade-toast { opacity: 1; transform: translate(-50%, -50%); animation: none !important; }
+  body[data-theme="arcade"] .arcade-toast__motion { display: none; }
+  body[data-theme="arcade"] .arcade-pass { animation: none !important; backdrop-filter: none; -webkit-backdrop-filter: none; }
+  body[data-theme="arcade"] .arcade-pass__copy { opacity: 1; transform: none; animation: none !important; }
+  body[data-theme="arcade"] .arcade-hud__cell--changed,
+  body[data-theme="arcade"] .arcade-choice--selected { animation: none !important; }
+}

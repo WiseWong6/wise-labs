@@ -1,0 +1,2651 @@
+{
+  "version": 2,
+  "states": [
+    "idle",
+    "action",
+    "resolved",
+    "quit"
+  ],
+  "optionVariantContract": {
+    "key": "question.visual.optionVariants[optionId]",
+    "format": "action-resolved-single-frame-pairs",
+    "fallback": "question.visual",
+    "overlay": "escaped-dom-text"
+  },
+  "frameRects": {
+    "desktop": {
+      "idle": [
+        0,
+        0,
+        768,
+        512
+      ],
+      "action": [
+        768,
+        0,
+        768,
+        512
+      ],
+      "resolved": [
+        0,
+        512,
+        768,
+        512
+      ],
+      "quit": [
+        768,
+        512,
+        768,
+        512
+      ]
+    },
+    "mobile": {
+      "idle": [
+        0,
+        0,
+        512,
+        768
+      ],
+      "action": [
+        512,
+        0,
+        512,
+        768
+      ],
+      "resolved": [
+        0,
+        768,
+        512,
+        768
+      ],
+      "quit": [
+        512,
+        768,
+        512,
+        768
+      ]
+    }
+  },
+  "assets": {
+    "Q01": {
+      "sceneId": "Q01",
+      "brief": "清晨工作室里的可交互原型、上线按钮和满怀憧憬的创始人",
+      "desktop": {
+        "file": "web/public/assets/pixel/scenes-v2/Q01-desktop.webp",
+        "width": 1536,
+        "height": 1024,
+        "bytes": 147928,
+        "sha256": "8bdb290f157ce205e425509622e1a8560ba6ba3d16a7f1db433ba77c412f744e"
+      },
+      "mobile": {
+        "file": "web/public/assets/pixel/scenes-v2/Q01-mobile.webp",
+        "width": 1024,
+        "height": 1536,
+        "bytes": 291026,
+        "sha256": "7d0b462d19644b3bc4f727476bd73abe8f2a1a631afe69f2111e8fe4a3f47d00"
+      },
+      "optionVariants": {
+        "launch": {
+          "action": {
+            "desktop": {
+              "file": "web/public/assets/pixel/scenes-v2/options/Q01/launch-action-desktop.webp",
+              "width": 768,
+              "height": 512,
+              "bytes": 69444,
+              "sha256": "502d60e13fbb0e8e9f73b85537750552c384c57a9692c7faaafbac8742dc8ba4"
+            },
+            "mobile": {
+              "file": "web/public/assets/pixel/scenes-v2/options/Q01/launch-action-mobile.webp",
+              "width": 512,
+              "height": 768,
+              "bytes": 70644,
+              "sha256": "14fa14bb9da15c54e5ce3da045a6c3d1fe5453ac0befe9c00428f7f241c1d73b"
+            }
+          },
+          "resolved": {
+            "desktop": {
+              "file": "web/public/assets/pixel/scenes-v2/options/Q01/launch-resolved-desktop.webp",
+              "width": 768,
+              "height": 512,
+              "bytes": 65000,
+              "sha256": "882eb6c35aa7d0f883405ce4f8f1692473f636d2962b194dfdab39a99200131d"
+            },
+            "mobile": {
+              "file": "web/public/assets/pixel/scenes-v2/options/Q01/launch-resolved-mobile.webp",
+              "width": 512,
+              "height": 768,
+              "bytes": 72526,
+              "sha256": "44d63044aeef4032adadbebac77e2f39632a605ebb56cae2763872ca3846b1fb"
+            }
+          },
+          "overlay": {
+            "eyebrow": "上线计划已确认",
+            "title": "带着憧憬出发",
+            "detail": "产品准备走向第一个真实用户",
+            "tone": "success"
+          }
+        }
+      }
+    },
+    "Q02": {
+      "sceneId": "Q02",
+      "brief": "同时提供账号登录与游客直达的真实产品登录界面",
+      "desktop": {
+        "file": "web/public/assets/pixel/scenes-v2/Q02-desktop.webp",
+        "width": 1536,
+        "height": 1024,
+        "bytes": 164594,
+        "sha256": "c7556d4669ab1b309859cc66bc7534960383fddbf72f24e9693bc1fde6e8797e"
+      },
+      "mobile": {
+        "file": "web/public/assets/pixel/scenes-v2/Q02-mobile.webp",
+        "width": 1024,
+        "height": 1536,
+        "bytes": 173998,
+        "sha256": "75573164a18b4c75a71ebafab777fc839fc343443eb1400500deb16a22404ae6"
+      },
+      "optionVariants": {
+        "login": {
+          "action": {
+            "desktop": {
+              "file": "web/public/assets/pixel/scenes-v2/options/Q02/login-action-desktop.webp",
+              "width": 768,
+              "height": 512,
+              "bytes": 74048,
+              "sha256": "332d964ca14cc1d9f253eaa5bb2467a58eaf4818b43124dc01f290b8feeea104"
+            },
+            "mobile": {
+              "file": "web/public/assets/pixel/scenes-v2/options/Q02/login-action-mobile.webp",
+              "width": 512,
+              "height": 768,
+              "bytes": 82256,
+              "sha256": "7a8613fee66d604e7c3111daa2572f1c8a486b2a2c7c1c2e18fae40109348dbf"
+            }
+          },
+          "resolved": {
+            "desktop": {
+              "file": "web/public/assets/pixel/scenes-v2/options/Q02/login-resolved-desktop.webp",
+              "width": 768,
+              "height": 512,
+              "bytes": 73452,
+              "sha256": "61bf11eae8170903455a0824bc5e5cd1198d24d7bbae7cfc85ec6069bb73d3a7"
+            },
+            "mobile": {
+              "file": "web/public/assets/pixel/scenes-v2/options/Q02/login-resolved-mobile.webp",
+              "width": 512,
+              "height": 768,
+              "bytes": 82598,
+              "sha256": "476335640705e2897f86e02bfdf6f1ad8bdc3618aeeb3868fc8ab8644fcbd415"
+            }
+          },
+          "overlay": {
+            "eyebrow": "身份体系",
+            "title": "登录已开启",
+            "detail": "账号、留存与召回进入产品路线",
+            "tone": "success"
+          }
+        },
+        "guest": {
+          "action": {
+            "desktop": {
+              "file": "web/public/assets/pixel/scenes-v2/options/Q02/guest-action-desktop.webp",
+              "width": 768,
+              "height": 512,
+              "bytes": 67740,
+              "sha256": "46fdcc4b0a12a220dd00fdd6043880e163c70908cdbecafe32b27213918b499c"
+            },
+            "mobile": {
+              "file": "web/public/assets/pixel/scenes-v2/options/Q02/guest-action-mobile.webp",
+              "width": 512,
+              "height": 768,
+              "bytes": 79130,
+              "sha256": "5f7977ae5d18a247b77ed73f8108ac2eb3c7c873c5aed55eb3f3a00f444e186d"
+            }
+          },
+          "resolved": {
+            "desktop": {
+              "file": "web/public/assets/pixel/scenes-v2/options/Q02/guest-resolved-desktop.webp",
+              "width": 768,
+              "height": 512,
+              "bytes": 64166,
+              "sha256": "8dfab8a0b595fe5c95386c46556b4ff8a8b2a97ca73abde6c16f03b8e2eb197a"
+            },
+            "mobile": {
+              "file": "web/public/assets/pixel/scenes-v2/options/Q02/guest-resolved-mobile.webp",
+              "width": 512,
+              "height": 768,
+              "bytes": 68772,
+              "sha256": "52f99def29dd5b60ea0c9f387248d99bbc7704f13935be5ce9cc31781cad75e6"
+            }
+          },
+          "overlay": {
+            "eyebrow": "低摩擦体验",
+            "title": "游客直达",
+            "detail": "不注册，来了直接使用",
+            "tone": "neutral"
+          }
+        }
+      }
+    },
+    "Q03": {
+      "sceneId": "Q03",
+      "brief": "Codex Pro开发会员账单旁的商业化回本与为爱发电双路线",
+      "desktop": {
+        "file": "web/public/assets/pixel/scenes-v2/Q03-desktop.webp",
+        "width": 1536,
+        "height": 1024,
+        "bytes": 194594,
+        "sha256": "b59eafb0b483cc39e67f541b00ea7fc4a1060fb8b0e22432373c463bc0af0051"
+      },
+      "mobile": {
+        "file": "web/public/assets/pixel/scenes-v2/Q03-mobile.webp",
+        "width": 1024,
+        "height": 1536,
+        "bytes": 191496,
+        "sha256": "fbff4aef7bcf62f3821fe93e1cfe11dd785432f1fc3650fb4c33fc61a7d36839"
+      },
+      "optionVariants": {
+        "profit": {
+          "action": {
+            "desktop": {
+              "file": "web/public/assets/pixel/scenes-v2/options/Q03/profit-action-desktop.webp",
+              "width": 768,
+              "height": 512,
+              "bytes": 84040,
+              "sha256": "3fa75dfdbe0d3fab8dc2553df20b144c54cdb143a83389922137865a97e6043d"
+            },
+            "mobile": {
+              "file": "web/public/assets/pixel/scenes-v2/options/Q03/profit-action-mobile.webp",
+              "width": 512,
+              "height": 768,
+              "bytes": 82936,
+              "sha256": "f8586da6c6f58b15d21c31d4117e11e0d9ccea94bff5dea3a8f7f6667c69b369"
+            }
+          },
+          "resolved": {
+            "desktop": {
+              "file": "web/public/assets/pixel/scenes-v2/options/Q03/profit-resolved-desktop.webp",
+              "width": 768,
+              "height": 512,
+              "bytes": 85580,
+              "sha256": "f69823c23d5b6dea720aa0a623ea0df38ef4d542bd205a49919e34054cd98873"
+            },
+            "mobile": {
+              "file": "web/public/assets/pixel/scenes-v2/options/Q03/profit-resolved-mobile.webp",
+              "width": 512,
+              "height": 768,
+              "bytes": 85034,
+              "sha256": "20cea66a381570b87b57b8583f64533c580b0d26c7de44e011a995f554edea64"
+            }
+          },
+          "overlay": {
+            "eyebrow": "CODEX PRO · $200/月",
+            "title": "商业化回本路线",
+            "detail": "这是开发会员投入，不是产品售价",
+            "tone": "brand"
+          }
+        },
+        "love": {
+          "action": {
+            "desktop": {
+              "file": "web/public/assets/pixel/scenes-v2/options/Q03/love-action-desktop.webp",
+              "width": 768,
+              "height": 512,
+              "bytes": 74888,
+              "sha256": "17dc6f9106204c874dc4b4bbcf9c32881c861033a9284c08c8ad40caa4a7f458"
+            },
+            "mobile": {
+              "file": "web/public/assets/pixel/scenes-v2/options/Q03/love-action-mobile.webp",
+              "width": 512,
+              "height": 768,
+              "bytes": 83360,
+              "sha256": "20910c6f559f9ac313ab49180a9560321b722dbd042d001f06b189589fd669f3"
+            }
+          },
+          "resolved": {
+            "desktop": {
+              "file": "web/public/assets/pixel/scenes-v2/options/Q03/love-resolved-desktop.webp",
+              "width": 768,
+              "height": 512,
+              "bytes": 85338,
+              "sha256": "dfbf80f93557fa6a1a6ae487c578aee75a66a9dae815dc6e559965ea874dd2f0"
+            },
+            "mobile": {
+              "file": "web/public/assets/pixel/scenes-v2/options/Q03/love-resolved-mobile.webp",
+              "width": 512,
+              "height": 768,
+              "bytes": 86096,
+              "sha256": "e62929933230f530a0c052d270cc5f377231b8576782f9016701793037597521"
+            }
+          },
+          "overlay": {
+            "eyebrow": "免费开放",
+            "title": "为爱发电路线",
+            "detail": "爱心很大，会员账单照扣",
+            "tone": "neutral"
+          }
+        }
+      }
+    },
+    "Q04": {
+      "sceneId": "Q04",
+      "brief": "个人项目跨向公司主体的设立服务大厅、执照轮廓和公司章",
+      "desktop": {
+        "file": "web/public/assets/pixel/scenes-v2/Q04-desktop.webp",
+        "width": 1536,
+        "height": 1024,
+        "bytes": 309678,
+        "sha256": "8b840e4dda5cfcc604e2350b4c5fdcd2dce07506a395ff3566e769a1bb7831d4"
+      },
+      "mobile": {
+        "file": "web/public/assets/pixel/scenes-v2/Q04-mobile.webp",
+        "width": 1024,
+        "height": 1536,
+        "bytes": 328410,
+        "sha256": "0d79a7973af69f5e959cc874981fbaedd7958f5ce4e4bab83a9665448ee3d9df"
+      },
+      "optionVariants": {
+        "found-company": {
+          "action": {
+            "desktop": {
+              "file": "web/public/assets/pixel/scenes-v2/options/Q04/found-company-action-desktop.webp",
+              "width": 768,
+              "height": 512,
+              "bytes": 75240,
+              "sha256": "0711eb3e34ebbd350837fb523aed35c274c161aaf9e1f0ae93a2618bb8fcb0c4"
+            },
+            "mobile": {
+              "file": "web/public/assets/pixel/scenes-v2/options/Q04/found-company-action-mobile.webp",
+              "width": 512,
+              "height": 768,
+              "bytes": 77466,
+              "sha256": "b34627bae2524f40203b17d8e90971836ff3ed86549378b3c672c904637c8d1e"
+            }
+          },
+          "resolved": {
+            "desktop": {
+              "file": "web/public/assets/pixel/scenes-v2/options/Q04/found-company-resolved-desktop.webp",
+              "width": 768,
+              "height": 512,
+              "bytes": 76124,
+              "sha256": "cc76eeb411e442cd5cd7733c9dd87e845f7136b4571b0f8f68e53d9daafeaa50"
+            },
+            "mobile": {
+              "file": "web/public/assets/pixel/scenes-v2/options/Q04/found-company-resolved-mobile.webp",
+              "width": 512,
+              "height": 768,
+              "bytes": 78648,
+              "sha256": "2667a52786c5afc85400fbc7e7ef8b3fd7e0c2cf522987ccbee6855e7f870502"
+            }
+          },
+          "overlay": {
+            "eyebrow": "个人开发者 → 企业主体",
+            "title": "一人公司筹备",
+            "detail": "承担公司设立与持续经营责任",
+            "tone": "success"
+          }
+        }
+      }
+    },
+    "Q05": {
+      "sceneId": "Q05",
+      "brief": "公司注册代办窗口、吞下付款券的献祭火炉和受理资料夹",
+      "desktop": {
+        "file": "web/public/assets/pixel/scenes-v2/Q05-desktop.webp",
+        "width": 1536,
+        "height": 1024,
+        "bytes": 225118,
+        "sha256": "39fdb93005c00b0f36333e64937be6c3cc310477defdac2cedc278611ee783ed"
+      },
+      "mobile": {
+        "file": "web/public/assets/pixel/scenes-v2/Q05-mobile.webp",
+        "width": 1024,
+        "height": 1536,
+        "bytes": 246170,
+        "sha256": "38a18d21172dbb5eb4877972b1be73b12ce20a9f06160354a89c160c91456e8c"
+      },
+      "optionVariants": {
+        "register": {
+          "action": {
+            "desktop": {
+              "file": "web/public/assets/pixel/scenes-v2/options/Q05/register-action-desktop.webp",
+              "width": 768,
+              "height": 512,
+              "bytes": 55028,
+              "sha256": "a8fc6f55f8de412dd6362ba822e9b3e36bb0eb9454842c77aa69bde1eec51ad1"
+            },
+            "mobile": {
+              "file": "web/public/assets/pixel/scenes-v2/options/Q05/register-action-mobile.webp",
+              "width": 512,
+              "height": 768,
+              "bytes": 61938,
+              "sha256": "b1269a6d3a21149d8717b7ea7ce8814f91a68d0642c74fc7f5644a41a7556f4f"
+            }
+          },
+          "resolved": {
+            "desktop": {
+              "file": "web/public/assets/pixel/scenes-v2/options/Q05/register-resolved-desktop.webp",
+              "width": 768,
+              "height": 512,
+              "bytes": 52648,
+              "sha256": "327990ecaef383e6198c66f7e3da18a59e8f2ff5ec2c8bcf8e1b182069e851a8"
+            },
+            "mobile": {
+              "file": "web/public/assets/pixel/scenes-v2/options/Q05/register-resolved-mobile.webp",
+              "width": 512,
+              "height": 768,
+              "bytes": 59610,
+              "sha256": "8902122c1efcd297bf6fe1fa81376b06838641bf8c119417c26733212b88f872"
+            }
+          },
+          "overlay": {
+            "eyebrow": "GPT PRO 5x 已投入注册火炉",
+            "title": "公司注册代办已受理",
+            "detail": "实付 ¥500 · 预计 1–2 天",
+            "tone": "warning"
+          }
+        }
+      }
+    },
+    "Q06": {
+      "sceneId": "Q06",
+      "brief": "有桌椅电源的真实工位与只有地址证明和信箱的挂靠方案",
+      "desktop": {
+        "file": "web/public/assets/pixel/scenes-v2/Q06-desktop.webp",
+        "width": 1536,
+        "height": 1024,
+        "bytes": 296976,
+        "sha256": "e15d930381a08e7fc182cad1ac42fc568a7381847d0c400cf8d3bd87a27cbf5b"
+      },
+      "mobile": {
+        "file": "web/public/assets/pixel/scenes-v2/Q06-mobile.webp",
+        "width": 1024,
+        "height": 1536,
+        "bytes": 178336,
+        "sha256": "572750f13e4caa41e2b0322f845c3932ab4f68883161ef86b76a22c4cea257d9"
+      },
+      "optionVariants": {
+        "desk": {
+          "action": {
+            "desktop": {
+              "file": "web/public/assets/pixel/scenes-v2/options/Q06/desk-action-desktop.webp",
+              "width": 768,
+              "height": 512,
+              "bytes": 268190,
+              "sha256": "9a76f8bdfa3d68db31f2dcced89e1d377489870cc4969092698bf4dc0375e819"
+            },
+            "mobile": {
+              "file": "web/public/assets/pixel/scenes-v2/options/Q06/desk-action-mobile.webp",
+              "width": 512,
+              "height": 768,
+              "bytes": 42774,
+              "sha256": "ba7cefb5df40c71941bc7f1c6ce999784076f7abb3fa11d41df5da3446a81012"
+            }
+          },
+          "resolved": {
+            "desktop": {
+              "file": "web/public/assets/pixel/scenes-v2/options/Q06/desk-resolved-desktop.webp",
+              "width": 768,
+              "height": 512,
+              "bytes": 85090,
+              "sha256": "28dded94081c74f99654609a47f122dafa19d264a0540f1e18b0c6499a9fa416"
+            },
+            "mobile": {
+              "file": "web/public/assets/pixel/scenes-v2/options/Q06/desk-resolved-mobile.webp",
+              "width": 512,
+              "height": 768,
+              "bytes": 90486,
+              "sha256": "7a92e61913955d4b9fea0bf643333bc9b61b56ba894dd1f2b2c340586ffde55a"
+            }
+          },
+          "overlay": {
+            "eyebrow": "真实可办公地址",
+            "title": "工位租赁",
+            "detail": "¥1500/月 · 约 ¥1.8万/年",
+            "tone": "warning"
+          }
+        },
+        "hosted": {
+          "action": {
+            "desktop": {
+              "file": "web/public/assets/pixel/scenes-v2/options/Q06/hosted-action-desktop.webp",
+              "width": 768,
+              "height": 512,
+              "bytes": 316432,
+              "sha256": "2e01718324686a8ffb80945ffbc140eaa0e59d65380f498850a82430c935ddfd"
+            },
+            "mobile": {
+              "file": "web/public/assets/pixel/scenes-v2/options/Q06/hosted-action-mobile.webp",
+              "width": 512,
+              "height": 768,
+              "bytes": 45898,
+              "sha256": "68610df0b6125d61c6eda9db24a4228e8aa2d5dda39b80c2dd5951bf28ddc998"
+            }
+          },
+          "resolved": {
+            "desktop": {
+              "file": "web/public/assets/pixel/scenes-v2/options/Q06/hosted-resolved-desktop.webp",
+              "width": 768,
+              "height": 512,
+              "bytes": 69200,
+              "sha256": "f896bb777bc49318201940b6c03460c0073998f6d752014970fc9c772d852cbe"
+            },
+            "mobile": {
+              "file": "web/public/assets/pixel/scenes-v2/options/Q06/hosted-resolved-mobile.webp",
+              "width": 512,
+              "height": 768,
+              "bytes": 79386,
+              "sha256": "26692447e8e40d169f07efc48e8450f7b860d3df506ba78049a9976514d3889a"
+            }
+          },
+          "overlay": {
+            "eyebrow": "只有注册地址材料",
+            "title": "地址挂靠",
+            "detail": "地址证明 + 集中信箱 · ¥2000/年",
+            "tone": "success"
+          }
+        }
+      }
+    },
+    "Q07": {
+      "sceneId": "Q07",
+      "brief": "银行企业业务柜台、开户材料、对公账户回执与网银UKey",
+      "desktop": {
+        "file": "web/public/assets/pixel/scenes-v2/Q07-desktop.webp",
+        "width": 1536,
+        "height": 1024,
+        "bytes": 339262,
+        "sha256": "dbf2521a4018b78022b79f51ee07d5eee6e82a88862cd9149ff3a4ae2a7ae61a"
+      },
+      "mobile": {
+        "file": "web/public/assets/pixel/scenes-v2/Q07-mobile.webp",
+        "width": 1024,
+        "height": 1536,
+        "bytes": 170736,
+        "sha256": "b1f05cc028c2a9b7d1212569ef97609cee600bda3883f4d5319ea0121ff73f59"
+      },
+      "optionVariants": {
+        "open-bank-account": {
+          "action": {
+            "desktop": {
+              "file": "web/public/assets/pixel/scenes-v2/options/Q07/open-bank-account-action-desktop.webp",
+              "width": 768,
+              "height": 512,
+              "bytes": 44328,
+              "sha256": "4ed8d1c42a36350abe1d81e9f5b6204a784a38c2d8e73a8813a58dc9366c36b0"
+            },
+            "mobile": {
+              "file": "web/public/assets/pixel/scenes-v2/options/Q07/open-bank-account-action-mobile.webp",
+              "width": 512,
+              "height": 768,
+              "bytes": 42776,
+              "sha256": "d1439f6a204be38c94ad11994fc4d856ad27e60474d170557fc693046ac9018b"
+            }
+          },
+          "resolved": {
+            "desktop": {
+              "file": "web/public/assets/pixel/scenes-v2/options/Q07/open-bank-account-resolved-desktop.webp",
+              "width": 768,
+              "height": 512,
+              "bytes": 45076,
+              "sha256": "6235e8aae60657f081ff0a5ea844516715abd8a51b62f449758a85b14dfa5cfd"
+            },
+            "mobile": {
+              "file": "web/public/assets/pixel/scenes-v2/options/Q07/open-bank-account-resolved-mobile.webp",
+              "width": 512,
+              "height": 768,
+              "bytes": 42214,
+              "sha256": "cab6b015bea91017540ff43b08faefd79e1ad8fbd41427d92426f752a10dd29d"
+            }
+          },
+          "overlay": {
+            "eyebrow": "银行企业业务",
+            "title": "对公账户已开立",
+            "detail": "开户回执 + 企业网银 UKey · ¥500/年",
+            "tone": "success"
+          }
+        }
+      }
+    },
+    "Q08": {
+      "sceneId": "Q08",
+      "brief": "微信支付宝等多张渠道卡片组成的真实商户支付配置页",
+      "desktop": {
+        "file": "web/public/assets/pixel/scenes-v2/Q08-desktop.webp",
+        "width": 1536,
+        "height": 1024,
+        "bytes": 250192,
+        "sha256": "52f18a7ba72bd25e33552b6f3f3ed60db4685287c54be78f2a5ee81f21b01cb7"
+      },
+      "mobile": {
+        "file": "web/public/assets/pixel/scenes-v2/Q08-mobile.webp",
+        "width": 1024,
+        "height": 1536,
+        "bytes": 233082,
+        "sha256": "d85f14eb56c31c5e01214bdbd3f33710dff22e9615baa12240fa74b89db73311"
+      },
+      "optionVariants": {
+        "wechat-pay": {
+          "action": {
+            "desktop": {
+              "file": "web/public/assets/pixel/scenes-v2/options/Q08/wechat-pay-action-desktop.webp",
+              "width": 768,
+              "height": 512,
+              "bytes": 47610,
+              "sha256": "0b8457232589a6922c34dd99daf0e824ecd45c33452c1d8bba27ba01e4ce36b3"
+            },
+            "mobile": {
+              "file": "web/public/assets/pixel/scenes-v2/options/Q08/wechat-pay-action-mobile.webp",
+              "width": 512,
+              "height": 768,
+              "bytes": 45886,
+              "sha256": "59b8bb884acb9cb8770468644622dc2a214af222ac985ba00f1be063de688702"
+            }
+          },
+          "resolved": {
+            "desktop": {
+              "file": "web/public/assets/pixel/scenes-v2/options/Q08/wechat-pay-resolved-desktop.webp",
+              "width": 768,
+              "height": 512,
+              "bytes": 46646,
+              "sha256": "176c8b35defbe0361a0e27ddb49b456cf227a12002f36267f3cc75283de34669"
+            },
+            "mobile": {
+              "file": "web/public/assets/pixel/scenes-v2/options/Q08/wechat-pay-resolved-mobile.webp",
+              "width": 512,
+              "height": 768,
+              "bytes": 44862,
+              "sha256": "69d4de6183914594d2c4f87e20a28884935b4ea0c8fc2b65f4ef3bdbb05d66ae"
+            }
+          },
+          "overlay": {
+            "eyebrow": "商户收银台",
+            "title": "微信支付已启用",
+            "detail": "认证预算 ¥300/年 · 交易费按量",
+            "tone": "success"
+          }
+        },
+        "alipay": {
+          "action": {
+            "desktop": {
+              "file": "web/public/assets/pixel/scenes-v2/options/Q08/alipay-action-desktop.webp",
+              "width": 768,
+              "height": 512,
+              "bytes": 48476,
+              "sha256": "7b4c7c00bab01da1b71fccd6927d2761fa2629f0af9bc107d2b15a2f0277aed0"
+            },
+            "mobile": {
+              "file": "web/public/assets/pixel/scenes-v2/options/Q08/alipay-action-mobile.webp",
+              "width": 512,
+              "height": 768,
+              "bytes": 47298,
+              "sha256": "6333c6272dccaeabaed5da40efcf140537594707f4ea83a3670a2de505c50818"
+            }
+          },
+          "resolved": {
+            "desktop": {
+              "file": "web/public/assets/pixel/scenes-v2/options/Q08/alipay-resolved-desktop.webp",
+              "width": 768,
+              "height": 512,
+              "bytes": 45190,
+              "sha256": "5da7b4015e0920f38c01a56e59217e7c42d4867ca49655e7196f9ead59e99785"
+            },
+            "mobile": {
+              "file": "web/public/assets/pixel/scenes-v2/options/Q08/alipay-resolved-mobile.webp",
+              "width": 512,
+              "height": 768,
+              "bytes": 43836,
+              "sha256": "698c27969af21e48e750c403efab96478ff04ea9353a5dfcf329ca80a40aada6"
+            }
+          },
+          "overlay": {
+            "eyebrow": "商户收银台",
+            "title": "支付宝已启用",
+            "detail": "无认证费 · 交易费按量",
+            "tone": "success"
+          }
+        },
+        "both": {
+          "action": {
+            "desktop": {
+              "file": "web/public/assets/pixel/scenes-v2/options/Q08/both-action-desktop.webp",
+              "width": 768,
+              "height": 512,
+              "bytes": 63434,
+              "sha256": "a6b8d6d72a291515f0623ec81e55ab0b41da7e5de72eca909eada89d5d5074df"
+            },
+            "mobile": {
+              "file": "web/public/assets/pixel/scenes-v2/options/Q08/both-action-mobile.webp",
+              "width": 512,
+              "height": 768,
+              "bytes": 65306,
+              "sha256": "4d1e0db6561b4a52e0f9c5cc81f11d15959a65a0a5e093d07096a842f9d506cc"
+            }
+          },
+          "resolved": {
+            "desktop": {
+              "file": "web/public/assets/pixel/scenes-v2/options/Q08/both-resolved-desktop.webp",
+              "width": 768,
+              "height": 512,
+              "bytes": 59742,
+              "sha256": "6b6b239aa414b58891dbafcbfc45559d4fb57244054acb2855c895be09ab8459"
+            },
+            "mobile": {
+              "file": "web/public/assets/pixel/scenes-v2/options/Q08/both-resolved-mobile.webp",
+              "width": 512,
+              "height": 768,
+              "bytes": 65870,
+              "sha256": "aff91d46691236220d0bc15b712932449daf55fa30db92b7c4c0a911cb8b1824"
+            }
+          },
+          "overlay": {
+            "eyebrow": "小孩子才做选择",
+            "title": "微信支付 + 支付宝",
+            "detail": "两种付款方式同时启用",
+            "tone": "success"
+          }
+        }
+      }
+    },
+    "Q09": {
+      "sceneId": "Q09",
+      "brief": "代理记账公司、票据申报日历以及公司账和个人账分离",
+      "desktop": {
+        "file": "web/public/assets/pixel/scenes-v2/Q09-desktop.webp",
+        "width": 1536,
+        "height": 1024,
+        "bytes": 288846,
+        "sha256": "1d9082801487e926313593a84226621d255c02999e06b369c075992ec22b7c62"
+      },
+      "mobile": {
+        "file": "web/public/assets/pixel/scenes-v2/Q09-mobile.webp",
+        "width": 1024,
+        "height": 1536,
+        "bytes": 348296,
+        "sha256": "a08687e6659160358e8e7bcbd0f5da0203923c3e32705060d41b8a5e8f9a57b7"
+      },
+      "optionVariants": {
+        "agency-bookkeeping": {
+          "action": {
+            "desktop": {
+              "file": "web/public/assets/pixel/scenes-v2/options/Q09/agency-bookkeeping-action-desktop.webp",
+              "width": 768,
+              "height": 512,
+              "bytes": 345488,
+              "sha256": "3f301d21661d9c4a2ae6e57f9586d25966f95826db28b89dc8974cf57874b93e"
+            },
+            "mobile": {
+              "file": "web/public/assets/pixel/scenes-v2/options/Q09/agency-bookkeeping-action-mobile.webp",
+              "width": 512,
+              "height": 768,
+              "bytes": 48874,
+              "sha256": "0a5d9a91378899e46c6bef412843c01e1e8386e3729760aa14b0b1b18fdbf223"
+            }
+          },
+          "resolved": {
+            "desktop": {
+              "file": "web/public/assets/pixel/scenes-v2/options/Q09/agency-bookkeeping-resolved-desktop.webp",
+              "width": 768,
+              "height": 512,
+              "bytes": 72402,
+              "sha256": "a274174b3132f0455cb618926da1457a6e460aca6e9ace69a0446e841fe7da92"
+            },
+            "mobile": {
+              "file": "web/public/assets/pixel/scenes-v2/options/Q09/agency-bookkeeping-resolved-mobile.webp",
+              "width": 512,
+              "height": 768,
+              "bytes": 68400,
+              "sha256": "9123596330109358ff60f4e08d15d47e1dfd4169fe2016eaf35b4751b7f6e884"
+            }
+          },
+          "overlay": {
+            "eyebrow": "公司账 ｜ 个人账",
+            "title": "代理记账已接单",
+            "detail": "¥2000/年 · 每月仍需对接",
+            "tone": "success"
+          }
+        },
+        "self-bookkeeping": {
+          "action": {
+            "desktop": {
+              "file": "web/public/assets/pixel/scenes-v2/options/Q09/self-bookkeeping-action-desktop.webp",
+              "width": 768,
+              "height": 512,
+              "bytes": 341478,
+              "sha256": "f9b7fca6c3715f00851a4ed74b78b26ca42e25d107a4d0b3fdbffbc9b11476f9"
+            },
+            "mobile": {
+              "file": "web/public/assets/pixel/scenes-v2/options/Q09/self-bookkeeping-action-mobile.webp",
+              "width": 512,
+              "height": 768,
+              "bytes": 46806,
+              "sha256": "2e253783ca1281a1c754b21a4cbafdcbc0bdef93ecadad675b32d38f3ffe50cd"
+            }
+          },
+          "resolved": {
+            "desktop": {
+              "file": "web/public/assets/pixel/scenes-v2/options/Q09/self-bookkeeping-resolved-desktop.webp",
+              "width": 768,
+              "height": 512,
+              "bytes": 72724,
+              "sha256": "f364cf7444529734fcb507daf49f73f55de8482d9ac95edc9072643e87f764df"
+            },
+            "mobile": {
+              "file": "web/public/assets/pixel/scenes-v2/options/Q09/self-bookkeeping-resolved-mobile.webp",
+              "width": 512,
+              "height": 768,
+              "bytes": 72750,
+              "sha256": "be03acc8cf8ed55fb51002b51d7d0a5bcc1856f10885760c840e5cd00b752f84"
+            }
+          },
+          "overlay": {
+            "eyebrow": "公司账 ｜ 个人账",
+            "title": "自己记账申报",
+            "detail": "不直接付费 · 约 4h/月",
+            "tone": "neutral"
+          }
+        }
+      }
+    },
+    "Q10": {
+      "sceneId": "Q10",
+      "brief": "开发桌上的四张Coding AI订阅卡、代码编辑器与空钱包",
+      "desktop": {
+        "file": "web/public/assets/pixel/scenes-v2/Q10-desktop.webp",
+        "width": 1536,
+        "height": 1024,
+        "bytes": 290794,
+        "sha256": "e855569e62bcb26be1184bf273c07dd6d2dd46fbc6abb86e639ac98ed3347e85"
+      },
+      "mobile": {
+        "file": "web/public/assets/pixel/scenes-v2/Q10-mobile.webp",
+        "width": 1024,
+        "height": 1536,
+        "bytes": 274036,
+        "sha256": "fce4e7a18b9036b3193801e78c2e36428113105968c6c99ff7c7fc6300bfc7b1"
+      },
+      "optionVariants": {
+        "gpt-ultra": {
+          "action": {
+            "desktop": {
+              "file": "web/public/assets/pixel/scenes-v2/options/Q10/gpt-ultra-action-desktop.webp",
+              "width": 768,
+              "height": 512,
+              "bytes": 75798,
+              "sha256": "6f1f15ad870245233220359ed2aa19df88952f8686dc7ea94228a2829608d4c4"
+            },
+            "mobile": {
+              "file": "web/public/assets/pixel/scenes-v2/options/Q10/gpt-ultra-action-mobile.webp",
+              "width": 512,
+              "height": 768,
+              "bytes": 74844,
+              "sha256": "c8612b4d7459d8a21e51560b3da958f73b729d14df22ed6522b089ecf991b6b5"
+            }
+          },
+          "resolved": {
+            "desktop": {
+              "file": "web/public/assets/pixel/scenes-v2/options/Q10/gpt-ultra-resolved-desktop.webp",
+              "width": 768,
+              "height": 512,
+              "bytes": 77986,
+              "sha256": "f7eec401fa13e61c878dae77f3013b96d313ffb910b6bc4706181ef072cb5f96"
+            },
+            "mobile": {
+              "file": "web/public/assets/pixel/scenes-v2/options/Q10/gpt-ultra-resolved-mobile.webp",
+              "width": 512,
+              "height": 768,
+              "bytes": 47828,
+              "sha256": "68294565a1264be5ac15e3f82cad2faa5e9263d1b6594d95a321ab8d5a6df43a"
+            }
+          },
+          "overlay": {
+            "eyebrow": "Coding AI",
+            "title": "GPT 5.6 Ultra · $200/月",
+            "detail": "开发工具订阅，不是产品运行时 API",
+            "tone": "brand"
+          }
+        },
+        "glm-pro": {
+          "action": {
+            "desktop": {
+              "file": "web/public/assets/pixel/scenes-v2/options/Q10/glm-pro-action-desktop.webp",
+              "width": 768,
+              "height": 512,
+              "bytes": 79290,
+              "sha256": "78866cc53d2ace58df1fa88c2040f378148ba8ae4997bcddd5819dda6464f2dd"
+            },
+            "mobile": {
+              "file": "web/public/assets/pixel/scenes-v2/options/Q10/glm-pro-action-mobile.webp",
+              "width": 512,
+              "height": 768,
+              "bytes": 81190,
+              "sha256": "55f1adb98c55a05aee62f2674ab7f92e9c99b53fe5b3286e199e760e67d06317"
+            }
+          },
+          "resolved": {
+            "desktop": {
+              "file": "web/public/assets/pixel/scenes-v2/options/Q10/glm-pro-resolved-desktop.webp",
+              "width": 768,
+              "height": 512,
+              "bytes": 75476,
+              "sha256": "47f31ab48298d0132c00ffc04a2a8ffcc3344f82205daab1b31ca26ea9b0857c"
+            },
+            "mobile": {
+              "file": "web/public/assets/pixel/scenes-v2/options/Q10/glm-pro-resolved-mobile.webp",
+              "width": 512,
+              "height": 768,
+              "bytes": 77354,
+              "sha256": "8d81e43d1ac8f5bd9844683bd892f3db22b96de88d12ad860bac08eab09d16ca"
+            }
+          },
+          "overlay": {
+            "eyebrow": "Coding AI",
+            "title": "GLM 5.2",
+            "detail": "¥149/月",
+            "tone": "brand"
+          }
+        },
+        "kimi-code": {
+          "action": {
+            "desktop": {
+              "file": "web/public/assets/pixel/scenes-v2/options/Q10/kimi-code-action-desktop.webp",
+              "width": 768,
+              "height": 512,
+              "bytes": 61342,
+              "sha256": "63a8e10cb2ddbf54acb080d3f0cf505c2a919f1989c369f355c6cf407cf65f39"
+            },
+            "mobile": {
+              "file": "web/public/assets/pixel/scenes-v2/options/Q10/kimi-code-action-mobile.webp",
+              "width": 512,
+              "height": 768,
+              "bytes": 59766,
+              "sha256": "1ea4f8cf831b8b99ff2f9a18b6435e9f2688a811584f9e91b697fd051a33aa74"
+            }
+          },
+          "resolved": {
+            "desktop": {
+              "file": "web/public/assets/pixel/scenes-v2/options/Q10/kimi-code-resolved-desktop.webp",
+              "width": 768,
+              "height": 512,
+              "bytes": 37388,
+              "sha256": "4599006b59182ce2236d48721cc29b7a41776145eb27f6ababd0929d9af87feb"
+            },
+            "mobile": {
+              "file": "web/public/assets/pixel/scenes-v2/options/Q10/kimi-code-resolved-mobile.webp",
+              "width": 512,
+              "height": 768,
+              "bytes": 40062,
+              "sha256": "d495c02e8470edd62f11d3b2f88e410e936dd7ca03d1f954e8ad274c5779cb93"
+            }
+          },
+          "overlay": {
+            "eyebrow": "Coding AI",
+            "title": "Kimi K3",
+            "detail": "约 ¥699/月",
+            "tone": "brand"
+          }
+        },
+        "free-tools": {
+          "action": {
+            "desktop": {
+              "file": "web/public/assets/pixel/scenes-v2/options/Q10/free-tools-action-desktop.webp",
+              "width": 768,
+              "height": 512,
+              "bytes": 61498,
+              "sha256": "551062a0a354d6cf6774594f91dde488df091d5c223f87186c40740ed65bba5a"
+            },
+            "mobile": {
+              "file": "web/public/assets/pixel/scenes-v2/options/Q10/free-tools-action-mobile.webp",
+              "width": 512,
+              "height": 768,
+              "bytes": 58740,
+              "sha256": "ee917ec7fe545112b35fba4af9b23e05b3ded913df6ea8d6c92e5bd9c19fa245"
+            }
+          },
+          "resolved": {
+            "desktop": {
+              "file": "web/public/assets/pixel/scenes-v2/options/Q10/free-tools-resolved-desktop.webp",
+              "width": 768,
+              "height": 512,
+              "bytes": 84842,
+              "sha256": "392d237e6516f1bb4ac3869eca6d9ab3a218da74f7ff3ac9cc2a3937bd951d76"
+            },
+            "mobile": {
+              "file": "web/public/assets/pixel/scenes-v2/options/Q10/free-tools-resolved-mobile.webp",
+              "width": 512,
+              "height": 768,
+              "bytes": 47426,
+              "sha256": "42022f5cafbd86135b6a6394637ad6b2d76ddab270fe3b966330590f7c8d428c"
+            }
+          },
+          "overlay": {
+            "eyebrow": "Coding AI",
+            "title": "免费 / 开源工具",
+            "detail": "钱包空了，代码还得继续",
+            "tone": "neutral"
+          }
+        }
+      }
+    },
+    "Q11": {
+      "sceneId": "Q11",
+      "brief": "最终产品里的AI功能开关、Token计量和供应商合规材料",
+      "desktop": {
+        "file": "web/public/assets/pixel/scenes-v2/Q11-desktop.webp",
+        "width": 1536,
+        "height": 1024,
+        "bytes": 175622,
+        "sha256": "a50bd97250a469559f1524c6aa8a5c247b3e692d61b4bdde316ad1038e5e3604"
+      },
+      "mobile": {
+        "file": "web/public/assets/pixel/scenes-v2/Q11-mobile.webp",
+        "width": 1024,
+        "height": 1536,
+        "bytes": 158110,
+        "sha256": "a059280679ba8d46dfcba5922c4660831ab436ae4a5cd8ca482d507d8fc8ef7c"
+      },
+      "optionVariants": {
+        "no-runtime-ai": {
+          "action": {
+            "desktop": {
+              "file": "web/public/assets/pixel/scenes-v2/options/Q11/no-runtime-ai-action-desktop.webp",
+              "width": 768,
+              "height": 512,
+              "bytes": 339930,
+              "sha256": "080216295f4a2269f4c19f1d333682d52f1d5eb5e22d1e3e80ff70b5a1fa2f81"
+            },
+            "mobile": {
+              "file": "web/public/assets/pixel/scenes-v2/options/Q11/no-runtime-ai-action-mobile.webp",
+              "width": 512,
+              "height": 768,
+              "bytes": 331648,
+              "sha256": "259e6469eb2bec5a20c7493813e7ad0258e9cec83b970b4bd1b7c909cee22054"
+            }
+          },
+          "resolved": {
+            "desktop": {
+              "file": "web/public/assets/pixel/scenes-v2/options/Q11/no-runtime-ai-resolved-desktop.webp",
+              "width": 768,
+              "height": 512,
+              "bytes": 63020,
+              "sha256": "d155d88c3c523f276615eafacfa4b02aff62d4a9bd35ef293171d769ad6bdc7c"
+            },
+            "mobile": {
+              "file": "web/public/assets/pixel/scenes-v2/options/Q11/no-runtime-ai-resolved-mobile.webp",
+              "width": 512,
+              "height": 768,
+              "bytes": 64918,
+              "sha256": "e8ebd43e2f498379098c3fb9704fb79f631cd83b5b5bd90acb3f57fcbfd3fe08"
+            }
+          },
+          "overlay": {
+            "eyebrow": "产品运行时",
+            "title": "AI 功能 OFF",
+            "detail": "普通表单、搜索与规则仍然可用",
+            "tone": "success"
+          }
+        },
+        "runtime-ai": {
+          "action": {
+            "desktop": {
+              "file": "web/public/assets/pixel/scenes-v2/options/Q11/runtime-ai-action-desktop.webp",
+              "width": 768,
+              "height": 512,
+              "bytes": 47690,
+              "sha256": "f24b79e379b581c7912c28439f1ebe0fa0c6dd7be3c4b1ab3969fcca1aa62686"
+            },
+            "mobile": {
+              "file": "web/public/assets/pixel/scenes-v2/options/Q11/runtime-ai-action-mobile.webp",
+              "width": 512,
+              "height": 768,
+              "bytes": 44446,
+              "sha256": "e8dc53e9b57087d13dfc4bd33cd6c42c82de6a59e7fe1be88c50b36512377d3f"
+            }
+          },
+          "resolved": {
+            "desktop": {
+              "file": "web/public/assets/pixel/scenes-v2/options/Q11/runtime-ai-resolved-desktop.webp",
+              "width": 768,
+              "height": 512,
+              "bytes": 72786,
+              "sha256": "2e792efa2dff3f0372feb90244c30050f1adf0c030f80dfaa1b1fae151be0fb9"
+            },
+            "mobile": {
+              "file": "web/public/assets/pixel/scenes-v2/options/Q11/runtime-ai-resolved-mobile.webp",
+              "width": 512,
+              "height": 768,
+              "bytes": 73406,
+              "sha256": "d6947ab510e98401558cc5e3ca8f385820c2f04ad234b3f9dd05f708034e9a14"
+            }
+          },
+          "overlay": {
+            "eyebrow": "产品运行时",
+            "title": "AI 功能 ON · TOKEN 按量",
+            "detail": "内容审核 + 企业认证 + 供应商合同",
+            "tone": "brand"
+          }
+        }
+      }
+    },
+    "Q12": {
+      "sceneId": "Q12",
+      "brief": "localhost浏览器、域名购物车、SSL安全锁与DNS解析表",
+      "desktop": {
+        "file": "web/public/assets/pixel/scenes-v2/Q12-desktop.webp",
+        "width": 1536,
+        "height": 1024,
+        "bytes": 317238,
+        "sha256": "3bc192e36aef43d7c0dd9f5be181df05e52776e04571ff34bd84b0314e12c162"
+      },
+      "mobile": {
+        "file": "web/public/assets/pixel/scenes-v2/Q12-mobile.webp",
+        "width": 1024,
+        "height": 1536,
+        "bytes": 345046,
+        "sha256": "bbeebf69b7274838be1414abf4d66b227dddbd52cdd379775499d6b11e920047"
+      },
+      "optionVariants": {
+        "buy-domain-stack": {
+          "action": {
+            "desktop": {
+              "file": "web/public/assets/pixel/scenes-v2/options/Q12/buy-domain-stack-action-desktop.webp",
+              "width": 768,
+              "height": 512,
+              "bytes": 41696,
+              "sha256": "f228259a5d2ae9a5c80da362e434edd1ed0318767c44e5451188708370f463c8"
+            },
+            "mobile": {
+              "file": "web/public/assets/pixel/scenes-v2/options/Q12/buy-domain-stack-action-mobile.webp",
+              "width": 512,
+              "height": 768,
+              "bytes": 40472,
+              "sha256": "b901eaa60d8860d31feddfd1d95bf9d77123881d088969725725ea072ffb2bd4"
+            }
+          },
+          "resolved": {
+            "desktop": {
+              "file": "web/public/assets/pixel/scenes-v2/options/Q12/buy-domain-stack-resolved-desktop.webp",
+              "width": 768,
+              "height": 512,
+              "bytes": 41128,
+              "sha256": "38edf5805b66cf87c92e19c15b5eafb31465a62607121602583611cb4b46aaec"
+            },
+            "mobile": {
+              "file": "web/public/assets/pixel/scenes-v2/options/Q12/buy-domain-stack-resolved-mobile.webp",
+              "width": 512,
+              "height": 768,
+              "bytes": 40894,
+              "sha256": "6236a85bdcbbe189f686d3ead01ab9d91ced01f39e27537af3b1e04703819c53"
+            }
+          },
+          "overlay": {
+            "eyebrow": "DOMAIN + SSL + DNS",
+            "title": "localhost → https://example.com",
+            "detail": "网址三件套已配置 · ¥300",
+            "tone": "success"
+          }
+        }
+      }
+    },
+    "Q13": {
+      "sceneId": "Q13",
+      "brief": "带+86手机号和验证码输入框的短信登录页与套餐卡",
+      "desktop": {
+        "file": "web/public/assets/pixel/scenes-v2/Q13-desktop.webp",
+        "width": 1536,
+        "height": 1024,
+        "bytes": 312310,
+        "sha256": "ecd1ad961b8323782bb2be90a4ec78931dea219eb91c66ca845b3374ba4a71e4"
+      },
+      "mobile": {
+        "file": "web/public/assets/pixel/scenes-v2/Q13-mobile.webp",
+        "width": 1024,
+        "height": 1536,
+        "bytes": 321456,
+        "sha256": "7a18e37245d35c043c201d155ab38979801beca016578f1c248946bb3595f5fb"
+      },
+      "optionVariants": {
+        "sms-login": {
+          "action": {
+            "desktop": {
+              "file": "web/public/assets/pixel/scenes-v2/options/Q13/sms-login-action-desktop.webp",
+              "width": 768,
+              "height": 512,
+              "bytes": 77684,
+              "sha256": "83798f37253a2e36324cdd6e31d9307aaa659ac4aab285e2901c19585786741f"
+            },
+            "mobile": {
+              "file": "web/public/assets/pixel/scenes-v2/options/Q13/sms-login-action-mobile.webp",
+              "width": 512,
+              "height": 768,
+              "bytes": 76558,
+              "sha256": "0145445b4184d4a2b19fede36dfa3f357dbb8ec5f98c65ef097bba33bfc455c1"
+            }
+          },
+          "resolved": {
+            "desktop": {
+              "file": "web/public/assets/pixel/scenes-v2/options/Q13/sms-login-resolved-desktop.webp",
+              "width": 768,
+              "height": 512,
+              "bytes": 76044,
+              "sha256": "83af0575ae82ff31fb67d7d0e5d9a98424578a7c472f498327ec55f30c5d683d"
+            },
+            "mobile": {
+              "file": "web/public/assets/pixel/scenes-v2/options/Q13/sms-login-resolved-mobile.webp",
+              "width": 512,
+              "height": 768,
+              "bytes": 75398,
+              "sha256": "c63c05e3ee66346c506c8d9062e95bfc260c01ea9042167fd71e9feb6909d2d0"
+            }
+          },
+          "overlay": {
+            "eyebrow": "手机验证码登录",
+            "title": "1000 条短信已购",
+            "detail": "实付 ¥45 · 手机收到验证码",
+            "tone": "success"
+          }
+        },
+        "remove-login-and-commerce": {
+          "action": {
+            "desktop": {
+              "file": "web/public/assets/pixel/scenes-v2/options/Q13/remove-login-and-commerce-action-desktop.webp",
+              "width": 768,
+              "height": 512,
+              "bytes": 70476,
+              "sha256": "b69cc163599cd17a4ecf152394d42a7bf421602cb0f0abd1168d52217939842f"
+            },
+            "mobile": {
+              "file": "web/public/assets/pixel/scenes-v2/options/Q13/remove-login-and-commerce-action-mobile.webp",
+              "width": 512,
+              "height": 768,
+              "bytes": 67700,
+              "sha256": "18f134e94baaba701e9fdc9a2bbf258cf119fe97bfec0838e5ba6f800966032c"
+            }
+          },
+          "resolved": {
+            "desktop": {
+              "file": "web/public/assets/pixel/scenes-v2/options/Q13/remove-login-and-commerce-resolved-desktop.webp",
+              "width": 768,
+              "height": 512,
+              "bytes": 70334,
+              "sha256": "70fde46b82c937025a7c731f2672f52eaffe1ba607a1e97df659f44b39248e88"
+            },
+            "mobile": {
+              "file": "web/public/assets/pixel/scenes-v2/options/Q13/remove-login-and-commerce-resolved-mobile.webp",
+              "width": 512,
+              "height": 768,
+              "bytes": 72020,
+              "sha256": "adb85f36d0ce80224ec4ac9b820f166defeef19e104dcadaa8633f54a5013da3"
+            }
+          },
+          "overlay": {
+            "eyebrow": "产品路线调整",
+            "title": "登录与支付已拆除",
+            "detail": "改为游客直达 · 未支付预算取消",
+            "tone": "neutral"
+          }
+        }
+      }
+    },
+    "Q14": {
+      "sceneId": "Q14",
+      "brief": "真实云服务器购买页、两档规格负载和四件T恤退出梗",
+      "desktop": {
+        "file": "web/public/assets/pixel/scenes-v2/Q14-desktop.webp",
+        "width": 1536,
+        "height": 1024,
+        "bytes": 164962,
+        "sha256": "0e41ae4c8c57675d40d316368a5c45d4a457615bdac3598a2533c07e0daa40db"
+      },
+      "mobile": {
+        "file": "web/public/assets/pixel/scenes-v2/Q14-mobile.webp",
+        "width": 1024,
+        "height": 1536,
+        "bytes": 150674,
+        "sha256": "0070ad85ec94db2d25c129567f76ddd8c9774608127b408c2e49d4312873d457"
+      },
+      "optionVariants": {
+        "one-core-two-gb": {
+          "action": {
+            "desktop": {
+              "file": "web/public/assets/pixel/scenes-v2/options/Q14/one-core-two-gb-action-desktop.webp",
+              "width": 768,
+              "height": 512,
+              "bytes": 67978,
+              "sha256": "e848b8131856e207d52ea89b6cdd13d2dcde38ba6677da88fe8f73e6a9b4835c"
+            },
+            "mobile": {
+              "file": "web/public/assets/pixel/scenes-v2/options/Q14/one-core-two-gb-action-mobile.webp",
+              "width": 512,
+              "height": 768,
+              "bytes": 62728,
+              "sha256": "f622754506114465add6840637682fb3ba680cb11d6df3df7992072a5bf0d406"
+            }
+          },
+          "resolved": {
+            "desktop": {
+              "file": "web/public/assets/pixel/scenes-v2/options/Q14/one-core-two-gb-resolved-desktop.webp",
+              "width": 768,
+              "height": 512,
+              "bytes": 75000,
+              "sha256": "0c3dc31d78ff29072faca7e15a1a56333e92558fae97fcd633d666ec408109e4"
+            },
+            "mobile": {
+              "file": "web/public/assets/pixel/scenes-v2/options/Q14/one-core-two-gb-resolved-mobile.webp",
+              "width": 512,
+              "height": 768,
+              "bytes": 71096,
+              "sha256": "554e0cc5c568ac7df52e5c411e0479783b4fe04342ce7d92249801016ef06ab5"
+            }
+          },
+          "overlay": {
+            "eyebrow": "低配服务器",
+            "title": "1 核 / 2G 已部署",
+            "detail": "产品能开，但 CPU / RAM 吃紧",
+            "tone": "warning"
+          }
+        },
+        "two-core-four-gb": {
+          "action": {
+            "desktop": {
+              "file": "web/public/assets/pixel/scenes-v2/options/Q14/two-core-four-gb-action-desktop.webp",
+              "width": 768,
+              "height": 512,
+              "bytes": 67926,
+              "sha256": "94666da3fc87d09bf3ae2baf1861c69ccf56313a9d25885a2ec71d96b6ef685c"
+            },
+            "mobile": {
+              "file": "web/public/assets/pixel/scenes-v2/options/Q14/two-core-four-gb-action-mobile.webp",
+              "width": 512,
+              "height": 768,
+              "bytes": 63256,
+              "sha256": "379754543d820e2a82f3521dbb21a795b321ea69b84fdd8e9e23075f6138b5c6"
+            }
+          },
+          "resolved": {
+            "desktop": {
+              "file": "web/public/assets/pixel/scenes-v2/options/Q14/two-core-four-gb-resolved-desktop.webp",
+              "width": 768,
+              "height": 512,
+              "bytes": 80422,
+              "sha256": "b495d237684e5ee1c8ee096de5d3268f3b189422725dc10ce7aa479186c5a63a"
+            },
+            "mobile": {
+              "file": "web/public/assets/pixel/scenes-v2/options/Q14/two-core-four-gb-resolved-mobile.webp",
+              "width": 512,
+              "height": 768,
+              "bytes": 76882,
+              "sha256": "27ef6b965224f0903d8ca6f5bdd4c00de308c0b0f53d52c4ba1c04fdad20c243"
+            }
+          },
+          "overlay": {
+            "eyebrow": "基础服务器",
+            "title": "2 核 / 4G 已部署",
+            "detail": "负载居中 · ¥1,300/年",
+            "tone": "success"
+          }
+        }
+      }
+    },
+    "Q15": {
+      "sceneId": "Q15",
+      "brief": "同一服务器里的SYS系统盘和DATA数据盘双槽选择",
+      "desktop": {
+        "file": "web/public/assets/pixel/scenes-v2/Q15-desktop.webp",
+        "width": 1536,
+        "height": 1024,
+        "bytes": 208142,
+        "sha256": "8c20700c79d0d825391ed762553bc9e39708d866f17e299700de074002fbae53"
+      },
+      "mobile": {
+        "file": "web/public/assets/pixel/scenes-v2/Q15-mobile.webp",
+        "width": 1024,
+        "height": 1536,
+        "bytes": 199106,
+        "sha256": "6b351e2ebe517280e10d0957b02a543bf4859b301b611d0bcf11cab214a79a09"
+      },
+      "optionVariants": {
+        "system-and-data-disk": {
+          "action": {
+            "desktop": {
+              "file": "web/public/assets/pixel/scenes-v2/options/Q15/system-and-data-disk-action-desktop.webp",
+              "width": 768,
+              "height": 512,
+              "bytes": 96326,
+              "sha256": "e19647b5bee0495d6f60b02d1a0cb426347ce481de055497efa3c5ea055d1b7e"
+            },
+            "mobile": {
+              "file": "web/public/assets/pixel/scenes-v2/options/Q15/system-and-data-disk-action-mobile.webp",
+              "width": 512,
+              "height": 768,
+              "bytes": 92508,
+              "sha256": "cf16f9d70b536f3bd374d18cef51bd8d051a05978c61b26f934e5d8a2b3cad17"
+            }
+          },
+          "resolved": {
+            "desktop": {
+              "file": "web/public/assets/pixel/scenes-v2/options/Q15/system-and-data-disk-resolved-desktop.webp",
+              "width": 768,
+              "height": 512,
+              "bytes": 99874,
+              "sha256": "28067eb0eca85c8fc94b4ec9d5bfbc561cddfb17b65197129de3d57cc73698e8"
+            },
+            "mobile": {
+              "file": "web/public/assets/pixel/scenes-v2/options/Q15/system-and-data-disk-resolved-mobile.webp",
+              "width": 512,
+              "height": 768,
+              "bytes": 94838,
+              "sha256": "de01906836cc53d457b7c867c5e20e58e342ffff5eb1d22344f56292dc5c3445"
+            }
+          },
+          "overlay": {
+            "eyebrow": "存储结构",
+            "title": "系统与数据已分盘",
+            "detail": "SYS 40G + DATA 100G · ¥600/年",
+            "tone": "success"
+          }
+        },
+        "system-disk-only": {
+          "action": {
+            "desktop": {
+              "file": "web/public/assets/pixel/scenes-v2/options/Q15/system-disk-only-action-desktop.webp",
+              "width": 768,
+              "height": 512,
+              "bytes": 62592,
+              "sha256": "623936167f1cd60dc72d08b1cf15dca5ac80edf9731ff06cf6f0f5e5e449a1c8"
+            },
+            "mobile": {
+              "file": "web/public/assets/pixel/scenes-v2/options/Q15/system-disk-only-action-mobile.webp",
+              "width": 512,
+              "height": 768,
+              "bytes": 58920,
+              "sha256": "5c47576e4768d70671f540d03fcd8450968104a03119dc13b54603b8ab8f2afa"
+            }
+          },
+          "resolved": {
+            "desktop": {
+              "file": "web/public/assets/pixel/scenes-v2/options/Q15/system-disk-only-resolved-desktop.webp",
+              "width": 768,
+              "height": 512,
+              "bytes": 96780,
+              "sha256": "e070956bb47ca86a81be0166a6ca391652a9e44591284f4595f2055e1cc2fc91"
+            },
+            "mobile": {
+              "file": "web/public/assets/pixel/scenes-v2/options/Q15/system-disk-only-resolved-mobile.webp",
+              "width": 512,
+              "height": 768,
+              "bytes": 92582,
+              "sha256": "e94ee0796dc4db0fafe169a329fdb5035daccb6817ab78995b6ebd951446124b"
+            }
+          },
+          "overlay": {
+            "eyebrow": "存储结构",
+            "title": "只用 SYS 40G",
+            "detail": "¥200/年 · 备份方案仍待确认",
+            "tone": "warning"
+          }
+        }
+      }
+    },
+    "Q16": {
+      "sceneId": "Q16",
+      "brief": "服务器到用户手机之间的3M窄带、排队加载和最后一插",
+      "desktop": {
+        "file": "web/public/assets/pixel/scenes-v2/Q16-desktop.webp",
+        "width": 1536,
+        "height": 1024,
+        "bytes": 217752,
+        "sha256": "ed9068a61575bfaa7c9eefedbc7870f4ef66a26f25ae22e5b676894fc5f6fb92"
+      },
+      "mobile": {
+        "file": "web/public/assets/pixel/scenes-v2/Q16-mobile.webp",
+        "width": 1024,
+        "height": 1536,
+        "bytes": 199682,
+        "sha256": "7dd37145facacff01a5aa02e483a89141527e956e4566098ac88c2424ea83bc3"
+      },
+      "optionVariants": {
+        "three-megabit": {
+          "action": {
+            "desktop": {
+              "file": "web/public/assets/pixel/scenes-v2/options/Q16/three-megabit-action-desktop.webp",
+              "width": 768,
+              "height": 512,
+              "bytes": 94492,
+              "sha256": "510d3d055aba0265a09b7f27e953d94548416680ec5e81792fb779a9a8a3752c"
+            },
+            "mobile": {
+              "file": "web/public/assets/pixel/scenes-v2/options/Q16/three-megabit-action-mobile.webp",
+              "width": 512,
+              "height": 768,
+              "bytes": 91368,
+              "sha256": "0c050fbc95fe60285a7cbe1248219c82ef0068f624bc7d7f2fd700bb8e9e2a60"
+            }
+          },
+          "resolved": {
+            "desktop": {
+              "file": "web/public/assets/pixel/scenes-v2/options/Q16/three-megabit-resolved-desktop.webp",
+              "width": 768,
+              "height": 512,
+              "bytes": 94984,
+              "sha256": "7b84c24381f418a8b0412b8d50b693c4f9c42e892a1d2fe4e813fc4a10d6cdbd"
+            },
+            "mobile": {
+              "file": "web/public/assets/pixel/scenes-v2/options/Q16/three-megabit-resolved-mobile.webp",
+              "width": 512,
+              "height": 768,
+              "bytes": 91152,
+              "sha256": "5e4d14a9847938f722859c5dcbea489a6f73e5e169f106cfc8f2c994c928f8cd"
+            }
+          },
+          "overlay": {
+            "eyebrow": "公网最后一插",
+            "title": "3M 窄带已接通",
+            "detail": "用户能打开，但需要排队 · ¥724.2/年",
+            "tone": "success"
+          }
+        }
+      }
+    },
+    "Q17": {
+      "sceneId": "Q17",
+      "brief": "工信部ICP备案表单、公司域名接入资料与七日审核日历",
+      "desktop": {
+        "file": "web/public/assets/pixel/scenes-v2/Q17-desktop.webp",
+        "width": 1536,
+        "height": 1024,
+        "bytes": 329514,
+        "sha256": "9653f969fd8c4f807189fb0f56f99061ad1d85bae386de507b615c7704d8aee5"
+      },
+      "mobile": {
+        "file": "web/public/assets/pixel/scenes-v2/Q17-mobile.webp",
+        "width": 1024,
+        "height": 1536,
+        "bytes": 198444,
+        "sha256": "4be65f5d4ba1747546555a7d10918365eab79f13983c131bbb0c74596a5f7147"
+      },
+      "optionVariants": {
+        "submit-miit-filing": {
+          "action": {
+            "desktop": {
+              "file": "web/public/assets/pixel/scenes-v2/options/Q17/submit-miit-filing-action-desktop.webp",
+              "width": 768,
+              "height": 512,
+              "bytes": 121200,
+              "sha256": "ca38afe77abe972013e064f07ae9423119a3aa1c4135df111e4f08bc70d6478d"
+            },
+            "mobile": {
+              "file": "web/public/assets/pixel/scenes-v2/options/Q17/submit-miit-filing-action-mobile.webp",
+              "width": 512,
+              "height": 768,
+              "bytes": 95808,
+              "sha256": "a3f7c12d93305a2cd639c9b4a69189aac2d9fff94243239f6b74b173b78e2549"
+            }
+          },
+          "resolved": {
+            "desktop": {
+              "file": "web/public/assets/pixel/scenes-v2/options/Q17/submit-miit-filing-resolved-desktop.webp",
+              "width": 768,
+              "height": 512,
+              "bytes": 85238,
+              "sha256": "8020dec9a98e9e9883d2cbf9227b7714cf031ac7c6810c2c754ca9e7fc460794"
+            },
+            "mobile": {
+              "file": "web/public/assets/pixel/scenes-v2/options/Q17/submit-miit-filing-resolved-mobile.webp",
+              "width": 512,
+              "height": 768,
+              "bytes": 98662,
+              "sha256": "89bbf56338e00af44b24eaaa97909528c83e5c1fc1aab2f6d30a54150b9be66b"
+            }
+          },
+          "overlay": {
+            "eyebrow": "工信部网站备案",
+            "title": "ICP 备案已通过",
+            "detail": "材料提交 → 审核中 → 预计 7 天",
+            "tone": "success"
+          }
+        }
+      }
+    },
+    "Q18": {
+      "sceneId": "Q18",
+      "brief": "承接工信回执的公安联网备案窗口、拓扑材料与第二个七日历",
+      "desktop": {
+        "file": "web/public/assets/pixel/scenes-v2/Q18-desktop.webp",
+        "width": 1536,
+        "height": 1024,
+        "bytes": 189980,
+        "sha256": "932bd6bd545a73e2daccf065456bb9e2d1e1d27b0c08e2aa75cc4f07d772008b"
+      },
+      "mobile": {
+        "file": "web/public/assets/pixel/scenes-v2/Q18-mobile.webp",
+        "width": 1024,
+        "height": 1536,
+        "bytes": 324602,
+        "sha256": "6464a08822cd5702c0c9a0e5fb84c567a45ea9524fd2a08a471c4fb1b152c6df"
+      },
+      "optionVariants": {
+        "submit-police-filing": {
+          "action": {
+            "desktop": {
+              "file": "web/public/assets/pixel/scenes-v2/options/Q18/submit-police-filing-action-desktop.webp",
+              "width": 768,
+              "height": 512,
+              "bytes": 84994,
+              "sha256": "8da2e7618db02f7fb9982738873bff50c7f46ba3d5a6e88d2afb8b18520aa1ae"
+            },
+            "mobile": {
+              "file": "web/public/assets/pixel/scenes-v2/options/Q18/submit-police-filing-action-mobile.webp",
+              "width": 512,
+              "height": 768,
+              "bytes": 113260,
+              "sha256": "202fb1bd8d62b3081f921a3af52f601d13f9eecaf3d051552d4e1806a53cdd42"
+            }
+          },
+          "resolved": {
+            "desktop": {
+              "file": "web/public/assets/pixel/scenes-v2/options/Q18/submit-police-filing-resolved-desktop.webp",
+              "width": 768,
+              "height": 512,
+              "bytes": 91886,
+              "sha256": "e57246e577f0b4ab33967bc38a5fc7da4ec35fac91e8c99e3ac5319f55af7245"
+            },
+            "mobile": {
+              "file": "web/public/assets/pixel/scenes-v2/options/Q18/submit-police-filing-resolved-mobile.webp",
+              "width": 512,
+              "height": 768,
+              "bytes": 116320,
+              "sha256": "cde5d23f6944e403761d0370200e0e18027b0cbe02b976347b855a2e635e9ad2"
+            }
+          },
+          "overlay": {
+            "eyebrow": "承接上一份工信回执",
+            "title": "公安联网备案已通过",
+            "detail": "拓扑与身份材料提交 · 再等 7 天",
+            "tone": "success"
+          }
+        }
+      }
+    },
+    "Q19": {
+      "sceneId": "Q19",
+      "brief": "自营、自行发布和第三方平台三种经营样板与百万资本门槛文件",
+      "desktop": {
+        "file": "web/public/assets/pixel/scenes-v2/Q19-desktop.webp",
+        "width": 1536,
+        "height": 1024,
+        "bytes": 197842,
+        "sha256": "d1b1294437bec75cac5fae5ac8a317d93a06b6547343aff470f33b9508675c83"
+      },
+      "mobile": {
+        "file": "web/public/assets/pixel/scenes-v2/Q19-mobile.webp",
+        "width": 1024,
+        "height": 1536,
+        "bytes": 214166,
+        "sha256": "0cbdcb367bfdf958d520680ea9d28d214a6d01fe958df843035e803fbb0095f6"
+      },
+      "optionVariants": {
+        "self-operated": {
+          "action": {
+            "desktop": {
+              "file": "web/public/assets/pixel/scenes-v2/options/Q19/self-operated-action-desktop.webp",
+              "width": 768,
+              "height": 512,
+              "bytes": 92846,
+              "sha256": "dfa3eaaffa8793593b0a2da90319ba4797e03fd4681d5d3365282a22ebec5e92"
+            },
+            "mobile": {
+              "file": "web/public/assets/pixel/scenes-v2/options/Q19/self-operated-action-mobile.webp",
+              "width": 512,
+              "height": 768,
+              "bytes": 103320,
+              "sha256": "b6fef6e11774cf75c17eb8127051c8a138fac3777387fd28c64e8f8227d18eef"
+            }
+          },
+          "resolved": {
+            "desktop": {
+              "file": "web/public/assets/pixel/scenes-v2/options/Q19/self-operated-resolved-desktop.webp",
+              "width": 768,
+              "height": 512,
+              "bytes": 95326,
+              "sha256": "51b6058bd93e1b77e7aae402f73817ee175d42c9e89deecc8e7ef1350e52a94d"
+            },
+            "mobile": {
+              "file": "web/public/assets/pixel/scenes-v2/options/Q19/self-operated-resolved-mobile.webp",
+              "width": 512,
+              "height": 768,
+              "bytes": 109228,
+              "sha256": "d693b2d0e7a0380943d354ec198b31525db921e6e51e078b0c4273e5c296857a"
+            }
+          },
+          "overlay": {
+            "eyebrow": "经营范围",
+            "title": "自营路线已记录",
+            "detail": "只卖自己的产品或服务 · 无第三方入驻",
+            "tone": "success"
+          }
+        },
+        "self-published": {
+          "action": {
+            "desktop": {
+              "file": "web/public/assets/pixel/scenes-v2/options/Q19/self-published-action-desktop.webp",
+              "width": 768,
+              "height": 512,
+              "bytes": 97874,
+              "sha256": "e08ee5b58e488771247043af486e73156b6f65feb051bf9651426df15bf5674f"
+            },
+            "mobile": {
+              "file": "web/public/assets/pixel/scenes-v2/options/Q19/self-published-action-mobile.webp",
+              "width": 512,
+              "height": 768,
+              "bytes": 112764,
+              "sha256": "17d23a96c31d1772a73126b0e8fe6b6861a9b20985bae7dc3d1a92e053ddff2e"
+            }
+          },
+          "resolved": {
+            "desktop": {
+              "file": "web/public/assets/pixel/scenes-v2/options/Q19/self-published-resolved-desktop.webp",
+              "width": 768,
+              "height": 512,
+              "bytes": 86744,
+              "sha256": "2397aa4bdeb9cc177ca1ed9a021f024ab5a33c32c23b040da080c0fb06eebb13"
+            },
+            "mobile": {
+              "file": "web/public/assets/pixel/scenes-v2/options/Q19/self-published-resolved-mobile.webp",
+              "width": 512,
+              "height": 768,
+              "bytes": 107924,
+              "sha256": "9287a0918aaa633610db256477cac605ac14d8302963e70321aa17c0560683e5"
+            }
+          },
+          "overlay": {
+            "eyebrow": "经营范围",
+            "title": "自行发布路线已记录",
+            "detail": "只发自己的内容 · 不开放别人发布",
+            "tone": "success"
+          }
+        },
+        "all-in-capital": {
+          "action": {
+            "desktop": {
+              "file": "web/public/assets/pixel/scenes-v2/options/Q19/all-in-capital-action-desktop.webp",
+              "width": 768,
+              "height": 512,
+              "bytes": 94142,
+              "sha256": "9a457c2640cee28cd71c7cc2264ae560ec0582cfa8de22b5cf378aa0f5524e7c"
+            },
+            "mobile": {
+              "file": "web/public/assets/pixel/scenes-v2/options/Q19/all-in-capital-action-mobile.webp",
+              "width": 512,
+              "height": 768,
+              "bytes": 110696,
+              "sha256": "66a86a75785d1151ca0c6e351e29cf88846ab83bf71bac2740c22323fbf105e8"
+            }
+          },
+          "resolved": {
+            "desktop": {
+              "file": "web/public/assets/pixel/scenes-v2/options/Q19/all-in-capital-resolved-desktop.webp",
+              "width": 768,
+              "height": 512,
+              "bytes": 90410,
+              "sha256": "2cc025b732ea41195b861452e6d8375e530fe1dd175c948c91f1889156f333bc"
+            },
+            "mobile": {
+              "file": "web/public/assets/pixel/scenes-v2/options/Q19/all-in-capital-resolved-mobile.webp",
+              "width": 512,
+              "height": 768,
+              "bytes": 110152,
+              "sha256": "aec9286cfab67b69e501133cd0386a6d4755b221d97ee3f2b088d564cb15fc8d"
+            }
+          },
+          "overlay": {
+            "eyebrow": "第三方平台路线",
+            "title": "注册资本门槛 ¥1,000,000",
+            "detail": "资格门槛 · 当前未支付 · 不计入已花现金",
+            "tone": "warning"
+          }
+        }
+      }
+    },
+    "Q20": {
+      "sceneId": "Q20",
+      "brief": "发帖评论分享社群功能清单、自评风险矩阵与第三方报价信封",
+      "desktop": {
+        "file": "web/public/assets/pixel/scenes-v2/Q20-desktop.webp",
+        "width": 1536,
+        "height": 1024,
+        "bytes": 209452,
+        "sha256": "bba6bb27bf1d9c2e51dfee8a644b0a6d4467511d228de9f4aacb1afa780279a3"
+      },
+      "mobile": {
+        "file": "web/public/assets/pixel/scenes-v2/Q20-mobile.webp",
+        "width": 1024,
+        "height": 1536,
+        "bytes": 221446,
+        "sha256": "2fefd70432f4d1744d28bcf0dbc37a6df6578335f9dbc0f53e167017b47be3d0"
+      },
+      "optionVariants": {
+        "no-public-expression": {
+          "action": {
+            "desktop": {
+              "file": "web/public/assets/pixel/scenes-v2/options/Q20/no-public-expression-action-desktop.webp",
+              "width": 768,
+              "height": 512,
+              "bytes": 108162,
+              "sha256": "983162cc15226378d6c7354952bbff88c950b3ea46248784c947582ea37cfa36"
+            },
+            "mobile": {
+              "file": "web/public/assets/pixel/scenes-v2/options/Q20/no-public-expression-action-mobile.webp",
+              "width": 512,
+              "height": 768,
+              "bytes": 106162,
+              "sha256": "3b5d088e0d37d4cd0f7d9767d43408c3d2f6d575234b147f0a55c6f06022935f"
+            }
+          },
+          "resolved": {
+            "desktop": {
+              "file": "web/public/assets/pixel/scenes-v2/options/Q20/no-public-expression-resolved-desktop.webp",
+              "width": 768,
+              "height": 512,
+              "bytes": 100970,
+              "sha256": "5ceab2cb0323d859ce676d90d6f8bc22bb6dba5db62a27593e0da1150d166dd1"
+            },
+            "mobile": {
+              "file": "web/public/assets/pixel/scenes-v2/options/Q20/no-public-expression-resolved-mobile.webp",
+              "width": 512,
+              "height": 768,
+              "bytes": 110124,
+              "sha256": "c572429d1163d4f4b8e0588581ff6371751461211373e202d90f608fc5b80151"
+            }
+          },
+          "overlay": {
+            "eyebrow": "公众表达功能检查",
+            "title": "当前未触发该类评估",
+            "detail": "未开启发帖、评论、公开分享或社群",
+            "tone": "success"
+          }
+        },
+        "self-assessment": {
+          "action": {
+            "desktop": {
+              "file": "web/public/assets/pixel/scenes-v2/options/Q20/self-assessment-action-desktop.webp",
+              "width": 768,
+              "height": 512,
+              "bytes": 108200,
+              "sha256": "bc1344e7ffeeed14d1fbeeb62cb35e2a54079912c8982490591f34fb74f82bc1"
+            },
+            "mobile": {
+              "file": "web/public/assets/pixel/scenes-v2/options/Q20/self-assessment-action-mobile.webp",
+              "width": 512,
+              "height": 768,
+              "bytes": 126146,
+              "sha256": "52f9fea45b60f75ec46390caa0eec9a208ea4038cdbb92420c8d73758f11170c"
+            }
+          },
+          "resolved": {
+            "desktop": {
+              "file": "web/public/assets/pixel/scenes-v2/options/Q20/self-assessment-resolved-desktop.webp",
+              "width": 768,
+              "height": 512,
+              "bytes": 110468,
+              "sha256": "aac06d151046c5f013bf7e9e270144537a2dc5da4c7eb016e8af987597a0f855"
+            },
+            "mobile": {
+              "file": "web/public/assets/pixel/scenes-v2/options/Q20/self-assessment-resolved-mobile.webp",
+              "width": 512,
+              "height": 768,
+              "bytes": 129266,
+              "sha256": "99d36b9c0272a0d1dfc91a9ac701ff98c35413796cc137580045f942d215905a"
+            }
+          },
+          "overlay": {
+            "eyebrow": "自行处理",
+            "title": "安全评估待办已加入",
+            "detail": "+24h 创始人工时 · 尚未完成",
+            "tone": "brand"
+          }
+        },
+        "third-party-assessment": {
+          "action": {
+            "desktop": {
+              "file": "web/public/assets/pixel/scenes-v2/options/Q20/third-party-assessment-action-desktop.webp",
+              "width": 768,
+              "height": 512,
+              "bytes": 104764,
+              "sha256": "5cf56ea3f73330041f08084f1854c11f99adbdd1d892c763eba17e0231fdca41"
+            },
+            "mobile": {
+              "file": "web/public/assets/pixel/scenes-v2/options/Q20/third-party-assessment-action-mobile.webp",
+              "width": 512,
+              "height": 768,
+              "bytes": 116780,
+              "sha256": "3a130b49fdf4fb5f3cb733de049ce529fe77bb9ab32cebb0f76f2c5fa7b79ebf"
+            }
+          },
+          "resolved": {
+            "desktop": {
+              "file": "web/public/assets/pixel/scenes-v2/options/Q20/third-party-assessment-resolved-desktop.webp",
+              "width": 768,
+              "height": 512,
+              "bytes": 102240,
+              "sha256": "1b1fc8b5784aea19ef6230bb31fcea5e04a4a8347bbb7315dd27bb6a9a425d25"
+            },
+            "mobile": {
+              "file": "web/public/assets/pixel/scenes-v2/options/Q20/third-party-assessment-resolved-mobile.webp",
+              "width": 512,
+              "height": 768,
+              "bytes": 118630,
+              "sha256": "91348a2d92e088f7b30813a24f9c1c11314f3074034a971b460099afd6880e65"
+            }
+          },
+          "overlay": {
+            "eyebrow": "第三方评估",
+            "title": "当前询价 ¥12,000",
+            "detail": "待确认、未支付 · 不计入已花现金",
+            "tone": "warning"
+          }
+        }
+      }
+    },
+    "Q21": {
+      "sceneId": "Q21",
+      "brief": "服务器数据支付网络资产沙盘与二三级待定级压力预算文件",
+      "desktop": {
+        "file": "web/public/assets/pixel/scenes-v2/Q21-desktop.webp",
+        "width": 1536,
+        "height": 1024,
+        "bytes": 226040,
+        "sha256": "a1758b8df2261c26430f3dcd850756fb5eb803bbbc6457b997e163cec2df5791"
+      },
+      "mobile": {
+        "file": "web/public/assets/pixel/scenes-v2/Q21-mobile.webp",
+        "width": 1024,
+        "height": 1536,
+        "bytes": 216602,
+        "sha256": "c099aa77ca50c2c033edb6735fee424b40730a93bf9abab02377cc82ca0d758f"
+      },
+      "optionVariants": {
+        "level-two": {
+          "action": {
+            "desktop": {
+              "file": "web/public/assets/pixel/scenes-v2/options/Q21/level-two-action-desktop.webp",
+              "width": 768,
+              "height": 512,
+              "bytes": 109366,
+              "sha256": "af31d9a61966d44642362ac9478d26577e72d373ecd82c06af5ce4c8ee45ced5"
+            },
+            "mobile": {
+              "file": "web/public/assets/pixel/scenes-v2/options/Q21/level-two-action-mobile.webp",
+              "width": 512,
+              "height": 768,
+              "bytes": 109028,
+              "sha256": "03ef4c2bba2c3dabe7dbaa306ab443fcada75dd5de64d782ac3f6cc44377107d"
+            }
+          },
+          "resolved": {
+            "desktop": {
+              "file": "web/public/assets/pixel/scenes-v2/options/Q21/level-two-resolved-desktop.webp",
+              "width": 768,
+              "height": 512,
+              "bytes": 109758,
+              "sha256": "189fd3970f5770f59abc81ce92c85a30245cc2093d0118790740d9b057880c63"
+            },
+            "mobile": {
+              "file": "web/public/assets/pixel/scenes-v2/options/Q21/level-two-resolved-mobile.webp",
+              "width": 512,
+              "height": 768,
+              "bytes": 111760,
+              "sha256": "7dec181bcc0f8d881ff90eeecfd3f8fa060ce68fe4940af1d8b8d6e4c76a2f84"
+            }
+          },
+          "overlay": {
+            "eyebrow": "等保待定级研判",
+            "title": "二级压力预算 ¥50,000",
+            "detail": "待确认、未支付 · 先增加定级待办",
+            "tone": "warning"
+          }
+        },
+        "level-three": {
+          "action": {
+            "desktop": {
+              "file": "web/public/assets/pixel/scenes-v2/options/Q21/level-three-action-desktop.webp",
+              "width": 768,
+              "height": 512,
+              "bytes": 98350,
+              "sha256": "c0b68cf4676dde6a4db4015e9358b07e311e78282e2464a41514ccfd9048b6eb"
+            },
+            "mobile": {
+              "file": "web/public/assets/pixel/scenes-v2/options/Q21/level-three-action-mobile.webp",
+              "width": 512,
+              "height": 768,
+              "bytes": 115686,
+              "sha256": "6c4f804009a3c8c5e050c64cd25338f8f7c15e5a27f3a310a298d1852b123101"
+            }
+          },
+          "resolved": {
+            "desktop": {
+              "file": "web/public/assets/pixel/scenes-v2/options/Q21/level-three-resolved-desktop.webp",
+              "width": 768,
+              "height": 512,
+              "bytes": 92982,
+              "sha256": "bb2058bdaf99dd898f28ef62356b476ebfd8504949aa1d42134c3c515af7bcb4"
+            },
+            "mobile": {
+              "file": "web/public/assets/pixel/scenes-v2/options/Q21/level-three-resolved-mobile.webp",
+              "width": 512,
+              "height": 768,
+              "bytes": 116244,
+              "sha256": "fe0c8a7e4a96ecdf6ad0e4240ae5f457ccbe2e3d8363a5301a3ec0407c6af5fb"
+            }
+          },
+          "overlay": {
+            "eyebrow": "等保待定级研判",
+            "title": "三级压力预算 ¥100,000",
+            "detail": "待确认、未支付 · 不是已经办完认证",
+            "tone": "warning"
+          }
+        }
+      }
+    },
+    "Q22": {
+      "sceneId": "Q22",
+      "brief": "回到工作室的用户场景需求竞品四栏定位白板和合规纸山",
+      "desktop": {
+        "file": "web/public/assets/pixel/scenes-v2/Q22-desktop.webp",
+        "width": 1536,
+        "height": 1024,
+        "bytes": 337318,
+        "sha256": "227a474acb87a0a6c3ecd42ff3c1b217a581482cd6b8133c851e44fcdc7b2713"
+      },
+      "mobile": {
+        "file": "web/public/assets/pixel/scenes-v2/Q22-mobile.webp",
+        "width": 1024,
+        "height": 1536,
+        "bytes": 172084,
+        "sha256": "ad312b0093df9c83736aafb5c6ebf32bfa66f67120124dddd80a7710f31cf994"
+      },
+      "optionVariants": {
+        "clear-enough": {
+          "action": {
+            "desktop": {
+              "file": "web/public/assets/pixel/scenes-v2/options/Q22/clear-enough-action-desktop.webp",
+              "width": 768,
+              "height": 512,
+              "bytes": 88298,
+              "sha256": "127d3f976788dbac2b224932ee93b7dfff7900fdedc87799e8d3f3334f5f1db7"
+            },
+            "mobile": {
+              "file": "web/public/assets/pixel/scenes-v2/options/Q22/clear-enough-action-mobile.webp",
+              "width": 512,
+              "height": 768,
+              "bytes": 88660,
+              "sha256": "d15e86140130c881b38021540931530721c699fdc42f53686fe4195ea6004a8d"
+            }
+          },
+          "resolved": {
+            "desktop": {
+              "file": "web/public/assets/pixel/scenes-v2/options/Q22/clear-enough-resolved-desktop.webp",
+              "width": 768,
+              "height": 512,
+              "bytes": 82376,
+              "sha256": "650d2c39ac9eb829c3f909ffd5134cfe8f21a1b7de810ac0956ce8052fe75245"
+            },
+            "mobile": {
+              "file": "web/public/assets/pixel/scenes-v2/options/Q22/clear-enough-resolved-mobile.webp",
+              "width": 512,
+              "height": 768,
+              "bytes": 87758,
+              "sha256": "2946a0bfae64bddafbbd851ec45a8750f10aa10702a1163b86e3304ffd7a26c7"
+            }
+          },
+          "overlay": {
+            "eyebrow": "产品定位",
+            "title": "四格定位已补齐一版",
+            "detail": "用户、场景、需求、竞品 · 仍留待验证假设",
+            "tone": "success"
+          }
+        },
+        "big-company-risk": {
+          "action": {
+            "desktop": {
+              "file": "web/public/assets/pixel/scenes-v2/options/Q22/big-company-risk-action-desktop.webp",
+              "width": 768,
+              "height": 512,
+              "bytes": 98480,
+              "sha256": "905ea77c89fdd884e0477520db9cf6922c99832b407115230167dc522c4769eb"
+            },
+            "mobile": {
+              "file": "web/public/assets/pixel/scenes-v2/options/Q22/big-company-risk-action-mobile.webp",
+              "width": 512,
+              "height": 768,
+              "bytes": 106358,
+              "sha256": "d0bb45a6188f382c22a55053d49ef01fdabef2ee982cc723d5468f66631868be"
+            }
+          },
+          "resolved": {
+            "desktop": {
+              "file": "web/public/assets/pixel/scenes-v2/options/Q22/big-company-risk-resolved-desktop.webp",
+              "width": 768,
+              "height": 512,
+              "bytes": 89540,
+              "sha256": "4b33e0cce015ddd10552e36aad2d23d053f90f6adb2ab3bbd1fb34bf14e6f701"
+            },
+            "mobile": {
+              "file": "web/public/assets/pixel/scenes-v2/options/Q22/big-company-risk-resolved-mobile.webp",
+              "width": 512,
+              "height": 768,
+              "bytes": 97268,
+              "sha256": "c9d33a1f608feb11360365e0415666565601857eee034fb72b4c01f889c7982c"
+            }
+          },
+          "overlay": {
+            "eyebrow": "大厂阴影压过来",
+            "title": "差异化待办已加入",
+            "detail": "+12h · 收窄场景并寻找防御点",
+            "tone": "warning"
+          }
+        },
+        "not-thought-through": {
+          "action": {
+            "desktop": {
+              "file": "web/public/assets/pixel/scenes-v2/options/Q22/not-thought-through-action-desktop.webp",
+              "width": 768,
+              "height": 512,
+              "bytes": 94250,
+              "sha256": "12f6d5775d4f5a005e9e210f1909f61c5bbe5d6c0a2b987ebb11bd2c359ea357"
+            },
+            "mobile": {
+              "file": "web/public/assets/pixel/scenes-v2/options/Q22/not-thought-through-action-mobile.webp",
+              "width": 512,
+              "height": 768,
+              "bytes": 104716,
+              "sha256": "bf05c5727c049ef1961a9ab97c190188f204ef9a0891048e952322e28f183796"
+            }
+          },
+          "resolved": {
+            "desktop": {
+              "file": "web/public/assets/pixel/scenes-v2/options/Q22/not-thought-through-resolved-desktop.webp",
+              "width": 768,
+              "height": 512,
+              "bytes": 84926,
+              "sha256": "e6d328e61beba2952f6a56cd4073c517d8d53c84682b26e01761106274bb2f9b"
+            },
+            "mobile": {
+              "file": "web/public/assets/pixel/scenes-v2/options/Q22/not-thought-through-resolved-mobile.webp",
+              "width": 512,
+              "height": 768,
+              "bytes": 99278,
+              "sha256": "1d729133646ea3adfc30592207bb842f956ab7f34ce913d2d692e76fc689a42b"
+            }
+          },
+          "overlay": {
+            "eyebrow": "只顾着办资质",
+            "title": "用户调研待办已加入",
+            "detail": "+24h · 约 4 天 · 先去访谈",
+            "tone": "brand"
+          }
+        }
+      }
+    },
+    "Q23": {
+      "sceneId": "Q23",
+      "brief": "同级的四档预计用户数卡片、容量人群和递增运营压力",
+      "desktop": {
+        "file": "web/public/assets/pixel/scenes-v2/Q23-desktop.webp",
+        "width": 1536,
+        "height": 1024,
+        "bytes": 193682,
+        "sha256": "7e906e8cab8571dc89947ff61228d6d2909ca568f796488a3aec6fda69419f99"
+      },
+      "mobile": {
+        "file": "web/public/assets/pixel/scenes-v2/Q23-mobile.webp",
+        "width": 1024,
+        "height": 1536,
+        "bytes": 225426,
+        "sha256": "114fe973e3100f662360d41ef398c2dcdeb1bf3974d2f3d40c94c5dc7842e87d"
+      },
+      "optionVariants": {
+        "users-100": {
+          "action": {
+            "desktop": {
+              "file": "web/public/assets/pixel/scenes-v2/options/Q23/users-100-action-desktop.webp",
+              "width": 768,
+              "height": 512,
+              "bytes": 94104,
+              "sha256": "ddd72093b0e5c73ce3349c74e5eeb7d695b84bdfc98e3c94c94f3ff8df6f2a6d"
+            },
+            "mobile": {
+              "file": "web/public/assets/pixel/scenes-v2/options/Q23/users-100-action-mobile.webp",
+              "width": 512,
+              "height": 768,
+              "bytes": 111374,
+              "sha256": "56a3920f150c9475b7f8b1b1b17d4bbdd3efc2812d61a3abab3d59371e8ee911"
+            }
+          },
+          "resolved": {
+            "desktop": {
+              "file": "web/public/assets/pixel/scenes-v2/options/Q23/users-100-resolved-desktop.webp",
+              "width": 768,
+              "height": 512,
+              "bytes": 94272,
+              "sha256": "59016790014ea80c3b60e745a2795fda52d80c4cccddecd30d7df81d9f6fa439"
+            },
+            "mobile": {
+              "file": "web/public/assets/pixel/scenes-v2/options/Q23/users-100-resolved-mobile.webp",
+              "width": 512,
+              "height": 768,
+              "bytes": 111206,
+              "sha256": "be981752b01479374e90324aedac9760f76ad1295f4024795ba8d26be8a1400e"
+            }
+          },
+          "overlay": {
+            "eyebrow": "用户规模假设",
+            "title": "预计 100 个用户",
+            "detail": "容量预测 · 不是已经获得用户",
+            "tone": "neutral"
+          }
+        },
+        "users-1000": {
+          "action": {
+            "desktop": {
+              "file": "web/public/assets/pixel/scenes-v2/options/Q23/users-1000-action-desktop.webp",
+              "width": 768,
+              "height": 512,
+              "bytes": 89584,
+              "sha256": "e114e882814c42b690bd0b431a398f933ea6d5c21395fded7a37621160f45870"
+            },
+            "mobile": {
+              "file": "web/public/assets/pixel/scenes-v2/options/Q23/users-1000-action-mobile.webp",
+              "width": 512,
+              "height": 768,
+              "bytes": 112132,
+              "sha256": "ab2ef1732f0e65c65465535ee836a4c725a31cbb04aa38ed82709c2239b1df7f"
+            }
+          },
+          "resolved": {
+            "desktop": {
+              "file": "web/public/assets/pixel/scenes-v2/options/Q23/users-1000-resolved-desktop.webp",
+              "width": 768,
+              "height": 512,
+              "bytes": 89516,
+              "sha256": "4fbc78779e2fa38658466a780e6dae394055de75bb554cca640dd0f32691756c"
+            },
+            "mobile": {
+              "file": "web/public/assets/pixel/scenes-v2/options/Q23/users-1000-resolved-mobile.webp",
+              "width": 512,
+              "height": 768,
+              "bytes": 108136,
+              "sha256": "04ab2a96a35408c9b34a3ecb523f8b1c253364e1e8d779d512b983c2040ca166"
+            }
+          },
+          "overlay": {
+            "eyebrow": "用户规模假设",
+            "title": "预计 1,000 个用户",
+            "detail": "容量预测 · 不是已经获得用户",
+            "tone": "neutral"
+          }
+        },
+        "users-10000": {
+          "action": {
+            "desktop": {
+              "file": "web/public/assets/pixel/scenes-v2/options/Q23/users-10000-action-desktop.webp",
+              "width": 768,
+              "height": 512,
+              "bytes": 101640,
+              "sha256": "127b26ee36f8be155aedf52cf75570f13ec6cfc28586645446d8397bfba65ef9"
+            },
+            "mobile": {
+              "file": "web/public/assets/pixel/scenes-v2/options/Q23/users-10000-action-mobile.webp",
+              "width": 512,
+              "height": 768,
+              "bytes": 118882,
+              "sha256": "21b9378c5f3cb49d2102f1f0583c8e20e134c3942805130562869ecd539dc14e"
+            }
+          },
+          "resolved": {
+            "desktop": {
+              "file": "web/public/assets/pixel/scenes-v2/options/Q23/users-10000-resolved-desktop.webp",
+              "width": 768,
+              "height": 512,
+              "bytes": 108504,
+              "sha256": "add7c7aadd168645e5e9a807d809de401b555f101b05183f3c908c26c92a69a4"
+            },
+            "mobile": {
+              "file": "web/public/assets/pixel/scenes-v2/options/Q23/users-10000-resolved-mobile.webp",
+              "width": 512,
+              "height": 768,
+              "bytes": 113990,
+              "sha256": "709d2586c4b495ca63c9d6176cb326d82992eb6a6caa8a956ef2d80095f3dcf7"
+            }
+          },
+          "overlay": {
+            "eyebrow": "用户规模假设",
+            "title": "预计 10,000 个用户",
+            "detail": "容量与运营压力上升 · 不额外加分",
+            "tone": "neutral"
+          }
+        },
+        "users-100000": {
+          "action": {
+            "desktop": {
+              "file": "web/public/assets/pixel/scenes-v2/options/Q23/users-100000-action-desktop.webp",
+              "width": 768,
+              "height": 512,
+              "bytes": 109582,
+              "sha256": "3ce3ce99f5be717dcb3d9e6db7da0ff4b89fe1e26135c28a92d3ab2dabdfcbd3"
+            },
+            "mobile": {
+              "file": "web/public/assets/pixel/scenes-v2/options/Q23/users-100000-action-mobile.webp",
+              "width": 512,
+              "height": 768,
+              "bytes": 111608,
+              "sha256": "350a7d1322c5525b88f0cdda5e2d8b9df8c62ba918b0d0410cd2cde0ab916d31"
+            }
+          },
+          "resolved": {
+            "desktop": {
+              "file": "web/public/assets/pixel/scenes-v2/options/Q23/users-100000-resolved-desktop.webp",
+              "width": 768,
+              "height": 512,
+              "bytes": 117280,
+              "sha256": "2218cce430d337eaddb27ec29665fa3736514960ab9a4aafcc8b58962f670611"
+            },
+            "mobile": {
+              "file": "web/public/assets/pixel/scenes-v2/options/Q23/users-100000-resolved-mobile.webp",
+              "width": 512,
+              "height": 768,
+              "bytes": 119208,
+              "sha256": "b0d54e1423d57dca65635189b861c7bb34830b43c7318f1c3171eef3daa40505"
+            }
+          },
+          "overlay": {
+            "eyebrow": "用户规模假设",
+            "title": "预计 100,000 个用户",
+            "detail": "高压容量情景 · 不是已经获得用户",
+            "tone": "warning"
+          }
+        }
+      }
+    },
+    "Q24": {
+      "sceneId": "Q24",
+      "brief": "动态已花账本、三档月费卡与用户数乘月费的理论流水公式",
+      "desktop": {
+        "file": "web/public/assets/pixel/scenes-v2/Q24-desktop.webp",
+        "width": 1536,
+        "height": 1024,
+        "bytes": 212076,
+        "sha256": "535158cc9c4bd681799963a1036593bd133a38f1db2603adc570b65e348a0724"
+      },
+      "mobile": {
+        "file": "web/public/assets/pixel/scenes-v2/Q24-mobile.webp",
+        "width": 1024,
+        "height": 1536,
+        "bytes": 242670,
+        "sha256": "df0d27fa10cfba239ffab1a9e3ee2349953e20e180623e862a1c0e525aab4534"
+      },
+      "optionVariants": {
+        "price-9-9": {
+          "action": {
+            "desktop": {
+              "file": "web/public/assets/pixel/scenes-v2/options/Q24/price-9-9-action-desktop.webp",
+              "width": 768,
+              "height": 512,
+              "bytes": 98320,
+              "sha256": "9342b694ab3030e8ab2502a30ceba51176d11917386623c815568849dbffd289"
+            },
+            "mobile": {
+              "file": "web/public/assets/pixel/scenes-v2/options/Q24/price-9-9-action-mobile.webp",
+              "width": 512,
+              "height": 768,
+              "bytes": 120132,
+              "sha256": "1df81e30ed633994d501c5572988d791fc1eb3056a802828cd1230b0dfd5cf28"
+            }
+          },
+          "resolved": {
+            "desktop": {
+              "file": "web/public/assets/pixel/scenes-v2/options/Q24/price-9-9-resolved-desktop.webp",
+              "width": 768,
+              "height": 512,
+              "bytes": 97424,
+              "sha256": "2b03a1bba48d0cee2681c0b19e5ad53f32dff44fd4508b3e53a21a08e041e24d"
+            },
+            "mobile": {
+              "file": "web/public/assets/pixel/scenes-v2/options/Q24/price-9-9-resolved-mobile.webp",
+              "width": 512,
+              "height": 768,
+              "bytes": 121138,
+              "sha256": "3110525066dd3dfdecf537ba957c8b97c027f7068d8c58ed35a87d1c1faa564e"
+            }
+          },
+          "overlay": {
+            "eyebrow": "每用户月费假设",
+            "title": "¥9.9 / 用户·月",
+            "detail": "用户数 × 月费 = 理论月流水 · 不等于利润",
+            "tone": "success"
+          }
+        },
+        "price-19-9": {
+          "action": {
+            "desktop": {
+              "file": "web/public/assets/pixel/scenes-v2/options/Q24/price-19-9-action-desktop.webp",
+              "width": 768,
+              "height": 512,
+              "bytes": 98638,
+              "sha256": "2bb63ad410d227f18dc989c82cb3dc1789d8b63684590bb64377017da91f78f1"
+            },
+            "mobile": {
+              "file": "web/public/assets/pixel/scenes-v2/options/Q24/price-19-9-action-mobile.webp",
+              "width": 512,
+              "height": 768,
+              "bytes": 126146,
+              "sha256": "b2776a65d8fcd215dd864fa1cfeefd01ecc8151f946e4cfe14998036f94145cb"
+            }
+          },
+          "resolved": {
+            "desktop": {
+              "file": "web/public/assets/pixel/scenes-v2/options/Q24/price-19-9-resolved-desktop.webp",
+              "width": 768,
+              "height": 512,
+              "bytes": 98528,
+              "sha256": "5540ccfa860b081f326e84ffdaa8739a7bf20f4cca42acf3525e98153c09c0b7"
+            },
+            "mobile": {
+              "file": "web/public/assets/pixel/scenes-v2/options/Q24/price-19-9-resolved-mobile.webp",
+              "width": 512,
+              "height": 768,
+              "bytes": 125266,
+              "sha256": "16b6c2dbedd1102af9a53911c6426e199affb4fc5e9143d1574259579c4f909b"
+            }
+          },
+          "overlay": {
+            "eyebrow": "每用户月费假设",
+            "title": "¥19.9 / 用户·月",
+            "detail": "理论月流水 · 尚未扣渠道、税费与变动成本",
+            "tone": "success"
+          }
+        },
+        "price-29-9": {
+          "action": {
+            "desktop": {
+              "file": "web/public/assets/pixel/scenes-v2/options/Q24/price-29-9-action-desktop.webp",
+              "width": 768,
+              "height": 512,
+              "bytes": 96250,
+              "sha256": "8a555ff762fa268465dcda3e5304ae962ddc19c3e3ad9d76337a795f436ff7cc"
+            },
+            "mobile": {
+              "file": "web/public/assets/pixel/scenes-v2/options/Q24/price-29-9-action-mobile.webp",
+              "width": 512,
+              "height": 768,
+              "bytes": 124554,
+              "sha256": "f24e19e40f319ed647d597ad8d2771ce98ccd9c6ebec36d68415a6955dc8d093"
+            }
+          },
+          "resolved": {
+            "desktop": {
+              "file": "web/public/assets/pixel/scenes-v2/options/Q24/price-29-9-resolved-desktop.webp",
+              "width": 768,
+              "height": 512,
+              "bytes": 97164,
+              "sha256": "3db95ff9179dbacfdca179d414a413a3093d544634ce0d397113f660662ed72d"
+            },
+            "mobile": {
+              "file": "web/public/assets/pixel/scenes-v2/options/Q24/price-29-9-resolved-mobile.webp",
+              "width": 512,
+              "height": 768,
+              "bytes": 123460,
+              "sha256": "288f9c5a578cd6d0b1ff83c20cd60d729433946d73ca8674bf9dc4f21db24cc4"
+            }
+          },
+          "overlay": {
+            "eyebrow": "每用户月费假设",
+            "title": "¥29.9 / 用户·月",
+            "detail": "理论月流水 · 价格更高不额外加分",
+            "tone": "success"
+          }
+        }
+      }
+    },
+    "Q25": {
+      "sceneId": "Q25",
+      "brief": "内容社群自然流、带CAC上限的广告台和今天上线发布闸",
+      "desktop": {
+        "file": "web/public/assets/pixel/scenes-v2/Q25-desktop.webp",
+        "width": 1536,
+        "height": 1024,
+        "bytes": 195222,
+        "sha256": "388c33d94d14b57b874ff4005071cd461a13475378feb7490341c607efccce3b"
+      },
+      "mobile": {
+        "file": "web/public/assets/pixel/scenes-v2/Q25-mobile.webp",
+        "width": 1024,
+        "height": 1536,
+        "bytes": 226150,
+        "sha256": "ae02776152f273d1ce1da8ebb6a82aa75033fbdd416c5c2536e4df4afd8344aa"
+      },
+      "optionVariants": {
+        "organic": {
+          "action": {
+            "desktop": {
+              "file": "web/public/assets/pixel/scenes-v2/options/Q25/organic-action-desktop.webp",
+              "width": 768,
+              "height": 512,
+              "bytes": 96032,
+              "sha256": "f22f5310d1b0e1ad3809721b3cd91f696e098db3af6b2e050e1e56c78610918b"
+            },
+            "mobile": {
+              "file": "web/public/assets/pixel/scenes-v2/options/Q25/organic-action-mobile.webp",
+              "width": 512,
+              "height": 768,
+              "bytes": 109028,
+              "sha256": "ed7cb57354ef97881c858d74329f8634112125384a8408284d6b6e3388aaf7c5"
+            }
+          },
+          "resolved": {
+            "desktop": {
+              "file": "web/public/assets/pixel/scenes-v2/options/Q25/organic-resolved-desktop.webp",
+              "width": 768,
+              "height": 512,
+              "bytes": 101664,
+              "sha256": "6805144e5f1a8554100135283dbe97bb0e5ff82a578a1e1c079b509716806b73"
+            },
+            "mobile": {
+              "file": "web/public/assets/pixel/scenes-v2/options/Q25/organic-resolved-mobile.webp",
+              "width": 512,
+              "height": 768,
+              "bytes": 115008,
+              "sha256": "1a6f62f06c6a607de5e91770d2b928164e34034c8ecd3fa28bbefcb9be266133"
+            }
+          },
+          "overlay": {
+            "eyebrow": "第一百个用户",
+            "title": "自然流路线已启动",
+            "detail": "内容、社群、口碑 · +40h/月",
+            "tone": "success"
+          }
+        },
+        "paid-acquisition": {
+          "action": {
+            "desktop": {
+              "file": "web/public/assets/pixel/scenes-v2/options/Q25/paid-acquisition-action-desktop.webp",
+              "width": 768,
+              "height": 512,
+              "bytes": 96172,
+              "sha256": "3f58e757819dfc75beb20b7b83d9e3d7e8ea947b24c6d97d803704578b4d6e2a"
+            },
+            "mobile": {
+              "file": "web/public/assets/pixel/scenes-v2/options/Q25/paid-acquisition-action-mobile.webp",
+              "width": 512,
+              "height": 768,
+              "bytes": 105188,
+              "sha256": "1f49b2841eb9eff3fb25195742127187b3ce46f5a1d3b9517bd156d555ec4e00"
+            }
+          },
+          "resolved": {
+            "desktop": {
+              "file": "web/public/assets/pixel/scenes-v2/options/Q25/paid-acquisition-resolved-desktop.webp",
+              "width": 768,
+              "height": 512,
+              "bytes": 92090,
+              "sha256": "a2e08872c4ce91cf6e4230c504211b2a63e0fb67c507bea49f9ea4ee4efde738"
+            },
+            "mobile": {
+              "file": "web/public/assets/pixel/scenes-v2/options/Q25/paid-acquisition-resolved-mobile.webp",
+              "width": 512,
+              "height": 768,
+              "bytes": 105406,
+              "sha256": "4e0ba721a13943335671f8422f7190c5d62c082a3d66fbee6d0ef6b074377543"
+            }
+          },
+          "overlay": {
+            "eyebrow": "第一百个用户",
+            "title": "广告获客路线已启动",
+            "detail": "先设 CAC 上限 · 营销预算仍待设定",
+            "tone": "brand"
+          }
+        },
+        "launch-now": {
+          "action": {
+            "desktop": {
+              "file": "web/public/assets/pixel/scenes-v2/options/Q25/launch-now-action-desktop.webp",
+              "width": 768,
+              "height": 512,
+              "bytes": 91704,
+              "sha256": "81f025e69c6c3295c60a6324e761006c84c44142b185c7ef956fb7624f09757a"
+            },
+            "mobile": {
+              "file": "web/public/assets/pixel/scenes-v2/options/Q25/launch-now-action-mobile.webp",
+              "width": 512,
+              "height": 768,
+              "bytes": 106532,
+              "sha256": "ea9c8efbd0876b046c6a0d3c44c9b9f7abb52dbe3783dbca0fc58647226b8883"
+            }
+          },
+          "resolved": {
+            "desktop": {
+              "file": "web/public/assets/pixel/scenes-v2/options/Q25/launch-now-resolved-desktop.webp",
+              "width": 768,
+              "height": 512,
+              "bytes": 89700,
+              "sha256": "69ddf5c381a20669694096ff9162befb3486634bd28fb71f24cf33e8abee50ff"
+            },
+            "mobile": {
+              "file": "web/public/assets/pixel/scenes-v2/options/Q25/launch-now-resolved-mobile.webp",
+              "width": 512,
+              "height": 768,
+              "bytes": 102900,
+              "sha256": "1cd00fe9f34e8c7cf622322e72caba157f8229d5ef958f6a492caac059fd4bfe"
+            }
+          },
+          "overlay": {
+            "eyebrow": "一人公司 × 零人产品",
+            "title": "今天正式上线",
+            "detail": "自然流与广告台关闭 · 用户可以从 0 开始",
+            "tone": "success"
+          }
+        }
+      }
+    }
+  }
+}

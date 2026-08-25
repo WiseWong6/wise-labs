@@ -1,0 +1,71 @@
+{
+  "version": 1,
+  "generatedAt": "2026-07-28",
+  "generator": "scripts/generate-audio-assets.mjs",
+  "method": "deterministic procedural waveform synthesis",
+  "license": "MIT; distributed under the repository LICENSE",
+  "thirdPartySamples": [],
+  "modelWeights": [],
+  "mirrors": [
+    "web/public/assets/audio",
+    "miniprogram/assets/audio"
+  ],
+  "assets": [
+    {
+      "file": "opc-office-loop.mp3",
+      "role": "bgm",
+      "description": "104 BPM 像素办事大厅循环配乐(16 小节 A/B 双段)",
+      "durationSeconds": 36.923084,
+      "bytes": 185043,
+      "sha256": "1e6d094b9bf2a52a699ee87578cae9145afda5ac11cd2c3f67b4b502e46ade77"
+    },
+    {
+      "file": "start.mp3",
+      "role": "sfx",
+      "description": "开始游戏的上行琶音",
+      "durationSeconds": 0.78,
+      "bytes": 6731,
+      "sha256": "41fe950fc2e9e829d687f91101c714f9b914a20f4ddb89c4cf66e751674b9256"
+    },
+    {
+      "file": "confirm.mp3",
+      "role": "sfx",
+      "description": "确认继续路线的双音提示",
+      "durationSeconds": 0.26,
+      "bytes": 2551,
+      "sha256": "1a9e4d0208bc52078eab972c08ba38cf2ba795d203a07fe902b6901eef6040f6"
+    },
+    {
+      "file": "exit.mp3",
+      "role": "sfx",
+      "description": "退出路线的下行提示",
+      "durationSeconds": 0.72,
+      "bytes": 6313,
+      "sha256": "418f19407a31d35c96e44f92dbf9b6512028392f4d9b00b3677f3fe9161c983a"
+    },
+    {
+      "file": "back.mp3",
+      "role": "sfx",
+      "description": "返回和重选的短扫频",
+      "durationSeconds": 0.280023,
+      "bytes": 2760,
+      "sha256": "48b407042aca79a13fd1ebfd9a94aedc9d396b4c3403c3a36d4a694b8586ad1d"
+    },
+    {
+      "file": "checkpoint.mp3",
+      "role": "sfx",
+      "description": "像素版成本确认节点的打印机铃声",
+      "durationSeconds": 0.86,
+      "bytes": 7358,
+      "sha256": "010532f0b8aa82e2e5a44113bf40fd0d1dbe9ef7e916046e5d58305ab38159dc"
+    },
+    {
+      "file": "survived.mp3",
+      "role": "sfx",
+      "description": "完成 25 题后的短胜利号角",
+      "durationSeconds": 1.7,
+      "bytes": 14254,
+      "sha256": "a1659b60d572508e3f097b82e2d75ef095ebf91d712f4c87965f46b225f73e46"
+    }
+  ]
+}

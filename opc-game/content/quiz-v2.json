@@ -1,0 +1,1847 @@
+{
+  "definition": {
+    "id": "opc-survival-quiz-v2",
+    "version": "2.0.0",
+    "title": "一人公司生存模拟器",
+    "startQuestionId": "Q01",
+    "effectiveHoursPerDay": 6,
+    "scoreCaps": {
+      "execution": 30,
+      "compliance": 25,
+      "business": 30,
+      "costHealth": 15
+    },
+    "chapters": [
+      { "id": "intent", "title": "真要上线吗" },
+      { "id": "company", "title": "一人公司入场券" },
+      { "id": "build", "title": "代码与云端账单" },
+      { "id": "compliance", "title": "备案后的三连击" },
+      { "id": "business", "title": "产品终于轮到上场" }
+    ],
+    "interludes": [
+      {
+        "id": "qualification-mostly-done",
+        "afterQuestionId": "Q09",
+        "title": "恭喜你，走完了大部分的资质关卡，可以开始做自己的产品了",
+        "body": "继续"
+      }
+    ]
+  },
+  "questions": [
+    {
+      "id": "Q01",
+      "number": 1,
+      "chapterId": "intent",
+      "prompt": "你的目标是Vibe Coding上线一个产品吗",
+      "defaultNextQuestionId": "Q02",
+      "factNotes": ["本测评只面向准备上线产品的独立开发者。"],
+      "visual": {
+        "sceneId": "Q01",
+        "desktopAsset": "/assets/pixel/scenes-v2/Q01-desktop.webp",
+        "mobileAsset": "/assets/pixel/scenes-v2/Q01-mobile.webp",
+        "frames": ["idle", "action", "resolved", "quit"],
+        "optionVariants": {
+          "launch": {
+            "action": {
+              "desktopAsset": "/assets/pixel/scenes-v2/options/Q01/launch-action-desktop.webp",
+              "mobileAsset": "/assets/pixel/scenes-v2/options/Q01/launch-action-mobile.webp"
+            },
+            "resolved": {
+              "desktopAsset": "/assets/pixel/scenes-v2/options/Q01/launch-resolved-desktop.webp",
+              "mobileAsset": "/assets/pixel/scenes-v2/options/Q01/launch-resolved-mobile.webp"
+            },
+            "overlay": { "eyebrow": "上线计划已确认", "title": "带着憧憬出发", "detail": "产品准备走向第一个真实用户", "tone": "success" }
+          }
+        }
+      },
+      "scoreWeight": { "execution": 1 },
+      "options": [
+        {
+          "id": "launch",
+          "label": "是的，AI现在超简单",
+          "effects": [
+            { "type": "set-fact", "key": "wantsLaunch", "value": true },
+            { "type": "metric", "key": "score.execution", "value": 1 },
+            { "type": "effort", "bucket": "founderHours", "hours": 3, "track": "development", "label": "思考上线目标（0.5天）" }
+          ]
+        },
+        {
+          "id": "not-launching",
+          "label": "不是",
+          "outcome": "exit",
+          "exitTitle": "本测评只面对独立开发者",
+          "effects": [
+            { "type": "set-fact", "key": "wantsLaunch", "value": false }
+          ]
+        }
+      ]
+    },
+    {
+      "id": "Q02",
+      "number": 2,
+      "chapterId": "intent",
+      "prompt": "你的产品有登录功能吗？",
+      "defaultNextQuestionId": "Q03",
+      "factNotes": ["选择登录会在 Q13 进入短信登录题；不登录则自动跳过 Q13。"],
+      "visual": {
+        "sceneId": "Q02",
+        "desktopAsset": "/assets/pixel/scenes-v2/Q02-desktop.webp",
+        "mobileAsset": "/assets/pixel/scenes-v2/Q02-mobile.webp",
+        "frames": ["idle", "action", "resolved", "quit"],
+        "optionVariants": {
+          "login": {
+            "action": {
+              "desktopAsset": "/assets/pixel/scenes-v2/options/Q02/login-action-desktop.webp",
+              "mobileAsset": "/assets/pixel/scenes-v2/options/Q02/login-action-mobile.webp"
+            },
+            "resolved": {
+              "desktopAsset": "/assets/pixel/scenes-v2/options/Q02/login-resolved-desktop.webp",
+              "mobileAsset": "/assets/pixel/scenes-v2/options/Q02/login-resolved-mobile.webp"
+            },
+            "overlay": { "eyebrow": "身份体系", "title": "登录已开启", "detail": "账号、留存与召回进入产品路线", "tone": "success" }
+          },
+          "guest": {
+            "action": {
+              "desktopAsset": "/assets/pixel/scenes-v2/options/Q02/guest-action-desktop.webp",
+              "mobileAsset": "/assets/pixel/scenes-v2/options/Q02/guest-action-mobile.webp"
+            },
+            "resolved": {
+              "desktopAsset": "/assets/pixel/scenes-v2/options/Q02/guest-resolved-desktop.webp",
+              "mobileAsset": "/assets/pixel/scenes-v2/options/Q02/guest-resolved-mobile.webp"
+            },
+            "overlay": { "eyebrow": "低摩擦体验", "title": "游客直达", "detail": "不注册，来了直接使用", "tone": "neutral" }
+          }
+        }
+      },
+      "scoreWeight": { "business": 2 },
+      "options": [
+        {
+          "id": "login",
+          "label": "肯定要呀，不然咋增长黑客",
+          "effects": [
+            { "type": "set-fact", "key": "requiresLogin", "value": true },
+            { "type": "set-fact", "key": "hasInteractiveFeatures", "value": true },
+            { "type": "effort", "bucket": "founderHours", "hours": 3, "track": "development", "label": "登录接入调研（0.5天）" },
+            { "type": "effort", "bucket": "founderHours", "hours": 3, "track": "development", "label": "登录 API 接通（0.5天）" },
+            { "type": "metric", "key": "score.business", "value": 2 }
+          ]
+        },
+        {
+          "id": "guest",
+          "label": "不用的，来了直接就能用",
+          "effects": [
+            { "type": "set-fact", "key": "requiresLogin", "value": false },
+            { "type": "metric", "key": "score.business", "value": 2 }
+          ]
+        }
+      ]
+    },
+    {
+      "id": "Q03",
+      "number": 3,
+      "chapterId": "intent",
+      "prompt": "你的产品想要为爱发电还是赚钱呢？",
+      "defaultNextQuestionId": "Q04",
+      "factNotes": ["为爱发电路线跳过 Q4 至 Q9，直接进入 Q10。"],
+      "visual": {
+        "sceneId": "Q03",
+        "desktopAsset": "/assets/pixel/scenes-v2/Q03-desktop.webp",
+        "mobileAsset": "/assets/pixel/scenes-v2/Q03-mobile.webp",
+        "frames": ["idle", "action", "resolved", "quit"],
+        "optionVariants": {
+          "profit": {
+            "action": {
+              "desktopAsset": "/assets/pixel/scenes-v2/options/Q03/profit-action-desktop.webp",
+              "mobileAsset": "/assets/pixel/scenes-v2/options/Q03/profit-action-mobile.webp"
+            },
+            "resolved": {
+              "desktopAsset": "/assets/pixel/scenes-v2/options/Q03/profit-resolved-desktop.webp",
+              "mobileAsset": "/assets/pixel/scenes-v2/options/Q03/profit-resolved-mobile.webp"
+            },
+            "overlay": { "eyebrow": "CODEX PRO · $200/月", "title": "商业化回本路线", "detail": "这是开发会员投入，不是产品售价", "tone": "brand" }
+          },
+          "love": {
+            "action": {
+              "desktopAsset": "/assets/pixel/scenes-v2/options/Q03/love-action-desktop.webp",
+              "mobileAsset": "/assets/pixel/scenes-v2/options/Q03/love-action-mobile.webp"
+            },
+            "resolved": {
+              "desktopAsset": "/assets/pixel/scenes-v2/options/Q03/love-resolved-desktop.webp",
+              "mobileAsset": "/assets/pixel/scenes-v2/options/Q03/love-resolved-mobile.webp"
+            },
+            "overlay": { "eyebrow": "免费开放", "title": "为爱发电路线", "detail": "爱心很大，会员账单照扣", "tone": "neutral" }
+          }
+        }
+      },
+      "scoreWeight": { "business": 3 },
+      "options": [
+        {
+          "id": "profit",
+          "label": "GPT Pro 1个月200刀，我不赚钱谁赚钱？",
+          "effects": [
+            { "type": "set-fact", "key": "commercial", "value": true },
+            { "type": "metric", "key": "score.business", "value": 3 }
+          ]
+        },
+        {
+          "id": "love",
+          "label": "我的爱很大！！！",
+          "nextQuestionId": "Q10",
+          "effects": [
+            { "type": "set-fact", "key": "commercial", "value": false },
+            { "type": "metric", "key": "score.business", "value": 3 }
+          ]
+        }
+      ]
+    },
+    {
+      "id": "Q04",
+      "number": 4,
+      "chapterId": "intent",
+      "prompt": "由于需要支付能力，所以需要开公司了，你真的要做一人公司吗？",
+      "defaultNextQuestionId": "Q05",
+      "factNotes": ["设立公司的必要性与具体支付产品、经营方式及所在地要求有关。"],
+      "visual": {
+        "sceneId": "Q04",
+        "desktopAsset": "/assets/pixel/scenes-v2/Q04-desktop.webp",
+        "mobileAsset": "/assets/pixel/scenes-v2/Q04-mobile.webp",
+        "frames": ["idle", "action", "resolved", "quit"],
+        "optionVariants": {
+          "found-company": {
+            "action": {
+              "desktopAsset": "/assets/pixel/scenes-v2/options/Q04/found-company-action-desktop.webp",
+              "mobileAsset": "/assets/pixel/scenes-v2/options/Q04/found-company-action-mobile.webp"
+            },
+            "resolved": {
+              "desktopAsset": "/assets/pixel/scenes-v2/options/Q04/found-company-resolved-desktop.webp",
+              "mobileAsset": "/assets/pixel/scenes-v2/options/Q04/found-company-resolved-mobile.webp"
+            },
+            "overlay": { "eyebrow": "个人开发者 → 企业主体", "title": "一人公司筹备", "detail": "承担公司设立与持续经营责任", "tone": "success" }
+          }
+        }
+      },
+      "scoreWeight": { "execution": 2, "compliance": 2 },
+      "options": [
+        {
+          "id": "found-company",
+          "label": "是的，我要创业",
+          "effects": [
+            { "type": "set-fact", "key": "hasCompany", "value": true },
+            { "type": "metric", "key": "score.execution", "value": 2 },
+            { "type": "metric", "key": "score.compliance", "value": 2 },
+            { "type": "effort", "bucket": "founderHours", "hours": 6, "track": "company", "label": "一人公司信息调研（1天）" }
+          ]
+        },
+        {
+          "id": "too-scared",
+          "label": "算了，我不敢",
+          "outcome": "exit",
+          "exitTitle": "创业门口观察员",
+          "effects": []
+        }
+      ]
+    },
+    {
+      "id": "Q05",
+      "number": 5,
+      "chapterId": "company",
+      "prompt": "注册公司代办需要500块钱，1-2天时间，是否要注册？",
+      "defaultNextQuestionId": "Q06",
+      "factNotes": ["¥500 与 1 至 2 天为本局用户提供口径，并非全国统一官方价格或承诺时限。"],
+      "visual": {
+        "sceneId": "Q05",
+        "desktopAsset": "/assets/pixel/scenes-v2/Q05-desktop.webp",
+        "mobileAsset": "/assets/pixel/scenes-v2/Q05-mobile.webp",
+        "frames": ["idle", "action", "resolved", "quit"],
+        "optionVariants": {
+          "register": {
+            "action": {
+              "desktopAsset": "/assets/pixel/scenes-v2/options/Q05/register-action-desktop.webp",
+              "mobileAsset": "/assets/pixel/scenes-v2/options/Q05/register-action-mobile.webp"
+            },
+            "resolved": {
+              "desktopAsset": "/assets/pixel/scenes-v2/options/Q05/register-resolved-desktop.webp",
+              "mobileAsset": "/assets/pixel/scenes-v2/options/Q05/register-resolved-mobile.webp"
+            },
+            "overlay": { "eyebrow": "GPT PRO 5x 已投入注册火炉", "title": "公司注册代办已受理", "detail": "实付 ¥500 · 预计 1–2 天", "tone": "warning" }
+          }
+        }
+      },
+      "scoreWeight": { "execution": 3 },
+      "options": [
+        {
+          "id": "register",
+          "label": "献祭1个月GPT Pro 5x",
+          "visualOutcome": "gpt-sacrifice",
+          "effects": [
+            { "type": "money", "id": "q05-registration-agent", "bucket": "paidSunk", "amount": 500, "currency": "CNY", "label": "公司注册代办", "sourceType": "用户口径", "chargeTiming": "现在支付", "refundable": false, "priceDate": "2026-07-16" },
+            { "type": "wait", "track": "company", "days": 2, "blocking": true, "label": "公司注册办理（总计2天）" },
+            { "type": "metric", "key": "score.execution", "value": 3 }
+          ]
+        },
+        {
+          "id": "eat-instead",
+          "label": "不要，我要去吃好吃的饭！",
+          "outcome": "exit",
+          "exitTitle": "牛肉火锅优先股东",
+          "effects": []
+        }
+      ]
+    },
+    {
+      "id": "Q06",
+      "number": 6,
+      "chapterId": "company",
+      "prompt": "注册公司需要选择租赁地址，请问你选择租赁还是挂靠",
+      "defaultNextQuestionId": "Q07",
+      "factNotes": ["注册地址和实际经营场所要求应按所在地监管规则核实，挂靠并非在所有场景都适用。"],
+      "visual": {
+        "sceneId": "Q06",
+        "desktopAsset": "/assets/pixel/scenes-v2/Q06-desktop.webp",
+        "mobileAsset": "/assets/pixel/scenes-v2/Q06-mobile.webp",
+        "frames": ["idle", "action", "resolved", "quit"],
+        "optionVariants": {
+          "desk": {
+            "action": {
+              "desktopAsset": "/assets/pixel/scenes-v2/options/Q06/desk-action-desktop.webp",
+              "mobileAsset": "/assets/pixel/scenes-v2/options/Q06/desk-action-mobile.webp"
+            },
+            "resolved": {
+              "desktopAsset": "/assets/pixel/scenes-v2/options/Q06/desk-resolved-desktop.webp",
+              "mobileAsset": "/assets/pixel/scenes-v2/options/Q06/desk-resolved-mobile.webp"
+            },
+            "overlay": { "eyebrow": "真实可办公地址", "title": "工位租赁", "detail": "¥1500/月 · 约 ¥1.8万/年", "tone": "warning" }
+          },
+          "hosted": {
+            "action": {
+              "desktopAsset": "/assets/pixel/scenes-v2/options/Q06/hosted-action-desktop.webp",
+              "mobileAsset": "/assets/pixel/scenes-v2/options/Q06/hosted-action-mobile.webp"
+            },
+            "resolved": {
+              "desktopAsset": "/assets/pixel/scenes-v2/options/Q06/hosted-resolved-desktop.webp",
+              "mobileAsset": "/assets/pixel/scenes-v2/options/Q06/hosted-resolved-mobile.webp"
+            },
+            "overlay": { "eyebrow": "只有注册地址材料", "title": "地址挂靠", "detail": "地址证明 + 集中信箱 · ¥2000/年", "tone": "success" }
+          }
+        }
+      },
+      "scoreWeight": { "execution": 2 },
+      "options": [
+        {
+          "id": "desk",
+          "label": "我要All in，租个工位（1500元/月，一年大概1.8万）",
+          "effects": [
+            { "type": "set-fact", "key": "registeredAddress", "value": "desk" },
+            { "type": "effort", "bucket": "founderHours", "hours": 6, "track": "company", "label": "租赁工位与签约（1天）" },
+            { "type": "money", "id": "q06-desk-first-year", "bucket": "firstYearCommitted", "amount": 18000, "currency": "CNY", "label": "工位租赁首年", "sourceType": "用户口径", "chargeTiming": "上线前支付", "refundable": false, "priceDate": "2026-07-16" },
+            { "type": "money", "id": "q06-desk-renewal", "bucket": "renewal", "amount": 18000, "currency": "CNY", "label": "工位租赁次年续费", "sourceType": "用户口径", "chargeTiming": "次年续费", "refundable": true, "priceDate": "2026-07-16" },
+            { "type": "metric", "key": "score.execution", "value": 2 }
+          ]
+        },
+        {
+          "id": "hosted",
+          "label": "我还在打工呢，挂靠吧（2000一年）",
+          "effects": [
+            { "type": "set-fact", "key": "registeredAddress", "value": "hosted" },
+            { "type": "effort", "bucket": "founderHours", "hours": 12, "track": "company", "label": "挂靠地址与材料（2天）" },
+            { "type": "money", "id": "q06-hosted-first-year", "bucket": "firstYearCommitted", "amount": 2000, "currency": "CNY", "label": "注册地址挂靠首年", "sourceType": "用户口径", "chargeTiming": "上线前支付", "refundable": false, "priceDate": "2026-07-16" },
+            { "type": "money", "id": "q06-hosted-renewal", "bucket": "renewal", "amount": 2000, "currency": "CNY", "label": "注册地址挂靠次年续费", "sourceType": "用户口径", "chargeTiming": "次年续费", "refundable": true, "priceDate": "2026-07-16" },
+            { "type": "metric", "key": "score.execution", "value": 2 }
+          ]
+        },
+        {
+          "id": "too-much",
+          "label": "算了算了，太麻烦了。",
+          "outcome": "exit",
+          "exitTitle": "地址沙盘逃生员",
+          "effects": []
+        }
+      ]
+    },
+    {
+      "id": "Q07",
+      "number": 7,
+      "chapterId": "company",
+      "prompt": "申请支付、收款，都需要开设银行账户，是否开户",
+      "defaultNextQuestionId": "Q08",
+      "factNotes": ["具体支付产品是否要求对公账户及账户年费，应以银行与支付机构当前规则为准。"],
+      "visual": {
+        "sceneId": "Q07",
+        "desktopAsset": "/assets/pixel/scenes-v2/Q07-desktop.webp",
+        "mobileAsset": "/assets/pixel/scenes-v2/Q07-mobile.webp",
+        "frames": ["idle", "action", "resolved", "quit"],
+        "optionVariants": {
+          "open-bank-account": {
+            "action": {
+              "desktopAsset": "/assets/pixel/scenes-v2/options/Q07/open-bank-account-action-desktop.webp",
+              "mobileAsset": "/assets/pixel/scenes-v2/options/Q07/open-bank-account-action-mobile.webp"
+            },
+            "resolved": {
+              "desktopAsset": "/assets/pixel/scenes-v2/options/Q07/open-bank-account-resolved-desktop.webp",
+              "mobileAsset": "/assets/pixel/scenes-v2/options/Q07/open-bank-account-resolved-mobile.webp"
+            },
+            "overlay": { "eyebrow": "银行企业业务", "title": "对公账户已开立", "detail": "开户回执 + 企业网银 UKey · ¥500/年", "tone": "success" }
+          }
+        }
+      },
+      "scoreWeight": { "execution": 2, "compliance": 1 },
+      "options": [
+        {
+          "id": "open-bank-account",
+          "label": "必须的，我有梦想，一年500块，再献祭1个月GPT Pro 5x",
+          "visualOutcome": "gpt-sacrifice",
+          "effects": [
+            { "type": "set-fact", "key": "hasCorporateBankAccount", "value": true },
+            { "type": "effort", "bucket": "founderHours", "hours": 3, "track": "company", "label": "选择银行（0.5天）" },
+            { "type": "effort", "bucket": "founderHours", "hours": 3, "track": "company", "label": "办理开户（0.5天）" },
+            { "type": "wait", "track": "company", "days": 7, "blocking": true, "label": "拿到开户许可证（7天）" },
+            { "type": "money", "id": "q07-bank-first-year", "bucket": "firstYearCommitted", "amount": 500, "currency": "CNY", "label": "公司银行账户首年", "sourceType": "用户口径", "chargeTiming": "上线前支付", "refundable": false, "priceDate": "2026-07-16" },
+            { "type": "money", "id": "q07-bank-renewal", "bucket": "renewal", "amount": 500, "currency": "CNY", "label": "公司银行账户次年续费", "sourceType": "用户口径", "chargeTiming": "次年续费", "refundable": true, "priceDate": "2026-07-16" },
+            { "type": "metric", "key": "score.execution", "value": 2 },
+            { "type": "metric", "key": "score.compliance", "value": 1 }
+          ]
+        },
+        {
+          "id": "stop-before-bank",
+          "label": "还没赚钱，首年总投入已经到 {{spent}} 了吗？？？算了",
+          "outcome": "exit",
+          "exitTitle": "沉没成本观察员",
+          "effects": []
+        }
+      ]
+    },
+    {
+      "id": "Q08",
+      "number": 8,
+      "chapterId": "company",
+      "prompt": "总裁，公户办好了，请问需要申请什么支付呢",
+      "defaultNextQuestionId": "Q09",
+      "factNotes": ["¥300 为本局微信相关认证预算口径；选择后计入首年总投入，并按 12 个月折算为月均投入；支付手续费与适用条件需按支付机构当前规则核实。"],
+      "visual": {
+        "sceneId": "Q08",
+        "desktopAsset": "/assets/pixel/scenes-v2/Q08-desktop.webp",
+        "mobileAsset": "/assets/pixel/scenes-v2/Q08-mobile.webp",
+        "frames": ["idle", "action", "resolved", "quit"],
+        "optionVariants": {
+          "wechat-pay": {
+            "action": {
+              "desktopAsset": "/assets/pixel/scenes-v2/options/Q08/wechat-pay-action-desktop.webp",
+              "mobileAsset": "/assets/pixel/scenes-v2/options/Q08/wechat-pay-action-mobile.webp"
+            },
+            "resolved": {
+              "desktopAsset": "/assets/pixel/scenes-v2/options/Q08/wechat-pay-resolved-desktop.webp",
+              "mobileAsset": "/assets/pixel/scenes-v2/options/Q08/wechat-pay-resolved-mobile.webp"
+            },
+            "overlay": { "eyebrow": "商户收银台", "title": "微信支付已启用", "detail": "认证预算 ¥300/年 · 交易费按量", "tone": "success" }
+          },
+          "alipay": {
+            "action": {
+              "desktopAsset": "/assets/pixel/scenes-v2/options/Q08/alipay-action-desktop.webp",
+              "mobileAsset": "/assets/pixel/scenes-v2/options/Q08/alipay-action-mobile.webp"
+            },
+            "resolved": {
+              "desktopAsset": "/assets/pixel/scenes-v2/options/Q08/alipay-resolved-desktop.webp",
+              "mobileAsset": "/assets/pixel/scenes-v2/options/Q08/alipay-resolved-mobile.webp"
+            },
+            "overlay": { "eyebrow": "商户收银台", "title": "支付宝已启用", "detail": "无认证费 · 交易费按量", "tone": "success" }
+          },
+          "both": {
+            "action": {
+              "desktopAsset": "/assets/pixel/scenes-v2/options/Q08/both-action-desktop.webp",
+              "mobileAsset": "/assets/pixel/scenes-v2/options/Q08/both-action-mobile.webp"
+            },
+            "resolved": {
+              "desktopAsset": "/assets/pixel/scenes-v2/options/Q08/both-resolved-desktop.webp",
+              "mobileAsset": "/assets/pixel/scenes-v2/options/Q08/both-resolved-mobile.webp"
+            },
+            "overlay": { "eyebrow": "小孩子才做选择", "title": "微信支付 + 支付宝", "detail": "两种付款方式同时启用", "tone": "success" }
+          }
+        }
+      },
+      "scoreWeight": { "execution": 2, "compliance": 2 },
+      "options": [
+        {
+          "id": "wechat-pay",
+          "label": "微信支付，认证费300/年（折合{{optionMonthlyAverageInvestment}}/月）",
+          "effects": [
+            { "type": "set-fact", "key": "paymentChannels", "value": "wechat" },
+            { "type": "effort", "bucket": "founderHours", "hours": 36, "track": "development", "label": "微信支付申请与接口调通（6天）" },
+            { "type": "money", "id": "q08-wechat-cert", "bucket": "firstYearCommitted", "amount": 300, "currency": "CNY", "label": "微信支付相关认证预算", "sourceType": "用户口径", "chargeTiming": "上线前支付", "refundable": true, "priceDate": "2026-07-16" },
+            { "type": "money", "id": "q08-wechat-cert-renewal", "bucket": "renewal", "amount": 300, "currency": "CNY", "label": "微信支付相关认证续费预算", "sourceType": "用户口径", "chargeTiming": "次年续费", "refundable": true, "priceDate": "2026-07-16" },
+            { "type": "money", "id": "q08-payment-fee", "bucket": "variable", "amount": null, "currency": "CNY", "label": "微信支付交易手续费", "sourceType": "待核实", "chargeTiming": "按量发生", "refundable": false },
+            { "type": "metric", "key": "score.execution", "value": 2 },
+            { "type": "metric", "key": "score.compliance", "value": 2 }
+          ]
+        },
+        {
+          "id": "alipay",
+          "label": "支付宝支付，没有认证费",
+          "effects": [
+            { "type": "set-fact", "key": "paymentChannels", "value": "alipay" },
+            { "type": "effort", "bucket": "founderHours", "hours": 24, "track": "development", "label": "支付宝申请与接口调通（4天）" },
+            { "type": "money", "id": "q08-payment-fee", "bucket": "variable", "amount": null, "currency": "CNY", "label": "支付宝交易手续费", "sourceType": "待核实", "chargeTiming": "按量发生", "refundable": false },
+            { "type": "metric", "key": "score.execution", "value": 2 },
+            { "type": "metric", "key": "score.compliance", "value": 2 }
+          ]
+        },
+        {
+          "id": "both",
+          "label": "小孩子才做选择，我全都要（微信认证折合{{optionMonthlyAverageInvestment}}/月）",
+          "effects": [
+            { "type": "set-fact", "key": "paymentChannels", "value": "both" },
+            { "type": "effort", "bucket": "founderHours", "hours": 36, "track": "development", "label": "微信与支付宝申请、接口调通（按较长路线6天）" },
+            { "type": "money", "id": "q08-wechat-cert", "bucket": "firstYearCommitted", "amount": 300, "currency": "CNY", "label": "微信支付相关认证预算", "sourceType": "用户口径", "chargeTiming": "上线前支付", "refundable": true, "priceDate": "2026-07-16" },
+            { "type": "money", "id": "q08-wechat-cert-renewal", "bucket": "renewal", "amount": 300, "currency": "CNY", "label": "微信支付相关认证续费预算", "sourceType": "用户口径", "chargeTiming": "次年续费", "refundable": true, "priceDate": "2026-07-16" },
+            { "type": "money", "id": "q08-payment-fee", "bucket": "variable", "amount": null, "currency": "CNY", "label": "微信与支付宝交易手续费", "sourceType": "待核实", "chargeTiming": "按量发生", "refundable": false },
+            { "type": "metric", "key": "score.execution", "value": 2 },
+            { "type": "metric", "key": "score.compliance", "value": 2 }
+          ]
+        },
+        {
+          "id": "run-away",
+          "label": "小孩子选择跑路",
+          "outcome": "exit",
+          "exitTitle": "支付闸门逃生员",
+          "effects": []
+        }
+      ]
+    },
+    {
+      "id": "Q09",
+      "number": 9,
+      "chapterId": "company",
+      "prompt": "总裁，公司开好了。就算还没赚钱，也要记账、申报和维护公私财产分离，不然可能影响到家庭和个人财产噢！！",
+      "defaultNextQuestionId": "Q10",
+      "factNotes": ["具体记账、纳税申报与财产责任边界应按企业类型、所在地和实际经营情况向专业人士核实。"],
+      "visual": {
+        "sceneId": "Q09",
+        "desktopAsset": "/assets/pixel/scenes-v2/Q09-desktop.webp",
+        "mobileAsset": "/assets/pixel/scenes-v2/Q09-mobile.webp",
+        "frames": ["idle", "action", "resolved", "quit"],
+        "optionVariants": {
+          "agency-bookkeeping": {
+            "action": {
+              "desktopAsset": "/assets/pixel/scenes-v2/options/Q09/agency-bookkeeping-action-desktop.webp",
+              "mobileAsset": "/assets/pixel/scenes-v2/options/Q09/agency-bookkeeping-action-mobile.webp"
+            },
+            "resolved": {
+              "desktopAsset": "/assets/pixel/scenes-v2/options/Q09/agency-bookkeeping-resolved-desktop.webp",
+              "mobileAsset": "/assets/pixel/scenes-v2/options/Q09/agency-bookkeeping-resolved-mobile.webp"
+            },
+            "overlay": { "eyebrow": "公司账 ｜ 个人账", "title": "代理记账已接单", "detail": "¥2000/年 · 每月仍需对接", "tone": "success" }
+          },
+          "self-bookkeeping": {
+            "action": {
+              "desktopAsset": "/assets/pixel/scenes-v2/options/Q09/self-bookkeeping-action-desktop.webp",
+              "mobileAsset": "/assets/pixel/scenes-v2/options/Q09/self-bookkeeping-action-mobile.webp"
+            },
+            "resolved": {
+              "desktopAsset": "/assets/pixel/scenes-v2/options/Q09/self-bookkeeping-resolved-desktop.webp",
+              "mobileAsset": "/assets/pixel/scenes-v2/options/Q09/self-bookkeeping-resolved-mobile.webp"
+            },
+            "overlay": { "eyebrow": "公司账 ｜ 个人账", "title": "自己记账申报", "detail": "不直接付费 · 约 4h/月", "tone": "neutral" }
+          }
+        }
+      },
+      "scoreWeight": { "execution": 2, "compliance": 2 },
+      "options": [
+        {
+          "id": "agency-bookkeeping",
+          "label": "找代理记账，按 ¥2,000/年。",
+          "effects": [
+            { "type": "set-fact", "key": "bookkeeping", "value": "agency" },
+            { "type": "effort", "bucket": "founderHours", "hours": 12, "track": "company", "label": "选择代理记账（2天）" },
+            { "type": "money", "id": "q09-bookkeeping-first-year", "bucket": "firstYearCommitted", "amount": 2000, "currency": "CNY", "label": "代理记账首年", "sourceType": "用户口径", "chargeTiming": "上线前支付", "refundable": true, "priceDate": "2026-07-16" },
+            { "type": "money", "id": "q09-bookkeeping-renewal", "bucket": "renewal", "amount": 2000, "currency": "CNY", "label": "代理记账次年续费", "sourceType": "用户口径", "chargeTiming": "次年续费", "refundable": true, "priceDate": "2026-07-16" },
+            { "type": "effort", "bucket": "recurringMonthlyHours", "hours": 1, "track": "company", "label": "每月与代理记账对接" },
+            { "type": "metric", "key": "score.execution", "value": 2 },
+            { "type": "metric", "key": "score.compliance", "value": 2 }
+          ]
+        },
+        {
+          "id": "self-bookkeeping",
+          "label": "我自己做。",
+          "effects": [
+            { "type": "set-fact", "key": "bookkeeping", "value": "self" },
+            { "type": "effort", "bucket": "founderHours", "hours": 180, "track": "company", "label": "自己学习并启动记账（30天）" },
+            { "type": "effort", "bucket": "recurringMonthlyHours", "hours": 4, "track": "company", "label": "自己记账、申报和维护公私财产分离" },
+            { "type": "todo", "id": "verify-self-bookkeeping", "label": "核对自行记账申报的能力与当地要求", "timing": "recurring" },
+            { "type": "metric", "key": "score.execution", "value": 2 },
+            { "type": "metric", "key": "score.compliance", "value": 2 }
+          ]
+        },
+        {
+          "id": "buy-sneakers",
+          "label": "呜呜呜，不玩了，我去买球鞋。",
+          "outcome": "exit",
+          "exitTitle": "球鞋优先财务官",
+          "effects": []
+        }
+      ]
+    },
+    {
+      "id": "Q10",
+      "number": 10,
+      "chapterId": "build",
+      "prompt": "心心念念第一个产品，肯定要拉满啊，你选什么模型？",
+      "defaultNextQuestionId": "Q11",
+      "factNotes": ["GPT 的 200 美元/月按国家外汇管理局 2026-07-16 人民币汇率中间价 1 美元 = ¥6.7909 折算：约 ¥1,358.2/月、¥16,298.2/年；实际支付以账单汇率为准。", "GLM Coding Pro 按月付 ¥149/月计，首年约 ¥1,788（149 × 12）；官方另有连续包季 9 折、连续包年 8 折（约 ¥1,430.4/年）优惠，套餐价格应在购买时再次核对。", "开发工具订阅和产品运行时模型 API 成本分开记账。"],
+      "visual": {
+        "sceneId": "Q10",
+        "desktopAsset": "/assets/pixel/scenes-v2/Q10-desktop.webp",
+        "mobileAsset": "/assets/pixel/scenes-v2/Q10-mobile.webp",
+        "frames": ["idle", "action", "resolved", "quit"],
+        "optionVariants": {
+          "gpt-ultra": {
+            "action": {
+              "desktopAsset": "/assets/pixel/scenes-v2/options/Q10/gpt-ultra-action-desktop.webp",
+              "mobileAsset": "/assets/pixel/scenes-v2/options/Q10/gpt-ultra-action-mobile.webp"
+            },
+            "resolved": {
+              "desktopAsset": "/assets/pixel/scenes-v2/options/Q10/gpt-ultra-resolved-desktop.webp",
+              "mobileAsset": "/assets/pixel/scenes-v2/options/Q10/gpt-ultra-resolved-mobile.webp"
+            },
+            "overlay": { "eyebrow": "Coding AI", "title": "GPT 5.6 Ultra · $200/月", "detail": "开发工具订阅，不是产品运行时 API", "tone": "brand" }
+          },
+          "glm-pro": {
+            "action": {
+              "desktopAsset": "/assets/pixel/scenes-v2/options/Q10/glm-pro-action-desktop.webp",
+              "mobileAsset": "/assets/pixel/scenes-v2/options/Q10/glm-pro-action-mobile.webp"
+            },
+            "resolved": {
+              "desktopAsset": "/assets/pixel/scenes-v2/options/Q10/glm-pro-resolved-desktop.webp",
+              "mobileAsset": "/assets/pixel/scenes-v2/options/Q10/glm-pro-resolved-mobile.webp"
+            },
+            "overlay": { "eyebrow": "Coding AI", "title": "GLM 5.2", "detail": "¥149/月", "tone": "brand" }
+          },
+          "kimi-code": {
+            "action": {
+              "desktopAsset": "/assets/pixel/scenes-v2/options/Q10/kimi-code-action-desktop.webp",
+              "mobileAsset": "/assets/pixel/scenes-v2/options/Q10/kimi-code-action-mobile.webp"
+            },
+            "resolved": {
+              "desktopAsset": "/assets/pixel/scenes-v2/options/Q10/kimi-code-resolved-desktop.webp",
+              "mobileAsset": "/assets/pixel/scenes-v2/options/Q10/kimi-code-resolved-mobile.webp"
+            },
+            "overlay": { "eyebrow": "Coding AI", "title": "Kimi K3", "detail": "约 ¥699/月", "tone": "brand" }
+          },
+          "free-tools": {
+            "action": {
+              "desktopAsset": "/assets/pixel/scenes-v2/options/Q10/free-tools-action-desktop.webp",
+              "mobileAsset": "/assets/pixel/scenes-v2/options/Q10/free-tools-action-mobile.webp"
+            },
+            "resolved": {
+              "desktopAsset": "/assets/pixel/scenes-v2/options/Q10/free-tools-resolved-desktop.webp",
+              "mobileAsset": "/assets/pixel/scenes-v2/options/Q10/free-tools-resolved-mobile.webp"
+            },
+            "overlay": { "eyebrow": "Coding AI", "title": "免费 / 开源工具", "detail": "钱包空了，代码还得继续", "tone": "neutral" }
+          }
+        }
+      },
+      "scoreWeight": { "execution": 2 },
+      "options": [
+        {
+          "id": "gpt-ultra",
+          "label": "GPT 5.6 Ultra-200刀/月",
+          "visualOutcome": "ai-gpt",
+          "effects": [
+            { "type": "set-fact", "key": "codingModel", "value": "gpt-ultra" },
+            { "type": "money", "id": "q10-gpt-first-year", "bucket": "firstYearCommitted", "amount": 16298.16, "currency": "CNY", "label": "GPT 高档开发工具年化（按 1 美元 = ¥6.7909 折算）", "sourceType": "用户口径 + 官方中间价折算", "chargeTiming": "按月支付", "refundable": true, "priceDate": "2026-07-16" },
+            { "type": "money", "id": "q10-gpt-renewal", "bucket": "renewal", "amount": 16298.16, "currency": "CNY", "label": "GPT 高档开发工具次年年化（按 1 美元 = ¥6.7909 折算）", "sourceType": "用户口径 + 官方中间价折算", "chargeTiming": "按月续费", "refundable": true, "priceDate": "2026-07-16" },
+            { "type": "effort", "bucket": "founderHours", "hours": 18, "track": "development", "label": "GPT 路线 MVP 开发（3天）" },
+            { "type": "metric", "key": "score.execution", "value": 2 }
+          ]
+        },
+        {
+          "id": "glm-pro",
+          "label": "GLM 5.2，¥149/月",
+          "visualOutcome": "ai-glm",
+          "effects": [
+            { "type": "set-fact", "key": "codingModel", "value": "glm-pro" },
+            { "type": "money", "id": "q10-glm-first-year", "bucket": "firstYearCommitted", "amount": 1788, "currency": "CNY", "label": "GLM Coding Pro 首年（¥149/月 × 12）", "sourceType": "官方价格页", "chargeTiming": "按月支付", "refundable": true, "priceDate": "2026-07-29" },
+            { "type": "money", "id": "q10-glm-renewal", "bucket": "renewal", "amount": 1788, "currency": "CNY", "label": "GLM Coding Pro 次年（¥149/月 × 12）", "sourceType": "官方价格页", "chargeTiming": "按月续费", "refundable": true, "priceDate": "2026-07-29" },
+            { "type": "metric", "key": "score.execution", "value": 2 }
+          ]
+        },
+        {
+          "id": "kimi-code",
+          "label": "Kimi K3,大概是699元/月",
+          "visualOutcome": "ai-kimi",
+          "effects": [
+            { "type": "set-fact", "key": "codingModel", "value": "kimi-code" },
+            { "type": "money", "id": "q10-kimi-first-year", "bucket": "firstYearCommitted", "amount": 8388, "currency": "CNY", "label": "Kimi K3 年化预算（¥699/月）", "sourceType": "用户估算", "chargeTiming": "按月支付", "refundable": true, "priceDate": "2026-07-28" },
+            { "type": "money", "id": "q10-kimi-renewal", "bucket": "renewal", "amount": 8388, "currency": "CNY", "label": "Kimi K3 次年年化预算（¥699/月）", "sourceType": "用户估算", "chargeTiming": "按月续费", "refundable": true, "priceDate": "2026-07-28" },
+            { "type": "metric", "key": "score.execution", "value": 2 }
+          ]
+        },
+        {
+          "id": "free-tools",
+          "label": "我没有钱。。。。",
+          "visualOutcome": "ai-free",
+          "effects": [
+            { "type": "set-fact", "key": "codingModel", "value": "free-tools" },
+            { "type": "todo", "id": "choose-free-coding-tool", "label": "选择可用的免费开发工具", "timing": "before-launch" },
+            { "type": "metric", "key": "score.execution", "value": 2 }
+          ]
+        }
+      ]
+    },
+    {
+      "id": "Q11",
+      "number": 11,
+      "chapterId": "build",
+      "prompt": "写代码的AI有了，你的产品功能涉及到AI吗？",
+      "defaultNextQuestionId": "Q12",
+      "factNotes": ["模型 API 与内容审核均属于变动成本。", "若调用第三方模型，备案阶段需按实际要求核实供应商合同、授权或其他材料。"],
+      "visual": {
+        "sceneId": "Q11",
+        "desktopAsset": "/assets/pixel/scenes-v2/Q11-desktop.webp",
+        "mobileAsset": "/assets/pixel/scenes-v2/Q11-mobile.webp",
+        "frames": ["idle", "action", "resolved", "quit"],
+        "optionVariants": {
+          "no-runtime-ai": {
+            "action": {
+              "desktopAsset": "/assets/pixel/scenes-v2/options/Q11/no-runtime-ai-action-desktop.webp",
+              "mobileAsset": "/assets/pixel/scenes-v2/options/Q11/no-runtime-ai-action-mobile.webp"
+            },
+            "resolved": {
+              "desktopAsset": "/assets/pixel/scenes-v2/options/Q11/no-runtime-ai-resolved-desktop.webp",
+              "mobileAsset": "/assets/pixel/scenes-v2/options/Q11/no-runtime-ai-resolved-mobile.webp"
+            },
+            "overlay": { "eyebrow": "产品运行时", "title": "AI 功能 OFF", "detail": "普通表单、搜索与规则仍然可用", "tone": "success" }
+          },
+          "runtime-ai": {
+            "action": {
+              "desktopAsset": "/assets/pixel/scenes-v2/options/Q11/runtime-ai-action-desktop.webp",
+              "mobileAsset": "/assets/pixel/scenes-v2/options/Q11/runtime-ai-action-mobile.webp"
+            },
+            "resolved": {
+              "desktopAsset": "/assets/pixel/scenes-v2/options/Q11/runtime-ai-resolved-desktop.webp",
+              "mobileAsset": "/assets/pixel/scenes-v2/options/Q11/runtime-ai-resolved-mobile.webp"
+            },
+            "overlay": { "eyebrow": "产品运行时", "title": "AI 功能 ON · TOKEN 按量", "detail": "内容审核 + 企业认证 + 供应商合同", "tone": "brand" }
+          }
+        }
+      },
+      "scoreWeight": { "execution": 2, "compliance": 3 },
+      "options": [
+        {
+          "id": "no-runtime-ai",
+          "label": "不用AI",
+          "visualOutcome": "ai-off",
+          "effects": [
+            { "type": "set-fact", "key": "runtimeAi", "value": false },
+            { "type": "metric", "key": "score.execution", "value": 2 },
+            { "type": "metric", "key": "score.compliance", "value": 3 }
+          ]
+        },
+        {
+          "id": "runtime-ai",
+          "label": "必须用，没有AI我的产品无了。",
+          "visualOutcome": "token-flow",
+          "effects": [
+            { "type": "set-fact", "key": "runtimeAi", "value": true },
+            { "type": "effort", "bucket": "founderHours", "hours": 18, "track": "development", "label": "运行时 AI 接入、认证与材料（3天）" },
+            { "type": "money", "id": "q11-model-api", "bucket": "variable", "amount": null, "currency": "CNY", "label": "模型 API Token 按量成本", "sourceType": "待询价", "chargeTiming": "按量发生", "refundable": false },
+            { "type": "money", "id": "q11-content-moderation", "bucket": "variable", "amount": null, "currency": "CNY", "label": "内容审核按量成本", "sourceType": "待询价", "chargeTiming": "按量发生", "refundable": false },
+            { "type": "todo", "id": "ai-provider-enterprise-verification", "label": "核实模型供应商企业认证要求", "timing": "before-launch" },
+            { "type": "todo", "id": "ai-provider-contract", "label": "核实并准备模型供应商合同或授权材料", "timing": "before-launch" },
+            { "type": "metric", "key": "score.execution", "value": 2 },
+            { "type": "metric", "key": "score.compliance", "value": 3 }
+          ]
+        },
+        {
+          "id": "goodbye",
+          "label": "拜拜了您咧。",
+          "outcome": "exit",
+          "exitTitle": "Token 账单躲避者",
+          "effects": []
+        }
+      ]
+    },
+    {
+      "id": "Q12",
+      "number": 12,
+      "chapterId": "build",
+      "prompt": "产品开发的差不多了，要买域名和 ssl 和 dns 了",
+      "defaultNextQuestionId": "Q13",
+      "factNotes": ["¥300 为本局合并预算口径；域名、证书和 DNS 的实际价格与免费方案需分别核实。"],
+      "visual": {
+        "sceneId": "Q12",
+        "desktopAsset": "/assets/pixel/scenes-v2/Q12-desktop.webp",
+        "mobileAsset": "/assets/pixel/scenes-v2/Q12-mobile.webp",
+        "frames": ["idle", "action", "resolved", "quit"],
+        "optionVariants": {
+          "buy-domain-stack": {
+            "action": {
+              "desktopAsset": "/assets/pixel/scenes-v2/options/Q12/buy-domain-stack-action-desktop.webp",
+              "mobileAsset": "/assets/pixel/scenes-v2/options/Q12/buy-domain-stack-action-mobile.webp"
+            },
+            "resolved": {
+              "desktopAsset": "/assets/pixel/scenes-v2/options/Q12/buy-domain-stack-resolved-desktop.webp",
+              "mobileAsset": "/assets/pixel/scenes-v2/options/Q12/buy-domain-stack-resolved-mobile.webp"
+            },
+            "overlay": { "eyebrow": "DOMAIN + SSL + DNS", "title": "localhost → https://example.com", "detail": "网址三件套已配置 · ¥300", "tone": "success" }
+          }
+        }
+      },
+      "scoreWeight": { "execution": 1 },
+      "options": [
+        {
+          "id": "buy-domain-stack",
+          "label": "300 块小意思",
+          "effects": [
+            { "type": "effort", "bucket": "founderHours", "hours": 6, "track": "development", "label": "域名、SSL 与 DNS 配置（1天）" },
+            { "type": "money", "id": "q12-domain-first-year", "bucket": "firstYearCommitted", "amount": 300, "currency": "CNY", "label": "域名、SSL 和 DNS 首次预算", "sourceType": "用户口径", "chargeTiming": "上线前支付", "refundable": true, "priceDate": "2026-07-16" },
+            { "type": "money", "id": "q12-domain-renewal", "bucket": "renewal", "amount": 300, "currency": "CNY", "label": "域名、SSL 和 DNS 次年续费预算", "sourceType": "用户口径", "chargeTiming": "次年续费", "refundable": true, "priceDate": "2026-07-16" },
+            { "type": "metric", "key": "score.execution", "value": 1 }
+          ]
+        },
+        {
+          "id": "hotpot",
+          "label": "我想要吃顿牛肉火锅",
+          "outcome": "exit",
+          "exitTitle": "域名换火锅体验官",
+          "effects": []
+        }
+      ]
+    },
+    {
+      "id": "Q13",
+      "number": 13,
+      "chapterId": "build",
+      "prompt": "前面你说要登录，最简单的方式是短信登录",
+      "appliesWhen": { "fact": "requiresLogin", "equals": true },
+      "defaultNextQuestionId": "Q14",
+      "factNotes": ["Q13 仅登录路线出现。", "改为无登录且不商业化时，撤销 Q8 中尚未支付的微信相关认证预算、续费预算与按量手续费；已经支付的沉没成本不回退。"],
+      "visual": {
+        "sceneId": "Q13",
+        "desktopAsset": "/assets/pixel/scenes-v2/Q13-desktop.webp",
+        "mobileAsset": "/assets/pixel/scenes-v2/Q13-mobile.webp",
+        "frames": ["idle", "action", "resolved", "quit"],
+        "optionVariants": {
+          "sms-login": {
+            "action": {
+              "desktopAsset": "/assets/pixel/scenes-v2/options/Q13/sms-login-action-desktop.webp",
+              "mobileAsset": "/assets/pixel/scenes-v2/options/Q13/sms-login-action-mobile.webp"
+            },
+            "resolved": {
+              "desktopAsset": "/assets/pixel/scenes-v2/options/Q13/sms-login-resolved-desktop.webp",
+              "mobileAsset": "/assets/pixel/scenes-v2/options/Q13/sms-login-resolved-mobile.webp"
+            },
+            "overlay": { "eyebrow": "手机验证码登录", "title": "1000 条短信已购", "detail": "实付 ¥45 · 手机收到验证码", "tone": "success" }
+          },
+          "remove-login-and-commerce": {
+            "action": {
+              "desktopAsset": "/assets/pixel/scenes-v2/options/Q13/remove-login-and-commerce-action-desktop.webp",
+              "mobileAsset": "/assets/pixel/scenes-v2/options/Q13/remove-login-and-commerce-action-mobile.webp"
+            },
+            "resolved": {
+              "desktopAsset": "/assets/pixel/scenes-v2/options/Q13/remove-login-and-commerce-resolved-desktop.webp",
+              "mobileAsset": "/assets/pixel/scenes-v2/options/Q13/remove-login-and-commerce-resolved-mobile.webp"
+            },
+            "overlay": { "eyebrow": "产品路线调整", "title": "登录与支付已拆除", "detail": "改为游客直达 · 未支付预算取消", "tone": "neutral" }
+          }
+        }
+      },
+      "scoreWeight": { "execution": 1, "compliance": 2 },
+      "options": [
+        {
+          "id": "sms-login",
+          "label": "45块1000条，好划算买买买",
+          "effects": [
+            { "type": "set-fact", "key": "loginMethod", "value": "sms" },
+            { "type": "effort", "bucket": "founderHours", "hours": 6, "track": "development", "label": "短信登录申请、接入与测试（1天）" },
+            { "type": "money", "id": "q13-sms-pack", "bucket": "firstYearCommitted", "amount": 45, "currency": "CNY", "label": "短信 1000 条首包", "sourceType": "用户口径", "chargeTiming": "上线前支付", "refundable": true, "priceDate": "2026-07-16" },
+            { "type": "money", "id": "q13-sms-variable", "bucket": "variable", "amount": null, "currency": "CNY", "label": "后续短信按量成本", "sourceType": "待询价", "chargeTiming": "按量发生", "refundable": false },
+            { "type": "metric", "key": "score.execution", "value": 1 },
+            { "type": "metric", "key": "score.compliance", "value": 2 }
+          ]
+        },
+        {
+          "id": "remove-login-and-commerce",
+          "label": "我改变主意了，不要登录也不商业化了",
+          "effects": [
+            { "type": "set-fact", "key": "requiresLogin", "value": false },
+            { "type": "set-fact", "key": "commercial", "value": false },
+            { "type": "set-fact", "key": "hasInteractiveFeatures", "value": false },
+            { "type": "effort", "bucket": "founderHours", "hours": 12, "track": "development", "label": "移除登录与商业化功能（2天）" },
+            { "type": "set-fact", "key": "loginMethod", "value": "none" },
+            { "type": "set-fact", "key": "paymentChannels", "value": "none" },
+            { "type": "remove-money", "bucket": "firstYearCommitted", "itemId": "q08-wechat-cert" },
+            { "type": "remove-money", "bucket": "renewal", "itemId": "q08-wechat-cert-renewal" },
+            { "type": "remove-money", "bucket": "variable", "itemId": "q08-payment-fee" },
+            { "type": "metric", "key": "score.execution", "value": 1 },
+            { "type": "metric", "key": "score.compliance", "value": 2 }
+          ]
+        },
+        {
+          "id": "quit",
+          "label": "不干了！！！",
+          "outcome": "exit",
+          "exitTitle": "验证码拒收用户",
+          "effects": []
+        }
+      ]
+    },
+    {
+      "id": "Q14",
+      "number": 14,
+      "chapterId": "build",
+      "prompt": "收不收钱都要有服务器，买什么规格的",
+      "defaultNextQuestionId": "Q15",
+      "factNotes": ["规格选择应按实际负载测试；题目中的价格只按用户给出的已知口径记录。"],
+      "visual": {
+        "sceneId": "Q14",
+        "desktopAsset": "/assets/pixel/scenes-v2/Q14-desktop.webp",
+        "mobileAsset": "/assets/pixel/scenes-v2/Q14-mobile.webp",
+        "frames": ["idle", "action", "resolved", "quit"],
+        "optionVariants": {
+          "one-core-two-gb": {
+            "action": {
+              "desktopAsset": "/assets/pixel/scenes-v2/options/Q14/one-core-two-gb-action-desktop.webp",
+              "mobileAsset": "/assets/pixel/scenes-v2/options/Q14/one-core-two-gb-action-mobile.webp"
+            },
+            "resolved": {
+              "desktopAsset": "/assets/pixel/scenes-v2/options/Q14/one-core-two-gb-resolved-desktop.webp",
+              "mobileAsset": "/assets/pixel/scenes-v2/options/Q14/one-core-two-gb-resolved-mobile.webp"
+            },
+            "overlay": { "eyebrow": "低配服务器", "title": "1 核 / 2G 已部署", "detail": "产品能开，但 CPU / RAM 吃紧", "tone": "warning" }
+          },
+          "two-core-four-gb": {
+            "action": {
+              "desktopAsset": "/assets/pixel/scenes-v2/options/Q14/two-core-four-gb-action-desktop.webp",
+              "mobileAsset": "/assets/pixel/scenes-v2/options/Q14/two-core-four-gb-action-mobile.webp"
+            },
+            "resolved": {
+              "desktopAsset": "/assets/pixel/scenes-v2/options/Q14/two-core-four-gb-resolved-desktop.webp",
+              "mobileAsset": "/assets/pixel/scenes-v2/options/Q14/two-core-four-gb-resolved-mobile.webp"
+            },
+            "overlay": { "eyebrow": "基础服务器", "title": "2 核 / 4G 已部署", "detail": "负载居中 · ¥1,300/年", "tone": "success" }
+          }
+        }
+      },
+      "scoreWeight": { "execution": 2 },
+      "options": [
+        {
+          "id": "one-core-two-gb",
+          "label": "1核2g，openclaw都跑不动，你确定要买？",
+          "effects": [
+            { "type": "set-fact", "key": "serverSpec", "value": "1c2g" },
+            { "type": "effort", "bucket": "founderHours", "hours": 12, "track": "development", "label": "低配服务器购买、配置与部署（2天）" },
+            { "type": "money", "id": "q14-1c2g", "bucket": "firstYearCommitted", "amount": null, "currency": "CNY", "label": "1核2G服务器首年费用", "sourceType": "待询价", "chargeTiming": "上线前支付", "refundable": true },
+            { "type": "metric", "key": "score.execution", "value": 2 }
+          ]
+        },
+        {
+          "id": "two-core-four-gb",
+          "label": "2核4g，1300元/年",
+          "effects": [
+            { "type": "set-fact", "key": "serverSpec", "value": "2c4g" },
+            { "type": "effort", "bucket": "founderHours", "hours": 12, "track": "development", "label": "基础服务器购买、配置与部署（2天）" },
+            { "type": "money", "id": "q14-2c4g-first-year", "bucket": "firstYearCommitted", "amount": 1300, "currency": "CNY", "label": "2核4G服务器首年", "sourceType": "用户口径", "chargeTiming": "上线前支付", "refundable": true, "priceDate": "2026-07-16" },
+            { "type": "money", "id": "q14-2c4g-renewal", "bucket": "renewal", "amount": 1300, "currency": "CNY", "label": "2核4G服务器次年续费", "sourceType": "用户口径", "chargeTiming": "次年续费", "refundable": true, "priceDate": "2026-07-16" },
+            { "type": "metric", "key": "score.execution", "value": 2 }
+          ]
+        },
+        {
+          "id": "buy-clothes",
+          "label": "库里新t才300啊QAQ，我去买4件",
+          "outcome": "exit",
+          "exitTitle": "服务器换新衣买手",
+          "effects": []
+        }
+      ]
+    },
+    {
+      "id": "Q15",
+      "number": 15,
+      "chapterId": "build",
+      "prompt": "既然要登录要商业化，要有数据盘",
+      "defaultNextQuestionId": "Q16",
+      "factNotes": ["是否需要独立数据盘取决于数据量、可靠性与备份策略；仅有系统盘不等于无需备份。"],
+      "visual": {
+        "sceneId": "Q15",
+        "desktopAsset": "/assets/pixel/scenes-v2/Q15-desktop.webp",
+        "mobileAsset": "/assets/pixel/scenes-v2/Q15-mobile.webp",
+        "frames": ["idle", "action", "resolved", "quit"],
+        "optionVariants": {
+          "system-and-data-disk": {
+            "action": {
+              "desktopAsset": "/assets/pixel/scenes-v2/options/Q15/system-and-data-disk-action-desktop.webp",
+              "mobileAsset": "/assets/pixel/scenes-v2/options/Q15/system-and-data-disk-action-mobile.webp"
+            },
+            "resolved": {
+              "desktopAsset": "/assets/pixel/scenes-v2/options/Q15/system-and-data-disk-resolved-desktop.webp",
+              "mobileAsset": "/assets/pixel/scenes-v2/options/Q15/system-and-data-disk-resolved-mobile.webp"
+            },
+            "overlay": { "eyebrow": "存储结构", "title": "系统与数据已分盘", "detail": "SYS 40G + DATA 100G · ¥600/年", "tone": "success" }
+          },
+          "system-disk-only": {
+            "action": {
+              "desktopAsset": "/assets/pixel/scenes-v2/options/Q15/system-disk-only-action-desktop.webp",
+              "mobileAsset": "/assets/pixel/scenes-v2/options/Q15/system-disk-only-action-mobile.webp"
+            },
+            "resolved": {
+              "desktopAsset": "/assets/pixel/scenes-v2/options/Q15/system-disk-only-resolved-desktop.webp",
+              "mobileAsset": "/assets/pixel/scenes-v2/options/Q15/system-disk-only-resolved-mobile.webp"
+            },
+            "overlay": { "eyebrow": "存储结构", "title": "只用 SYS 40G", "detail": "¥200/年 · 备份方案仍待确认", "tone": "warning" }
+          }
+        }
+      },
+      "scoreWeight": { "execution": 1, "compliance": 2 },
+      "options": [
+        {
+          "id": "system-and-data-disk",
+          "label": "系统盘40g+数据盘100g-600元/年",
+          "effects": [
+            { "type": "set-fact", "key": "dataDisk", "value": true },
+            { "type": "effort", "bucket": "founderHours", "hours": 6, "track": "development", "label": "系统盘与数据盘配置、备份（1天）" },
+            { "type": "money", "id": "q15-disk-first-year", "bucket": "firstYearCommitted", "amount": 600, "currency": "CNY", "label": "40G系统盘与100G数据盘首年", "sourceType": "用户口径", "chargeTiming": "上线前支付", "refundable": true, "priceDate": "2026-07-16" },
+            { "type": "money", "id": "q15-disk-renewal", "bucket": "renewal", "amount": 600, "currency": "CNY", "label": "40G系统盘与100G数据盘次年续费", "sourceType": "用户口径", "chargeTiming": "次年续费", "refundable": true, "priceDate": "2026-07-16" },
+            { "type": "metric", "key": "score.execution", "value": 1 },
+            { "type": "metric", "key": "score.compliance", "value": 2 }
+          ]
+        },
+        {
+          "id": "system-disk-only",
+          "label": "不买，不存-200元 40g系统盘",
+          "effects": [
+            { "type": "set-fact", "key": "dataDisk", "value": false },
+            { "type": "effort", "bucket": "founderHours", "hours": 3, "track": "development", "label": "系统盘与备份方案配置（0.5天）" },
+            { "type": "money", "id": "q15-system-disk-first-year", "bucket": "firstYearCommitted", "amount": 200, "currency": "CNY", "label": "40G系统盘首年", "sourceType": "用户口径", "chargeTiming": "上线前支付", "refundable": true, "priceDate": "2026-07-16" },
+            { "type": "money", "id": "q15-system-disk-renewal", "bucket": "renewal", "amount": 200, "currency": "CNY", "label": "40G系统盘次年续费", "sourceType": "用户口径", "chargeTiming": "次年续费", "refundable": true, "priceDate": "2026-07-16" },
+            { "type": "todo", "id": "verify-backup-strategy", "label": "确认不使用独立数据盘时的备份与恢复方案", "timing": "before-launch" },
+            { "type": "metric", "key": "score.execution", "value": 1 },
+            { "type": "metric", "key": "score.compliance", "value": 2 }
+          ]
+        }
+      ]
+    },
+    {
+      "id": "Q16",
+      "number": 16,
+      "chapterId": "build",
+      "prompt": "不买数据盘，带宽总要吧",
+      "defaultNextQuestionId": "Q17",
+      "factNotes": ["¥724.2/年为本局 3M 带宽预算口径，实际价格与计费模式需按云厂商当前报价核实。"],
+      "visual": {
+        "sceneId": "Q16",
+        "desktopAsset": "/assets/pixel/scenes-v2/Q16-desktop.webp",
+        "mobileAsset": "/assets/pixel/scenes-v2/Q16-mobile.webp",
+        "frames": ["idle", "action", "resolved", "quit"],
+        "optionVariants": {
+          "three-megabit": {
+            "action": {
+              "desktopAsset": "/assets/pixel/scenes-v2/options/Q16/three-megabit-action-desktop.webp",
+              "mobileAsset": "/assets/pixel/scenes-v2/options/Q16/three-megabit-action-mobile.webp"
+            },
+            "resolved": {
+              "desktopAsset": "/assets/pixel/scenes-v2/options/Q16/three-megabit-resolved-desktop.webp",
+              "mobileAsset": "/assets/pixel/scenes-v2/options/Q16/three-megabit-resolved-mobile.webp"
+            },
+            "overlay": { "eyebrow": "公网最后一插", "title": "3M 窄带已接通", "detail": "用户能打开，但需要排队 · ¥724.2/年", "tone": "success" }
+          }
+        }
+      },
+      "scoreWeight": { "execution": 1 },
+      "options": [
+        {
+          "id": "three-megabit",
+          "label": "3兆/年，724.2元/年",
+          "effects": [
+            { "type": "effort", "bucket": "founderHours", "hours": 3, "track": "development", "label": "3M带宽购买与接通（0.5天）" },
+            { "type": "money", "id": "q16-bandwidth-first-year", "bucket": "firstYearCommitted", "amount": 724.2, "currency": "CNY", "label": "3M带宽首年", "sourceType": "用户口径", "chargeTiming": "上线前支付", "refundable": true, "priceDate": "2026-07-16" },
+            { "type": "money", "id": "q16-bandwidth-renewal", "bucket": "renewal", "amount": 724.2, "currency": "CNY", "label": "3M带宽次年续费", "sourceType": "用户口径", "chargeTiming": "次年续费", "refundable": true, "priceDate": "2026-07-16" },
+            { "type": "metric", "key": "score.execution", "value": 1 }
+          ]
+        },
+        {
+          "id": "quit-after-spending",
+          "label": "不玩了，但首年总投入已经到 {{spent}}，真的不玩？",
+          "outcome": "exit",
+          "exitTitle": "带宽闸门刹车手",
+          "effects": []
+        }
+      ]
+    },
+    {
+      "id": "Q17",
+      "number": 17,
+      "chapterId": "compliance",
+      "prompt": "恭喜你走到这里，网站就差上线了，现在开始，轻易不花钱了，就是杀时间",
+      "defaultNextQuestionId": "Q18",
+      "factNotes": ["题目沿用 7 天游戏口径；工信部备案实际周期取决于接入商、材料和属地审核，不作为官方承诺。"],
+      "visual": {
+        "sceneId": "Q17",
+        "desktopAsset": "/assets/pixel/scenes-v2/Q17-desktop.webp",
+        "mobileAsset": "/assets/pixel/scenes-v2/Q17-mobile.webp",
+        "frames": ["idle", "action", "resolved", "quit"],
+        "optionVariants": {
+          "submit-miit-filing": {
+            "action": {
+              "desktopAsset": "/assets/pixel/scenes-v2/options/Q17/submit-miit-filing-action-desktop.webp",
+              "mobileAsset": "/assets/pixel/scenes-v2/options/Q17/submit-miit-filing-action-mobile.webp"
+            },
+            "resolved": {
+              "desktopAsset": "/assets/pixel/scenes-v2/options/Q17/submit-miit-filing-resolved-desktop.webp",
+              "mobileAsset": "/assets/pixel/scenes-v2/options/Q17/submit-miit-filing-resolved-mobile.webp"
+            },
+            "overlay": {
+              "eyebrow": "工信部网站备案",
+              "title": "ICP 备案已通过",
+              "detail": "材料提交 → 审核中 → 预计 7 天",
+              "tone": "success"
+            }
+          }
+        }
+      },
+      "scoreWeight": { "execution": 3, "compliance": 2 },
+      "options": [
+        {
+          "id": "submit-miit-filing",
+          "label": "提交网站备案，7天出结果",
+          "effects": [
+            { "type": "set-fact", "key": "miitFiled", "value": true },
+            { "type": "wait", "track": "filing", "days": 7, "blocking": true, "label": "工信部备案全流程（7天）" },
+            { "type": "metric", "key": "score.execution", "value": 3 },
+            { "type": "metric", "key": "score.compliance", "value": 2 }
+          ]
+        },
+        {
+          "id": "quit-at-filing",
+          "label": "都要上线了，还不搞吗？？？",
+          "outcome": "exit",
+          "exitTitle": "上线前一厘米撤退者",
+          "effects": []
+        }
+      ]
+    },
+    {
+      "id": "Q18",
+      "number": 18,
+      "chapterId": "compliance",
+      "prompt": "工信部备案通过了，美滋滋",
+      "defaultNextQuestionId": "Q19",
+      "factNotes": ["题目沿用 7 天游戏口径；公安联网备案的适用范围、提交时间与实际周期应按属地要求核实。"],
+      "visual": {
+        "sceneId": "Q18",
+        "desktopAsset": "/assets/pixel/scenes-v2/Q18-desktop.webp",
+        "mobileAsset": "/assets/pixel/scenes-v2/Q18-mobile.webp",
+        "frames": ["idle", "action", "resolved", "quit"],
+        "optionVariants": {
+          "submit-police-filing": {
+            "action": {
+              "desktopAsset": "/assets/pixel/scenes-v2/options/Q18/submit-police-filing-action-desktop.webp",
+              "mobileAsset": "/assets/pixel/scenes-v2/options/Q18/submit-police-filing-action-mobile.webp"
+            },
+            "resolved": {
+              "desktopAsset": "/assets/pixel/scenes-v2/options/Q18/submit-police-filing-resolved-desktop.webp",
+              "mobileAsset": "/assets/pixel/scenes-v2/options/Q18/submit-police-filing-resolved-mobile.webp"
+            },
+            "overlay": {
+              "eyebrow": "承接上一份工信回执",
+              "title": "公安联网备案已通过",
+              "detail": "拓扑与身份材料提交 · 再等 7 天",
+              "tone": "success"
+            }
+          }
+        }
+      },
+      "scoreWeight": { "execution": 2, "compliance": 2 },
+      "options": [
+        {
+          "id": "submit-police-filing",
+          "label": "来都来了，提交公安备案，7天出结果",
+          "effects": [
+            { "type": "set-fact", "key": "policeFiled", "value": true },
+            { "type": "wait", "track": "filing", "days": 7, "blocking": true, "label": "公安联网备案全流程（7天）" },
+            { "type": "metric", "key": "score.execution", "value": 2 },
+            { "type": "metric", "key": "score.compliance", "value": 2 }
+          ]
+        },
+        {
+          "id": "quit-at-police-filing",
+          "label": "我的天，妈妈我不想玩了！！！",
+          "outcome": "exit",
+          "exitTitle": "备案耐力耗尽者",
+          "effects": []
+        }
+      ]
+    },
+    {
+      "id": "Q19",
+      "number": 19,
+      "chapterId": "compliance",
+      "prompt": "老师，备案都通过了，该办证了，你的网站经营范围是什么？这决定要不要花100万",
+      "defaultNextQuestionId": "Q20",
+      "factNotes": ["平台路线默认已有100万注册资本门槛资金，并计入本局首年总投入；它不是工信部备案费用。", "许可、中介和人员成本全部标记为待确认，不直接扣款。", "经营许可是否适用应按实际业务形态和属地要求核实。"],
+      "visual": {
+        "sceneId": "Q19",
+        "desktopAsset": "/assets/pixel/scenes-v2/Q19-desktop.webp",
+        "mobileAsset": "/assets/pixel/scenes-v2/Q19-mobile.webp",
+        "frames": ["idle", "action", "resolved", "quit"],
+        "optionVariants": {
+          "self-operated": {
+            "action": {
+              "desktopAsset": "/assets/pixel/scenes-v2/options/Q19/self-operated-action-desktop.webp",
+              "mobileAsset": "/assets/pixel/scenes-v2/options/Q19/self-operated-action-mobile.webp"
+            },
+            "resolved": {
+              "desktopAsset": "/assets/pixel/scenes-v2/options/Q19/self-operated-resolved-desktop.webp",
+              "mobileAsset": "/assets/pixel/scenes-v2/options/Q19/self-operated-resolved-mobile.webp"
+            },
+            "overlay": {
+              "eyebrow": "经营范围",
+              "title": "自营路线已记录",
+              "detail": "只卖自己的产品或服务 · 无第三方入驻",
+              "tone": "success"
+            }
+          },
+          "self-published": {
+            "action": {
+              "desktopAsset": "/assets/pixel/scenes-v2/options/Q19/self-published-action-desktop.webp",
+              "mobileAsset": "/assets/pixel/scenes-v2/options/Q19/self-published-action-mobile.webp"
+            },
+            "resolved": {
+              "desktopAsset": "/assets/pixel/scenes-v2/options/Q19/self-published-resolved-desktop.webp",
+              "mobileAsset": "/assets/pixel/scenes-v2/options/Q19/self-published-resolved-mobile.webp"
+            },
+            "overlay": {
+              "eyebrow": "经营范围",
+              "title": "自行发布路线已记录",
+              "detail": "只发自己的内容 · 不开放别人发布",
+              "tone": "success"
+            }
+          },
+          "all-in-capital": {
+            "action": {
+              "desktopAsset": "/assets/pixel/scenes-v2/options/Q19/all-in-capital-action-desktop.webp",
+              "mobileAsset": "/assets/pixel/scenes-v2/options/Q19/all-in-capital-action-mobile.webp"
+            },
+            "resolved": {
+              "desktopAsset": "/assets/pixel/scenes-v2/options/Q19/all-in-capital-resolved-desktop.webp",
+              "mobileAsset": "/assets/pixel/scenes-v2/options/Q19/all-in-capital-resolved-mobile.webp"
+            },
+            "overlay": {
+              "eyebrow": "第三方平台路线",
+              "title": "注册资本门槛 ¥1,000,000",
+              "detail": "资格门槛 · 当前未支付 · 不计入已花现金",
+              "tone": "warning"
+            }
+          }
+        }
+      },
+      "scoreWeight": { "compliance": 3 },
+      "options": [
+        {
+          "id": "self-operated",
+          "label": "只卖自己开发的产品或服务，没有第三方入驻。",
+          "effects": [
+            { "type": "set-fact", "key": "businessScope", "value": "self-operated" },
+            { "type": "effort", "bucket": "founderHours", "hours": 12, "track": "compliance", "label": "自营路线许可调研（2天）" },
+            { "type": "todo", "id": "verify-self-operated-license", "label": "按自营路线核实经营许可适用性", "timing": "before-launch" },
+            { "type": "metric", "key": "score.compliance", "value": 3 }
+          ]
+        },
+        {
+          "id": "self-published",
+          "label": "只发布自己的内容，不给别人开放发布平台。",
+          "effects": [
+            { "type": "set-fact", "key": "businessScope", "value": "self-published" },
+            { "type": "effort", "bucket": "founderHours", "hours": 12, "track": "compliance", "label": "自行发布路线许可调研（2天）" },
+            { "type": "todo", "id": "verify-self-published-license", "label": "按自行发布路线核实经营许可适用性", "timing": "before-launch" },
+            { "type": "metric", "key": "score.compliance", "value": 3 }
+          ]
+        },
+        {
+          "id": "all-in-capital",
+          "label": "上面的都涉及，这100万我出了",
+          "visualOutcome": "rich-confetti",
+          "effects": [
+            { "type": "set-fact", "key": "businessScope", "value": "platform" },
+            { "type": "effort", "bucket": "founderHours", "hours": 12, "track": "compliance", "label": "平台经营许可调研（2天）" },
+            { "type": "money", "id": "q19-capital-threshold", "bucket": "capitalRequirement", "amount": 1000000, "currency": "CNY", "label": "ICP 经营许可注册资本门槛", "sourceType": "用户口径 + 规则核实项", "chargeTiming": "资格门槛，计入首年总投入", "refundable": false, "priceDate": "2026-07-16" },
+            { "type": "money", "id": "q19-license-services", "bucket": "pendingQuote", "amount": null, "currency": "CNY", "label": "许可、中介、人员与整改成本", "sourceType": "待询价", "chargeTiming": "确认适用后", "refundable": false },
+            { "type": "todo", "id": "verify-platform-license", "label": "核实平台路线许可及办理材料", "timing": "before-launch" },
+            { "type": "metric", "key": "score.compliance", "value": 3 }
+          ]
+        },
+        {
+          "id": "quit-license",
+          "label": "拜拜了，100块我都快没有了。",
+          "outcome": "exit",
+          "exitTitle": "一百万门口掉头者",
+          "effects": []
+        }
+      ]
+    },
+    {
+      "id": "Q20",
+      "number": 20,
+      "chapterId": "compliance",
+      "prompt": "办完证没结束，还要做安全评估噢，你的产品有没有提供发帖、评论、公开分享、社群或其他公众表达或登录交互的能力呢？",
+      "defaultNextQuestionId": "Q21",
+      "factNotes": ["普通登录或支付本身不自动触发该类安全评估，应按公开表达、传播能力和具体法规要求判断。", "¥12,000 是本局第三方询价，不是官方统一收费。"],
+      "visual": {
+        "sceneId": "Q20",
+        "desktopAsset": "/assets/pixel/scenes-v2/Q20-desktop.webp",
+        "mobileAsset": "/assets/pixel/scenes-v2/Q20-mobile.webp",
+        "frames": ["idle", "action", "resolved", "quit"],
+        "optionVariants": {
+          "no-public-expression": {
+            "action": {
+              "desktopAsset": "/assets/pixel/scenes-v2/options/Q20/no-public-expression-action-desktop.webp",
+              "mobileAsset": "/assets/pixel/scenes-v2/options/Q20/no-public-expression-action-mobile.webp"
+            },
+            "resolved": {
+              "desktopAsset": "/assets/pixel/scenes-v2/options/Q20/no-public-expression-resolved-desktop.webp",
+              "mobileAsset": "/assets/pixel/scenes-v2/options/Q20/no-public-expression-resolved-mobile.webp"
+            },
+            "overlay": {
+              "eyebrow": "公众表达功能检查",
+              "title": "当前未触发该类评估",
+              "detail": "未开启发帖、评论、公开分享或社群",
+              "tone": "success"
+            }
+          },
+          "self-assessment": {
+            "action": {
+              "desktopAsset": "/assets/pixel/scenes-v2/options/Q20/self-assessment-action-desktop.webp",
+              "mobileAsset": "/assets/pixel/scenes-v2/options/Q20/self-assessment-action-mobile.webp"
+            },
+            "resolved": {
+              "desktopAsset": "/assets/pixel/scenes-v2/options/Q20/self-assessment-resolved-desktop.webp",
+              "mobileAsset": "/assets/pixel/scenes-v2/options/Q20/self-assessment-resolved-mobile.webp"
+            },
+            "overlay": {
+              "eyebrow": "自行处理",
+              "title": "安全评估待办已加入",
+              "detail": "+24h 创始人工时 · 尚未完成",
+              "tone": "brand"
+            }
+          },
+          "third-party-assessment": {
+            "action": {
+              "desktopAsset": "/assets/pixel/scenes-v2/options/Q20/third-party-assessment-action-desktop.webp",
+              "mobileAsset": "/assets/pixel/scenes-v2/options/Q20/third-party-assessment-action-mobile.webp"
+            },
+            "resolved": {
+              "desktopAsset": "/assets/pixel/scenes-v2/options/Q20/third-party-assessment-resolved-desktop.webp",
+              "mobileAsset": "/assets/pixel/scenes-v2/options/Q20/third-party-assessment-resolved-mobile.webp"
+            },
+            "overlay": {
+              "eyebrow": "第三方评估",
+              "title": "当前询价 ¥12,000",
+              "detail": "待确认、未支付 · 不计入已花现金",
+              "tone": "warning"
+            }
+          }
+        }
+      },
+      "scoreWeight": { "compliance": 2 },
+      "options": [
+        {
+          "id": "no-public-expression",
+          "label": "没有",
+          "effects": [
+            { "type": "set-fact", "key": "publicExpression", "value": false },
+            { "type": "set-fact", "key": "securityAssessmentStatus", "value": "currently-not-triggered" },
+            { "type": "metric", "key": "score.compliance", "value": 2 }
+          ]
+        },
+        {
+          "id": "self-assessment",
+          "label": "我自己开展安全评估。",
+          "effects": [
+            { "type": "set-fact", "key": "publicExpression", "value": true },
+            { "type": "set-fact", "key": "securityAssessmentStatus", "value": "self" },
+            { "type": "effort", "bucket": "founderHours", "hours": 42, "track": "compliance", "label": "自行安全评估（7天）" },
+            { "type": "todo", "id": "self-security-assessment", "label": "自行开展安全评估", "timing": "before-launch" },
+            { "type": "metric", "key": "score.compliance", "value": 2 }
+          ]
+        },
+        {
+          "id": "third-party-assessment",
+          "label": "有，找第三方做，当前询价 ¥12,000。",
+          "effects": [
+            { "type": "set-fact", "key": "publicExpression", "value": true },
+            { "type": "set-fact", "key": "securityAssessmentStatus", "value": "third-party" },
+            { "type": "effort", "bucket": "founderHours", "hours": 42, "track": "compliance", "label": "第三方安全评估（7天）" },
+            { "type": "money", "id": "q20-third-party-assessment", "bucket": "firstYearCommitted", "amount": 12000, "currency": "CNY", "label": "第三方安全评估一次费用", "sourceType": "用户询价", "chargeTiming": "确认后支付", "refundable": true, "priceDate": "2026-07-16" },
+            { "type": "metric", "key": "score.compliance", "value": 2 }
+          ]
+        },
+        {
+          "id": "quit-assessment",
+          "label": "妈妈，我不想玩了！",
+          "outcome": "exit",
+          "exitTitle": "安全评估门外汉",
+          "effects": []
+        }
+      ]
+    },
+    {
+      "id": "Q21",
+      "number": 21,
+      "chapterId": "compliance",
+      "prompt": "根据网安法规定，涉及数据存储要进行等保认证，爸爸又要花钱啦！",
+      "defaultNextQuestionId": "Q22",
+      "factNotes": ["是否需要等保以及保护等级不能只由“存了数据”或“有支付”自动判断，应按实际系统定级研判。", "¥50,000 与 ¥100,000 仅作为本局待确认压力预算，不计入已花现金。"],
+      "visual": {
+        "sceneId": "Q21",
+        "desktopAsset": "/assets/pixel/scenes-v2/Q21-desktop.webp",
+        "mobileAsset": "/assets/pixel/scenes-v2/Q21-mobile.webp",
+        "frames": ["idle", "action", "resolved", "quit"],
+        "optionVariants": {
+          "level-two": {
+            "action": {
+              "desktopAsset": "/assets/pixel/scenes-v2/options/Q21/level-two-action-desktop.webp",
+              "mobileAsset": "/assets/pixel/scenes-v2/options/Q21/level-two-action-mobile.webp"
+            },
+            "resolved": {
+              "desktopAsset": "/assets/pixel/scenes-v2/options/Q21/level-two-resolved-desktop.webp",
+              "mobileAsset": "/assets/pixel/scenes-v2/options/Q21/level-two-resolved-mobile.webp"
+            },
+            "overlay": {
+              "eyebrow": "等保待定级研判",
+              "title": "二级压力预算 ¥50,000",
+              "detail": "待确认、未支付 · 先增加定级待办",
+              "tone": "warning"
+            }
+          },
+          "level-three": {
+            "action": {
+              "desktopAsset": "/assets/pixel/scenes-v2/options/Q21/level-three-action-desktop.webp",
+              "mobileAsset": "/assets/pixel/scenes-v2/options/Q21/level-three-action-mobile.webp"
+            },
+            "resolved": {
+              "desktopAsset": "/assets/pixel/scenes-v2/options/Q21/level-three-resolved-desktop.webp",
+              "mobileAsset": "/assets/pixel/scenes-v2/options/Q21/level-three-resolved-mobile.webp"
+            },
+            "overlay": {
+              "eyebrow": "等保待定级研判",
+              "title": "三级压力预算 ¥100,000",
+              "detail": "待确认、未支付 · 不是已经办完认证",
+              "tone": "warning"
+            }
+          }
+        }
+      },
+      "scoreWeight": { "compliance": 2 },
+      "options": [
+        {
+          "id": "level-two",
+          "label": "只存了数据，涉及等保二级，一次5万。",
+          "effects": [
+            { "type": "set-fact", "key": "mlpsPressureRoute", "value": "level-two" },
+            { "type": "effort", "bucket": "founderHours", "hours": 84, "track": "compliance", "label": "等保二级采购部署、评估、整改与复评（14天）" },
+            { "type": "money", "id": "q21-level-two", "bucket": "firstYearCommitted", "amount": 50000, "currency": "CNY", "label": "等保二级测评与整改一次预算", "sourceType": "用户历史口径", "chargeTiming": "定级后支付", "refundable": true, "priceDate": "2026-07-16" },
+            { "type": "todo", "id": "mlps-classification", "label": "按实际系统开展等保定级研判", "timing": "before-launch" },
+            { "type": "metric", "key": "score.compliance", "value": 2 }
+          ]
+        },
+        {
+          "id": "level-three",
+          "label": "我还有支付，涉及等保三级，一次10万。",
+          "effects": [
+            { "type": "set-fact", "key": "mlpsPressureRoute", "value": "level-three" },
+            { "type": "effort", "bucket": "founderHours", "hours": 126, "track": "compliance", "label": "等保三级采购部署、评估、整改与复评（21天）" },
+            { "type": "money", "id": "q21-level-three", "bucket": "firstYearCommitted", "amount": 100000, "currency": "CNY", "label": "等保三级测评与整改一次预算", "sourceType": "用户历史口径", "chargeTiming": "定级后支付", "refundable": true, "priceDate": "2026-07-16" },
+            { "type": "todo", "id": "mlps-classification", "label": "按实际系统开展等保定级研判", "timing": "before-launch" },
+            { "type": "metric", "key": "score.compliance", "value": 2 }
+          ]
+        },
+        {
+          "id": "quit-mlps",
+          "label": "天呐撸....我只是想写个网站而已啊！",
+          "outcome": "exit",
+          "exitTitle": "只想写网站的开发者",
+          "effects": []
+        }
+      ]
+    },
+    {
+      "id": "Q22",
+      "number": 22,
+      "chapterId": "business",
+      "prompt": "恭喜，总裁终于可以思考产品本身了。你的产品的用户、场景、需求还有竞争关系想明白了吗？",
+      "defaultNextQuestionId": "Q23",
+      "factNotes": ["大厂风险选项会增加差异化待办并继续，不在本题直接退出。"],
+      "visual": {
+        "sceneId": "Q22",
+        "desktopAsset": "/assets/pixel/scenes-v2/Q22-desktop.webp",
+        "mobileAsset": "/assets/pixel/scenes-v2/Q22-mobile.webp",
+        "frames": ["idle", "action", "resolved", "quit"],
+        "optionVariants": {
+          "clear-enough": {
+            "action": {
+              "desktopAsset": "/assets/pixel/scenes-v2/options/Q22/clear-enough-action-desktop.webp",
+              "mobileAsset": "/assets/pixel/scenes-v2/options/Q22/clear-enough-action-mobile.webp"
+            },
+            "resolved": {
+              "desktopAsset": "/assets/pixel/scenes-v2/options/Q22/clear-enough-resolved-desktop.webp",
+              "mobileAsset": "/assets/pixel/scenes-v2/options/Q22/clear-enough-resolved-mobile.webp"
+            },
+            "overlay": {
+              "eyebrow": "产品定位",
+              "title": "四格定位已补齐一版",
+              "detail": "用户、场景、需求、竞品 · 仍留待验证假设",
+              "tone": "success"
+            }
+          },
+          "big-company-risk": {
+            "action": {
+              "desktopAsset": "/assets/pixel/scenes-v2/options/Q22/big-company-risk-action-desktop.webp",
+              "mobileAsset": "/assets/pixel/scenes-v2/options/Q22/big-company-risk-action-mobile.webp"
+            },
+            "resolved": {
+              "desktopAsset": "/assets/pixel/scenes-v2/options/Q22/big-company-risk-resolved-desktop.webp",
+              "mobileAsset": "/assets/pixel/scenes-v2/options/Q22/big-company-risk-resolved-mobile.webp"
+            },
+            "overlay": {
+              "eyebrow": "大厂阴影压过来",
+              "title": "差异化待办已加入",
+              "detail": "+12h · 收窄场景并寻找防御点",
+              "tone": "warning"
+            }
+          },
+          "not-thought-through": {
+            "action": {
+              "desktopAsset": "/assets/pixel/scenes-v2/options/Q22/not-thought-through-action-desktop.webp",
+              "mobileAsset": "/assets/pixel/scenes-v2/options/Q22/not-thought-through-action-mobile.webp"
+            },
+            "resolved": {
+              "desktopAsset": "/assets/pixel/scenes-v2/options/Q22/not-thought-through-resolved-desktop.webp",
+              "mobileAsset": "/assets/pixel/scenes-v2/options/Q22/not-thought-through-resolved-mobile.webp"
+            },
+            "overlay": {
+              "eyebrow": "只顾着办资质",
+              "title": "用户调研待办已加入",
+              "detail": "+24h · 约 4 天 · 先去访谈",
+              "tone": "brand"
+            }
+          }
+        }
+      },
+      "scoreWeight": { "business": 8 },
+      "options": [
+        {
+          "id": "clear-enough",
+          "label": "明白...了吧。",
+          "effects": [
+            { "type": "set-fact", "key": "positioning", "value": "clear" },
+            { "type": "effort", "bucket": "founderHours", "hours": 18, "track": "marketing", "label": "确认用户、场景、需求和竞争关系（3天）" },
+            { "type": "metric", "key": "score.business", "value": 8 }
+          ]
+        },
+        {
+          "id": "big-company-risk",
+          "label": "好像大厂分分钟吃掉...。",
+          "effects": [
+            { "type": "set-fact", "key": "positioning", "value": "differentiation-risk" },
+            { "type": "todo", "id": "product-differentiation", "label": "补充产品差异化与防御策略", "timing": "before-launch" },
+            { "type": "effort", "bucket": "founderHours", "hours": 18, "track": "marketing", "label": "差异化研究（3天）" },
+            { "type": "metric", "key": "score.business", "value": 4 }
+          ]
+        },
+        {
+          "id": "not-thought-through",
+          "label": "WOC，只顾着办资质，后面还没想好....",
+          "effects": [
+            { "type": "set-fact", "key": "positioning", "value": "research-needed" },
+            { "type": "todo", "id": "user-research", "label": "开展用户、场景、需求和竞争关系调研", "timing": "before-launch" },
+            { "type": "effort", "bucket": "founderHours", "hours": 42, "track": "marketing", "label": "用户、场景、需求和竞争关系调研（7天）" },
+            { "type": "metric", "key": "score.business", "value": 2 }
+          ]
+        },
+        {
+          "id": "no-value",
+          "label": "呜呜呜，没价值，再见了。",
+          "outcome": "exit",
+          "exitTitle": "清醒的撤退者",
+          "effects": []
+        }
+      ]
+    },
+    {
+      "id": "Q23",
+      "number": 23,
+      "chapterId": "business",
+      "prompt": "恭喜你，用户真的喜欢你的产品，你觉得你会有多少个用户呢？",
+      "defaultNextQuestionId": "Q24",
+      "factNotes": ["用户规模仅用于情景计算；数字越大不会获得更高分。"],
+      "visual": {
+        "sceneId": "Q23",
+        "desktopAsset": "/assets/pixel/scenes-v2/Q23-desktop.webp",
+        "mobileAsset": "/assets/pixel/scenes-v2/Q23-mobile.webp",
+        "frames": ["idle", "action", "resolved", "quit"],
+        "optionVariants": {
+          "users-100": {
+            "action": {
+              "desktopAsset": "/assets/pixel/scenes-v2/options/Q23/users-100-action-desktop.webp",
+              "mobileAsset": "/assets/pixel/scenes-v2/options/Q23/users-100-action-mobile.webp"
+            },
+            "resolved": {
+              "desktopAsset": "/assets/pixel/scenes-v2/options/Q23/users-100-resolved-desktop.webp",
+              "mobileAsset": "/assets/pixel/scenes-v2/options/Q23/users-100-resolved-mobile.webp"
+            },
+            "overlay": {
+              "eyebrow": "用户规模假设",
+              "title": "预计 100 个用户",
+              "detail": "容量预测 · 不是已经获得用户",
+              "tone": "neutral"
+            }
+          },
+          "users-1000": {
+            "action": {
+              "desktopAsset": "/assets/pixel/scenes-v2/options/Q23/users-1000-action-desktop.webp",
+              "mobileAsset": "/assets/pixel/scenes-v2/options/Q23/users-1000-action-mobile.webp"
+            },
+            "resolved": {
+              "desktopAsset": "/assets/pixel/scenes-v2/options/Q23/users-1000-resolved-desktop.webp",
+              "mobileAsset": "/assets/pixel/scenes-v2/options/Q23/users-1000-resolved-mobile.webp"
+            },
+            "overlay": {
+              "eyebrow": "用户规模假设",
+              "title": "预计 1,000 个用户",
+              "detail": "容量预测 · 不是已经获得用户",
+              "tone": "neutral"
+            }
+          },
+          "users-10000": {
+            "action": {
+              "desktopAsset": "/assets/pixel/scenes-v2/options/Q23/users-10000-action-desktop.webp",
+              "mobileAsset": "/assets/pixel/scenes-v2/options/Q23/users-10000-action-mobile.webp"
+            },
+            "resolved": {
+              "desktopAsset": "/assets/pixel/scenes-v2/options/Q23/users-10000-resolved-desktop.webp",
+              "mobileAsset": "/assets/pixel/scenes-v2/options/Q23/users-10000-resolved-mobile.webp"
+            },
+            "overlay": {
+              "eyebrow": "用户规模假设",
+              "title": "预计 10,000 个用户",
+              "detail": "容量与运营压力上升 · 不额外加分",
+              "tone": "neutral"
+            }
+          },
+          "users-100000": {
+            "action": {
+              "desktopAsset": "/assets/pixel/scenes-v2/options/Q23/users-100000-action-desktop.webp",
+              "mobileAsset": "/assets/pixel/scenes-v2/options/Q23/users-100000-action-mobile.webp"
+            },
+            "resolved": {
+              "desktopAsset": "/assets/pixel/scenes-v2/options/Q23/users-100000-resolved-desktop.webp",
+              "mobileAsset": "/assets/pixel/scenes-v2/options/Q23/users-100000-resolved-mobile.webp"
+            },
+            "overlay": {
+              "eyebrow": "用户规模假设",
+              "title": "预计 100,000 个用户",
+              "detail": "高压容量情景 · 不是已经获得用户",
+              "tone": "warning"
+            }
+          }
+        }
+      },
+      "scoreWeight": { "business": 5 },
+      "options": [
+        { "id": "users-100", "label": "100", "effects": [{ "type": "metric", "key": "users", "value": 100 }, { "type": "metric", "key": "score.business", "value": 5 }] },
+        { "id": "users-1000", "label": "1000", "effects": [{ "type": "metric", "key": "users", "value": 1000 }, { "type": "metric", "key": "score.business", "value": 5 }] },
+        { "id": "users-10000", "label": "10000", "effects": [{ "type": "metric", "key": "users", "value": 10000 }, { "type": "metric", "key": "score.business", "value": 5 }] },
+        { "id": "users-100000", "label": "100000", "effects": [{ "type": "metric", "key": "users", "value": 100000 }, { "type": "metric", "key": "score.business", "value": 5 }] }
+      ]
+    },
+    {
+      "id": "Q24",
+      "number": 24,
+      "chapterId": "business",
+      "prompt": "那用户会花多少钱，为你付费呢？你的首年总投入是 {{spent}}。按照上一关选择的 {{users}} 个用户、每用户每月计费，大概有这几种价格：",
+      "defaultNextQuestionId": "Q25",
+      "factNotes": ["预计每月毛利（粗算）＝用户数 × 月费 − 首年总投入 ÷ 12；未扣模型用量、支付手续费、税费、获客和流失。"],
+      "visual": {
+        "sceneId": "Q24",
+        "desktopAsset": "/assets/pixel/scenes-v2/Q24-desktop.webp",
+        "mobileAsset": "/assets/pixel/scenes-v2/Q24-mobile.webp",
+        "frames": ["idle", "action", "resolved", "quit"],
+        "optionVariants": {
+          "price-9-9": {
+            "action": {
+              "desktopAsset": "/assets/pixel/scenes-v2/options/Q24/price-9-9-action-desktop.webp",
+              "mobileAsset": "/assets/pixel/scenes-v2/options/Q24/price-9-9-action-mobile.webp"
+            },
+            "resolved": {
+              "desktopAsset": "/assets/pixel/scenes-v2/options/Q24/price-9-9-resolved-desktop.webp",
+              "mobileAsset": "/assets/pixel/scenes-v2/options/Q24/price-9-9-resolved-mobile.webp"
+            },
+            "overlay": {
+              "eyebrow": "每用户月费假设",
+              "title": "¥9.9 / 用户·月",
+              "detail": "用户数 × 月费 = 理论月流水 · 不等于利润",
+              "tone": "success"
+            }
+          },
+          "price-19-9": {
+            "action": {
+              "desktopAsset": "/assets/pixel/scenes-v2/options/Q24/price-19-9-action-desktop.webp",
+              "mobileAsset": "/assets/pixel/scenes-v2/options/Q24/price-19-9-action-mobile.webp"
+            },
+            "resolved": {
+              "desktopAsset": "/assets/pixel/scenes-v2/options/Q24/price-19-9-resolved-desktop.webp",
+              "mobileAsset": "/assets/pixel/scenes-v2/options/Q24/price-19-9-resolved-mobile.webp"
+            },
+            "overlay": {
+              "eyebrow": "每用户月费假设",
+              "title": "¥19.9 / 用户·月",
+              "detail": "理论月流水 · 尚未扣渠道、税费与变动成本",
+              "tone": "success"
+            }
+          },
+          "price-29-9": {
+            "action": {
+              "desktopAsset": "/assets/pixel/scenes-v2/options/Q24/price-29-9-action-desktop.webp",
+              "mobileAsset": "/assets/pixel/scenes-v2/options/Q24/price-29-9-action-mobile.webp"
+            },
+            "resolved": {
+              "desktopAsset": "/assets/pixel/scenes-v2/options/Q24/price-29-9-resolved-desktop.webp",
+              "mobileAsset": "/assets/pixel/scenes-v2/options/Q24/price-29-9-resolved-mobile.webp"
+            },
+            "overlay": {
+              "eyebrow": "每用户月费假设",
+              "title": "¥29.9 / 用户·月",
+              "detail": "理论月流水 · 价格更高不额外加分",
+              "tone": "success"
+            }
+          }
+        }
+      },
+      "scoreWeight": { "business": 6, "costHealth": 8 },
+      "options": [
+        { "id": "price-9-9", "label": "9.9元，一个月一杯咖啡钱不贵吧｜预计每月毛利 {{monthlyGrossProfit}}", "effects": [{ "type": "effort", "bucket": "founderHours", "hours": 42, "track": "marketing", "label": "9.9元定价验证（7天）" }, { "type": "metric", "key": "monthlyPriceCny", "value": 9.9 }, { "type": "metric", "key": "score.business", "value": 6 }, { "type": "metric", "key": "score.costHealth", "value": 8 }] },
+        { "id": "price-19-9", "label": "19.9元，一个月两杯咖啡也还好？｜预计每月毛利 {{monthlyGrossProfit}}", "effects": [{ "type": "effort", "bucket": "founderHours", "hours": 42, "track": "marketing", "label": "19.9元定价验证（7天）" }, { "type": "metric", "key": "monthlyPriceCny", "value": 19.9 }, { "type": "metric", "key": "score.business", "value": 6 }, { "type": "metric", "key": "score.costHealth", "value": 8 }] },
+        { "id": "price-29-9", "label": "29.9元，友情提示，美图一个月大概三十｜预计每月毛利 {{monthlyGrossProfit}}", "effects": [{ "type": "effort", "bucket": "founderHours", "hours": 42, "track": "marketing", "label": "29.9元定价验证（7天）" }, { "type": "metric", "key": "monthlyPriceCny", "value": 29.9 }, { "type": "metric", "key": "score.business", "value": 6 }, { "type": "metric", "key": "score.costHealth", "value": 8 }] },
+        { "id": "cannot-charge", "label": "我靠，打不了一点呜呜呜", "outcome": "exit", "exitTitle": "清醒的撤退者", "effects": [] }
+      ]
+    },
+    {
+      "id": "Q25",
+      "number": 25,
+      "chapterId": "business",
+      "prompt": "产品终于上线了，万事具备！第一百个用户准备从哪里来？有钱买量吗？自己当KOL用自然流吗？",
+      "factNotes": ["自然流记录持续工时；广告预算与最高可承受获客成本分开确认；直接上线也可进入结果页。"],
+      "visual": {
+        "sceneId": "Q25",
+        "desktopAsset": "/assets/pixel/scenes-v2/Q25-desktop.webp",
+        "mobileAsset": "/assets/pixel/scenes-v2/Q25-mobile.webp",
+        "frames": ["idle", "action", "resolved", "quit"],
+        "optionVariants": {
+          "organic": {
+            "action": {
+              "desktopAsset": "/assets/pixel/scenes-v2/options/Q25/organic-action-desktop.webp",
+              "mobileAsset": "/assets/pixel/scenes-v2/options/Q25/organic-action-mobile.webp"
+            },
+            "resolved": {
+              "desktopAsset": "/assets/pixel/scenes-v2/options/Q25/organic-resolved-desktop.webp",
+              "mobileAsset": "/assets/pixel/scenes-v2/options/Q25/organic-resolved-mobile.webp"
+            },
+            "overlay": {
+              "eyebrow": "第一百个用户",
+              "title": "自然流路线已启动",
+              "detail": "内容、社群、口碑 · +40h/月",
+              "tone": "success"
+            }
+          },
+          "paid-acquisition": {
+            "action": {
+              "desktopAsset": "/assets/pixel/scenes-v2/options/Q25/paid-acquisition-action-desktop.webp",
+              "mobileAsset": "/assets/pixel/scenes-v2/options/Q25/paid-acquisition-action-mobile.webp"
+            },
+            "resolved": {
+              "desktopAsset": "/assets/pixel/scenes-v2/options/Q25/paid-acquisition-resolved-desktop.webp",
+              "mobileAsset": "/assets/pixel/scenes-v2/options/Q25/paid-acquisition-resolved-mobile.webp"
+            },
+            "overlay": {
+              "eyebrow": "第一百个用户",
+              "title": "广告获客路线已启动",
+              "detail": "先设 CAC 上限 · 营销预算仍待设定",
+              "tone": "brand"
+            }
+          },
+          "launch-now": {
+            "action": {
+              "desktopAsset": "/assets/pixel/scenes-v2/options/Q25/launch-now-action-desktop.webp",
+              "mobileAsset": "/assets/pixel/scenes-v2/options/Q25/launch-now-action-mobile.webp"
+            },
+            "resolved": {
+              "desktopAsset": "/assets/pixel/scenes-v2/options/Q25/launch-now-resolved-desktop.webp",
+              "mobileAsset": "/assets/pixel/scenes-v2/options/Q25/launch-now-resolved-mobile.webp"
+            },
+            "overlay": {
+              "eyebrow": "一人公司 × 零人产品",
+              "title": "今天正式上线",
+              "detail": "自然流与广告台关闭 · 用户可以从 0 开始",
+              "tone": "success"
+            }
+          }
+        }
+      },
+      "scoreWeight": { "execution": 1, "business": 6, "costHealth": 7 },
+      "options": [
+        {
+          "id": "organic",
+          "label": "做内容、社群和口碑，用时间换流量。",
+          "outcome": "result",
+          "effects": [
+            { "type": "set-fact", "key": "acquisition", "value": "organic" },
+            { "type": "metric", "key": "score.execution", "value": 1 },
+            { "type": "metric", "key": "score.business", "value": 6 },
+            { "type": "metric", "key": "score.costHealth", "value": 7 }
+          ]
+        },
+        {
+          "id": "paid-acquisition",
+          "label": "投广告，但先设置最高可承受获客成本。",
+          "outcome": "result",
+          "effects": [
+            { "type": "set-fact", "key": "acquisition", "value": "paid" },
+            { "type": "money", "id": "q25-marketing-budget", "bucket": "variable", "amount": null, "currency": "CNY", "label": "营销与广告预算", "sourceType": "待设定", "chargeTiming": "按量发生", "refundable": true },
+            { "type": "todo", "id": "set-cac-cap", "label": "设置最高可承受获客成本", "timing": "before-launch" },
+            { "type": "metric", "key": "score.execution", "value": 1 },
+            { "type": "metric", "key": "score.business", "value": 6 },
+            { "type": "metric", "key": "score.costHealth", "value": 7 }
+          ]
+        },
+        {
+          "id": "launch-now",
+          "label": "就这样吧，我真的累了，一人公司和零人产品挺配的，今天正式上线。",
+          "outcome": "result",
+          "effects": [
+            { "type": "set-fact", "key": "acquisition", "value": "launch-now" },
+            { "type": "set-fact", "key": "zeroUserLaunch", "value": true },
+            { "type": "metric", "key": "score.execution", "value": 1 },
+            { "type": "metric", "key": "score.business", "value": 2 },
+            { "type": "metric", "key": "score.costHealth", "value": 3 }
+          ]
+        }
+      ]
+    }
+  ],
+  "resultRules": {
+    "titleBands": [
+      { "min": 0, "max": 19, "title": "还在脑内公测" },
+      { "min": 20, "max": 39, "title": "Vibe Coding 练习生" },
+      { "min": 40, "max": 59, "title": "上线求生者" },
+      { "min": 60, "max": 69, "title": "MVP 小老板" },
+      { "min": 70, "max": 79, "title": "最小可行总裁" },
+      { "min": 80, "max": 89, "title": "一人公司耐力王" },
+      { "min": 90, "max": 100, "title": "真·一人公司经营者" }
+    ],
+    "badges": [
+      { "id": "love-powered", "label": "为爱发电永久会员", "when": { "fact": "commercial", "equals": false }, "priority": 90 },
+      { "id": "ai-runtime", "label": "Token 燃烧工程师", "when": { "fact": "runtimeAi", "equals": true }, "priority": 70 },
+      { "id": "zero-user-launch", "label": "零人产品发布官", "when": { "fact": "zeroUserLaunch", "equals": true }, "priority": 100 },
+      { "id": "organic-growth", "label": "自然流体力劳动者", "when": { "fact": "acquisition", "equals": "organic" }, "priority": 60 },
+      { "id": "paid-growth", "label": "CAC 预算守门员", "when": { "fact": "acquisition", "equals": "paid" }, "priority": 60 }
+    ]
+  }
+}

@@ -1,0 +1,18 @@
+[
+  { "id": "company-registration", "labelZh": "企业注册", "labelEn": "Company registration", "amountCny": 200, "unit": "次", "status": "pending_confirmation", "source": "user" },
+  { "id": "address-white", "labelZh": "挂靠地址白本", "labelEn": "Address hosting (white document)", "amountCny": 1300, "unit": "年/口径待确认", "status": "pending_confirmation", "source": "user" },
+  { "id": "address-red", "labelZh": "挂靠地址红本", "labelEn": "Address hosting (red document)", "amountCny": 1800, "unit": "年/口径待确认", "status": "pending_confirmation", "source": "user" },
+  { "id": "corporate-account", "labelZh": "公司银行公户", "labelEn": "Corporate bank account", "amountCny": 500, "unit": "年", "status": "pending_confirmation", "source": "user" },
+  { "id": "bookkeeping", "labelZh": "代理记账", "labelEn": "Bookkeeping", "amountCny": 2000, "unit": "年", "status": "pending_confirmation", "source": "user" },
+  { "id": "domain-ssl", "labelZh": "域名与安全套接层证书", "labelEn": "Domain and SSL certificate", "amountCny": 120, "unit": "口径待确认", "status": "pending_confirmation", "source": "user" },
+  { "id": "dns", "labelZh": "域名解析", "labelEn": "DNS", "amountCny": 99, "unit": "口径待确认", "status": "pending_confirmation", "source": "user" },
+  { "id": "ecs-2c4g", "labelZh": "云服务器 2 核 4G", "labelEn": "ECS 2 vCPU 4 GB", "amountCny": 1315, "unit": "口径待确认", "status": "pending_confirmation", "source": "user" },
+  { "id": "eip", "labelZh": "弹性公网 IP", "labelEn": "EIP", "amountCny": 724, "unit": "口径待确认", "status": "pending_confirmation", "source": "user" },
+  { "id": "volume", "labelZh": "云盘", "labelEn": "Volume", "amountCny": 199.2, "unit": "口径待确认", "status": "pending_confirmation", "source": "user" },
+  { "id": "sms", "labelZh": "短信", "labelEn": "SMS", "amountCny": 45, "unit": "1000 条", "status": "pending_confirmation", "source": "user" },
+  { "id": "content-safety", "labelZh": "内容安全审核", "labelEn": "Content safety moderation", "amountCny": 322, "unit": "60 万次", "status": "pending_confirmation", "source": "user" },
+  { "id": "mlps-level-2", "labelZh": "网络安全等级保护二级", "labelEn": "MLPS Level 2", "amountCny": 50000, "unit": "次/周期待确认", "status": "historical_pending_confirmation", "source": "article" },
+  { "id": "mlps-level-3", "labelZh": "网络安全等级保护三级", "labelEn": "MLPS Level 3", "amountCny": 130000, "unit": "次/周期待确认", "status": "historical_pending_confirmation", "source": "article" },
+  { "id": "trademark", "labelZh": "商标注册", "labelEn": "Trademark registration", "amountCny": 300, "unit": "个", "status": "pending_confirmation", "source": "user" },
+  { "id": "software-copyright", "labelZh": "软件著作权申请", "labelEn": "Software copyright registration", "amountCny": 300, "unit": "个", "status": "pending_confirmation", "source": "user" }
+]

@@ -33,6 +33,8 @@ tania-replica/
 .github/workflows/*
 !.github/workflows/update-star-history.yml
 .playwright-mcp/
+.playwright-cli/
 .spec-workflow/
 page-*.yml
 ai-workstation/docs/
+opc-game/.github/

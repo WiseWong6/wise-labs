@@ -1,0 +1,33 @@
+{
+  "name": "opc-game",
+  "version": "0.1.0",
+  "private": true,
+  "type": "module",
+  "description": "一人公司生存模拟器：纯静态 Web 与微信小程序。",
+  "workspaces": [
+    "web",
+    "packages/*"
+  ],
+  "scripts": {
+    "dev:web": "npm run sync:mini && npm --workspace @opc-game/web run dev",
+    "build:web": "npm run sync:mini && npm --workspace @opc-game/web run build",
+    "build:xhs": "node scripts/build-xhs-tool.mjs",
+    "optimize:images": "node scripts/optimize-runtime-images.mjs && node scripts/build-scene-manifest.mjs",
+    "generate:audio": "node scripts/generate-audio-assets.mjs",
+    "sync:mini": "node scripts/sync-miniprogram.mjs",
+    "check:sync": "node scripts/sync-miniprogram.mjs --check",
+    "typecheck": "npm run sync:mini && tsc -p tsconfig.check.json --noEmit && tsc -p tsconfig.json --noEmit",
+    "test": "tsx --test tests/**/*.test.ts",
+    "audit:privacy": "node scripts/audit-privacy.mjs",
+    "check": "npm run typecheck && npm run check:sync && npm test && npm run build:web && npm run audit:privacy"
+  },
+  "engines": {
+    "node": ">=22"
+  },
+  "devDependencies": {
+    "@types/node": "26.1.1",
+    "miniprogram-api-typings": "5.2.1",
+    "tsx": "4.23.1",
+    "typescript": "5.9.3"
+  }
+}

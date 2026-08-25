@@ -1,0 +1,17 @@
+.DS_Store
+node_modules/
+dist/
+web/dist/
+coverage/
+# Keep only the official offline package and demo video in the repository;
+# all unpacked/build output remains local and ignored.
+output/*
+!output/
+!output/xhs-tool.zip
+!output/videos/
+output/videos/*
+!output/videos/hf-opc.mp4
+research/
+project.private.config.json
+*.log
+.hilo/
