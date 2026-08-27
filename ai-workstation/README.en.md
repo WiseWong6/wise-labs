@@ -207,16 +207,15 @@ CLI execution continues to use the permissions of the terminal host you are runn
 
 ---
 
-## Socials and WeChat
+## Socials
 
 <div align="center">
   <p>Same handle everywhere: <code>@歪斯Wise</code></p>
   <p>
     <a href="https://www.xiaohongshu.com/user/profile/61f3ea4f000000001000db73">Xiaohongshu</a> /
-    <a href="https://x.com/killthewhys">Twitter(X)</a> /
-    Scan for WeChat
+    <a href="https://x.com/killthewhys">Twitter(X)</a>
   </p>
-  <img src="assets/wechat-wise-qr.jpg" alt="WeChat QR" width="220" />
+  <img src="assets/xiaohongshu-qr.jpg" alt="Wise's Xiaohongshu card" width="220" />
 </div>
 
 ---

@@ -142,10 +142,9 @@ cd opc-game && npm install && npm run dev:web
   <p>
     <a href="https://github.com/WiseWong6/wise-labs">GitHub Star</a> /
     <a href="https://www.xiaohongshu.com/user/profile/61f3ea4f000000001000db73">小红书</a> /
-    <a href="https://x.com/killthewhys">Twitter(X)</a> /
-    扫码关注公众号
+    <a href="https://x.com/killthewhys">Twitter(X)</a>
   </p>
-  <img src="./assets/wechat-wise-qr.jpg" alt="公众号歪斯二维码" width="220" />
+  <img src="./assets/xiaohongshu-qr.jpg" alt="歪斯Wise 小红书名片" width="220" />
 </div>
 
 ---
